@@ -94,9 +94,8 @@
   export default {
     name: 'App',
     data () {
-      return {
-        searchVal: '',
-
+    return {
+        searchVal: ''
       }
     }
   }
