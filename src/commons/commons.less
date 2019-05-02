@@ -67,6 +67,10 @@ input::-webkit-inner-spin-button {
   word-wrap: normal;
 }
 
+.flex-spacer {
+  flex: 1 !important;
+}
+
 .text-overflow-mult {
   overflow: hidden;
   display: -webkit-box;
@@ -80,4 +84,11 @@ input::-webkit-inner-spin-button {
   -moz-transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1), color 2s, background 2s;
   -webkit-transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1), color 2s, background 2s;
   -o-transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1), color 2s, background 2s;
+}
+
+.scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+    background: rgba(0, 0, 0, 0);
+  }
 }

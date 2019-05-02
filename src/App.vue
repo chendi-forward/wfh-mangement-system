@@ -1,197 +1,226 @@
+<!--项目页面顶级出口-->
 <template>
   <div id="app">
-    <el-container>
-      <el-aside width="250px">
-        <el-header>WFH-Management-system</el-header>
-        <div class="nav-menu">
-          <el-menu
-            router
-            default-active="yjck"
-            class="el-menu-vertical-demo">
-            <div class="nav-menu__title">主页</div>
-            <el-menu-item index="yjck">
-              <i class="el-icon-setting"></i>
-              <span slot="title">业绩查看</span>
-            </el-menu-item>
-            <el-submenu index="nryy">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>内容运营</span>
-              </template>
-              <el-menu-item index="nryy-spgl">商品管理</el-menu-item>
-              <el-menu-item index="nryy-zngb">站内广播</el-menu-item>
-              <el-menu-item index="nryy-fxy">发现页</el-menu-item>
-              <el-menu-item index="nryy-qtym">其他页面</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="yhgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">用户管理</span>
-            </el-menu-item>
-            <el-menu-item index="qxgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">权限管理</span>
-            </el-menu-item>
-            <el-menu-item index="shgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">售后管理</span>
-            </el-menu-item>
-            <div class="nav-menu__title">设置</div>
-            <el-menu-item index="hyjf">
-              <i class="el-icon-setting"></i>
-              <span slot="title">会员积分</span>
-            </el-menu-item>
-            <el-menu-item index="yxmk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">营销模块</span>
-            </el-menu-item>
-            <el-menu-item index="sjk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">数据库</span>
-            </el-menu-item>
-            <el-menu-item index="kjmk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">会计模块</span>
-            </el-menu-item>
-          </el-menu>
-        </div>
-      </el-aside>
-      <el-container>
-        <el-header class="main-header">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-          </el-breadcrumb>
-          <el-input
-            class="main-header__search"
-            placeholder="搜索..."
-            size="medium"
-            v-model="searchVal">
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
-          <div class="main-header__user">
-            <div class="user-box__name">
-              <span>早上好，</span>
-              <span>admin</span>
-            </div>
-            <div class="user-box__logout">
-              <span>退出</span>
-            </div>
-          </div>
-        </el-header>
-        <el-main>
-          <div class="main-content">
-            <router-view/>
-          </div>
-        </el-main>
-      </el-container>
-    </el-container>
+    <router-view @login-direct="loginDirect"></router-view>
+    <!--加载条-->
+    <!--<vue-progress-bar></vue-progress-bar>-->
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    data () {
+import {deepcopy} from './commons/util'
+import allRoutes from './routerFullPath'
+import {resetRouter} from './router'
+// 公共页面白面单
+const whiteLink = ['/login', '/404', '/401']
+export default {
+  name: 'App',
+  data () {
     return {
-        searchVal: ''
+      searchVal: ''
+    }
+  },
+  created () {
+    if (!whiteLink.includes(this.$router.currentRoute.path)) this.signIn()
+  },
+  methods: {
+    getRoutes (userPermissions, base) {
+      let routeHash = {}
+      if (Array.isArray(userPermissions)) {
+        /*
+        * params Like this:
+        * [{
+        *   id: "2c9180895e13261e015e13469b7e0000",
+        *   name: "概览",
+        *   parentId: "2c9180895e13261e015e13469b7e0000",
+        *   link: "indexs"
+        * }]
+        */
+        userPermissions.forEach(item => {
+          routeHash[(base ? base : '') + '/' + item.link] = true
+        })
       }
+      return routeHash
+    },
+    extendRoutes (routePermission, base) {
+      // Filtering local routes, get actual routing
+      let actualRouter = []
+      let findLocalRoute = function (array, base) {
+        let replyResult = []
+        array.forEach(route => {
+          let pathKey = (base ? base + '/' : '') + route.path
+          console.log(pathKey, routePermission)
+          if (routePermission[pathKey]) {
+            if (Array.isArray(route.children)) {
+              route.children = findLocalRoute(route.children, route.path)
+            }
+            console.log(route)
+            replyResult.push(route)
+          }
+        })
+        actualRouter = actualRouter.concat(replyResult)
+      }
+      console.log('actualRouter>>>>>>>>>', actualRouter)
+      findLocalRoute(allRoutes[0].children, base)
+      // If the user does not have any routing authority
+      /* if (!actualRouter || !actualRouter.length) {
+         // clear token, refresh page will jump to login screen.
+         util.session('token', '')
+         // Interface hints
+         return document.body.innerHTML = ('<h1>账号访问受限，请联系系统管理员！</h1>')
+       }*/
+      actualRouter.map(e => {
+        // Copy 'children' to 'meta' for rendering menu.(This step is optional.)
+        if (e.children) {
+          if (!e.meta) e.meta = {}
+          e.meta.children = e.children
+        }
+        // Add Per-Route Guard
+        // To prevent manual access to ultra vires routing after switching accounts
+        e.beforeEnter = (to, from, next) => {
+          if (routePermission[to.path]) {
+            next()
+          } else {
+            next('/401')
+          }
+        }
+      })
+      // resetRouter
+      resetRouter()
+      // Add actual routing to application
+      let originPath = deepcopy(allRoutes)
+      originPath[0].children = actualRouter
+      this.$router.addRoutes(originPath.concat([{
+        path: '*',
+        redirect: '/404'
+      }]))
+      // Save information for rendering menu.(This step is optional.)
+      console.log(actualRouter)
+      this.$root.menuData = actualRouter
+    },
+    signIn (callback) {
+      let jwtToken = sessionStorage.getItem('token')
+      if (!jwtToken) {
+        return this.$router.push({
+          path: '/login',
+          query: {from: this.$router.currentRoute.path}
+        })
+      }
+      // 获取可进入权限目录
+      // this.axios.get('/api/menus', {
+      //   params: {
+      //     userPermissionId: sessionStorage.userPermissionId
+      //   }
+      // })
+      // .then((res) => {
+      //   let userPermissions = res.data.data
+      //   // Save information, if it is used elsewhere.
+      //   this.$root.userData = userPermissions
+      //   /*
+      //   * Get routePermission form user permissions
+      //   * Like this:
+      //   * { "route1": true, "route2": true, ... }
+      //   */
+      //   let routePermission = this.getRoutes(userPermissions, '/page')
+      //   /*
+      //   * Adding routing privileges to users
+      //   */
+      //   this.extendRoutes(routePermission, '/page')
+      //   typeof callback === 'function' && callback()
+      // })
+      this.$root.userData = userPermissions
+      let userPermissions = [
+        {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yjck'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yhgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'nryy-spgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'nryy-zngb'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'nryy-fxy'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'nryy-qtym'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yhgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'qxgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'shgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'hyjf'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'sjk'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '概览',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'sjk'
+        }
+      ]
+      let routePermission = this.getRoutes(userPermissions)
+      this.extendRoutes(routePermission)
+      typeof callback === 'function' && callback()
+    },
+    loginDirect (newPath) {
+      /*
+      * Monitor login events
+      * Will trigger the events in views/login.vue
+      */
+      this.signIn(() => {
+        this.$router.replace({path: newPath || '/'})
+      })
     }
   }
+}
 </script>
 
 <style lang="less">
-.el-header, .el-footer {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-
-.el-aside {
-  /*background-color: #fff;*/
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-
-.nav-menu {
-  .nav-menu__title {
-    text-align: start;
-    padding: 0 20px;
-    padding-top: 15px;
-    color: #999;
-    line-height: 26px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-}
-
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  background-color: #fff;
-  .el-breadcrumb {
-    display: flex;
-    align-items: center;
-    .el-breadcrumb__separator {
-      color: #000;
-    }
-  }
-  .main-header__search {
-    width: 200px;
-    margin-left: 200px;
-  }
-  .main-header__user {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-.el-container {
-  height: 100%;
-  &:nth-child(5),
-  &:nth-child(6) {
-    .el-aside {
-      line-height: 260px;
-    }
-  }
-  &:nth-child(7) {
-    .el-aside {
-      line-height: 320px;
-    }
-  }
-}
-
-.main-content {
-  width: 100%;
-  height: 100%;
-}
-
-#app {
-  height: 100%;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
+  #app {
+    height: 100%;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
     color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
   }
-}
 </style>
