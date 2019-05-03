@@ -1,13 +1,6 @@
 <template>
-  <div class="find">
-    <el-tabs type="border-card">
-      <el-tab-pane label="活动公告"></el-tab-pane>
-      <el-tab-pane label="品牌简介"></el-tab-pane>
-      <el-tab-pane label="新手入门"></el-tab-pane>
-      <el-tab-pane label="草稿箱"></el-tab-pane>
-    </el-tabs>
-    <Active></Active>
-    <!-- <div class="newMan-content">
+  <div class="find-active">
+    <div class="newMan-content">
       <div class="con-num">
         共22条
       </div>
@@ -97,21 +90,17 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="400">
       </el-pagination>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-  import befautify from './timg.jpg'
+  import befautify from '../timg.jpg'
   import befautify1 from 'ASSETS/image/timg (1).jpg'
   import befautify2 from 'ASSETS/image/timg (2).jpg'
   import befautify3 from 'ASSETS/image/timg (3).jpg'
-  import Active from './components/Active'
   export default {
     name: 'fxy',
-    components: {
-      Active
-    },
     data () {
       return {
         currentPage4: 1,
@@ -167,40 +156,127 @@
   box-shadow: none;
 }
 
-.find {
+.find-active {
   width: 100%;
   height: 100%;
-  .el-tabs {
-    // height: 60px;
-    border: none;
-    .el-tabs__header  {
-      height: 60px;
-      line-height: 60px;
-      .el-tabs__nav {
-        .is-active {
-          border: none;
-          background: #FF4B57;
-          border-radius: 6px 6px 0 0;
-          color: #fff;
-        }
+  .newMan-content {
+    height: 120px;
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    background: #fff;
+    padding: 0 20px 0 70px;
+    border-radius: 0 0 6px 6px;
+    .con-num {
+      width: 50px;
+    }
+    .con-search {
+      flex: 1;
+      margin-left: 50px;
+      display: flex;
+      // justify-content: center;
+      align-items: center;
+      .el-input {
+        width: 400px;
+        height: 40px;
+        margin-right: 30px;
+      }
+      .el-button {
+        width: 70px;
+        height: 30px;
+        padding: 0;
       }
     }
-    .el-tabs__item {
-      height: 60px;
-      line-height: 60px;
-      width: 170px;
-      color: #363F51;
-      text-align: center;
-    }
-    .el-tabs__content {
-      // height: ;
-      padding: 0;
-      .el-tab-pane {
-        height: 100%;
-        overflow: hidden;
+    .con-new {
+      .el-button {
+        padding: 0;
+      }
+      button {
+        background: #fe3a56;
+        width: 70px;
+        height: 30px;
+        font-size: 15px;
       }
     }
   }
+  .table-content {
+    width: 100%;
+    // height: calc(~'100% - 180px');
+    margin-top: 20px;
+    // overflow: hidden;
+    border-radius: 6px;
+    // padding: 10px;
+    background: #fff;
+    .el-table {
+      border-radius: 6px;
+    }
+    .con-icon {
+      font-size: 20px;
+      i {
+        margin-left: 3px;
+      }
+      .el-icon-edit {
+        color: #FF4B57;
+      }
+    }
+    .order-con {
+      padding: 0;
+      display: flex;
+      .el-button {
+        width: 65px;
+        height: 30px;
+        padding: 0;
+        border: 1px solid rgba(255, 75, 87, 1);
+        color: #FF4B57;
+        background: rgba(255, 224, 226, 1);
+      }
+    }
+    .el-table {
+      td {
+        border: none;
+      }
+    }
+    .con-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .con-img {
+      width: 170px;
+      height: 80px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .con-text {
+      margin-left: 10px;
+      width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .table-footer {
+    width: calc(~'100% - 20px');
+    height: 120px;
+    border-radius: 0 0 6px 6px;
+    background: #fff;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+    .el-button {
+      width: 80px;
+      height: 30px;
+      padding: 0;
+    }
+    .el-pagination {
+      position: absolute;
+      right: 10px;
+    }
+  }
 }
-
 </style>
