@@ -2,12 +2,12 @@
   <div id="app">
     <el-container>
       <el-aside width="250px">
-        <el-header height="80px" class="system-name">WFH</el-header>
-        <div class="nav-menu scrollbar-hidden">
+        <el-header class="logo-header">WFH</el-header>
+        <div class="nav-menu">
           <el-menu
             router
-            class="nav-menu--box scrollbar-hidden"
-            default-active="yjck">
+            default-active="yjck"
+            class="el-menu-vertical-demo">
             <div class="nav-menu__title">主页</div>
             <el-menu-item index="yjck">
               <i class="el-icon-setting"></i>
@@ -56,17 +56,17 @@
         </div>
       </el-aside>
       <el-container>
-        <el-header height="80px" class="main-header">
+        <el-header class="main-header">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>活动管理</el-breadcrumb-item>
             <el-breadcrumb-item>活动列表</el-breadcrumb-item>
             <el-breadcrumb-item>活动详情</el-breadcrumb-item>
           </el-breadcrumb>
-          <div class="flex-spacer"></div>
           <el-input
             class="main-header__search"
             placeholder="搜索..."
+            size="medium"
             v-model="searchVal">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
@@ -94,7 +94,7 @@
   export default {
     name: 'App',
     data () {
-      return {
+    return {
         searchVal: ''
       }
     }
@@ -102,124 +102,191 @@
 </script>
 
 <style lang="less">
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
-    text-align: center;
-    line-height: 80px;
-  }
+.el-header, .el-footer {
+  background-color: #FF4B57;
+  text-align: center;
+  height: 80px !important;
+  line-height: 80px;
+}
 
-  .el-aside {
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-    overflow: hidden;
-  }
+.logo-header {
+  font-size: 25px;
+  color: #fff;
+}
 
-  .system-name {
-    background-color: #ff4b57;
+.el-aside {
+  /*background-color: #fff;*/
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
+
+.nav-menu::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 1px;/*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+
+.nav-menu::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 5px;
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.nav-menu {
+  height: calc(~'100% - 80px');
+  overflow-y: scroll;
+  .nav-menu__title {
+    text-align: start;
+    padding: 0 20px 20px;
+    padding-top: 15px;
+    color: #999;
+    line-height: 26px;
+    font-weight: normal;
+    font-size: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.el-menu {
+  .el-submenu {
+    &.is-active {
+      color: #fff;
+    }
+    // .el-submenu__title {
+    //   color: #fff;
+    // }
+  }
+  .el-submenu__title:hover {
+    background: #2c3e50;
     color: #fff;
-    font-size: 25px;
   }
-
-  .nav-menu {
-    height: calc(100% - 80px);
-    .nav-menu--box {
-      height: 100%;
-      overflow: auto;
+  .el-menu-item:hover {
+    background: #2c3e50;
+    color: #fff;
+  }
+  .el-submenu__title {
+    height: 44px;
+    line-height: 44px;
+  }
+  .el-menu-item {
+    height: 44px;
+    line-height: 44px;
+    .is-active {
+      color: #fff;
     }
-    .nav-menu__title {
-      text-align: start;
-      margin-top: 43px;
-      padding: 10px 20px;
-      color: #999;
-      line-height: 26px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    .el-menu-item,
+  }
+  .el-menu-item:focus {
+    background: #363F51;
+    color: #fff;
+  }
+  .is-active {
+    background: #363F51;
+    color: #fff !important;
     .el-submenu__title {
-      font-size: 18px;
+      color: #fff;
     }
-    .el-submenu .el-menu-item {
-      padding-left: 50px !important;
-      font-size: 16px;
+    .el-submenu__title:focus {
+      background: #363F51;
+      color: #fff;
     }
   }
+}
 
-  .main-header {
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  background-color: #fff;
+  .el-breadcrumb {
     display: flex;
-    justify-content: space-between;
-    align-content: center;
-    background-color: #fff;
-    .el-breadcrumb {
-      display: flex;
-      align-items: center;
-      .el-breadcrumb__separator {
-        color: #000;
-      }
-    }
-    .main-header__search {
-      width: 200px;
-      margin-right: 20px;
-    }
-    .main-header__user {
-      display: flex;
-      align-items: center;
-      .user-box__name {
-        margin-right: 35px;
-        span {
-          font-size: 20px;
-        }
-      }
-      .user-box__logout {
-        // ..
-      }
+    align-items: center;
+    .el-breadcrumb__separator {
+      color: #000;
     }
   }
-
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
+  .main-header__search {
+    width: 200px;
+    margin-left: 200px;
   }
+  .main-header__user {
+    display: flex;
+    align-items: center;
+  }
+}
 
-  .el-container {
-    height: 100%;
-    &:nth-child(5),
-    &:nth-child(6) {
-      .el-aside {
-        line-height: 260px;
-      }
+.el-main::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 2px;/*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+
+.el-main::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 5px;
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.el-main::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  // line-height: 160px;
+  padding: 30px;
+}
+
+.el-container {
+  height: 100%;
+  &:nth-child(5),
+  &:nth-child(6) {
+    .el-aside {
+      line-height: 260px;
     }
-    &:nth-child(7) {
-      .el-aside {
-        line-height: 320px;
-      }
+  }
+  &:nth-child(7) {
+    .el-aside {
+      line-height: 320px;
     }
   }
+}
 
-  .main-content {
-    width: 100%;
-    height: 100%;
-  }
+.main-content {
+  width: 100%;
+  height: 100%;
+}
 
-  #app {
-    height: 100%;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+#app {
+  height: 100%;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+#nav {
+  padding: 30px;
+  a {
+    font-weight: bold;
     color: #2c3e50;
-  }
-  #nav {
-    padding: 30px;
-    a {
-      font-weight: bold;
-      color: #2c3e50;
-      &.router-link-exact-active {
-        color: #42b983;
-      }
+    &.router-link-exact-active {
+      color: #42b983;
     }
   }
+}
 </style>
