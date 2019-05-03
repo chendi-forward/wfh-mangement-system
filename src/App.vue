@@ -129,6 +129,7 @@ export default {
       //   typeof callback === 'function' && callback()
       // })
       this.$root.userData = userPermissions
+      // 可以访问的路由在这里定义
       let userPermissions = [
         {
           id: '2c9180895e13261e015e13469b7e0000',
@@ -194,7 +195,7 @@ export default {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'sjk'
+          link: 'hjmk'
         }
       ]
       let routePermission = this.getRoutes(userPermissions)
