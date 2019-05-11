@@ -15,6 +15,11 @@ let baseRoute = [
     component: Login
   },
   {
+    path: '/componentTest',
+    name: '测试组件',
+    component: (resolve) => require(['./views/componentTest.vue'], resolve)
+  },
+  {
     path: '/401',
     name: '无权访问',
     component: (resolve) => require(['./views/401.vue'], resolve)

@@ -6,6 +6,7 @@ body {
   width: 100%;
   overflow: hidden;
   font-family: "Microsoft YaHei";
+  text-align: start;
 }
 
 div,
@@ -91,4 +92,24 @@ input::-webkit-inner-spin-button {
     display: none;
     background: rgba(0, 0, 0, 0);
   }
+}
+
+// button 公共样式
+.upload__btn--sure {
+  border-color: #ff4b57;
+  background-color: #ff4b57;
+  color: #fff;
+  &:hover {
+    border-color: #c6e2ff;
+    background-color: #c6e2ff;
+    color: #333;
+  }
+}
+
+.upload-img__btn--cancel {
+  // ..
+}
+
+.el-button--small {
+  padding: 8px 15px;
 }
