@@ -21,7 +21,7 @@
               <el-menu-item index="nryy-spgl">商品管理</el-menu-item>
               <el-menu-item index="nryy-zngb">站内广播</el-menu-item>
               <el-menu-item index="nryy-fxy">发现页</el-menu-item>
-              <el-menu-item index="nryy-qtym">其他页面</el-menu-item>
+              <el-menu-item index="nryy-gzsm">规则说明</el-menu-item>
             </el-submenu>
             <el-menu-item index="yhgl">
               <i class="el-icon-menu"></i>
@@ -246,8 +246,6 @@
 .el-main {
   background-color: #E9EEF3;
   color: #333;
-  text-align: center;
-  // line-height: 160px;
   padding: 30px;
 }
 
@@ -276,7 +274,6 @@
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 #nav {

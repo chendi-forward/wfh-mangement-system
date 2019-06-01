@@ -195,14 +195,17 @@
         background: #fe3a56;
         width: 70px;
         height: 30px;
-        font-size: 14px;
+        font-size: 15px;
       }
     }
   }
   .table-content {
     width: 100%;
+    // height: calc(~'100% - 180px');
     margin-top: 20px;
+    // overflow: hidden;
     border-radius: 6px;
+    // padding: 10px;
     background: #fff;
     .el-table {
       border-radius: 6px;

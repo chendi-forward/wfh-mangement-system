@@ -8,40 +8,6 @@ export default [{
   path: '/',
   name: 'home',
   component: Home,
-  /*children: [
-    {
-      path: 'index',
-      name: '概览',
-      meta: {
-        icon: 'fa-home'
-      },
-      component: Indexs
-    },
-    {
-      path: 'operationLog',
-      name: '操作日志',
-      meta: {
-        icon: 'fa-bookmark'
-      },
-      component: OperationLog
-    },
-    {
-      path: 'roles',
-      name: '角色管理',
-      meta: {
-        icon: ''
-      },
-      component: Roles
-    },
-    {
-      path: 'users',
-      name: '用户管理',
-      meta: {
-        icon: ''
-      },
-      component: Users
-    }
-  ]*/
   children: [
     {
       path: '/yjck',
@@ -67,9 +33,9 @@ export default [{
       component: () => import(/* webpackChunkName: "nryyfxy" */ './views/Nryy/Fxy')
     },
     {
-      path: '/nryy-qtym',
-      name: 'nryy-qtym',
-      component: () => import(/* webpackChunkName: "nryyqtym" */ './views/Nryy/Qtym')
+      path: '/nryy-gzsm',
+      name: 'nryy-gzsm',
+      component: () => import(/* webpackChunkName: "nryyqtym" */ './views/Nryy/Gzsm')
     },
     {
       path: '/yhgl',

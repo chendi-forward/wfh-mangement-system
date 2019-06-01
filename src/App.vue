@@ -12,7 +12,7 @@ import {deepcopy} from './commons/util'
 import allRoutes from './routerFullPath'
 import {resetRouter} from './router'
 // 公共页面白面单
-const whiteLink = ['/login', '/404', '/401']
+const whiteLink = ['/login', '/404', '/401', '/componentTest']
 export default {
   name: 'App',
   data () {
@@ -37,7 +37,7 @@ export default {
         * }]
         */
         userPermissions.forEach(item => {
-          routeHash[(base ? base : '') + '/' + item.link] = true
+          routeHash[(base || '') + '/' + item.link] = true
         })
       }
       return routeHash
@@ -49,18 +49,15 @@ export default {
         let replyResult = []
         array.forEach(route => {
           let pathKey = (base ? base + '/' : '') + route.path
-          console.log(pathKey, routePermission)
           if (routePermission[pathKey]) {
             if (Array.isArray(route.children)) {
               route.children = findLocalRoute(route.children, route.path)
             }
-            console.log(route)
             replyResult.push(route)
           }
         })
         actualRouter = actualRouter.concat(replyResult)
       }
-      console.log('actualRouter>>>>>>>>>', actualRouter)
       findLocalRoute(allRoutes[0].children, base)
       // If the user does not have any routing authority
       /* if (!actualRouter || !actualRouter.length) {
@@ -95,7 +92,6 @@ export default {
         redirect: '/404'
       }]))
       // Save information for rendering menu.(This step is optional.)
-      console.log(actualRouter)
       this.$root.menuData = actualRouter
     },
     signIn (callback) {
@@ -128,7 +124,7 @@ export default {
       //   this.extendRoutes(routePermission, '/page')
       //   typeof callback === 'function' && callback()
       // })
-      this.$root.userData = userPermissions
+      // 可以访问的路由在这里定义
       let userPermissions = [
         {
           id: '2c9180895e13261e015e13469b7e0000',
@@ -159,7 +155,7 @@ export default {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'nryy-qtym'
+          link: 'nryy-gzsm'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',
@@ -194,9 +190,10 @@ export default {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'sjk'
+          link: 'hjmk'
         }
       ]
+      this.$root.userData = userPermissions
       let routePermission = this.getRoutes(userPermissions)
       this.extendRoutes(routePermission)
       typeof callback === 'function' && callback()
@@ -220,7 +217,6 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
   }
 </style>
