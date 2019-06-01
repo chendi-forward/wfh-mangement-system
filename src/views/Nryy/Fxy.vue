@@ -37,7 +37,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang='less'>
 .el-tabs--border-card {
   box-shadow: none;
 }
@@ -77,4 +77,3 @@
   }
 }
 </style>
-<style src='./components/commen.less' lang="less"></style>
