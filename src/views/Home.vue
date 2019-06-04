@@ -21,7 +21,7 @@
               <el-menu-item index="nryy-spgl">商品管理</el-menu-item>
               <el-menu-item index="nryy-zngb">站内广播</el-menu-item>
               <el-menu-item index="nryy-fxy">发现页</el-menu-item>
-              <el-menu-item index="nryy-qtym">其他页面</el-menu-item>
+              <el-menu-item index="nryy-gzsm">规则说明</el-menu-item>
             </el-submenu>
             <el-menu-item index="yhgl">
               <i class="el-icon-menu"></i>

@@ -5,7 +5,7 @@
         action=" "
         accept="image/jpeg, image/png"
         :http-request="uploadImgAction"
-        :show-file-list='false'>
+        :show-file-list=false>
         <el-button class="upload-img__btn--select" size="small">选择文件</el-button>
       </el-upload>
     </div>

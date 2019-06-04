@@ -155,7 +155,7 @@ export default {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'nryy-qtym'
+          link: 'nryy-gzsm'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '概览',

@@ -33,9 +33,9 @@ export default [{
       component: () => import(/* webpackChunkName: "nryyfxy" */ './views/Nryy/Fxy')
     },
     {
-      path: '/nryy-qtym',
-      name: 'nryy-qtym',
-      component: () => import(/* webpackChunkName: "nryyqtym" */ './views/Nryy/Qtym')
+      path: '/nryy-gzsm',
+      name: 'nryy-gzsm',
+      component: () => import(/* webpackChunkName: "nryyqtym" */ './views/Nryy/Gzsm')
     },
     {
       path: '/yhgl',
