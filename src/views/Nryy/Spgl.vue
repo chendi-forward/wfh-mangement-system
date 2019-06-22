@@ -293,7 +293,7 @@
         isSetLabel: false,
         isDefinitTime: false, // 是否定时发布
         definitData: '',
-        definitTime: '',
+        definitTime: ''
       }
     },
     methods: {
@@ -308,7 +308,7 @@
       },
       uploadImg () {
         // ..
-      }      
+      }
     }
   }
 </script>
