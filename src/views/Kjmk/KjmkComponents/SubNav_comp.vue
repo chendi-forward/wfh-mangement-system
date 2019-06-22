@@ -38,6 +38,7 @@
       cursor: pointer;
       margin-right: 20px;
       padding: 8px 14px;
+      border: 1px solid rgba(0, 0, 0, 0);
       &.active {
         color: #ff4b57;
         border: 1px solid #ff4b57;
