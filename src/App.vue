@@ -191,6 +191,11 @@ export default {
           name: '概览',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'hjmk'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '会计模块',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'kjmk'
         }
       ]
       this.$root.userData = userPermissions

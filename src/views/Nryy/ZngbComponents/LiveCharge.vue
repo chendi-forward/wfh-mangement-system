@@ -66,6 +66,7 @@
         </el-table-column>
         <el-table-column
           align='center'
+          width="250"
           label="昵称">
           <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.nickname }}</span></template>
         </el-table-column>
