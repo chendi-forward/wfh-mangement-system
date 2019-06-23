@@ -53,7 +53,7 @@
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
         <el-checkbox v-model="isAllSelect">全选</el-checkbox>
-        <el-button>批量删除</el-button>
+        <el-button size="mini">批量删除</el-button>
         <el-button size="mini" class="success-btn" @click="createFn">导出</el-button>
       </div>
       <div class="page-wrap">
