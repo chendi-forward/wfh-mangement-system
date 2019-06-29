@@ -178,10 +178,13 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 119px;
+      height: 80px;
       box-sizing: border-box;
       padding-right: 30px;
       padding-left: 14px;
+      .page-wrap {
+        display: flex;
+      }
     }
     .ssxd-form {
       display: flex;
@@ -208,9 +211,6 @@ export default {
     }
     .ssxd-table {
       // ..
-    }
-    .page-wrap {
-      display: flex;
     }
   }
 </style>

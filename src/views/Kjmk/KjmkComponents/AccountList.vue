@@ -29,3 +29,23 @@
     }
   }
 </script>
+
+<style lang="less">
+  .account-list__item {
+    margin-top: 10px;
+    .account-list__item--footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      margin-top: 10px;
+      background: #fff;
+      box-sizing: border-box;
+      padding-right: 30px;
+      padding-left: 14px;
+      .page-wrap {
+        display: flex;
+      }
+    }
+  }
+</style>
