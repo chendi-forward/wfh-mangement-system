@@ -2,11 +2,10 @@
   <div class="account-list__item">
     <div class="account-list__item--body">
       <div class="kpls-table--classify">
-        <div class="kpls-table--classify-item electronic" @click='toggleInvoce("electronic")'>电子发票</div>
-        <div class="kpls-table--classify-item">|</div>
-        <div class="kpls-table--classify-item paper" @click='toggleInvoce("paper")'>纸质发票发票</div>
+        <sub-nav v-model="selected" :sub-list='subList'></sub-nav>
       </div>
-      <el-table
+      <component :is='selected'></component>
+      <!-- <el-table
         class="kpls-table"
         ref="multipleTable"
         :data="tableData"
@@ -92,7 +91,7 @@
             <i class="el-icon-edit"></i>
           </button>
         </el-table-column>
-      </el-table>
+      </el-table> -->
     </div>
     <div class="account-list__item--footer">
       <div class="selectAll-wrap">
@@ -118,8 +117,14 @@
 </template>
 
 <script>
+  import subNav from '../SubNav_comp'
+  import dzfp from './KplsComps/Dzfp'
+  import zzfp from './KplsComps/Zzfp'
   export default {
     name: 'account-list-fhwl',
+    components: {
+      'sub-nav': subNav
+    },
     data () {
       return {
         invoiceClassify: 'electronic',
@@ -153,7 +158,12 @@
         ],
         isAllSelect: false,
         currentPage: 1,
-        total: 100
+        total: 100,
+        selected: dzfp,
+        subList: [
+          {name: '纸质发票', component: zzfp},
+          {name: '电子发票', component: dzfp}
+        ]
       }
     },
     methods: {
@@ -187,15 +197,25 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .kpls-table--classify {
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
     border-bottom: 1px solid #ebeef5;
-    .kpls-table--classify-item {
-      margin: 10px;
+    .sub-nav {
+      padding: 0;
+      height: 45px;
+      .sub-nav__item {
+        margin-right: 0 !important;
+        padding: 0 50px;
+        border: none !important;
+        border-left: 1px solid #363f51 !important;
+        &:first-child {
+          border-left: 1px solid rgba(0, 0, 0, 0) !important;
+        }
+      }
     }
   }
 </style>
