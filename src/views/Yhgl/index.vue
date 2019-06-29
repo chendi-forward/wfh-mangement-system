@@ -20,7 +20,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="danger">设置标签</el-button>
+        <el-button type="danger" @click='setTags'>设置标签</el-button>
       </div>
     </div>
     <div class="tab-model">
@@ -34,6 +34,7 @@
       <el-table
         ref="multipleTable"
         stripe
+        align='center'
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
@@ -44,6 +45,7 @@
         </el-table-column>
         <el-table-column
           label="头像"
+          align='center'
           min-width='60'>
           <template slot-scope="scope">
             <div class="con-box">
@@ -55,55 +57,64 @@
         </el-table-column>
         <el-table-column
           prop="ID"
+          align='center'
           label="用户ID">
         </el-table-column>
         <el-table-column
           prop="name"
           label="昵称"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           prop='logintime'
           label="注册时间"
-          width="150">
+          align='center'
+          min-width="150">
         </el-table-column>
         <el-table-column
           prop='sex'
-          label="性别"
-          width="50">
+          align='center'
+          label="性别">
         </el-table-column>
         <el-table-column
           prop='loc'
-          label="地区"
-          width="60">
+          align='center'
+          label="地区">
         </el-table-column>
         <el-table-column
           prop='level'
+          align='center'
           label="等级"
           width="50">
         </el-table-column>
         <el-table-column
           prop='accountSum'
           label="账户金额"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           prop='code'
           label="推荐码"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           prop='num'
           label="订单数"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           prop='summeroy'
           label="累计成交额"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           width="100"
+          align='center'
           label="状态">
           <div class="order-con">
             <el-button
@@ -114,12 +125,15 @@
         <el-table-column
           prop='label'
           label="标签"
+          align='center'
           width="100">
         </el-table-column>
-        <el-table-column label="操作" width="86" @cell-click='editHandle(row)'>
-          <div class="con-icon">
+        <el-table-column align='center' label="操作" width="86">
+          <template slot-scope="scope">
+          <div @click='editHandle(scope.row)' class="con-icon">
             <i class="el-icon-edit"></i>
           </div>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -136,24 +150,52 @@
         </el-option>
       </el-select>
       <el-button class="delete">删除</el-button>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+      <my-pagination @sizeChange='handleSizeChange' @currentChange='handleCurrentChange' :total="100"></my-pagination>
       </el-pagination>
     </div>
-    <my-dialog></my-dialog>
+    <dialog-Com :dialogFlag='dialogFlag' :title='title' @sure-save='sureSave' @cancle-save='cancleSave'>
+      <div class="form-box" v-if="editOrSet == 'edit'">
+        <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+          <el-form-item label="添加标签:">
+          <el-select class="labelAddSelect" v-model="formLabelAlign.option" clearable placeholder="请选择">
+            <el-option
+              v-for="item in formOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+          <el-form-item label="邀请码设置:">
+            <el-col :span='16'>
+              <el-input class="setInput" v-model="formLabelAlign.update"></el-input>
+            </el-col>
+            <el-col :span='4'>
+              <el-button class="updateBtn">更新</el-button>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="修改状态:">
+            <el-col :span='7'>
+              <el-radio v-model="formLabelAlign.radio" label="1">正常</el-radio>
+            </el-col>
+            <el-col :span='7'>
+              <el-radio v-model="formLabelAlign.radio" label="2">黑名单</el-radio>
+            </el-col>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="tags-box" v-if="editOrSet == 'set'">
+        <div class="tag-box">
+          <p class="header-title">当前标签</p>
+          <div class="tag-con"></div>
+        </div>
+        <div class="add-tag-box">
+          <p class="header-title">添加标签</p>
+        </div>
+      </div>
+    </dialog-Com> 
   </div>
 </template>
-
 <script src='./script.js'></script>
-
-
 <style src="./style.less" lang="less">
-
 </style>
