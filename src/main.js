@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './commons/commons.less'
+import './commons/tabs.less'
 
 Vue.config.productionTip = false
 

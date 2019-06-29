@@ -11,5 +11,8 @@ module.exports = {
       'STORE': path.join(__dirname, './src/store'),
       'COMMONS': path.join(__dirname, './src/commons')
     }
+  },
+  devServer: {
+    // hot: false
   }
 }

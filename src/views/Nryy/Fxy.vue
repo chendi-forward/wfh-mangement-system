@@ -37,44 +37,12 @@
   }
 </script>
 
-<style lang="less">
+<style lang='less'>
 .el-tabs--border-card {
   box-shadow: none;
 }
 .find {
   width: 100%;
   height: 100%;
-  .el-tabs {
-    // height: 60px;
-    border: none;
-    .el-tabs__header  {
-      height: 60px;
-      line-height: 60px;
-      .el-tabs__nav {
-        .is-active {
-          border: none;
-          background: #FF4B57;
-          border-radius: 6px 6px 0 0;
-          color: #fff;
-        }
-      }
-    }
-    .el-tabs__item {
-      height: 60px;
-      line-height: 60px;
-      width: 170px;
-      color: #363F51;
-      text-align: center;
-    }
-    .el-tabs__content {
-      // height: ;
-      padding: 0;
-      .el-tab-pane {
-        height: 100%;
-        overflow: hidden;
-      }
-    }
-  }
 }
 </style>
-
