@@ -36,10 +36,15 @@
               <span slot="title">售后管理</span>
             </el-menu-item>
             <div class="nav-menu__title">设置</div>
-            <el-menu-item index="hyjf">
-              <i class="el-icon-setting"></i>
-              <span slot="title">会员积分</span>
-            </el-menu-item>
+            <el-submenu index="hyjf">
+              <template slot="title">
+                <i class="el-icon-setting"></i>
+                <span>会员积分</span>
+              </template>
+              <el-menu-item index="hyjf-sjsz">时间设置</el-menu-item>
+              <el-menu-item index="hyjf-hyfl">会员返利</el-menu-item>
+              <el-menu-item index="hyjf-jfsz">积分设置</el-menu-item>
+            </el-submenu>
             <el-menu-item index="yxmk">
               <i class="el-icon-menu"></i>
               <span slot="title">营销模块</span>

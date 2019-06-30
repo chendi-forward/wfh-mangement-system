@@ -1,0 +1,36 @@
+// element reset less
+.el-checkbox__inner {
+    width: 16px;
+    height: 16px;
+}
+
+
+.is-checked {
+    .el-checkbox__inner::after {
+        border: 2px solid #FF4B57;
+        border-left: 0;
+        border-top: 0;
+        height: 8px;
+        left: 5px;
+    }
+    .el-checkbox__inner:hover,
+    .el-checkbox__inner:focus,
+    .el-checkbox__input.is-focus .el-checkbox__inner{
+        border-color: #FF4B57;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background-color: #fff;
+        border-color: #EBEBEB;
+    }
+}
+
+.el-checkbox__inner:hover,
+.el-checkbox__inner:focus,
+.el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #FF4B57;
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #FF4B57;
+}
