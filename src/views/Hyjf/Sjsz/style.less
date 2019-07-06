@@ -1,0 +1,44 @@
+.sjsz {
+    height: 100%;
+    overflow-y: scroll;
+    .spgl-item {
+        background-color: #fff;
+        position: relative;
+    }
+    .spgl-item--title {
+        height: 63px;
+        line-height: 63px;
+        border-radius: 4px 4px 0 0;
+        padding: 0 21px;
+        background-color: #F7F8F9;
+        font-size: 18px;
+    }
+    .spgl-item--content {
+        height: 560px;
+        .edit {
+            padding: 35px 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .set-time {
+            height: 465px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 306px;
+            .row {
+                display: flex;
+                align-items: center;
+                height: 35px;
+                font-size: 15px;
+                .row-name {
+                    width: 140px;
+                }
+                .el-input {
+                    width: 300px;
+                }
+            }
+        }
+    }
+}
