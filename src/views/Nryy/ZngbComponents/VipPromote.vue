@@ -79,22 +79,10 @@
           label="晋级后等级">
           <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.afterPromote }}</span></template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align='center'
-          width="150">
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-edit"></i>
-          </button>
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-delete"></i>
-          </button>
-        </el-table-column>
       </el-table>
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-checkbox v-model="isAllSelect">全选</el-checkbox>
         <el-button size="mini" class="success-btn" @click="createFn">新建</el-button>
       </div>
       <div class="page-wrap">

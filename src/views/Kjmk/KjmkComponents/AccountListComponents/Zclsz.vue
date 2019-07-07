@@ -1,5 +1,17 @@
 <template>
   <div class="account-list__item">
+    <div class="account-list__item--head">
+      <div>
+        <span>快速搜索：</span>
+        <el-input
+          class="kpls-table__input"
+          placeholder="请输入用户ID/发票票号..."
+          prefix-icon="el-icon-search"
+          v-model="searchVal">
+        </el-input>
+        <el-button size="mini" class="success-btn" @click="search">搜索</el-button>
+      </div>
+    </div>
     <div class="account-list__item--body">
       <el-table
         class="zcls-table"
@@ -48,22 +60,14 @@
           min-width="80">
           <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.classify }}</span></template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align='center'
-          width="80">
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-edit"></i>
-          </button>
-        </el-table-column>
       </el-table>
     </div>
     <div class="account-list__item--footer">
-      <div class="selectAll-wrap">
+      <!-- <div class="selectAll-wrap">
         <el-checkbox v-model="isAllSelect">全选</el-checkbox>
         <el-button size="mini" class="success-btn" @click="exportFn">导出</el-button>
         <el-button size="mini" @click="deleteMany">批量删除</el-button>
-      </div>
+      </div> -->
       <div class="page-wrap">
         <el-pagination
           @size-change="handleSizeChange"
@@ -86,6 +90,7 @@
     name: 'account-list-zcls',
     data () {
       return {
+        searchVal: '',
         tableData: [
           {
             date: '2019-01-02 15:20:11',
@@ -110,6 +115,7 @@
       }
     },
     methods: {
+      search () {},
       editHandle (item) {
         // ..
       },
