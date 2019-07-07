@@ -1,0 +1,119 @@
+.sfsz {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 15px 21px;
+    height: 100%;
+    overflow-y: scroll;
+    .el-input {
+        width: 100px;
+        margin-left: 5px;
+    }
+    .spgl-wrap1 {
+        display: grid;
+        grid-template-rows: 656px 327px;
+        grid-gap: 15px 21px;
+        .sub-content {
+            padding-top: 10px;
+            padding-left: 47px;
+            p {
+                line-height: 55px;
+            }
+        }
+        .content1 {
+            .cell {
+                height: 30px;
+                line-height: 30px;
+            }
+            .el-input {
+                height: 30px;
+                input {
+                    height: 100%;
+                }
+            }
+        }
+        .content2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .edit {
+            padding: 35px 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+    .spgl-wrap2 {
+        display: grid;
+        grid-template-rows: 162px 821px;
+        grid-gap: 15px 21px;
+        .content3 {
+            padding: 0 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+    .spgl-item {
+        background-color: #fff;
+        position: relative;
+    }
+    .spgl-item--title {
+        height: 63px;
+        line-height: 63px;
+        border-radius: 4px 4px 0 0;
+        padding: 0 21px;
+        background-color: #F7F8F9;
+        font-size: 18px;
+    }
+    .spgl-item--content {
+        height: calc(~'100% - 63px');
+    }
+    .spgl-item--footer {
+        background-color: #fff;
+        padding: 28px;
+        .sub-wrap {
+            width: 100%;
+            p {
+                margin: 0;
+            }
+        }
+        .search-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .el-input {
+                width: 150px;
+            }
+        }
+        .list-div {
+            height: 620px;
+            border: 1px solid rgba(213, 216, 219, 1);
+            border-radius: 4px;
+            margin: 37px 0;
+            .el-scrollbar__wrap {
+                overflow-x: hidden;
+            }
+            .row {
+                height: 75px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                li {
+                    width: 50px;
+                    text-align: center;
+                }
+                &:hover {
+                    background-color: #FF4B57;
+                    color: #fff;
+                }
+                .checkbox {
+                    padding-left: 20px;
+                }
+            }
+        }
+        .btn-div {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
