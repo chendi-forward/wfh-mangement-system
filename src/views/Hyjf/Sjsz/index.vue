@@ -1,7 +1,7 @@
 <template>
   <div class="sjsz">
     <div class="spgl-item">
-      <div class="spgl-item--title">积分任务设置</div>
+      <div class="spgl-item--title">时间设置</div>
       <div class="spgl-item--content content1">
         <div class="set-time" v-show='!editTimeShow'>
           <p class="row"><span class="row-name">确认收货周期：</span>{{time.qrsh}}天</p>
