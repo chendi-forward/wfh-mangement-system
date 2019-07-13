@@ -12,7 +12,7 @@
               <div class="nav-menu__title">{{menu.name}}</div>
               <div v-for="subM in menu.children" :key='subM.name'>
                 <template v-if="subM.children">
-                  <el-submenu index="subM.path">
+                  <el-submenu :index="subM.path">
                     <template slot="title">
                       <i :class="subM.icon"></i>
                       <span>{{subM.name}}</span>
