@@ -6,8 +6,15 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './commons/commons.less'
 import './commons/tabs.less'
+import {post, get, patch, put} from './http'
 
 Vue.config.productionTip = false
+
+//定义全局变量
+Vue.prototype.$post = post
+Vue.prototype.$get = get
+Vue.prototype.$patch = patch
+Vue.prototype.$put = put
 
 Vue.use(ElementUI)
 
