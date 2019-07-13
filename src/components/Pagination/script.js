@@ -22,13 +22,13 @@ export default {
     }
   },
   methods: {
-    handleSizeChange () {
+    handleSizeChange (val) {
       // this.page_size =
-      this.$emit('sizeChange', this.page_size)
+      this.$emit('sizeChange', val)
     },
-    handleCurrentChange () {
+    handleCurrentChange (val) {
       // this.currentPage = false
-      this.$emit('currentChange', this.currentPage)
+      this.$emit('currentChange', val)
     }
   },
   watch: {
