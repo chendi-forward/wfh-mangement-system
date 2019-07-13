@@ -3,13 +3,12 @@
     <main class="brand-introduction__main">
       <div class="upload-img__box">
         <div class="upload-img--upload">上传长图:</div>
-        <div class="upload-img--img upload-img--long">
-          <img :src="imgBase64Long">
+        <div class="upload-img--img">
+          <img-upload class="upload-img--long" v-model="imageUrl_long"></img-upload>
         </div>
         <div class="upload-img--step">
-          <img-upload @input-link='inputLinkLong' @upload-img='uploadImgLong'></img-upload>
           <div class="upload-img__tool">
-            <el-button class="upload-img__tool--upload upload__btn--sure" size="small">上传</el-button>
+            <span class="upload-img__tool--info">*支持jpg/png格式，不超过5M</span>
             <el-button class="upload-img__tool--preview" size="small" @click="previewLong">预览</el-button>
           </div>
         </div>
@@ -17,13 +16,12 @@
       <hr>
       <div class="upload-img__box">
         <div class="upload-img--upload">上传封面:</div>
-        <div class="upload-img--img upload-img--cover">
-          <img :src="imgBase64Cover">
+        <div class="upload-img--img">
+          <img-upload v-model="imageUrl_cover" class="upload-img--cover" tip='封面'></img-upload>
         </div>
         <div class="upload-img--step">
-          <img-upload @input-link='inputLinkCover' @upload-img='uploadImgCover'></img-upload>
           <div class="upload-img__tool">
-            <el-button class="upload-img__tool--upload upload__btn--sure" size="small">上传</el-button>
+            <span class="upload-img__tool--info">*持jpg/png格式 ，尺寸750 : 360 px，不超过5M</span>
             <el-button class="upload-img__tool--preview" size="small" @click="previewCover">预览</el-button>
           </div>
         </div>
@@ -33,11 +31,9 @@
       <el-button class="upload-img__btn--save upload__btn--sure" size="small">保存</el-button>
       <el-button class="upload-img__btn--cancel" size="small">取消</el-button>
     </footer>
-    <div>
-      <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
-        <img :src="imgBase64Long" alt="图片预览">
-      </el-dialog>
-    </div>
+    <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
+      <img :src="image_preview" alt="图片预览">
+    </el-dialog>
   </div>
 </template>
 
@@ -50,11 +46,10 @@
     },
     data () {
       return {
-        imgBase64Long: '',
-        imgBase64Cover: '',
-        uploadAddressLong: '',
-        uploadAddressCover: '',
-        isShowImgPreview: false
+        imageUrl_long: '',
+        imageUrl_cover: '',
+        isShowImgPreview: false,
+        image_preview: ''
       }
     },
     methods: {
@@ -64,17 +59,13 @@
       uploadImgCover (value) {
         this.imgBase64Cover = value
       },
-      inputLinkLong (value) {
-        this.uploadAddress = value
-      },
-      inputLinkCover (value) {
-        this.uploadAddressCover = value
-      },
       previewLong () {
         this.isShowImgPreview = true
+        this.image_preview = this.imageUrl_long
       },
       previewCover () {
-        // ..
+        this.isShowImgPreview = true
+        this.image_preview = this.imageUrl_cover
       }
     }
   }
@@ -83,7 +74,7 @@
 <style lang="less" scoped>
   .brand-introduction__main {
     padding-left: 47px;
-    padding-right: 129px;
+    padding-right: 50px;
     height: 620px;
     background-color: #fff;
     & > div {
@@ -98,7 +89,7 @@
   }
   .brand-introduction__footer {
     padding-left: 47px;
-    padding-right: 129px;
+    padding-right: 50px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -108,11 +99,9 @@
   }
   .upload-img__box {
     display: flex;
-    & > div {
-      padding-top: 67px;
-    }
+    padding-top: 67px;
     .upload-img--upload {
-      width: 14%;
+      width: 10%;
       font-size: 15px;
       color: #363f51;
     }
@@ -121,18 +110,22 @@
       text-align: start;
     }
     .upload-img--step {
-      width: 43%;
+      flex: 1;
       text-align: start;
     }
     .upload-img__tool {
       margin-top: 69px;
       text-align: end;
+      .upload-img__tool--info {
+        color: #fe4a56;
+        margin-right: 10px;
+      }
     }
-    .upload-img--long img {
+    .upload-img--long {
       width: 212px;
       height: 176px;
     }
-    .upload-img--cover img {
+    .upload-img--cover {
       width: 368px;
       height: 176px;
     }

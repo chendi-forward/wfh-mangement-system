@@ -270,6 +270,14 @@
   }
 }
 
+.el-button--small {
+  padding: 8px 15px;
+}
+
+.el-time-spinner__item {
+  text-align: center;
+}
+
 .main-header {
   display: flex;
   justify-content: space-between;

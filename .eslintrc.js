@@ -14,7 +14,8 @@ module.exports = {
     'object-curly-spacing': 0,
     'indent': 0,
     'vue/require-v-for-key': 0,
-    'prefer-promise-reject-errors': 0
+    'prefer-promise-reject-errors': 0,
+    'camelcase': 0
   },
   parserOptions: {
     parser: 'babel-eslint',

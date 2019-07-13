@@ -128,52 +128,47 @@ export default {
       let userPermissions = [
         {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '业绩查看',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'yjck'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
-          parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yhgl'
-        }, {
-          id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '内容运营-商品管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'nryy-spgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '内容运营-站内广播',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'nryy-zngb'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '内容运营-发现页',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'nryy-fxy'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '内容运营-规则说明',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'nryy-gzsm'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '用户管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'yhgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '权限管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'qxgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '售后管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'shgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '会员积分',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'hyjf-sjsz'
         }, {
@@ -188,19 +183,14 @@ export default {
           link: 'hyjf-jfsz'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '营销模块',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'yxmk'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
+          name: '数据库',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'sjk'
-        }, {
-          id: '2c9180895e13261e015e13469b7e0000',
-          name: '概览',
-          parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'hjmk'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '会计模块',

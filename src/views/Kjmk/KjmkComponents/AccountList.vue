@@ -7,7 +7,7 @@
 
 <script>
   import subNav from './SubNav_comp'
-  import fhwu from './AccountListComponents/Fhwl'
+  // import fhwu from './AccountListComponents/Fhwl'
   import srlsz from './AccountListComponents/Srlsz'
   import zclsz from './AccountListComponents/Zclsz'
   import kplsz from './AccountListComponents/Kplsz'
@@ -18,9 +18,9 @@
     },
     data () {
       return {
-        selected: fhwu,
+        selected: srlsz,
         subList: [
-          {name: '发货物流', component: fhwu},
+          // {name: '发货物流', component: fhwu},
           {name: '收入流水账', component: srlsz},
           {name: '支出流水账', component: zclsz},
           {name: '开票流水账', component: kplsz}
@@ -33,9 +33,17 @@
 <style lang="less">
   .account-list__item {
     margin-top: 10px;
+    .account-list__item--head {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 25px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+    }
     .account-list__item--footer {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       height: 80px;
       margin-top: 10px;
