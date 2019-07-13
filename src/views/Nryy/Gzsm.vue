@@ -5,10 +5,14 @@
         <div class="title">返利说明</div>
         <div class="content">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           <img-upload class="upload-img" tip='代销' v-model="imageUrl_flsm_dx"></img-upload>
           <div class="content-tool">
             <p class="upload-img__info">*支持jpg/png格式，不超过5M</p>
             <el-button class="upload-img__btn--cancel" size="small" @click="preview('flsm_dx')">预览</el-button>
+<<<<<<< HEAD
 =======
           <img-upload @input-link='inputLinkFlsm' @upload-img='uploadImgFlsm'></img-upload>
           <div class="content-tool">
@@ -18,6 +22,8 @@
               <el-button class="upload-img__btn--cancel" size="small">预览</el-button>
             </div>
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           </div>
         </div>
       </div>
@@ -25,10 +31,14 @@
         <div class="title">活跃值说明</div>
         <div class="content">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           <img-upload class="upload-img" v-model="imageUrl_hyzsm"></img-upload>
           <div class="content-tool">
             <p class="upload-img__info">*支持jpg/png格式，不超过5M</p>
             <el-button class="upload-img__btn--cancel" size="small" @click="preview('hyzsm')">预览</el-button>
+<<<<<<< HEAD
 =======
           <img-upload @input-link='inputLinkFlsm' @upload-img='uploadImgFlsm'></img-upload>
           <div class="content-tool">
@@ -38,6 +48,8 @@
               <el-button class="upload-img__btn--cancel" size="small">预览</el-button>
             </div>
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           </div>
         </div>
       </div>
@@ -45,10 +57,14 @@
         <div class="title" style="opacity: 0;">返利说明</div>
         <div class="content">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           <img-upload class="upload-img" tip='封面' v-model="imageUrl_flsm_fm"></img-upload>
           <div class="content-tool">
             <p class="upload-img__info">*支持jpg/png格式，不超过5M</p>
             <el-button class="upload-img__btn--cancel" size="small" @click="preview('flsm_fm')">预览</el-button>
+<<<<<<< HEAD
 =======
           <img-upload @input-link='inputLinkFlsm' @upload-img='uploadImgFlsm'></img-upload>
           <div class="content-tool">
@@ -58,6 +74,8 @@
               <el-button class="upload-img__btn--cancel" size="small">预览</el-button>
             </div>
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           </div>
         </div>
       </div>
@@ -65,6 +83,9 @@
         <div class="title">会员等级说明</div>
         <div class="content">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
           <img-upload class="upload-img" v-model="imageUrl_hydj"></img-upload>
           <div class="content-tool">
             <p class="upload-img__info">*支持jpg/png格式，不超过5M</p>
@@ -88,6 +109,7 @@
     <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
       <img :src="image_preview" alt="图片预览">
     </el-dialog>
+<<<<<<< HEAD
 =======
           <img-upload @input-link='inputLinkFlsm' @upload-img='uploadImgFlsm'></img-upload>
           <div class="content-tool">
@@ -114,6 +136,8 @@
       </div>
     </footer>
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
   </div>
 </template>
 
@@ -121,15 +145,22 @@
   import ImgUpload from './BasicComponents/ImgUpload'
   export default {
 <<<<<<< HEAD
+<<<<<<< HEAD
     name: 'nryy-gzsm',
 =======
     name: 'gzsm',
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+    name: 'nryy-gzsm',
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
     components: {
       'img-upload': ImgUpload
     },
     data () {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
       return {
         imageUrl_flsm_dx: '',
         imageUrl_flsm_fm: '',
@@ -145,11 +176,14 @@
         this.isShowImgPreview = true
         this.image_preview = this['imageUrl_' + vale]
       },
+<<<<<<< HEAD
 =======
       return {}
     },
     methods: {
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
       inputLinkFlsm () {},
       uploadImgFlsm () {}
     }
@@ -165,9 +199,12 @@
       grid-column-gap: 25px;
       grid-row-gap: 18px;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       height: 861px;
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
     }
     .gzsm-footer {
       margin-top: 38px;
@@ -195,9 +232,12 @@
         height: 63px;
         line-height: 63px;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         margin-bottom: 51px;
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
         border-radius: 4px 4px 0 0;
         padding: 0 21px;
         background-color: #F7F8F9;
@@ -205,20 +245,29 @@
       }
       .content {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
         display: flex;
         justify-content: space-between;
         margin: 35px 0;
         padding-left: 10%;
         padding-right: 10%;
+<<<<<<< HEAD
 =======
         padding-left: 53px;
         padding-right: 71px;
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
         .content-img {
           width: 180px;
           height: 150px;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
         .upload-img {
           width: 180px;
           height: 150px;
@@ -228,6 +277,7 @@
         .upload-img__info {
           margin-top: 0;
           color: #fe4a56;
+<<<<<<< HEAD
 =======
       }
       .content-tool {
@@ -239,6 +289,8 @@
           flex-direction: column;
           justify-content: flex-end;
 >>>>>>> dd63895a60853cfe221b5bfd818bf4c1d4b806af
+=======
+>>>>>>> a7b5eb209b9c6dec22ad02bdeb16421ba6f400f7
         }
       }
     }
