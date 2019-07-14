@@ -108,6 +108,4 @@
 </script>
 
 <style lang='less'>
-.txsh-list {
-}
 </style>

@@ -41,19 +41,5 @@
       margin-bottom: 10px;
       white-space: nowrap;
     }
-    .account-list__item--footer {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      height: 80px;
-      margin-top: 10px;
-      background: #fff;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
-      .page-wrap {
-        display: flex;
-      }
-    }
   }
 </style>

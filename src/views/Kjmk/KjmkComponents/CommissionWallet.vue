@@ -27,38 +27,4 @@
 </script>
 
 <style lang='less'>
-  .commission-list {
-    .ssxd-body {
-      margin-bottom: 13px;
-    }
-    .ssxd-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      .ssxd-form-item {
-        line-height: 40px;
-        .ssxd-form--label {
-          font-size: 15px;
-          margin-right: 20px;
-        }
-        .ssxd-form--radio {
-          margin-right: 90px;
-        }
-        .ssxd-form--input {
-          width: 190px;
-        }
-        .ssxd-form--btn {
-          display: inline-block;
-          float: right;
-        }
-      }
-    }
-    .ssxd-table {
-      // ..
-    }
-    .page-wrap {
-      display: flex;
-    }
-  }
 </style>
