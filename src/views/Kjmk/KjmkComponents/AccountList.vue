@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import subNav from './SubNav_comp'
+  import subNav from 'COMPONENTS/SubNav_comp'
   // import fhwu from './AccountListComponents/Fhwl'
   import srlsz from './AccountListComponents/Srlsz'
   import zclsz from './AccountListComponents/Zclsz'

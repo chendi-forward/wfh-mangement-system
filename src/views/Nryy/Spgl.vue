@@ -348,21 +348,10 @@
     grid-template-columns: 3fr 2fr;
     grid-gap: 37px 18px;
     .spgl-item {
-      background-color: #fff;
-      position: relative;
       .spgl-item__padding {
         padding-right: 5%;
         padding-left: 5%;
       }
-    }
-    .spgl-item--title {
-      height: 63px;
-      line-height: 63px;
-      margin-bottom: 30px;
-      border-radius: 4px 4px 0 0;
-      padding: 0 21px;
-      background-color: #F7F8F9;
-      font-size: 18px;
     }
     .spgl-item--content {
       padding: 0 30px;

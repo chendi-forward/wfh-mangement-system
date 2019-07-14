@@ -115,3 +115,67 @@ input::-webkit-inner-spin-button {
   color: #fff;
   background: #ff4b57;
 }
+
+.icon-btn {
+  cursor: pointer;
+}
+
+.theme-color {
+  color: #ff4b57;
+}
+// 无边框tab样式
+.sub-nav.not-border {
+  padding: 0 !important;
+  height: 45px !important;
+  .sub-nav__item {
+    margin-right: 0 !important;
+    padding: 0 50px !important;
+    border: none !important;
+    border-left: 1px solid #363f51 !important;
+    &:first-child {
+      border-left: 1px solid rgba(0, 0, 0, 0) !important;
+    }
+  }
+}
+// input获取焦点显示边框样式
+.el-input.focus-border {
+  height: 30px;
+  width: 60px !important;
+  input {
+    height: 100%;
+    border: none;
+    background-color: unset;
+    &:focus {
+      border: 1px solid #DCDFE6;
+      background-color: #fff;
+    }
+  }
+}
+// 模块公共样式
+.spgl-item {
+  background-color: #fff;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.spgl-item--title {
+  height: 63px;
+  line-height: 63px;
+  border-radius: 4px 4px 0 0;
+  padding: 0 21px;
+  background-color: #F7F8F9;
+  font-size: 18px;
+}
+// 公用脚部样式
+.ssxd-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 119px;
+  box-sizing: border-box;
+  padding-right: 30px;
+  padding-left: 14px;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}

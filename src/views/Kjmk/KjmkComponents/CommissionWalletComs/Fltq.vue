@@ -8,6 +8,7 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
+        stripe
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -48,30 +49,27 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-checkbox v-model="isAllSelect">全选</el-checkbox>
         <el-button size="mini">批量删除</el-button>
         <el-button size="mini" class="success-btn" @click="createFn">导出</el-button>
       </div>
       <div class="page-wrap">
-        <el-pagination
+        <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="5"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
           :total="400">
-        </el-pagination>
-        <el-button size="mini" class="success-btn" @click="submit">确定</el-button>
+        </my-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import Pagination from 'COMPONENTS/Pagination'
   export default {
     name: 'fltq',
+    components: {
+      'my-pagination': Pagination
+    },
     data () {
       return {
         tableData: [
@@ -79,8 +77,7 @@
           {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'},
           {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'},
           {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'}
-        ],
-        isAllSelect: false
+        ]
       }
     },
     methods: {
@@ -89,7 +86,6 @@
       createFn () {},
       handleSizeChange () {},
       handleCurrentChange () {},
-      currentPage () {},
       submit () {}
     }
   }

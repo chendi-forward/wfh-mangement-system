@@ -341,11 +341,6 @@
   }
 }
 
-.main-content {
-  width: 100%;
-  height: 100%;
-}
-
 #app {
   height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

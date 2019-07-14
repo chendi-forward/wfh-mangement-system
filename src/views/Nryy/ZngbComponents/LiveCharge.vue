@@ -173,13 +173,6 @@ export default {
       margin-bottom: 13px;
     }
     .ssxd-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
       .page-wrap {
         display: flex;
       }

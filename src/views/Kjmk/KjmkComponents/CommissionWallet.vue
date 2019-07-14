@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import subNav from './SubNav_comp'
+  import subNav from 'COMPONENTS/SubNav_comp'
   import fltq from './CommissionWalletComs/Fltq'
   import txsh from './CommissionWalletComs/Txsh'
   export default {
@@ -30,16 +30,6 @@
   .commission-list {
     .ssxd-body {
       margin-bottom: 13px;
-    }
-    .ssxd-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 119px;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
-      background-color: #fff;
     }
     .ssxd-form {
       display: flex;

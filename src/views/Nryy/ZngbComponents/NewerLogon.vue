@@ -160,15 +160,6 @@ export default {
     .ssxd-body {
       margin-bottom: 13px;
     }
-    .ssxd-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 119px;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
-    }
     .ssxd-form {
       display: flex;
       flex-direction: column;
