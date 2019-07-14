@@ -6,7 +6,7 @@
         <div class="nav-menu">
           <el-menu
             router
-            default-active="yjck"
+            :default-active="activeIndex"
             class="el-menu-vertical-demo">
             <div v-for='menu in menus' :key="menu.name">
               <div class="nav-menu__title">{{menu.name}}</div>
@@ -158,6 +158,7 @@
     data () {
     return {
         searchVal: '',
+        activeIndex: this.$route.name,
         breadcrumbs: [menus[0], menus[0].children[0]],
         menus
       }
@@ -165,7 +166,27 @@
     methods: {
       select (menu, subM, subSM) {
         this.breadcrumbs = arguments
+      },
+      initBreadcrumbs () {
+        let list = []
+        this.menus.forEach(menu => {
+          menu.children.forEach(subM => {
+            if (subM.path === this.$route.name) {
+              return this.breadcrumbs = [menu, subM]
+            }
+            if (subM.children) {
+              subM.children.forEach(subSM => {
+                if (subSM.path === this.$route.name) {
+                  return this.breadcrumbs = [menu, subM, subSM]
+                }
+              })
+            }
+          })
+        })
       }
+    },
+    created () {
+      this.initBreadcrumbs()
     }
   }
 </script>
