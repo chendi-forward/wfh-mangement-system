@@ -209,7 +209,7 @@ export default {
       * Will trigger the events in views/login.vue
       */
       this.signIn(() => {
-        this.$router.replace({path: newPath || '/'})
+        this.$router.replace({path: newPath || '/yjck'})
       })
     }
   }

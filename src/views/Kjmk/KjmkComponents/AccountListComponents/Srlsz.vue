@@ -74,12 +74,11 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="account-list__item--footer">
-      <!-- <div class="selectAll-wrap">
-        <el-checkbox v-model="isAllSelect">全选</el-checkbox>
+    <div class="ssxd-footer">
+      <div class="selectAll-wrap">
         <el-button size="mini" class="success-btn" @click="exportFn">导出</el-button>
         <el-button size="mini" @click="deleteMany">批量删除</el-button>
-      </div> -->
+      </div>
       <div class="page-wrap">
         <el-pagination
           @size-change="handleSizeChange"
@@ -91,7 +90,6 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
-        <el-button size="mini" class="success-btn" @click="submit">确定</el-button>
       </div>
     </div>
   </div>

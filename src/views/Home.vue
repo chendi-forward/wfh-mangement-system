@@ -6,13 +6,13 @@
         <div class="nav-menu">
           <el-menu
             router
-            default-active="yjck"
+            :default-active="activeIndex"
             class="el-menu-vertical-demo">
             <div v-for='menu in menus' :key="menu.name">
               <div class="nav-menu__title">{{menu.name}}</div>
               <div v-for="subM in menu.children" :key='subM.name'>
                 <template v-if="subM.children">
-                  <el-submenu index="subM.path">
+                  <el-submenu :index="subM.path">
                     <template slot="title">
                       <i :class="subM.icon"></i>
                       <span>{{subM.name}}</span>
@@ -45,11 +45,12 @@
           </el-input>
           <div class="main-header__user">
             <div class="user-box__name">
-              <span>早上好，</span>
+              <span>{{timeStr[currentTime]}}，</span>
               <span>admin</span>
             </div>
             <div class="user-box__logout">
-              <span>退出</span>
+              <span>退出</span>&nbsp;&nbsp;
+              <span class="el-icon-switch-button" @click="logout"></span>
             </div>
           </div>
         </el-header>
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   let menus = [
     {
       name: '主页',
@@ -158,6 +160,12 @@
     data () {
     return {
         searchVal: '',
+        timeStr: {
+          am: '上午好',
+          pm: '下午好'
+        },
+        currentTime: moment().format('a'),
+        activeIndex: this.$route.name,
         breadcrumbs: [menus[0], menus[0].children[0]],
         menus
       }
@@ -165,7 +173,31 @@
     methods: {
       select (menu, subM, subSM) {
         this.breadcrumbs = arguments
+      },
+      initBreadcrumbs () {
+        this.menus.forEach(menu => {
+          menu.children.forEach(subM => {
+            if (subM.path === this.$route.name) {
+              this.breadcrumbs = [menu, subM]
+            }
+            if (subM.children) {
+              subM.children.forEach(subSM => {
+                if (subSM.path === this.$route.name) {
+                  this.breadcrumbs = [menu, subM, subSM]
+                }
+              })
+            }
+          })
+        })
+      },
+      logout () {
+        localStorage.clear()
+        sessionStorage.clear()
+        this.$router.push({path: '/login'})
       }
+    },
+    created () {
+      this.initBreadcrumbs()
     }
   }
 </script>
@@ -297,6 +329,12 @@
   .main-header__user {
     display: flex;
     align-items: center;
+    .user-box__name {
+      margin-right: 35px;
+    }
+    .el-icon-switch-button {
+      cursor: pointer;
+    }
   }
 }
 
@@ -339,11 +377,6 @@
       line-height: 320px;
     }
   }
-}
-
-.main-content {
-  width: 100%;
-  height: 100%;
 }
 
 #app {
