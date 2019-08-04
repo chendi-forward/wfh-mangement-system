@@ -17,11 +17,11 @@
                       <i :class="subM.icon"></i>
                       <span>{{subM.name}}</span>
                     </template>
-                    <el-menu-item v-for="subSM in subM.children" :key='subSM.name' :index="subSM.path" @click="select(menu, subM, subSM)">{{subSM.name}}</el-menu-item>
+                    <el-menu-item v-for="subSM in subM.children" :key='subSM.name' :index="subSM.path">{{subSM.name}}</el-menu-item>
                   </el-submenu>
                 </template>
                 <template v-else>
-                  <el-menu-item :index="subM.path" @click="select(menu, subM)">
+                  <el-menu-item :index="subM.path">
                     <i :class="subM.icon"></i>
                     <span slot="title">{{subM.name}}</span>
                   </el-menu-item>
@@ -110,8 +110,18 @@
         },
         {
           name: '售后管理',
-          path: 'shgl',
-          icon: 'el-icon-menu'
+          path: 'shgl-ddlb', //默认显示订单列表
+          icon: 'el-icon-menu',
+          childrenNoMenu: [ //无菜单路由
+            {
+              name: '订单列表',
+              path: 'shgl-ddlb'
+            },
+            {
+              name: '订单详情',
+              path: 'shgl-ddxq'
+            }
+          ]
         }
       ]
     },
@@ -165,23 +175,35 @@
           pm: '下午好'
         },
         currentTime: moment().format('a'),
-        activeIndex: this.$route.name,
+        activeIndex: '',
         breadcrumbs: [menus[0], menus[0].children[0]],
         menus
       }
     },
+    watch: {
+      '$route' () {
+        this.initBreadcrumbs()
+      }
+    },
     methods: {
-      select (menu, subM, subSM) {
-        this.breadcrumbs = arguments
-      },
       initBreadcrumbs () {
         this.menus.forEach(menu => {
           menu.children.forEach(subM => {
             if (subM.path === this.$route.name) {
+              this.activeIndex = this.$route.name
               this.breadcrumbs = [menu, subM]
             }
             if (subM.children) {
               subM.children.forEach(subSM => {
+                if (subSM.path === this.$route.name) {
+                  this.activeIndex = this.$route.name
+                  this.breadcrumbs = [menu, subM, subSM]
+                }
+              })
+            }
+            if (subM.childrenNoMenu) {
+              this.activeIndex = subM.path // 无菜单路由菜单激活样式设置给父级
+              subM.childrenNoMenu.forEach(subSM => {
                 if (subSM.path === this.$route.name) {
                   this.breadcrumbs = [menu, subM, subSM]
                 }

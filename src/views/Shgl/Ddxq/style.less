@@ -1,0 +1,41 @@
+.ddxq {
+    > div:not(.line-item) {
+        margin-top: 10px;
+    }
+    .other-item {
+        .spgl-item--content {
+            height: 204px;
+            padding: 0 29px;
+            font-size: 15px;
+            line-height: 26px;
+            p {
+                display: flex;
+                .name {
+                    width: 110px;
+                }
+                .value {
+                    width: calc(~'100% - 110px');
+                }
+            }
+        }
+    }
+    .handle {
+        padding: 0 28px;
+        height: 80px;
+        justify-content: space-between;
+    }
+    .tags-box {
+        padding-left: 80px;
+        .tag-box {
+            margin: 50px 0;
+            margin-bottom: 80px;
+            .header-title {
+                display: inline-block;
+                width: 100px;
+            }
+            .el-input, .el-select {
+                width: 300px;
+            }
+        }
+    }
+}

@@ -48,9 +48,14 @@ export default [{
       component: () => import(/* webpackChunkName: "qxgl" */ './views/Qxgl')
     },
     {
-      path: '/shgl',
-      name: 'shgl',
+      path: '/shgl-ddlb',
+      name: 'shgl-ddlb',
       component: () => import(/* webpackChunkName: "shgl" */ './views/Shgl')
+    },
+    {
+      path: '/shgl-ddxq',
+      name: 'shgl-ddxq',
+      component: () => import(/* webpackChunkName: "shgl" */ './views/Shgl/Ddxq')
     },
     {
       path: '/hyjf-sjsz',
