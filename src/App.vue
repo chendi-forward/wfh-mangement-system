@@ -168,6 +168,11 @@ export default {
           link: 'shgl-ddlb'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
+          name: '售后管理-退款管理',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'shgl-tkgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
           name: '售后管理-订单详情',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'shgl-ddxq'

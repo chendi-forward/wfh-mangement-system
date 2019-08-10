@@ -110,13 +110,19 @@
         },
         {
           name: '售后管理',
-          path: 'shgl-ddlb', //默认显示订单列表
+          path: 'shgl',
           icon: 'el-icon-menu',
-          childrenNoMenu: [ //无菜单路由
+          children: [
             {
               name: '订单列表',
               path: 'shgl-ddlb'
             },
+            {
+              name: '退款管理',
+              path: 'shgl-tkgl'
+            }
+          ],
+          childrenNoMenu: [ //无菜单路由
             {
               name: '订单详情',
               path: 'shgl-ddxq'
@@ -175,7 +181,7 @@
           pm: '下午好'
         },
         currentTime: moment().format('a'),
-        activeIndex: '',
+        activeIndex: 'yjck',
         breadcrumbs: [menus[0], menus[0].children[0]],
         menus
       }
@@ -202,9 +208,9 @@
               })
             }
             if (subM.childrenNoMenu) {
-              this.activeIndex = subM.path // 无菜单路由菜单激活样式设置给父级
               subM.childrenNoMenu.forEach(subSM => {
                 if (subSM.path === this.$route.name) {
+                  this.activeIndex = subM.children[0].path // 无菜单路由菜单激活样式设置给第一个子菜单
                   this.breadcrumbs = [menu, subM, subSM]
                 }
               })
