@@ -29,7 +29,7 @@
               ></select-input>
             </div>
           </div>
-          <div class="spgl-form-item">
+          <!-- <div class="spgl-form-item">
             <label for="stock" class="spgl-form--label">
               <span>库存数量</span>
               <span>：</span>
@@ -42,7 +42,7 @@
             </el-input>
             <div class="spgl-form--unit">（单位：件）</div>
             <div class="spgl-form--rule">*必填项</div>
-          </div>
+          </div> -->
           <div class="spgl-form-item">
             <label for="price" class="spgl-form--label">
               <span>价格</span>
@@ -170,14 +170,31 @@
           </div>
           <div class="spgl-form-item">
             <label class="spgl-form--label">
-              <span>口味设置</span>
+              <span>口味库存</span>
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--taste">
-              <select-input
+              <label for="taste">口味</label>
+              <el-input
+                name='taste'
+                class="spgl-form--format__input"
+                type="text"
+                placeholder="输入口味"
+                v-model="formXssz.taste">
+              </el-input>
+              <label for="stock">库存(件)</label>
+              <el-input
+                name='stock'
+                class="spgl-form--format__input"
+                type="text"
+                placeholder="输入库存"
+                v-model="formXssz.stock">
+              </el-input>
+              <!-- <select-input
+                name='taste'
                 :preset="preset_taste"
                 v-model="formXssz.taste"
-              ></select-input>
+              ></select-input> -->
             </div>
             <div class="spgl-form--rule">*必填项</div>
           </div>

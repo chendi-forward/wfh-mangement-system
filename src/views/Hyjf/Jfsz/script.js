@@ -45,7 +45,7 @@ export default {
         reachEvery: 50,
         reachEveryM: 5
       },
-      editTaskShow:false,
+      editTaskShow: false,
       editSillShow: false,
       editIntegral: false,
       present: 50,
