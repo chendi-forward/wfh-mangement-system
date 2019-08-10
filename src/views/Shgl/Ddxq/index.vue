@@ -127,6 +127,7 @@
           <p><span class="name">联系电话</span><span class="value">18855862290</span></p>
         </div>
       </div>
+      <!-- TODO 根据订单状态判断是否显示物流信息 -->
       <div class="spgl-item">
         <div class="spgl-item--title">物流信息</div>
         <div class="spgl-item--content">
