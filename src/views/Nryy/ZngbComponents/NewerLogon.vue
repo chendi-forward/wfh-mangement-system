@@ -157,44 +157,6 @@ export default {
       padding: 47px 30px 47px 60px;
       margin-bottom: 13px;
     }
-    .ssxd-body {
-      margin-bottom: 13px;
-    }
-    .ssxd-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 119px;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
-    }
-    .ssxd-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      .ssxd-form-item {
-        line-height: 40px;
-        .ssxd-form--label {
-          font-size: 15px;
-          margin-right: 20px;
-        }
-        .ssxd-form--radio {
-          margin-right: 90px;
-        }
-        .ssxd-form--input {
-          width: 190px;
-        }
-        .ssxd-form--btn {
-          display: inline-block;
-          float: right;
-        }
-      }
-    }
-    .ssxd-table {
-      // ..
-    }
     .page-wrap {
       display: flex;
     }

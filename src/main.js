@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'COMMONS/element-reset.less'
 import 'COMMONS/commons.less'
 import 'COMMONS/tabs.less'
+import 'COMMONS/iconfont.less'
 import {post, get, patch, put} from './http'
 
 Vue.config.productionTip = false

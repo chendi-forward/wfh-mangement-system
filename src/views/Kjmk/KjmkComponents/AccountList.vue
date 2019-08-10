@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import subNav from './SubNav_comp'
+  import subNav from 'COMPONENTS/SubNav_comp'
   // import fhwu from './AccountListComponents/Fhwl'
   import srlsz from './AccountListComponents/Srlsz'
   import zclsz from './AccountListComponents/Zclsz'
@@ -40,20 +40,6 @@
       padding: 25px;
       margin-bottom: 10px;
       white-space: nowrap;
-    }
-    .account-list__item--footer {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      height: 80px;
-      margin-top: 10px;
-      background: #fff;
-      box-sizing: border-box;
-      padding-right: 30px;
-      padding-left: 14px;
-      .page-wrap {
-        display: flex;
-      }
     }
   }
 </style>

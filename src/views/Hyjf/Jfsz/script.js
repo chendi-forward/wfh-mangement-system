@@ -1,4 +1,4 @@
-import inputOrText from './input'
+import inputOrText from 'COMPONENTS/inputOrText'
 export default {
   name: 'spgl',
   components: {

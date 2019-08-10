@@ -6,6 +6,7 @@
         :data="tableData"
         tooltip-effect="dark"
         max-height="300"
+        stripe
         style="width: 100%">
         <el-table-column
           label="日期"
