@@ -127,6 +127,17 @@
           <p><span class="name">联系电话</span><span class="value">18855862290</span></p>
         </div>
       </div>
+      <div class="spgl-item">
+        <div class="spgl-item--title">物流信息</div>
+        <div class="spgl-item--content">
+          <p><span class="name">物流公司</span><span class="value">圆通快递</span></p>
+          <p><span class="name">物流单号</span><span class="value">18855862290 &nbsp;&nbsp;&nbsp;
+            <el-button type="danger" size="mini" plain @click="trace">追踪</el-button></span>
+          </p>
+          <p><span class="name">运费</span><span class="value">12元</span></p>
+          <p><span class="name">备注</span><span class="value">已修改收货地址：浙江省杭州市浙江大学紫金校区南门</span></p>
+        </div>
+      </div>
     </div>
     <div class="commom-card flex-item-center handle">
       <el-button size="small" @click="goBack">返回列表</el-button>
@@ -135,27 +146,8 @@
         <el-button size="small" @click='cancleItem'>取消订单</el-button>
       </div>
     </div>
-    <dialog-Com :dialogFlag='dialogFlag' title='编辑' @sure-save='sureSave' @cancle-save='cancleSave'>
-      <div class="tags-box">
-        <div class="tag-box">
-          <span class="header-title">物流公司:</span>
-          <el-select v-model="selectKey" @change='selectChange' placeholder="请选择">
-            <el-option
-              v-for="(item, index) in options"
-              :key="index"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="tag-box">
-          <span class="header-title">物流单号:</span>
-          <el-input
-            placeholder="请输入单号..."
-            v-model="logisticsId">
-          </el-input>
-        </div>
-      </div>
+    <dialog-Com :dialogFlag='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
+      <component :is="currentCom.com"></component>
     </dialog-Com>
   </div>
 </template>

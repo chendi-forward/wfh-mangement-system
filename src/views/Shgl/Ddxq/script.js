@@ -1,14 +1,16 @@
 import DialogCom from 'COMPONENTS/DialogCom'
+import EditLogistics from '../coms/editLogistics'
+import Logistics from '../coms/logistics'
 
 export default {
   name: 'shgl-ddxq',
   components: {
-    'dialog-Com': DialogCom
+    'dialog-Com': DialogCom,
+    'editLogistics-dialog': EditLogistics,
+    'logistics-dialog': Logistics
   },
   data () {
     return {
-      dialogFlag: false,
-      logisticsId: null,
       tableData1: [{
         user_id: 'WFH001',
         nickname: 'WFH001',
@@ -37,17 +39,13 @@ export default {
         province: '优惠券返利',
         label: 20
       }],
-      selectKey: '1',
-      options: [{
-        value: '1',
-        label: '顺丰速运'
-      }, {
-        value: '2',
-        label: '圆通快递'
-      }, {
-        value: '3',
-        label: '申通快递'
-      }]
+      // 弹框部分
+      dialogFlag: false,
+      currentCom: {},
+      coms: [
+        {name: '编辑', com: 'editLogistics-dialog', data: null},
+        {name: '物流追踪', com: 'logistics-dialog', data: null}
+      ]
     }
   },
   methods: {
@@ -55,6 +53,11 @@ export default {
       this.$router.push({name: 'shgl-ddlb'})
     },
     editHandle () {
+      this.currentCom = this.coms[0]
+      this.dialogFlag = true
+    },
+    trace () {
+      this.currentCom = this.coms[1]
       this.dialogFlag = true
     },
     cancleItem () {},
