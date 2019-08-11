@@ -1,0 +1,51 @@
+.shgl.tkgl {
+    .tab-model {
+        position: relative;
+        .btn-wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            padding-right: 30px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+    }
+    .data-list {
+        margin-top: 10px;
+        .con-icon {
+            display: inline-block;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .expend-wrap {
+            padding-left: 50px;
+            .my-timestamp {
+                padding-left: 20px;
+                padding-right: 50px;
+            }
+            .icon {
+                font-size: 17px;
+            }
+        }
+    }
+    /deep/ .dialogCom {
+        .el-dialog {
+            margin-top: 8vh !important;
+        }
+    }
+    /deep/ .tags-box {
+        padding-left: 80px;
+        .tag-box {
+            margin: 15px 0;
+            .header-title {
+                display: inline-block;
+                width: 100px;
+            }
+            .el-input, .el-select {
+                width: 300px;
+            }
+        }
+    }
+}

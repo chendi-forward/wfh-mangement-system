@@ -1,4 +1,4 @@
-# wfh-management-system2
+# wfh-management-system
 
 ## Project setup
 ```
@@ -19,3 +19,6 @@ npm run build
 ```
 npm run lint
 ```
+> 开发阶段权限系统
+   账号： admin
+   密码： 123456
