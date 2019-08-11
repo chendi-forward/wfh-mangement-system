@@ -1,7 +1,4 @@
 import befautify from 'ASSETS/image/timg.jpg'
-import befautify1 from 'ASSETS/image/timg (1).jpg'
-import befautify2 from 'ASSETS/image/timg (2).jpg'
-import befautify3 from 'ASSETS/image/timg (3).jpg'
 import DialogCom from '../../components/DialogCom'
 import Pagination from '../../components/Pagination'
 
@@ -105,7 +102,7 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        })          
+        })
       })
     },
     // 获取标签数据
