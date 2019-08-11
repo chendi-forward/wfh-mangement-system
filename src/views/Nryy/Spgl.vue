@@ -29,20 +29,6 @@
               ></select-input>
             </div>
           </div>
-          <!-- <div class="spgl-form-item">
-            <label for="stock" class="spgl-form--label">
-              <span>库存数量</span>
-              <span>：</span>
-            </label>
-            <el-input
-              class="spgl-form--input"
-              v-model="formSpxx.stock"
-              placeholder='输入数量...'
-              name="stock">
-            </el-input>
-            <div class="spgl-form--unit">（单位：件）</div>
-            <div class="spgl-form--rule">*必填项</div>
-          </div> -->
           <div class="spgl-form-item">
             <label for="price" class="spgl-form--label">
               <span>价格</span>
@@ -107,19 +93,30 @@
             <div class="spgl-form--unit">（单位：%）</div>
           </div>
           <div class="spgl-form-item">
-            <label for="content" class="spgl-form--label content-label">
-              <span>内容简介</span>
+            <label for="date" class="spgl-form--label">
+              <span>生产日期</span>
+              <span>：</span>
+            </label>
+            <el-date-picker
+              class="spgl-form--input data-input"
+              v-model="formSpxx.date"
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+            <div class="spgl-form--rule">*必填项</div>
+          </div>
+          <div class="spgl-form-item">
+            <label for="origin" class="spgl-form--label">
+              <span>产地</span>
               <span>：</span>
             </label>
             <el-input
               class="spgl-form--input"
-              v-model="formSpxx.content"
-              type="textarea"
-              :rows="3"
-              placeholder='输入内容...'
-              name="content">
+              v-model="formSpxx.origin"
+              placeholder='输入产地...'
+              name="origin">
             </el-input>
-            <div class="spgl-form--rule">*必填项，0-30个字</div>
+            <div class="spgl-form--rule">*必填项</div>
           </div>
         </form>
       </div>
@@ -244,12 +241,12 @@
             <div class="spgl-form--content spgl-form--recommend">
               <div class="spgl-form--recommend__group" v-for="(item, index) in recommends" :key="index">
                 <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
-                <el-input
+                <!-- <el-input
                   class="spgl-form--recommend__input"
                   type="number"
                   :disabled="!item.isSelect"
                   v-model="item.value">
-                </el-input>
+                </el-input> -->
               </div>
             </div>
           </div>
@@ -293,6 +290,7 @@
           {name: '甜味', isSelect: false},
           {name: '苦味', isSelect: false}
         ],
+        productionDate: '', // 生产日期
         formSpxx: {
           goodsTitle: '',
           typeEffects: ['美容'],
@@ -303,12 +301,13 @@
           v3: '',
           v4: '',
           v5: '',
-          content: ''
+          data: '',
+          origin: ''
         },
         formXssz: {
           goodStauts: '',
           activeLabel: '',
-          taste: []
+          taste: ''
         },
         options: [{
           value: '新品优惠',
@@ -321,8 +320,8 @@
         isDefinitTime: false, // 是否定时发布
         definitData: '',
         recommends: [
-          {label: '首页推荐排序', isSelect: false, value: ''},
-          {label: '购物车推荐排序', isSelect: false, value: ''}
+          {label: '首页推荐排序', isSelect: false, value: 0},
+          {label: '购物车推荐排序', isSelect: false, value: 0}
         ]
       }
     },
@@ -535,6 +534,14 @@
   .spgl-form__state {
     .spgl-form--setLabel {
       color: #ff4b57
+    }
+  }
+  .data-input {
+    .el-input__inner {
+      padding-right: 25px;
+    }
+    .el-input__prefix {
+      display: none;
     }
   }
 </style>

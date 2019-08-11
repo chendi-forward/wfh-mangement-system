@@ -57,14 +57,6 @@ export default {
         reach: 5000,
         reachEvery: 50
       },
-<<<<<<< HEAD
-      editTaskShow: false,
-      editSillShow: false,
-      editIntegral: false,
-      present: 50,
-      integral: 50,
-      searchKey: ''
-=======
       agencyForm: {
         data: [
           {date: 1, yjdx: 10, rwjd: 2000, tjfled: 2000},
@@ -77,7 +69,6 @@ export default {
       editTaskShow: false,
       editCommonShow: false,
       editAgencyShow: false
->>>>>>> e9a4ba87686cb3d37065a66737a0d0e1ac967b79
     }
   },
   methods: {
