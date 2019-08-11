@@ -17,23 +17,25 @@ let baseRoute = [
   {
     path: '/componentTest',
     name: '测试组件',
-    component: (resolve) => require(['./views/componentTest.vue'], resolve)
+    component: () => import(/* webpackChunkName: "testComp" */ './views/componentTest.vue')
   },
   {
     path: '/401',
     name: '无权访问',
-    component: (resolve) => require(['./views/401.vue'], resolve)
+    component: () => import(/* webpackChunkName: "401" */ './views/401.vue')
   },
   {
     path: '/404',
     name: '找不到页面',
-    component: (resolve) => require(['./views/404.vue'], resolve)
+    component: () => import(/* webpackChunkName: "404" */ './views/404.vue')
   }
 ]
 
 let createRouter = () => new Router({
   mode: 'history',
+  /* eslint-disable */
   base: process.env.BASE_URL,
+  /* eslint-enable */
   routes: baseRoute
 })
 

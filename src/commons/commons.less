@@ -207,3 +207,39 @@ input::-webkit-inner-spin-button {
   overflow: hidden;
   margin-top: 10px;
 }
+// 公用grid样式 分三列
+.grid-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0 20px;
+}
+.grid-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+// 通用模块
+.commom-card {
+  background-color: #fff;
+  border-radius: 6px;
+}
+.flex-item-center {
+  display: flex;
+  align-items: center;
+}
+.theme-color {
+  color: #FF4B57;
+}
+.new-point {
+  position: relative;
+  &::after {
+    content: '';
+    height: 7px;
+    width: 7px;
+    background-color: #FF4B57;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+  }
+}

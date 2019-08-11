@@ -8,6 +8,7 @@ export default [{
   path: '/',
   name: 'home',
   component: Home,
+  redirect: '/yjck',
   children: [
     {
       path: '/yjck',
@@ -48,24 +49,34 @@ export default [{
       component: () => import(/* webpackChunkName: "qxgl" */ './views/Qxgl')
     },
     {
-      path: '/shgl',
-      name: 'shgl',
-      component: () => import(/* webpackChunkName: "shgl" */ './views/Shgl')
+      path: '/shgl-ddlb',
+      name: 'shgl-ddlb',
+      component: () => import(/* webpackChunkName: "shgl-ddlb" */ './views/Shgl/Ddlb')
+    },
+    {
+      path: '/shgl-tkgl',
+      name: 'shgl-tkgl',
+      component: () => import(/* webpackChunkName: "shgl-tkgl" */ './views/Shgl/Tkgl')
+    },
+    {
+      path: '/shgl-ddxq',
+      name: 'shgl-ddxq',
+      component: () => import(/* webpackChunkName: "shgl-ddxq" */ './views/Shgl/Ddxq')
     },
     {
       path: '/hyjf-sjsz',
       name: 'hyjf-sjsz',
-      component: () => import(/* webpackChunkName: "hyjf" */ './views/Hyjf/Sjsz')
+      component: () => import(/* webpackChunkName: "hyjf-sjsz" */ './views/Hyjf/Sjsz')
     },
     {
       path: '/hyjf-hyfl',
       name: 'hyjf-hyfl',
-      component: () => import(/* webpackChunkName: "hyjf" */ './views/Hyjf/Hyfl')
+      component: () => import(/* webpackChunkName: "hyjf-hyfl" */ './views/Hyjf/Hyfl')
     },
     {
       path: '/hyjf-jfsz',
       name: 'hyjf-jfsz',
-      component: () => import(/* webpackChunkName: "hyjf" */ './views/Hyjf/Jfsz')
+      component: () => import(/* webpackChunkName: "hyjf-jfsz" */ './views/Hyjf/Jfsz')
     },
     {
       path: '/yxmk',
