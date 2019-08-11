@@ -118,6 +118,19 @@
             </el-input>
             <div class="spgl-form--rule">*必填项</div>
           </div>
+          <div class="spgl-form-item">
+            <label for="typeEffect" class="spgl-form--label">
+              <span>说明</span>
+              <span>：</span>
+            </label>
+            <div class="spgl-form--input">
+              <el-checkbox-group v-model="formSpxx.description">
+              <el-checkbox label="药监认证"></el-checkbox>
+              <el-checkbox label="假一赔十"></el-checkbox>
+              <el-checkbox label="极速退款"></el-checkbox>
+            </el-checkbox-group>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -163,11 +176,11 @@
                 v-model="formXssz.formatAdd">
               </el-input>
             </div>
-            <div class="spgl-form--rule">*必填项</div>
+            <div class="spgl-form--unit">（单位：g）</div>
           </div>
           <div class="spgl-form-item">
             <label class="spgl-form--label">
-              <span>口味库存</span>
+              <span>口味设置</span>
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--taste">
@@ -301,8 +314,9 @@
           v3: '',
           v4: '',
           v5: '',
-          data: '',
-          origin: ''
+          data: '', // 生产日期
+          origin: '', // 产地
+          description: [] // 说明
         },
         formXssz: {
           goodStauts: '',
@@ -424,9 +438,6 @@
           }
         }
       }
-      .spgl-form--input__type {
-        // width: 50%;
-      }
       .spgl-form--unit {
         display: inline-block;
         line-height: 40px;
@@ -536,12 +547,21 @@
       color: #ff4b57
     }
   }
+  .spgl-form--input {
+    .el-checkbox-group {
+      margin-right: -30px;
+      .el-checkbox {
+        line-height: 40px;
+      }
+    }
+  }
   .data-input {
     .el-input__inner {
       padding-right: 25px;
     }
     .el-input__prefix {
-      display: none;
+      right: 5px;
+      left: unset;
     }
   }
 </style>
