@@ -19,6 +19,6 @@ npm run build
 ```
 npm run lint
 ```
-> 开发阶段权限系统
+ 开发阶段权限系统
    账号： admin
    密码： 123456
