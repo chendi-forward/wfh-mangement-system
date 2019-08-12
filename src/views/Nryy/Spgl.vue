@@ -153,12 +153,12 @@
               <span>活动标签</span>
               <span>：</span>
             </label>
-            <el-select class="spgl-form--content" v-model="formXssz.activeLabel" filterable allow-create placeholder="请选择">
+            <el-select class="spgl-form--content" v-model="formXssz.activeLabel" filterable placeholder="请选择">
               <el-option
-                v-for="(item, index) in options"
+                v-for="(item, index) in currentTag"
                 :key="index"
-                :label="item.value"
-                :value="item.value">
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>
             <el-button class="spgl-form--setLabel" size="small" @click="setLabel">设置标签</el-button>
@@ -183,30 +183,29 @@
               <span>口味设置</span>
               <span>：</span>
             </label>
-            <div class="spgl-form--content spgl-form--taste">
-              <label for="taste">口味</label>
-              <el-input
-                name='taste'
-                class="spgl-form--format__input"
-                type="text"
-                placeholder="输入口味"
-                v-model="formXssz.taste">
-              </el-input>
-              <label for="stock">库存(件)</label>
-              <el-input
-                name='stock'
-                class="spgl-form--format__input"
-                type="text"
-                placeholder="输入库存"
-                v-model="formXssz.stock">
-              </el-input>
-              <!-- <select-input
-                name='taste'
-                :preset="preset_taste"
-                v-model="formXssz.taste"
-              ></select-input> -->
+            <div class="spgl-form--content">
+              <div class="spgl-form__taste" v-for="(item, i) in formXssz.taste" :key="item.taste">
+                <div class="taste-box">
+                  <div class="taste-box__text text-overflow"><span class="taste-box__text--span">{{item.taste}}</span></div>
+                  <span class="avater-delete" @click="deleteTaste(i)">×</span>
+                </div>
+                <label class="taste__label">库存：</label>
+                <el-input
+                  class="spgl-form--format__input taste__input"
+                  type="number"
+                  placeholder="输入数量..."
+                  v-model="item.stock">
+                </el-input>
+                <div class="spgl-form--unit taste--unit">（单位：件）</div>
+              </div>
+              <input
+                class="el-input__inner"
+                type='text'
+                placeholder="输入口味并回车..."
+                v-model="taste"
+                @keyup.enter="addTaste"
+              />
             </div>
-            <div class="spgl-form--rule">*必填项</div>
           </div>
         </form>
       </div>
@@ -241,6 +240,7 @@
           <el-checkbox class="spgl-item--content__setTime" v-model="isDefinitTime">定时发布：</el-checkbox>
           <div class="spgl-form--dateSelect">
             <el-date-picker
+              class="spgl-form--input data-input"
               v-model="definitData"
               type="datetime"
               placeholder="选择发布时间">
@@ -254,12 +254,12 @@
             <div class="spgl-form--content spgl-form--recommend">
               <div class="spgl-form--recommend__group" v-for="(item, index) in recommends" :key="index">
                 <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
-                <!-- <el-input
+                <el-input
                   class="spgl-form--recommend__input"
                   type="number"
                   :disabled="!item.isSelect"
                   v-model="item.value">
-                </el-input> -->
+                </el-input>
               </div>
             </div>
           </div>
@@ -274,12 +274,40 @@
     <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
       <img :src="image_preview" alt="图片预览">
     </el-dialog>
+    <el-dialog title="设置标签" :visible.sync="isShowTag" class="tag-dialog">
+      <div class="current-tag">
+        <div class="tag--title">当前标签</div>
+        <div class="current-tag--content">
+          <div class="current-tag__item" v-for="(item, i) in currentTag" :key="item.name">
+            <span>{{item.name}}</span>
+            <span class="avater-delete" @click="deleteTag(i)">×</span>
+          </div>
+        </div>
+      </div>
+      <div class="add-tag">
+        <div class="tag--title">添加标签</div>
+        <div class="add-tag--content">
+          <input
+            class="el-input__inner"
+            type='text'
+            placeholder="输入标签并回车..."
+            v-model="newTag"
+            @keyup.enter="addTag"
+          />
+        </div>
+      </div>
+      <div class="save-tag">
+        <el-button size="mini" class="success-btn" @click="saveTag">保存</el-button>
+        <el-button size="mini" class="cancel-btn" @click="cancelTag">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import ImgUpload from './BasicComponents/ImgUpload'
   import SelectInput from './BasicComponents/SelectInput'
+  import $ from 'jquery'
   export default {
     name: 'spgl',
     components: {
@@ -289,6 +317,7 @@
     data () {
       return {
         isShowImgPreview: false,
+        isShowTag: false,
         image_preview: '',
         imageUrl_exhibit: '',
         imageUrl_detail: '',
@@ -297,11 +326,6 @@
           {name: '代餐', isSelect: false},
           {name: '塑形', isSelect: false},
           {name: '增肌', isSelect: false}
-        ],
-        preset_taste: [
-          {name: '酸味', isSelect: false},
-          {name: '甜味', isSelect: false},
-          {name: '苦味', isSelect: false}
         ],
         productionDate: '', // 生产日期
         formSpxx: {
@@ -318,25 +342,28 @@
           origin: '', // 产地
           description: [] // 说明
         },
+        taste: '', // 添加的口味
         formXssz: {
           goodStauts: '',
           activeLabel: '',
-          taste: ''
+          taste: [
+            {taste: '牛奶味', stock: ''},
+            {taste: '草莓味', stock: ''}
+          ]
         },
-        options: [{
-          value: '新品优惠',
-          label: '新品优惠'
-        }, {
-          value: '限时折扣',
-          label: '限时折扣'
-        }],
-        isSetLabel: false,
         isDefinitTime: false, // 是否定时发布
         definitData: '',
         recommends: [
-          {label: '首页推荐排序', isSelect: false, value: 0},
-          {label: '购物车推荐排序', isSelect: false, value: 0}
-        ]
+          {label: '首页推荐排序', isSelect: false, value: ''},
+          {label: '购物车推荐排序', isSelect: false, value: ''}
+        ],
+        currentTag: [
+          {name: '新品优惠'},
+          {name: '节日促销'},
+          {name: '新客专享'},
+          {name: '周年大促'}
+        ],
+        newTag: ''
       }
     },
     watch: {
@@ -345,11 +372,38 @@
       }
     },
     methods: {
-      addTypeEffect (e) {
-        // ..
+      addTaste () {
+        this.formXssz.taste.push({
+          taste: this.taste,
+          stock: ''
+        })
+        this.$nextTick(() => {
+          this.taste = ''
+          $('.spgl-form__taste:last .taste__input .el-input__inner').focus()
+        })
+      },
+      deleteTaste (i) {
+        this.formXssz.taste.splice(i, 1)
       },
       setLabel () {
-        // this.isSetLabel = true
+        this.isShowTag = true
+      },
+      deleteTag (i) {
+        this.currentTag.splice(i, 1)
+      },
+      addTag () {
+        this.currentTag.push({
+          name: this.newTag
+        })
+        this.$nextTick(() => {
+          this.newTag = ''
+        })
+      },
+      saveTag () {
+        // ..
+      },
+      cancelTag () {
+        // ..
       },
       save () {
         // ..
@@ -385,6 +439,7 @@
     }
     .spgl-item--content {
       padding: 0 30px;
+      margin-top: 16px;
       margin-bottom: 30px;
     }
     .spgl-item--footer {
@@ -505,11 +560,45 @@
           width: 46%;
         }
       }
+      .spgl-form__taste {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-bottom: 20px;
+        .taste-box {
+          width: 90px;
+          line-height: 30px;
+          height: 30px;
+          margin-right: 15px;
+          text-align: center;
+          position: relative;
+          border: 1px solid #363f51;
+          border-radius: 3px;
+          .taste-box__text {
+            width: 90px;
+            padding: 0 10px;
+            .taste-box__text--span {
+              white-space: nowrap;
+            }
+          }
+        }
+        .taste__label {
+          white-space: nowrap;
+        }
+        .taste__input {
+          width: 100px;
+        }
+        .taste--unit {
+          position: absolute;
+          right: -106px;
+        }
+      }
     }
     .spgl-item--content__sub {
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+      margin-top: unset;
       span {
         color: #fe4a56;
         & > span {
@@ -562,6 +651,40 @@
     .el-input__prefix {
       right: 5px;
       left: unset;
+    }
+  }
+  .tag-dialog {
+    padding: 30px;
+    .el-dialog__header,
+    .el-dialog__body {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+    .tag--title {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .save-tag {
+      display: flex;
+      justify-content: center;
+    }
+    .add-tag {
+      margin-bottom: 15px;
+    }
+  }
+  .current-tag {
+    .current-tag--content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 30px;
+    }
+    .current-tag__item {
+      height: 30px;
+      line-height: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      text-align: center;
+      border: 1px solid;
     }
   }
 </style>
