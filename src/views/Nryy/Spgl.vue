@@ -220,7 +220,15 @@
             <el-button class="upload-img__tool--preview" size="small" @click="preview_exhibit">预览</el-button>
           </span>
         </p>
-        <img-upload size='10' class="spgl-item--content__img" v-model="imageUrl_exhibit"></img-upload>
+        <div class="upload-img__tool">
+          <div class="img__list">
+            <div class="img__list--wrap" v-for="(imgUrl, i) in imgListExhibit" :key="i">
+              <img  class="img__list--item" :src="imgUrl">
+              <span class="avater-delete" @click.stop="deleteExhibitImg(i)">×</span>
+            </div>
+            <img-upload size='10' class="spgl-item--content__img" v-show="imgListExhibit.length < 6" :is-show-img='false' @input="inputExhibit"></img-upload>
+          </div>
+        </div>
       </div>
       <div class="spgl-item--content">
         <p class="spgl-item--content__sub">
@@ -230,7 +238,15 @@
             <el-button class="upload-img__tool--preview" size="small" @click="preview_detail">预览</el-button>
           </span>
         </p>
-        <img-upload size='10' class="spgl-item--content__img" v-model="imageUrl_detail"></img-upload>
+        <div class="upload-img__tool">
+          <div class="img__list">
+            <div class="img__list--wrap" v-for="(imgUrl, i) in imgListDetail" :key="i">
+              <img  class="img__list--item" :src="imgUrl">
+              <span class="avater-delete" @click.stop="deleteDetailImg(i)">×</span>
+            </div>
+            <img-upload size='10' class="spgl-item--content__img" v-show="imgListDetail.length < 6" :is-show-img='false' @input="inputDetail"></img-upload>
+          </div>
+        </div>
       </div>
     </div>
     <div class="spgl-item">
@@ -271,8 +287,19 @@
         <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
       </div>
     </div>
-    <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
-      <img :src="image_preview" alt="图片预览">
+    <el-dialog title="展示图片预览" :visible.sync="isShowImgPreview" width="600px">
+      <el-carousel trigger="click" :autoplay='false' :arrow='imgListExhibit.length > 1 ? "always" : "never"' height="400px">
+        <el-carousel-item v-for="(item, i) in imgListExhibit" :key="i">
+          <img :src="item" style="width: 560px;">
+        </el-carousel-item>
+      </el-carousel>
+    </el-dialog>
+    <el-dialog title="详情图片预览" :visible.sync="isShowImgDetail" width="600px">
+      <el-carousel trigger="click" :autoplay='false' :arrow='imgListDetail.length > 1 ? "always" : "never"' height="700px">
+        <el-carousel-item v-for="(item, i) in imgListDetail" :key="i">
+          <img :src="item" style="width: 560px;">
+        </el-carousel-item>
+      </el-carousel>
     </el-dialog>
     <el-dialog title="设置标签" :visible.sync="isShowTag" class="tag-dialog">
       <div class="current-tag">
@@ -317,17 +344,13 @@
     data () {
       return {
         isShowImgPreview: false,
+        isShowImgDetail: false,
         isShowTag: false,
-        image_preview: '',
-        imageUrl_exhibit: '',
-        imageUrl_detail: '',
-        activeLabelList: [],
         preset_typeEffect: [
           {name: '代餐', isSelect: false},
           {name: '塑形', isSelect: false},
           {name: '增肌', isSelect: false}
         ],
-        productionDate: '', // 生产日期
         formSpxx: {
           goodsTitle: '',
           typeEffects: ['美容'],
@@ -351,6 +374,8 @@
             {taste: '草莓味', stock: ''}
           ]
         },
+        imgListExhibit: [], // 展示图片
+        imgListDetail: [], // 详情长图
         isDefinitTime: false, // 是否定时发布
         definitData: '',
         recommends: [
@@ -414,13 +439,23 @@
       uploadImg () {
         // ..
       },
+      inputExhibit (val) {
+        this.imgListExhibit.push(val)
+      },
+      deleteExhibitImg (i) {
+        this.imgListExhibit.splice(i, 1)
+      },
+      inputDetail (val) {
+        this.imgListDetail.push(val)
+      },
+      deleteDetailImg (i) {
+        this.imgListDetail.splice(i, 1)
+      },
       preview_exhibit () {
         this.isShowImgPreview = true
-        this.image_preview = this.imageUrl_exhibit
       },
       preview_detail () {
-        this.isShowImgPreview = true
-        this.image_preview = this.imageUrl_detail
+        this.isShowImgDetail = true
       }
     }
   }
@@ -441,6 +476,24 @@
       padding: 0 30px;
       margin-top: 16px;
       margin-bottom: 30px;
+      .upload-img__tool {
+        .img__list {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .img__list--wrap {
+          position: relative;
+          margin-right: 40px;
+          margin-bottom: 30px;
+        }
+        .img__list--item {
+          display: inline-block;
+          width: 180px;
+          height: 150px;
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+        }
+      }
     }
     .spgl-item--footer {
       position: absolute;
@@ -610,8 +663,10 @@
       margin-bottom: 20px;
     }
     .spgl-item--content__img {
+      display: inline-block;
       width: 180px;
       height: 150px;
+      margin-bottom: 30px;
     }
   }
 </style>

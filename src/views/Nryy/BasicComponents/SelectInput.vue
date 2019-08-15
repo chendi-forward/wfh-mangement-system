@@ -1,6 +1,7 @@
 <template>
   <div class="my-select-input">
     <el-checkbox
+      :name='name'
       v-for="(item, index) in typeEffectList"
       v-model="item.isSelect"
       :key="index"
@@ -14,7 +15,8 @@
   export default {
     name: 'select-input-component',
     props: {
-      preset: Array
+      preset: Array,
+      name: String
     },
     data () {
       return {
@@ -33,7 +35,7 @@
       }
     },
     methods: {
-      addTypeEffect (val) {
+      addTypeEffect () {
         if (this.typeEffectList.map(item => item.name).includes(this.typeEffectAdd) || !this.typeEffectAdd) {
           return
         }

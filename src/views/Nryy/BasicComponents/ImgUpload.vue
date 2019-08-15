@@ -23,7 +23,11 @@
         type: String,
         default: '5'
       },
-      tip: String
+      tip: String,
+      isShowImg: {
+        type: Boolean,
+        default: true
+      }
     },
     data () {
       return {
@@ -40,7 +44,7 @@
         let reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onloadend = () => {
-          this.imageUrl = reader.result
+          this.isShowImg ? this.imageUrl = reader.result : ''
           this.$emit('input', reader.result)
         }
       },
