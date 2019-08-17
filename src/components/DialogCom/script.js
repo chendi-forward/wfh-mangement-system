@@ -8,6 +8,10 @@ export default {
     title: {
       type: String,
       default: '编辑'
+    },
+    width: {
+      type: String,
+      default: '650px'
     }
   },
   data () {
@@ -18,16 +22,13 @@ export default {
   methods: {
     cancleSave () {
       // 取消时的事件
-      this.dialogVisible = false
       this.$emit('cancle-save', this.dialogVisible)
     },
     sureSave () {
       // 确定时的事件
-      this.dialogVisible = false
       this.$emit('sure-save', this.dialogVisible)
     },
     handleClose () {
-      // console.log('1111')
       // 右上角关闭的事件
       this.cancleSave()
     }

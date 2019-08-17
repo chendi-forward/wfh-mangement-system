@@ -23,16 +23,10 @@
               <span>：</span>
             </label>
             <div class="spgl-form--input">
-              <el-checkbox-group class="spgl-form--checkbox" v-model="formSpxx.typeEffects">
-                <el-checkbox label="代餐"></el-checkbox>
-                <el-checkbox label="塑性"></el-checkbox>
-                <el-checkbox label="增肌"></el-checkbox>
-              </el-checkbox-group>
-              <el-input
-                class="spgl-form--input__type"
-                v-model="formSpxx.typeEffectAdd"
-                placeholder='输入关键词并回车...'>
-              </el-input>
+              <select-input
+                :preset="preset_typeEffect"
+                v-model="formSpxx.typeEffects"
+              ></select-input>
             </div>
           </div>
           <div class="spgl-form-item">
@@ -161,29 +155,10 @@
           </div>
           <div class="spgl-form-item">
             <label class="spgl-form--label">
-              <span>是否推荐</span>
-              <span>：</span>
-            </label>
-            <div class="spgl-form--content spgl-form--recommend">
-              <div class="spgl-form--recommend__group" v-for="(item, index) in formXssz.recommends" :key="index">
-                <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
-                <el-input
-                  class="spgl-form--recommend__input"
-                  type="number"
-                  v-model="item.value">
-                </el-input>
-              </div>
-            </div>
-          </div>
-          <div class="spgl-form-item">
-            <label class="spgl-form--label">
               <span>规格设置</span>
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--format">
-              <el-badge v-for="(item, index) in formXssz.formats" :key="index" value="×" class="spgl-form--format__label">
-                <el-button size="small">{{item}}</el-button>
-              </el-badge>
               <el-input
                 class="spgl-form--format__input"
                 type="text"
@@ -199,12 +174,10 @@
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--taste">
-              <el-input
-                class="spgl-form--taste__input"
-                type="text"
-                placeholder="输入关键字并回车..."
-                v-model="formXssz.taste">
-              </el-input>
+              <select-input
+                :preset="preset_taste"
+                v-model="formXssz.taste"
+              ></select-input>
             </div>
             <div class="spgl-form--rule">*必填项</div>
           </div>
@@ -214,29 +187,54 @@
     <div class="spgl-item">
       <div class="spgl-item--title">上传图片</div>
       <div class="spgl-item--content">
-        <p class="spgl-item--content__sub">展示图片：<span>*支持jpg/png格式，不超过10M</span></p>
-        <img-upload @upload-img='uploadImg'></img-upload>
+        <p class="spgl-item--content__sub">
+          展示图片：
+          <span>
+            <span>*支持jpg/png格式，不超过10M</span>
+            <el-button class="upload-img__tool--preview" size="small" @click="preview_exhibit">预览</el-button>
+          </span>
+        </p>
+        <img-upload size='10' class="spgl-item--content__img" v-model="imageUrl_exhibit"></img-upload>
       </div>
       <div class="spgl-item--content">
-        <p class="spgl-item--content__sub">商品详情长图：<span>*支持jpg/png格式，不超过10M</span></p>
-        <img-upload @upload-img='uploadImg'></img-upload>
+        <p class="spgl-item--content__sub">
+          商品详情长图：
+          <span>
+            <span>*支持jpg/png格式，不超过10M</span>
+            <el-button class="upload-img__tool--preview" size="small" @click="preview_detail">预览</el-button>
+          </span>
+        </p>
+        <img-upload size='10' class="spgl-item--content__img" v-model="imageUrl_detail"></img-upload>
       </div>
     </div>
     <div class="spgl-item">
       <div class="spgl-item--title">发布设置</div>
       <div class="spgl-item--content spgl-item__padding spgl-item--content__fusz">
         <form name="fbsz" class="spgl-form spgl-form__fusz">
-          <el-checkbox class="spgl-item--content__sub" v-model="isDefinitTime">定时发布：</el-checkbox>
+          <el-checkbox class="spgl-item--content__setTime" v-model="isDefinitTime">定时发布：</el-checkbox>
           <div class="spgl-form--dateSelect">
             <el-date-picker
               v-model="definitData"
-              type="date"
-              placeholder="选择日期">
+              type="datetime"
+              placeholder="选择发布时间">
             </el-date-picker>
-            <el-time-picker
-              v-model="definitTime"
-              placeholder="选择时间">
-            </el-time-picker>
+          </div>
+          <div class="spgl-form-item">
+            <label class="spgl-form--label">
+              <span>是否推荐</span>
+              <span>：</span>
+            </label>
+            <div class="spgl-form--content spgl-form--recommend">
+              <div class="spgl-form--recommend__group" v-for="(item, index) in recommends" :key="index">
+                <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
+                <el-input
+                  class="spgl-form--recommend__input"
+                  type="number"
+                  :disabled="!item.isSelect"
+                  v-model="item.value">
+                </el-input>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -246,23 +244,41 @@
         <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
       </div>
     </div>
+    <el-dialog title="图片预览" :visible.sync="isShowImgPreview">
+      <img :src="image_preview" alt="图片预览">
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import ImgUpload from './BasicComponents/ImgUpload_1'
+  import ImgUpload from './BasicComponents/ImgUpload'
+  import SelectInput from './BasicComponents/SelectInput'
   export default {
     name: 'spgl',
     components: {
-      'img-upload': ImgUpload
+      'img-upload': ImgUpload,
+      'select-input': SelectInput
     },
     data () {
       return {
+        isShowImgPreview: false,
+        image_preview: '',
+        imageUrl_exhibit: '',
+        imageUrl_detail: '',
         activeLabelList: [],
+        preset_typeEffect: [
+          {name: '代餐', isSelect: false},
+          {name: '塑形', isSelect: false},
+          {name: '增肌', isSelect: false}
+        ],
+        preset_taste: [
+          {name: '酸味', isSelect: false},
+          {name: '甜味', isSelect: false},
+          {name: '苦味', isSelect: false}
+        ],
         formSpxx: {
           goodsTitle: '',
-          typeEffects: [],
-          typeEffectAdd: '',
+          typeEffects: ['美容'],
           stock: '',
           price: '',
           v1: '',
@@ -275,13 +291,7 @@
         formXssz: {
           goodStauts: '',
           activeLabel: '',
-          recommends: [
-            {label: '热门推荐排序', isSelect: false, value: ''},
-            {label: '购物车推荐排序', isSelect: false, value: ''}
-          ],
-          formats: ['500g', '1kg'],
-          formatsAdd: '',
-          taste: ''
+          taste: []
         },
         options: [{
           value: '新品优惠',
@@ -293,10 +303,21 @@
         isSetLabel: false,
         isDefinitTime: false, // 是否定时发布
         definitData: '',
-        definitTime: ''
+        recommends: [
+          {label: '首页推荐排序', isSelect: false, value: ''},
+          {label: '购物车推荐排序', isSelect: false, value: ''}
+        ]
+      }
+    },
+    watch: {
+      'formSpxx.typeEffects' (n) {
+        console.log(n)
       }
     },
     methods: {
+      addTypeEffect (e) {
+        // ..
+      },
       setLabel () {
         // this.isSetLabel = true
       },
@@ -308,6 +329,14 @@
       },
       uploadImg () {
         // ..
+      },
+      preview_exhibit () {
+        this.isShowImgPreview = true
+        this.image_preview = this.imageUrl_exhibit
+      },
+      preview_detail () {
+        this.isShowImgPreview = true
+        this.image_preview = this.imageUrl_detail
       }
     }
   }
@@ -317,27 +346,27 @@
   .spgl {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    grid-template-rows: 553px 553px;
     grid-gap: 37px 18px;
     .spgl-item {
       background-color: #fff;
       position: relative;
       .spgl-item__padding {
-        padding-right: 30px;
-        padding-left: 30px;
+        padding-right: 5%;
+        padding-left: 5%;
       }
     }
     .spgl-item--title {
       height: 63px;
       line-height: 63px;
-      margin-bottom: 51px;
+      margin-bottom: 30px;
       border-radius: 4px 4px 0 0;
       padding: 0 21px;
       background-color: #F7F8F9;
       font-size: 18px;
     }
     .spgl-item--content {
-      padding: 0 0 0 30px;
+      padding: 0 30px;
+      margin-bottom: 30px;
     }
     .spgl-item--footer {
       position: absolute;
@@ -355,6 +384,7 @@
     }
     .spgl-form {
       .spgl-form-item {
+        display: flex;
         margin-bottom: 24px;
       }
       .spgl-form--label {
@@ -374,14 +404,12 @@
         }
       }
       .spgl-form--input {
-        display: inline-flex;
+        display: flex;
         justify-content: space-between;
-        align-items: center;
         width: 53%;
       }
       .spgl-form--checkbox {
         display: inline-block;
-        width: 470px;
       }
       .spgl-form--dateSelect {
         & > div {
@@ -396,15 +424,18 @@
       }
       .spgl-form--unit {
         display: inline-block;
+        line-height: 40px;
         margin-left: 12px;
       }
       .spgl-form--rule {
         display: inline-block;
+        line-height: 40px;
         margin-left: 12px;
         font-size: 13px;
         color: #fe4a56;
       }
       .spgl-form--num {
+        display: inline-block;
         span {
           margin-right: 4px;
         }
@@ -419,8 +450,6 @@
         margin-left: 12px;
       }
       .spgl-form--content {
-        height: 40px;
-        line-height: 40px;
         display: inline-block;
         width: 46%;
         .el-radio {
@@ -429,6 +458,7 @@
         }
       }
       .spgl-form--recommend {
+        width: 50%;
         .el-checkbox {
           margin-right: unset;
         }
@@ -441,6 +471,7 @@
           }
         }
         .spgl-form--recommend__input {
+          margin-left: 10px;
           width: 50px;
         }
       }
@@ -460,10 +491,22 @@
       }
     }
     .spgl-item--content__sub {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 20px;
       span {
         color: #fe4a56;
+        & > span {
+          margin-right: 10px;
+        }
       }
+    }
+    .spgl-item--content__setTime {
+      margin-bottom: 20px;
+    }
+    .spgl-item--content__img {
+      width: 180px;
+      height: 150px;
     }
   }
 </style>
@@ -472,6 +515,7 @@
   .spgl-form--checkbox {
     .el-checkbox {
       margin-right: 10px;
+      line-height: 40px;
     }
     .el-checkbox__label {
       padding-left: 5px;

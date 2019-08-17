@@ -95,19 +95,16 @@
         <el-table-column
           label="操作"
           align='center'
-          width="150">
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-edit"></i>
-          </button>
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-delete"></i>
-          </button>
+          width="160">
+          <template slot-scope="scope">
+            <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+            <el-button type="primary" class="definition-btn" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-checkbox v-model="isAllSelect">全选</el-checkbox>
         <el-button size="mini" class="success-btn" @click="createFn">新建</el-button>
       </div>
       <div class="page-wrap">
@@ -151,6 +148,7 @@ export default {
     cancel () {},
     handleSelectionChange () {},
     editHandle () {},
+    deleteHandle () {},
     createFn () {},
     handleSizeChange () {},
     handleCurrentChange () {},

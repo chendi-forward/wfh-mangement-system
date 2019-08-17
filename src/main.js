@@ -7,6 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './commons/commons.less'
 import './commons/tabs.less'
 import {post, get, patch, put} from './http'
+import 'COMMONS/element-reset.less'
+import 'COMMONS/commons.less'
+import 'COMMONS/tabs.less'
 
 Vue.config.productionTip = false
 
@@ -18,7 +21,7 @@ Vue.prototype.$put = put
 
 Vue.use(ElementUI)
 
-new Vue({
+window.vm = new Vue({
   router,
   store,
   render: h => h(App)

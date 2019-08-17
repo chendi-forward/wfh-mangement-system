@@ -1,7 +1,4 @@
 import befautify from 'ASSETS/image/timg.jpg'
-import befautify1 from 'ASSETS/image/timg (1).jpg'
-import befautify2 from 'ASSETS/image/timg (2).jpg'
-import befautify3 from 'ASSETS/image/timg (3).jpg'
 import DialogCom from '../../components/DialogCom'
 import Pagination from '../../components/Pagination'
 
@@ -79,6 +76,7 @@ export default {
       activeName: 'ordinary', // tabindex
       idNameNum: '', // 搜索关键字
       selectKey: '', // 选择关键字
+      newlabel: null, // 设置新的关键字
       options: []
     }
   },
@@ -89,44 +87,72 @@ export default {
         console.log(res, '==========')
       })
     },
+    // 添加标签
+    addLabel () {
+      this.$get('/user/label_setting', {
+        behavior: 'add',
+        label: this.newlabel
+      }).then((res) => {
+        if (res) {
+          this.getLabelData()
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '添加失败!'
+          })
+        }
+      })
+    },
     // 删除标签
     delBabel (item) {
-      console.log(item.id, '~~~~~~')
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+        this.$get('/user/label_setting?behavior=del&id=' + item.value).then((res) => {
+          if (res) {
+            this.getLabelData()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '删除失败!'
+            })
+          }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        })          
+        })
       })
     },
     // 获取标签数据
     getLabelData () {
       this.$get('/user/get_label').then((res) => {
-        // console.log(res, '000000000')
         if (res && res.length) {
           res.unshift({label: '全部用户', value: ''})
           this.options = res
         } else {
-          console.log('暂无标签数据')
+          this.$message({
+            type: 'info',
+            message: '暂无标签数据'
+          })
         }
       })
     },
     // 获取用户信息
     getUserData () {
-      // http://47.94.133.35:5500/user/show_user?ordinry
       let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}`
-      // console.log(url, '=============')
       this.$get(url).then(res => {
-        // console.log(res)
         if (res.content && res.content.length) {
           res.content.forEach((item) => {
             item.add_time = item.add_time.substr(0, 19)
@@ -148,7 +174,14 @@ export default {
       if (this.editOrSet === 'edit') {
         console.log('编辑')
       } else {
-        console.log('设置标签')
+        if (this.newlabel) {
+          this.addLabel()
+        } else {
+          this.$message({
+            type: 'info',
+            message: '请填写新标签内容'
+          })
+        }
       }
     },
     cancleSave (flag) {
@@ -156,13 +189,14 @@ export default {
       if (this.editOrSet === 'edit') {
         console.log('编辑')
       } else {
-        console.log('设置标签')
+        this.newlabel = null
       }
     },
     editHandle (row) {
       this.dialogFlag = true
       this.editOrSet = 'edit'
       this.title = '编辑'
+      this.formLabelAlign.update = row.invite_code
       console.log(row, '========')
     },
     setTags () {
@@ -170,14 +204,26 @@ export default {
       this.editOrSet = 'set'
       this.title = '设置标签'
     },
+    // 移动用户到---企业or普通
+    moveUser (val) {
+      console.log(val, '===========')
+      this.changeUserBach(val)
+    },
     // 批量修改用户的属性
     changeUserBach (val) {
       let url = `/user/change_user_bach?user_id=${this.user_id}&behavior=${val}`
       this.$get(url).then((res) => {
         console.log(res, '000000000')
         if (res && res.length) {
+          this.$message({
+            type: 'success',
+            message: '移入成功！！'
+          })
         } else {
-          console.log('暂无标签数据')
+          this.$message({
+            type: 'error',
+            message: '移入失败！！'
+          })
         }
       })
     },
@@ -211,16 +257,12 @@ export default {
       this.getUserData()
     },
     handleClick (val) {
-      console.log(this.activeName)
       this.getUserData()
-      if (this.activeName === 'black') {
-        this.moveOptions = this.moveOptions3
-      }
       if (this.activeName === 'ordinary') {
-        this.moveOptions = this.moveOptions1
       }
       if (this.activeName === 'super') {
-        this.moveOptions = this.moveOptions2
+      }
+      if (this.activeName === 'black') {
       }
     },
     inputChange () {

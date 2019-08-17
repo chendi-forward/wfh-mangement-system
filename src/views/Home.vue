@@ -8,60 +8,33 @@
             router
             default-active="yjck"
             class="el-menu-vertical-demo">
-            <div class="nav-menu__title">主页</div>
-            <el-menu-item index="yjck">
-              <i class="el-icon-setting"></i>
-              <span slot="title">业绩查看</span>
-            </el-menu-item>
-            <el-submenu index="nryy">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>内容运营</span>
-              </template>
-              <el-menu-item index="nryy-spgl">商品管理</el-menu-item>
-              <el-menu-item index="nryy-zngb">站内广播</el-menu-item>
-              <el-menu-item index="nryy-fxy">发现页</el-menu-item>
-              <el-menu-item index="nryy-gzsm">规则说明</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="yhgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">用户管理</span>
-            </el-menu-item>
-            <el-menu-item index="qxgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">权限管理</span>
-            </el-menu-item>
-            <el-menu-item index="shgl">
-              <i class="el-icon-menu"></i>
-              <span slot="title">售后管理</span>
-            </el-menu-item>
-            <div class="nav-menu__title">设置</div>
-            <el-menu-item index="hyjf">
-              <i class="el-icon-setting"></i>
-              <span slot="title">会员积分</span>
-            </el-menu-item>
-            <el-menu-item index="yxmk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">营销模块</span>
-            </el-menu-item>
-            <el-menu-item index="sjk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">数据库</span>
-            </el-menu-item>
-            <el-menu-item index="kjmk">
-              <i class="el-icon-menu"></i>
-              <span slot="title">会计模块</span>
-            </el-menu-item>
+            <div v-for='menu in menus' :key="menu.name">
+              <div class="nav-menu__title">{{menu.name}}</div>
+              <div v-for="subM in menu.children" :key='subM.name'>
+                <template v-if="subM.children">
+                  <el-submenu index="subM.path">
+                    <template slot="title">
+                      <i :class="subM.icon"></i>
+                      <span>{{subM.name}}</span>
+                    </template>
+                    <el-menu-item v-for="subSM in subM.children" :key='subSM.name' :index="subSM.path" @click="select(menu, subM, subSM)">{{subSM.name}}</el-menu-item>
+                  </el-submenu>
+                </template>
+                <template v-else>
+                  <el-menu-item :index="subM.path" @click="select(menu, subM)">
+                    <i :class="subM.icon"></i>
+                    <span slot="title">{{subM.name}}</span>
+                  </el-menu-item>
+                </template>
+              </div>
+            </div>
           </el-menu>
         </div>
       </el-aside>
       <el-container>
         <el-header class="main-header">
           <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item, i) in breadcrumbs" :key="i">{{item.name}}</el-breadcrumb-item>
           </el-breadcrumb>
           <el-input
             class="main-header__search"
@@ -91,12 +64,128 @@
 </template>
 
 <script>
+  let menus = [
+    {
+      name: '主页',
+      children: [
+        {
+          id: '1',
+          name: '业绩查看',
+          path: 'yjck',
+          icon: 'el-icon-setting'
+        },
+        {
+          id: '2',
+          name: '内容运营',
+          path: 'nryy',
+          icon: 'el-icon-location',
+          children: [
+            {
+              name: '商品管理',
+              path: 'nryy-spgl'
+            },
+            {
+              name: '站内广播',
+              path: 'nryy-zngb'
+            },
+            {
+              name: '发现页',
+              path: 'nryy-fxy'
+            },
+            {
+              name: '规则说明',
+              path: 'nryy-gzsm'
+            }
+          ]
+        },
+        {
+          id: '3',
+          name: '用户管理',
+          path: 'yhgl',
+          icon: 'el-icon-menu'
+        },
+        {
+          id: '4',
+          name: '权限管理',
+          path: 'qxgl',
+          icon: 'el-icon-menu'
+        },
+        {
+          id: '5',
+          name: '售后管理',
+          path: 'shgl',
+          icon: 'el-icon-menu'
+        }
+      ]
+    },
+    {
+      name: '设置',
+      children: [
+        {
+          id: '6',
+          name: '会员积分',
+          path: 'hyjf',
+          icon: 'el-icon-setting',
+          children: [
+            {
+              name: '时间设置',
+              path: 'hyjf-sjsz'
+            },
+            {
+              name: '会员返利',
+              path: 'hyjf-hyfl'
+            },
+            {
+              name: '积分设置',
+              path: 'hyjf-jfsz'
+            }
+          ]
+        },
+        {
+          id: '7',
+          name: '营销模块',
+          path: 'yxmk',
+          icon: 'el-icon-menu'
+        },
+        {
+          id: '8',
+          name: '数据库',
+          path: 'sjk',
+          icon: 'el-icon-menu'
+        },
+        {
+          id: '9',
+          name: '会计模块',
+          path: 'kjmk',
+          icon: 'el-icon-menu'
+        }
+      ]
+    }
+  ]
   export default {
     name: 'App',
     data () {
     return {
-        searchVal: ''
+        searchVal: '',
+        breadcrumbs: [menus[0], menus[0].children[0]],
+        menus
       }
+    },
+    methods: {
+      select (menu, subM, subSM) {
+        this.breadcrumbs = arguments
+      }
+    },
+    mounted () {
+      let role = sessionStorage.getItem('role')
+      var roleArr = role.split('')
+      menus.forEach((item) => {
+          item.children = item.children.filter((data) => {
+            console.log(roleArr.includes(data.id))
+            return roleArr.includes(data.id)
+          })
+        })
+      console.log(roleArr, menus, '============')
     }
   }
 </script>
@@ -199,6 +288,14 @@
       color: #fff;
     }
   }
+}
+
+.el-button--small {
+  padding: 8px 15px;
+}
+
+.el-time-spinner__item {
+  text-align: center;
 }
 
 .main-header {

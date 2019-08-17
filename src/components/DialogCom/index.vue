@@ -3,7 +3,7 @@
       <el-dialog
         :title="title"
         :visible="dialogVisible"
-        width="650px"
+        :width="width"
         :before-close="handleClose">
         <slot></slot>
         <span slot="footer" class="dialog-footer">

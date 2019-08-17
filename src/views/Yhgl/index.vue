@@ -140,15 +140,17 @@
     </div>
     <div class="table-footer">
       <el-button class="black-meun" v-if="activeName !== 'black'" :disabled="btnFlag" @click='changeUserBach("1")'>加入黑名单</el-button>
-      <el-select class="move-select" :class="{'dis-move-select': btnFlag}" v-model="moveKey" placeholder="移动到" :disabled="btnFlag">
+      <el-button class="black-meun" v-if="activeName == 'ordinary'" :disabled="btnFlag" @click='changeUserBach("3")'>加入企业用户</el-button>
+      <el-button class="black-meun" v-if="activeName == 'super'" :disabled="btnFlag" @click='changeUserBach("2")'>加入普通用户</el-button>
+      <el-select class="move-select" v-if="activeName == 'black'" :class="{'dis-move-select': btnFlag}" v-model="moveKey" placeholder="移动到" :disabled="btnFlag" @change='moveUser'>
         <el-option
-          v-for="item in moveOptions"
+          v-for="item in moveOptions3"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button class="delete" :disabled="btnFlag">删除</el-button>
+      <el-button class="delete" :disabled="btnFlag" @click='changeUserBach("4")'>删除</el-button>
       <my-pagination @sizeChange='handleSizeChange' @currentChange='handleCurrentChange' :total="total"></my-pagination>
       </el-pagination>
     </div>
@@ -158,7 +160,7 @@
           <el-form-item label="添加标签:">
           <el-select class="labelAddSelect" v-model="formLabelAlign.option" clearable placeholder="请选择">
             <el-option
-              v-for="item in formOptions"
+              v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -222,7 +224,7 @@
           <p class="header-title">添加标签</p>
           <el-input
             placeholder="请输入关键字..."
-            v-model="idNameNum">
+            v-model="newlabel">
           </el-input>
         </div>
       </div>

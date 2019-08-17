@@ -82,19 +82,20 @@
         <el-table-column
           label="操作"
           align='center'
-          width="80">
-          <button class="con-icon" @cell-click='editHandle(row)'>
-            <i class="el-icon-edit"></i>
-          </button>
+          width="160">
+          <template slot-scope="scope">
+            <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+            <el-button type="primary" class="definition-btn" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="account-list__item--footer">
-      <div class="selectAll-wrap">
+      <!-- <div class="selectAll-wrap">
         <el-checkbox v-model="isAllSelect">全选</el-checkbox>
         <el-button size="mini" class="success-btn" @click="exportFn">导出</el-button>
         <el-button size="mini" @click="deleteMany">批量删除</el-button>
-      </div>
+      </div> -->
       <div class="page-wrap">
         <el-pagination
           @size-change="handleSizeChange"
