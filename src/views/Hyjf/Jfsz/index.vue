@@ -1,5 +1,5 @@
 <template>
-  <div class="sfsz">
+  <div class="sfsz jfsz">
     <div class="spgl-wrap1">
       <div class="spgl-item">
         <div class="spgl-item--title">积分任务设置</div>
@@ -9,6 +9,7 @@
             ref="multipleTable"
             :data="tableData"
             tooltip-effect="dark"
+            stripe
             style="width: 100%">
             <el-table-column
               label="任务"
@@ -93,7 +94,7 @@
         </div>
         <div class="list-div sub-wrap">
           <el-scrollbar style="height: 100%;">
-            <ul class="row" v-for="(item, i) in userList" :key="i">
+            <ul class="row" v-for="(item, i) in userList" :key="i" :class="{'selected': item.checked}">
               <li class="checkbox"><el-checkbox v-model="item.checked"></el-checkbox></li>
               <li class="name">{{item.user + i}}</li>
               <li></li>

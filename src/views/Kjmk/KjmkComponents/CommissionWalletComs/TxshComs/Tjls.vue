@@ -5,6 +5,7 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
+        stripe
         style="width: 100%">
         <el-table-column
           label="日期"

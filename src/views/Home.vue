@@ -6,22 +6,22 @@
         <div class="nav-menu">
           <el-menu
             router
-            default-active="yjck"
+            :default-active="activeIndex"
             class="el-menu-vertical-demo">
             <div v-for='menu in menus' :key="menu.name">
               <div class="nav-menu__title">{{menu.name}}</div>
               <div v-for="subM in menu.children" :key='subM.name'>
                 <template v-if="subM.children">
-                  <el-submenu index="subM.path">
+                  <el-submenu :index="subM.path">
                     <template slot="title">
                       <i :class="subM.icon"></i>
                       <span>{{subM.name}}</span>
                     </template>
-                    <el-menu-item v-for="subSM in subM.children" :key='subSM.name' :index="subSM.path" @click="select(menu, subM, subSM)">{{subSM.name}}</el-menu-item>
+                    <el-menu-item v-for="subSM in subM.children" :key='subSM.name' :index="subSM.path">{{subSM.name}}</el-menu-item>
                   </el-submenu>
                 </template>
                 <template v-else>
-                  <el-menu-item :index="subM.path" @click="select(menu, subM)">
+                  <el-menu-item :index="subM.path">
                     <i :class="subM.icon"></i>
                     <span slot="title">{{subM.name}}</span>
                   </el-menu-item>
@@ -45,11 +45,12 @@
           </el-input>
           <div class="main-header__user">
             <div class="user-box__name">
-              <span>早上好，</span>
+              <span>{{timeStr[currentTime]}}，</span>
               <span>admin</span>
             </div>
             <div class="user-box__logout">
-              <span>退出</span>
+              <span>退出</span>&nbsp;&nbsp;
+              <span class="el-icon-switch-button" @click="logout"></span>
             </div>
           </div>
         </el-header>
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   let menus = [
     {
       name: '主页',
@@ -114,7 +116,23 @@
           id: '5',
           name: '售后管理',
           path: 'shgl',
-          icon: 'el-icon-menu'
+          icon: 'el-icon-menu',
+          children: [
+            {
+              name: '订单列表',
+              path: 'shgl-ddlb'
+            },
+            {
+              name: '退款管理',
+              path: 'shgl-tkgl'
+            }
+          ],
+          childrenNoMenu: [ //无菜单路由
+            {
+              name: '订单详情',
+              path: 'shgl-ddxq'
+            }
+          ]
         }
       ]
     },
@@ -167,13 +185,52 @@
     data () {
     return {
         searchVal: '',
+        timeStr: {
+          am: '上午好',
+          pm: '下午好'
+        },
+        currentTime: moment().format('a'),
+        activeIndex: 'yjck',
         breadcrumbs: [menus[0], menus[0].children[0]],
         menus
       }
     },
+    watch: {
+      '$route' () {
+        this.initBreadcrumbs()
+      }
+    },
     methods: {
-      select (menu, subM, subSM) {
-        this.breadcrumbs = arguments
+      initBreadcrumbs () {
+        this.menus.forEach(menu => {
+          menu.children.forEach(subM => {
+            if (subM.path === this.$route.name) {
+              this.activeIndex = this.$route.name
+              this.breadcrumbs = [menu, subM]
+            }
+            if (subM.children) {
+              subM.children.forEach(subSM => {
+                if (subSM.path === this.$route.name) {
+                  this.activeIndex = this.$route.name
+                  this.breadcrumbs = [menu, subM, subSM]
+                }
+              })
+            }
+            if (subM.childrenNoMenu) {
+              subM.childrenNoMenu.forEach(subSM => {
+                if (subSM.path === this.$route.name) {
+                  this.activeIndex = subM.children[0].path // 无菜单路由菜单激活样式设置给第一个子菜单
+                  this.breadcrumbs = [menu, subM, subSM]
+                }
+              })
+            }
+          })
+        })
+      },
+      logout () {
+        localStorage.clear()
+        sessionStorage.clear()
+        this.$router.push({path: '/login'})
       }
     },
     mounted () {
@@ -317,6 +374,12 @@
   .main-header__user {
     display: flex;
     align-items: center;
+    .user-box__name {
+      margin-right: 35px;
+    }
+    .el-icon-switch-button {
+      cursor: pointer;
+    }
   }
 }
 
@@ -359,11 +422,6 @@
       line-height: 320px;
     }
   }
-}
-
-.main-content {
-  width: 100%;
-  height: 100%;
 }
 
 #app {

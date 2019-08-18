@@ -97,6 +97,7 @@
       grid-template-rows: repeat(2, 1fr);
       grid-column-gap: 25px;
       grid-row-gap: 18px;
+      height: 861px;
     }
     .gzsm-footer {
       margin-top: 38px;
@@ -123,6 +124,7 @@
       .title {
         height: 63px;
         line-height: 63px;
+        margin-bottom: 51px;
         border-radius: 4px 4px 0 0;
         padding: 0 21px;
         background-color: #F7F8F9;

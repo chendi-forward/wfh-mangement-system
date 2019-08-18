@@ -30,20 +30,6 @@
             </div>
           </div>
           <div class="spgl-form-item">
-            <label for="stock" class="spgl-form--label">
-              <span>库存数量</span>
-              <span>：</span>
-            </label>
-            <el-input
-              class="spgl-form--input"
-              v-model="formSpxx.stock"
-              placeholder='输入数量...'
-              name="stock">
-            </el-input>
-            <div class="spgl-form--unit">（单位：件）</div>
-            <div class="spgl-form--rule">*必填项</div>
-          </div>
-          <div class="spgl-form-item">
             <label for="price" class="spgl-form--label">
               <span>价格</span>
               <span>：</span>
@@ -107,19 +93,43 @@
             <div class="spgl-form--unit">（单位：%）</div>
           </div>
           <div class="spgl-form-item">
-            <label for="content" class="spgl-form--label content-label">
-              <span>内容简介</span>
+            <label for="date" class="spgl-form--label">
+              <span>生产日期</span>
+              <span>：</span>
+            </label>
+            <el-date-picker
+              class="spgl-form--input data-input"
+              v-model="formSpxx.date"
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+            <div class="spgl-form--rule">*必填项</div>
+          </div>
+          <div class="spgl-form-item">
+            <label for="origin" class="spgl-form--label">
+              <span>产地</span>
               <span>：</span>
             </label>
             <el-input
               class="spgl-form--input"
-              v-model="formSpxx.content"
-              type="textarea"
-              :rows="3"
-              placeholder='输入内容...'
-              name="content">
+              v-model="formSpxx.origin"
+              placeholder='输入产地...'
+              name="origin">
             </el-input>
-            <div class="spgl-form--rule">*必填项，0-30个字</div>
+            <div class="spgl-form--rule">*必填项</div>
+          </div>
+          <div class="spgl-form-item">
+            <label for="typeEffect" class="spgl-form--label">
+              <span>说明</span>
+              <span>：</span>
+            </label>
+            <div class="spgl-form--input">
+              <el-checkbox-group v-model="formSpxx.description">
+              <el-checkbox label="药监认证"></el-checkbox>
+              <el-checkbox label="假一赔十"></el-checkbox>
+              <el-checkbox label="极速退款"></el-checkbox>
+            </el-checkbox-group>
+            </div>
           </div>
         </form>
       </div>
@@ -166,7 +176,7 @@
                 v-model="formXssz.formatAdd">
               </el-input>
             </div>
-            <div class="spgl-form--rule">*必填项</div>
+            <div class="spgl-form--unit">（单位：g）</div>
           </div>
           <div class="spgl-form-item">
             <label class="spgl-form--label">
@@ -174,10 +184,27 @@
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--taste">
-              <select-input
+              <label for="taste">口味</label>
+              <el-input
+                name='taste'
+                class="spgl-form--format__input"
+                type="text"
+                placeholder="输入口味"
+                v-model="formXssz.taste">
+              </el-input>
+              <label for="stock">库存(件)</label>
+              <el-input
+                name='stock'
+                class="spgl-form--format__input"
+                type="text"
+                placeholder="输入库存"
+                v-model="formXssz.stock">
+              </el-input>
+              <!-- <select-input
+                name='taste'
                 :preset="preset_taste"
                 v-model="formXssz.taste"
-              ></select-input>
+              ></select-input> -->
             </div>
             <div class="spgl-form--rule">*必填项</div>
           </div>
@@ -227,12 +254,12 @@
             <div class="spgl-form--content spgl-form--recommend">
               <div class="spgl-form--recommend__group" v-for="(item, index) in recommends" :key="index">
                 <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
-                <el-input
+                <!-- <el-input
                   class="spgl-form--recommend__input"
                   type="number"
                   :disabled="!item.isSelect"
                   v-model="item.value">
-                </el-input>
+                </el-input> -->
               </div>
             </div>
           </div>
@@ -276,6 +303,7 @@
           {name: '甜味', isSelect: false},
           {name: '苦味', isSelect: false}
         ],
+        productionDate: '', // 生产日期
         formSpxx: {
           goodsTitle: '',
           typeEffects: ['美容'],
@@ -286,12 +314,14 @@
           v3: '',
           v4: '',
           v5: '',
-          content: ''
+          data: '', // 生产日期
+          origin: '', // 产地
+          description: [] // 说明
         },
         formXssz: {
           goodStauts: '',
           activeLabel: '',
-          taste: []
+          taste: ''
         },
         options: [{
           value: '新品优惠',
@@ -304,8 +334,8 @@
         isDefinitTime: false, // 是否定时发布
         definitData: '',
         recommends: [
-          {label: '首页推荐排序', isSelect: false, value: ''},
-          {label: '购物车推荐排序', isSelect: false, value: ''}
+          {label: '首页推荐排序', isSelect: false, value: 0},
+          {label: '购物车推荐排序', isSelect: false, value: 0}
         ]
       }
     },
@@ -348,21 +378,10 @@
     grid-template-columns: 3fr 2fr;
     grid-gap: 37px 18px;
     .spgl-item {
-      background-color: #fff;
-      position: relative;
       .spgl-item__padding {
         padding-right: 5%;
         padding-left: 5%;
       }
-    }
-    .spgl-item--title {
-      height: 63px;
-      line-height: 63px;
-      margin-bottom: 30px;
-      border-radius: 4px 4px 0 0;
-      padding: 0 21px;
-      background-color: #F7F8F9;
-      font-size: 18px;
     }
     .spgl-item--content {
       padding: 0 30px;
@@ -418,9 +437,6 @@
             margin-bottom: 20px
           }
         }
-      }
-      .spgl-form--input__type {
-        // width: 50%;
       }
       .spgl-form--unit {
         display: inline-block;
@@ -529,6 +545,23 @@
   .spgl-form__state {
     .spgl-form--setLabel {
       color: #ff4b57
+    }
+  }
+  .spgl-form--input {
+    .el-checkbox-group {
+      margin-right: -30px;
+      .el-checkbox {
+        line-height: 40px;
+      }
+    }
+  }
+  .data-input {
+    .el-input__inner {
+      padding-right: 25px;
+    }
+    .el-input__prefix {
+      right: 5px;
+      left: unset;
     }
   }
 </style>

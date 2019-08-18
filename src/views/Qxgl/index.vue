@@ -76,7 +76,4 @@
 
 <script src="./script.js"></script>
 
-
-<style src="./style.less" lang="less">
-
-</style>
+<style src="./style.less" lang="less"></style>

@@ -152,7 +152,6 @@
       </el-select>
       <el-button class="delete" :disabled="btnFlag" @click='changeUserBach("4")'>删除</el-button>
       <my-pagination @sizeChange='handleSizeChange' @currentChange='handleCurrentChange' :total="total"></my-pagination>
-      </el-pagination>
     </div>
     <dialog-Com :dialogFlag='dialogFlag' :title='title' @sure-save='sureSave' @cancle-save='cancleSave'>
       <div class="form-box" v-if="editOrSet == 'edit'">

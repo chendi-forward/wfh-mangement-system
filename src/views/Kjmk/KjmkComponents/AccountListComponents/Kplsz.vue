@@ -2,7 +2,7 @@
   <div class="account-list__item">
     <div class="account-list__item--body">
       <div class="kpls-table--classify">
-        <sub-nav v-model="selected" :sub-list='subList'></sub-nav>
+        <sub-nav v-model="selected" :sub-list='subList' class="not-border"></sub-nav>
         <div class="kpls-table--search">
           <span>流水搜索：</span>
            <el-input
@@ -16,11 +16,11 @@
       </div>
       <component :is='selected'></component>
     </div>
-    <div class="account-list__item--footer">
-      <!-- <div class="selectAll-wrap">
+    <div class="ssxd-footer">
+      <div class="selectAll-wrap">
         <el-button size="mini" class="success-btn" @click="exportFn">导出</el-button>
         <el-button size="mini" @click="deleteMany">批量删除</el-button>
-      </div> -->
+      </div>
       <div class="page-wrap">
         <el-pagination
           @size-change="handleSizeChange"
@@ -32,14 +32,13 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
-        <el-button size="mini" class="success-btn" @click="submit">确定</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import subNav from '../SubNav_comp'
+  import subNav from 'COMPONENTS/SubNav_comp'
   import dzfp from './KplsComps/Dzfp'
   import zzfp from './KplsComps/Zzfp'
   export default {
@@ -132,19 +131,6 @@
     padding: 10px;
     padding-right: 30px;
     border-bottom: 1px solid #ebeef5;
-    .sub-nav {
-      padding: 0;
-      height: 45px;
-      .sub-nav__item {
-        margin-right: 0 !important;
-        padding: 0 50px;
-        border: none !important;
-        border-left: 1px solid #363f51 !important;
-        &:first-child {
-          border-left: 1px solid rgba(0, 0, 0, 0) !important;
-        }
-      }
-    }
   }
   .kpls-table__input {
     margin-right: 20px;

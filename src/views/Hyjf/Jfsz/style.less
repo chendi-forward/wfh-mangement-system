@@ -1,9 +1,7 @@
-.sfsz {
+.sfsz.jfsz {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-gap: 15px 21px;
-    height: 100%;
-    overflow-y: scroll;
     .el-input {
         width: 100px;
         margin-left: 5px;
@@ -53,18 +51,6 @@
             align-items: center;
         }
     }
-    .spgl-item {
-        background-color: #fff;
-        position: relative;
-    }
-    .spgl-item--title {
-        height: 63px;
-        line-height: 63px;
-        border-radius: 4px 4px 0 0;
-        padding: 0 21px;
-        background-color: #F7F8F9;
-        font-size: 18px;
-    }
     .spgl-item--content {
         height: calc(~'100% - 63px');
     }
@@ -102,7 +88,8 @@
                     width: 50px;
                     text-align: center;
                 }
-                &:hover {
+                &:hover,
+                &.selected {
                     background-color: #FF4B57;
                     color: #fff;
                 }

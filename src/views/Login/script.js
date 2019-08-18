@@ -27,27 +27,28 @@ export default {
     },
     submitUser () {
       let { account, password } = this.userForm
+      if (!account) {
+        this.$message.error('请先正确填写用户名')
+        return
+      }
+      if (!password) {
+        this.$message.error('请先正确填写密码')
+        return
+      }
       this.$post('/authority/login', { account, password }).then((res) => {
         if (res.status === 'ok') {
-          console.log(res, '~~~~~~~~')
           this.validateUser(res)
           .then(() => {
             this.$emit('login-direct', this.$router.currentRoute.query.from)
           })
+        } else {
+          this.$message.error('密码或者账户错误，请重新输入！')
         }
       })
-      // return new Promise((resolve, reject) => {
-      //   if (username === 'admin' && password === '123456') {
-      //     this.validateUser()
-      //     .then(() => {
-      //       this.$emit('login-direct', this.$router.currentRoute.query.from)
-      //     })
-      //     // 登录成功之后 再执行
-      //     resolve()
-      //   } else {
-      //     reject()
-      //   }
-      // })
     }
+  },
+  mounted () {
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('user')
   }
 }
