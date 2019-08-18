@@ -1,4 +1,5 @@
 import inputOrText from 'COMPONENTS/inputOrText'
+// import _ from 'lodash'
 export default {
   name: 'spgl',
   components: {
@@ -6,31 +7,9 @@ export default {
   },
   data () {
     return {
-      tableData: [
-        {date: '分享到群', yjdx: 30, rwjd: 5, tjfled: 5, id: 1},
-        {date: '成功邀请', yjdx: 5, rwjd: 100, tjfled: 100, id: 2},
-        {date: '登录奖励', yjdx: 30, rwjd: 5, tjfled: 5, id: 3},
-        {date: '代销', yjdx: 200, rwjd: 100, tjfled: 100, id: 4},
-        {date: '评论奖励', yjdx: 5, rwjd: 20, tjfled: 20, id: 5},
-        {date: '实名认证', yjdx: '永久1次', rwjd: 100, tjfled: 100, id: 6},
-        {date: '补偿奖励', yjdx: '手动操作', rwjd: 20, tjfled: 20, id: 7},
-        {date: '月度销售排行奖', yjdx: 1, rwjd: 20000, tjfled: 10000, id: 8}
-      ],
-      tableDataOrigin: [
-        {date: '分享到群', yjdx: 30, rwjd: 5, tjfled: 5, id: 1},
-        {date: '成功邀请', yjdx: 5, rwjd: 100, tjfled: 100, id: 2},
-        {date: '登录奖励', yjdx: 30, rwjd: 5, tjfled: 5, id: 3},
-        {date: '代销', yjdx: 200, rwjd: 100, tjfled: 100, id: 4},
-        {date: '评论奖励', yjdx: 5, rwjd: 20, tjfled: 20, id: 5},
-        {date: '实名认证', yjdx: '永久1次', rwjd: 100, tjfled: 100, id: 6},
-        {date: '补偿奖励', yjdx: '手动操作', rwjd: 20, tjfled: 20, id: 7},
-        {date: '月度销售排行奖', yjdx: 1, rwjd: 20000, tjfled: 10000, id: 8}
-      ],
-      userList: [
-        {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false},
-        {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false},
-        {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}, {user: 'WFDOLL', checked: false}
-      ],
+      tableData: [],
+      tableDataOrigin: [],
+      userList: [],
       editSillForm: {
         every: 1000,
         everyM: 1000,
@@ -53,9 +32,76 @@ export default {
       searchKey: ''
     }
   },
+  created () {
+    this.getIntegralTask()
+    this.getIntegralAdvance()
+  },
   methods: {
+    // 获取积分任务配置
+    getIntegralTask () {
+      this.$get('/integral/get_integral_setting').then(res => {
+        if (res.data) {
+          this.tableDataOrigin = res.data
+          this.tableData = JSON.parse(JSON.stringify(res.data))
+        } else {
+          this.$message.error('数据获取异常异常')
+        }
+      })
+    },
+    //修改积分任务配置
+    changeIntegralTask (data) {
+      let obj = {}
+      data.forEach(item => {
+        obj[item.integral_id] = JSON.stringify(item)
+      })
+      console.log(obj, data)
+      this.$get('/integral/change_integral_setting', obj).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+        } else {
+          this.$message.error('编辑失败')
+        }
+      })
+    },
+    // 获取积分兑换门槛
+    getIntegralAdvance () {
+      this.$get('/integral/get_integral_advance').then(res => {
+        if (res.data) {
+          this.editSillForm = res.data
+          this.SillForm = JSON.parse(JSON.stringify(res.data))
+        } else {
+          this.$message.error('数据获取异常异常')
+        }
+      })
+    },
+    // 修改积分兑换门槛
+    changeIntegralAdvance () {
+      this.$post('/integral/change_integral_setting', this.SillForm).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+        } else {
+          this.$message.error('编辑失败')
+        }
+      })
+    },
+    // 赠送积分
     save () {
-      // ..
+      let str = []
+      this.userList.forEach(item => {
+        if (item.checked) {
+          str.push(item.user)
+        }
+      })
+      this.$get('/integral/given_integral', {
+        user_id: str.join(','),
+        integral: this.integral
+      }).then(res => {
+        if (res.data) {
+          this.$message.success('积分曾送成功')
+        } else {
+          this.$message.error('积分曾送失败')
+        }
+      })
     },
     cancel () {
       // ..
@@ -65,6 +111,7 @@ export default {
       this.editTaskShow = true
     },
     saveTaskFn () {
+      this.changeIntegralTask(this.tableData)
       this.editTaskShow = false
     },
     cancelTaskFn () {
@@ -77,6 +124,7 @@ export default {
     },
     saveSill () {
       Object.assign(this.SillForm, this.editSillForm)
+      this.changeIntegralAdvance()
       this.editSillShow = false
     },
     cancelSill () {
@@ -93,6 +141,23 @@ export default {
     cancelIntegralFn () {
       this.editIntegral = false
     },
-    search (v) {}
+    // 搜索用户
+    search () {
+      this.$get('/integral/show_user', {
+        search: this.searchKey,
+        current_page: 1
+      }).then(res => {
+        if (res.data.content) {
+          this.userList = res.data.content.map(item => {
+            return {
+              user: item.user_id,
+              checked: false
+            }
+          })
+        } else {
+          this.$message.error('搜索异常')
+        }
+      })
+    }
   }
 }

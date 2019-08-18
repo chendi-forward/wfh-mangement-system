@@ -24,11 +24,11 @@ export default {
   methods: {
     handleSizeChange (val) {
       // this.page_size =
-      this.$emit('sizeChange', val)
+      this.$emit('size-change', val)
     },
     handleCurrentChange (val) {
       // this.currentPage = false
-      this.$emit('currentChange', val)
+      this.$emit('current-change', val)
     }
   },
   watch: {

@@ -20,10 +20,15 @@ axios.interceptors.request.use(
     const user = sessionStorage.getItem('user')
     // config.data = JSON.stringify(config.data);
     config.data = qs.stringify(config.data)
+    console.log(config.data, '.....')
     config.headers = {
       'Content-Type':'application/x-www-form-urlencoded'
     }
-    if(token){
+    console.log(config, 'config')
+    if(token) {
+      if (!config.params) {
+        config.params = {}
+      }
       config.params['token'] = token
       config.params['user'] = user
     }

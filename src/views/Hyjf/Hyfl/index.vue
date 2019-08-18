@@ -14,28 +14,39 @@
             <el-table-column
               label="会员等级"
               align='center'
-              width="150">
-              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.date }}</span></template>
+              width="80">
+              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.level }}</span></template>
             </el-table-column>
             <el-table-column
               align='center'
-              label="返利基准">
+              label="返利基准"
+              width="80">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.yjdx" :input-data="scope.row.yjdx" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.yjdx = v}"></input-or-text>
+                <input-or-text :text-data="scope.row.rebate_proportion * 100" :input-data="scope.row.rebate_proportion * 100" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.rebate_proportion = v / 100}"></input-or-text>%
+              </template>
+            </el-table-column>
+            <el-table-column
+              align='center'
+              label="升级标准">
+              <template slot-scope="scope">
+                <input-or-text :text-data="scope.row.up_num" :input-data="scope.row.up_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.up_num = v}"></input-or-text> 罐/
+                <input-or-text :text-data="scope.row.up_money" :input-data="scope.row.up_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.up_money = v}"></input-or-text>元
               </template>
             </el-table-column>
             <el-table-column
               align='center'
               label="最低标准">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.rwjd" :input-data="scope.row.rwjd" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.rwjd = v}"></input-or-text>
+                <input-or-text :text-data="scope.row.base_num" :input-data="scope.row.base_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.base_num = v}"></input-or-text> 罐/
+                <input-or-text :text-data="scope.row.base_money" :input-data="scope.row.base_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.base_money = v}"></input-or-text>元
               </template>
             </el-table-column>
             <el-table-column
               align='center'
               label="等级回升标准">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.tjfled" :input-data="scope.row.tjfled" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.tjfled = v}"></input-or-text>
+                <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text> 罐/
+                <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text>元
               </template>
             </el-table-column>
           </el-table>
@@ -136,6 +147,7 @@
             :data="tableItems"
             tooltip-effect="dark"
             stripe
+            @expand-change="expandChange"
             style="width: 100%">
             <el-table-column
               type="selection"
@@ -145,7 +157,7 @@
               label="代理用户ID"
               align='center'
               width="150">
-              <template slot-scope="scope">{{ scope.row.userid }}</template>
+              <template slot-scope="scope">{{ scope.row.user_id }}</template>
             </el-table-column>
             <el-table-column
               align='center'
@@ -155,18 +167,18 @@
             <el-table-column
               align='center'
               label="代理成交金额">
-              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.date }}</span></template>
+              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.deal_money }}</span></template>
             </el-table-column>
             <el-table-column
               align='center'
               label="代理成交数量">
-              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.withdrawDeposit }}</span></template>
+              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.order }}</span></template>
             </el-table-column>
             <el-table-column
               label="代理返利金额"
               align='center'
               width="150">
-              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.dlflje }}</span></template>
+              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.balance }}</span></template>
             </el-table-column>
             <el-table-column
               label="返利详情"
@@ -189,7 +201,8 @@
         <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :total="400">
+          :page_size="pageSize"
+          :total="total">
         </my-pagination>
       </div>
     </div>
