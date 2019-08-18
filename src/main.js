@@ -8,6 +8,7 @@ import 'COMMONS/element-reset.less'
 import 'COMMONS/commons.less'
 import 'COMMONS/tabs.less'
 import 'COMMONS/iconfont.less'
+import 'COMMONS/commons.less'
 import {post, get, patch, put} from './http'
 
 Vue.config.productionTip = false
@@ -20,7 +21,7 @@ Vue.prototype.$put = put
 
 Vue.use(ElementUI)
 
-new Vue({
+window.vm = new Vue({
   router,
   store,
   render: h => h(App)

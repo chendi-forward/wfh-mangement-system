@@ -71,11 +71,13 @@
       name: '主页',
       children: [
         {
+          id: '1',
           name: '业绩查看',
           path: 'yjck',
           icon: 'el-icon-setting'
         },
         {
+          id: '2',
           name: '内容运营',
           path: 'nryy',
           icon: 'el-icon-location',
@@ -99,16 +101,19 @@
           ]
         },
         {
+          id: '3',
           name: '用户管理',
           path: 'yhgl',
           icon: 'el-icon-menu'
         },
         {
+          id: '4',
           name: '权限管理',
           path: 'qxgl',
           icon: 'el-icon-menu'
         },
         {
+          id: '5',
           name: '售后管理',
           path: 'shgl',
           icon: 'el-icon-menu',
@@ -135,6 +140,7 @@
       name: '设置',
       children: [
         {
+          id: '6',
           name: '会员积分',
           path: 'hyjf',
           icon: 'el-icon-setting',
@@ -154,16 +160,19 @@
           ]
         },
         {
+          id: '7',
           name: '营销模块',
           path: 'yxmk',
           icon: 'el-icon-menu'
         },
         {
+          id: '8',
           name: '数据库',
           path: 'sjk',
           icon: 'el-icon-menu'
         },
         {
+          id: '9',
           name: '会计模块',
           path: 'kjmk',
           icon: 'el-icon-menu'
@@ -224,8 +233,16 @@
         this.$router.push({path: '/login'})
       }
     },
-    created () {
-      this.initBreadcrumbs()
+    mounted () {
+      let role = sessionStorage.getItem('role')
+      var roleArr = role.split('')
+      menus.forEach((item) => {
+          item.children = item.children.filter((data) => {
+            console.log(roleArr.includes(data.id))
+            return roleArr.includes(data.id)
+          })
+        })
+      console.log(roleArr, menus, '============')
     }
   }
 </script>

@@ -11,6 +11,7 @@
 import {deepcopy} from './commons/util'
 import allRoutes from './routerFullPath'
 import {resetRouter} from './router'
+var vm
 // 公共页面白面单
 const whiteLink = ['/login', '/404', '/401', '/componentTest']
 export default {
