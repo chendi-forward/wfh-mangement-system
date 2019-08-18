@@ -1,19 +1,32 @@
 /* eslint-disable */
-import axios from 'axios'
-import router from './router'
-import { Message } from 'element-ui'
+import axios from 'axios';
+import qs from 'qs';
+import { Message } from 'element-ui';
 
-const token = sessionStorage.getItem('token')
-axios.defaults.timeout = 5000
-axios.defaults.baseURL ='http://47.94.133.35:5500/'
-axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
-axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.timeout = 10000;
+axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
+// axios.defaults.baseURL ='http://127.0.0.1:7777/'; // 线下
+
+// const token = sessionStorage.getItem('token')
+// axios.defaults.timeout = 5000
+// axios.defaults.baseURL ='http://47.94.133.35:5500/'
+// axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
+// axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
-    config.data = JSON.stringify(config.data)
+    const token = sessionStorage.getItem('token')
+    const user = sessionStorage.getItem('user')
+    // config.data = JSON.stringify(config.data);
+    config.data = qs.stringify(config.data)
+    config.headers = {
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+    if(token){
+      config.params['token'] = token
+      config.params['user'] = user
+    }
     return config;
   },
   error => {
@@ -25,10 +38,14 @@ axios.interceptors.request.use(
 //http response 拦截器
 axios.interceptors.response.use(
   response => {
-    if(response.data.errCode ==2){
-      router.push({
+    // console.log(response, window.vm.$router, '==============')
+    if (response.headers.user_token) {
+      sessionStorage.setItem('token', response.headers.user_token)
+    }
+    if(response.data.statuscode == 412){
+      window.vm.$router.push({
         path:"/login",
-        querry:{redirect:router.currentRoute.fullPath} //从哪个页面跳转
+        querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
       })
     }
     return response;

@@ -20,7 +20,7 @@ Vue.prototype.$put = put
 
 Vue.use(ElementUI)
 
-new Vue({
+window.vm = new Vue({
   router,
   store,
   render: h => h(App)
