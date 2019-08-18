@@ -236,6 +236,9 @@
     mounted () {
       let role = sessionStorage.getItem('role')
       var roleArr = role.split('')
+      roleArr.push("7")
+      roleArr.push("8")
+      roleArr.push("9")
       menus.forEach((item) => {
           item.children = item.children.filter((data) => {
             console.log(roleArr.includes(data.id))

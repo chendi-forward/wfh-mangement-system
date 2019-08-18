@@ -1,4 +1,4 @@
-# wfh-management-system2
+# wfh-management-system
 
 ## Project setup
 ```
