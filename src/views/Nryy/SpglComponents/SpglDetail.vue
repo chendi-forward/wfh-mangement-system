@@ -371,7 +371,6 @@
         formSpxx: {
           goodsTitle: '',
           typeEffects: [],
-          stock: '',
           price: '',
           v1: '',
           v2: '',
@@ -518,6 +517,8 @@
         let parmas = {
           'title': this.formSpxx.goodsTitle,
           'price': this.formSpxx.price,
+          'data': this.formSpxx.data,
+          'origin': this.formSpxx.origin,
           'description': this.formSpxx.description.length ? this.formSpxx.description.join(',') : '', // 说明
           'rebate': {   // 返利设置(key:会员等级，value:返利金额)
             '1': this.formSpxx.v1,
