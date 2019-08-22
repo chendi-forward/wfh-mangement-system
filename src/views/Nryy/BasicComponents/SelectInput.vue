@@ -16,22 +16,35 @@
     name: 'select-input-component',
     props: {
       preset: Array,
-      name: String
+      name: String,
+      value: {
+        type: Array,
+        default: () => []
+      }
     },
     data () {
       return {
-        typeEffectList: this.preset,
         typeEffectAdd: ''
       }
     },
     computed: {
-      typeEffects () {
-        return this.typeEffectList.map(item => item.isSelect && item.name).filter(item => item)
-      }
-    },
-    watch: {
-      typeEffects (n) {
-        this.$emit('input', n)
+      typeEffectList: {
+        get () {
+          if (this.value.length) {
+            return this.value.map(item => {
+              return {
+                name: item,
+                isSelect: true
+              }
+            })
+          } else {
+            return this.preset
+          }
+        },
+        set (val) {
+          let typeEffects = val.map(item => item.isSelect && item.name).filter(item => item)
+          this.$emit('input', typeEffects)
+        }
       }
     },
     methods: {

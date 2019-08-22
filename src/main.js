@@ -8,7 +8,7 @@ import 'COMMONS/element-reset.less'
 import 'COMMONS/commons.less'
 import 'COMMONS/tabs.less'
 import 'COMMONS/iconfont.less'
-import {post, get, patch, put} from './http'
+import {post, get, patch, put} from './api/http'
 
 Vue.config.productionTip = false
 

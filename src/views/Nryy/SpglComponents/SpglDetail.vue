@@ -158,7 +158,7 @@
                 v-for="(item, index) in currentTag"
                 :key="index"
                 :label="item.name"
-                :value="item.name">
+                :value="item.value">
               </el-option>
             </el-select>
             <el-button class="spgl-form--setLabel" size="small" @click="setLabel">设置标签</el-button>
@@ -172,7 +172,7 @@
               <el-input
                 class="spgl-form--format__input"
                 type="text"
-                placeholder="输入关键字并回车..."
+                placeholder="输入关键字..."
                 v-model="formXssz.formatAdd">
               </el-input>
             </div>
@@ -226,7 +226,15 @@
               <img  class="img__list--item" :src="imgUrl">
               <span class="avater-delete" @click.stop="deleteExhibitImg(i)">×</span>
             </div>
-            <img-upload size='10' class="spgl-item--content__img" v-show="imgListExhibit.length < 6" :is-show-img='false' @input="inputExhibit"></img-upload>
+            <img-upload
+              size='10'
+              class="spgl-item--content__img"
+              v-show="imgListExhibit.length < 6"
+              :is-show-img='false'
+              key-name="goods"
+              @upload-success='exhibitUploadSuccess'
+              @upload-error='exhibitUploadError'>
+            </img-upload>
           </div>
         </div>
       </div>
@@ -244,7 +252,16 @@
               <img  class="img__list--item" :src="imgUrl">
               <span class="avater-delete" @click.stop="deleteDetailImg(i)">×</span>
             </div>
-            <img-upload size='10' class="spgl-item--content__img" v-show="imgListDetail.length < 6" :is-show-img='false' @input="inputDetail"></img-upload>
+            <img-upload
+              size='10'
+              class="spgl-item--content__img"
+              v-show="imgListDetail.length < 6"
+              :is-show-img='false'
+              key-name="goods"
+              @upload-success='detailUploadSuccess'
+              @upload-error='detailUploadError'>
+            </img-upload>
+            <!-- <img-upload size='10' class="spgl-item--content__img" v-show="imgListDetail.length < 6" :is-show-img='false' @input="inputDetail"></img-upload> -->
           </div>
         </div>
       </div>
@@ -301,11 +318,11 @@
         </el-carousel-item>
       </el-carousel>
     </el-dialog>
-    <el-dialog title="设置标签" :visible.sync="isShowTag" class="tag-dialog">
+    <dialog-com v-model="isShowTag" title="设置标签" :is-show-footer='false' class="tag-dialog">
       <div class="current-tag">
         <div class="tag--title">当前标签</div>
         <div class="current-tag--content">
-          <div class="current-tag__item" v-for="(item, i) in currentTag" :key="item.name">
+          <div class="current-tag__item" v-for="(item, i) in currentTag" :key="item.value">
             <span>{{item.name}}</span>
             <span class="avater-delete" @click="deleteTag(i)">×</span>
           </div>
@@ -317,29 +334,29 @@
           <input
             class="el-input__inner"
             type='text'
-            placeholder="输入标签并回车..."
-            v-model="newTag"
-            @keyup.enter="addTag"
-          />
+            placeholder="输入标签..."
+            v-model="newTag"/>
+          <el-button size="mini" class="success-btn" @click="saveTag">确定</el-button>
         </div>
       </div>
-      <div class="save-tag">
-        <el-button size="mini" class="success-btn" @click="saveTag">保存</el-button>
-        <el-button size="mini" class="cancel-btn" @click="cancelTag">取消</el-button>
-      </div>
-    </el-dialog>
+    </dialog-com>
   </div>
 </template>
 
 <script>
   import ImgUpload from '../BasicComponents/ImgUpload'
   import SelectInput from '../BasicComponents/SelectInput'
+  import DialogCom from 'COMPONENTS/DialogCom'
+  import * as commonsConfig from 'COMMONS/commonsConfig.js'
   import $ from 'jquery'
+  let base_url = commonsConfig.BASE_URL
+
   export default {
     name: 'spgl-detail',
     components: {
       'img-upload': ImgUpload,
-      'select-input': SelectInput
+      'select-input': SelectInput,
+      'dialog-com': DialogCom
     },
     data () {
       return {
@@ -353,7 +370,7 @@
         ],
         formSpxx: {
           goodsTitle: '',
-          typeEffects: ['美容'],
+          typeEffects: [],
           stock: '',
           price: '',
           v1: '',
@@ -365,15 +382,16 @@
           origin: '', // 产地
           description: [] // 说明
         },
-        taste: '', // 添加的口味
         formXssz: {
           goodStauts: '',
           activeLabel: '',
+          formatAdd: '',
           taste: [
             {taste: '牛奶味', stock: ''},
             {taste: '草莓味', stock: ''}
           ]
         },
+        taste: '', // 添加的口味
         imgListExhibit: [], // 展示图片
         imgListDetail: [], // 详情长图
         isDefinitTime: false, // 是否定时发布
@@ -382,19 +400,13 @@
           {label: '首页推荐排序', isSelect: false, value: ''},
           {label: '购物车推荐排序', isSelect: false, value: ''}
         ],
-        currentTag: [
-          {name: '新品优惠'},
-          {name: '节日促销'},
-          {name: '新客专享'},
-          {name: '周年大促'}
-        ],
+        selectTag: '',
+        currentTag: [],
         newTag: ''
       }
     },
-    watch: {
-      'formSpxx.typeEffects' (n) {
-        console.log(n)
-      }
+    mounted () {
+      this.getLabel()
     },
     methods: {
       addTaste () {
@@ -410,52 +422,125 @@
       deleteTaste (i) {
         this.formXssz.taste.splice(i, 1)
       },
+      getLabel () {
+        this.$get('/content/active/get_label')
+        .then(res => {
+          if (res.message === 'ok') {
+            this.currentTag = res.data.map(item => {
+              return {
+                name: item.label,
+                value: item.value
+              }
+            })
+          }
+        })
+      },
       setLabel () {
         this.isShowTag = true
+        this.getLabel()
       },
       deleteTag (i) {
-        this.currentTag.splice(i, 1)
-      },
-      addTag () {
-        this.currentTag.push({
-          name: this.newTag
-        })
-        this.$nextTick(() => {
-          this.newTag = ''
+        let id = this.currentTag[i].value
+        this.$get(`/content/active/setting_label?behavior=del&id=${id}`)
+        .then(res => {
+          if (res.message === 'ok') {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.getLabel()
+          }
         })
       },
       saveTag () {
-        // ..
+        let currentTag = this.currentTag.map(item => item.name)
+        if (currentTag.includes(this.newTag)) {
+          this.$message({
+            type: 'error',
+            message: '标签已存在!'
+          })
+          return
+        }
+        if (this.newTag === '') {
+          this.$message({
+            type: 'error',
+            message: '标签不能为空!'
+          })
+          return
+        }
+        this.$get(`/content/active/setting_label?behavior=add&label=${this.newTag}`)
+        .then(res => {
+          if (res.message === 'ok') {
+            this.$message({
+              type: 'success',
+              message: '添加成功'
+            })
+            this.getLabel()
+            this.$nextTick(() => {
+              this.newTag = ''
+            })
+          }
+        })
       },
-      cancelTag () {
-        // ..
+      // 上传展示图
+      exhibitUploadSuccess (res) {
+        if (res.message === 'ok') {
+          this.imgListExhibit.push(base_url + res.path)
+        }
       },
-      save () {
-        // ..
-      },
-      cancel () {
-        this.$emit('toggle-component', 'cancel')
-      },
-      uploadImg () {
-        // ..
-      },
-      inputExhibit (val) {
-        this.imgListExhibit.push(val)
+      exhibitUploadError (res) {
+        console.log('TCL: exhibitUploadError -> res', res)
       },
       deleteExhibitImg (i) {
         this.imgListExhibit.splice(i, 1)
       },
-      inputDetail (val) {
-        this.imgListDetail.push(val)
+      // 上传长图
+      detailUploadSuccess (res) {
+        if (res.message === 'ok') {
+          this.imgListDetail.push(base_url + res.path)
+        }
+      },
+      detailUploadError () {
+        console.log('TCL: exhibitUploadError -> res', res)
       },
       deleteDetailImg (i) {
         this.imgListDetail.splice(i, 1)
       },
+
       preview_exhibit () {
         this.isShowImgPreview = true
       },
       preview_detail () {
         this.isShowImgDetail = true
+      },
+
+      save () {
+        let parmas = {
+          'title': this.formSpxx.goodsTitle,
+          'price': this.formSpxx.price,
+          'description': this.formSpxx.description.length ? this.formSpxx.description.join(',') : '', // 说明
+          'rebate': {   // 返利设置(key:会员等级，value:返利金额)
+            '1': this.formSpxx.v1,
+            '2': this.formSpxx.v2,
+            '3': this.formSpxx.v3,
+            '4': this.formSpxx.v4,
+            '5': this.formSpxx.v5
+          },
+          'show_pic': this.imgListExhibit.length ? this.imgListExhibit.join(',') : '',
+          'detail_pic': this.imgListDetail.length ? this.imgListDetail.join(',') : '',
+          'weight': this.formXssz.formatAdd + 'g', // --> 规格（重量）
+          'specification': this.formXssz.taste,
+          'mind_order': this.recommends[0].isSelect ? this.recommends[0].isSelect.value : '', // --> 主页推荐顺序(不传默认不推荐)
+          'cart_order': this.recommends[1].isSelect ? this.recommends[1].isSelect.value : '', // --> 购物车推荐顺序(不传默认不推荐)
+          'efficacy': this.formSpxx.typeEffects, // --> 功效(可以不传)
+          'state': this.formXssz.goodStauts, // --> 上架下架状态（1：上架，0：下架）(默认是1)
+          'label_id': this.formXssz.activeLabel, // --> 标签id
+          'publish_time': this.isDefinitTime ? this.definitData : '' // --> 定时上架时间(不传，默认立即上架)
+        }
+        console.log(parmas)
+      },
+      cancel () {
+        this.$emit('toggle-component', 'cancel')
       }
     }
   }
@@ -726,6 +811,12 @@
       }
       .add-tag {
         margin-bottom: 15px;
+        .add-tag--content {
+          display: flex;
+          .el-input__inner {
+            margin-right: 20px;
+          }
+        }
       }
     }
     .current-tag {

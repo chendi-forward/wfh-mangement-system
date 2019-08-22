@@ -2,10 +2,11 @@
 import axios from 'axios';
 import qs from 'qs';
 import { Message } from 'element-ui';
+import * as commonsConfig from 'COMMONS/commonsConfig.js'
 
-axios.defaults.timeout = 10000;
-axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
-// axios.defaults.baseURL ='http://127.0.0.1:7777/'; // 线下
+axios.defaults.timeout = 10000
+axios.defaults.baseURL = commonsConfig.BASE_URL; // 线上
+// axios.defaults.baseURL = 'http://127.0.0.1:7777/'; // 线下
 
 // const token = sessionStorage.getItem('token')
 // axios.defaults.timeout = 5000
@@ -16,17 +17,17 @@ axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    const token = sessionStorage.getItem('token')
+    // const token = sessionStorage.getItem('token')
     const user = sessionStorage.getItem('user')
     // config.data = JSON.stringify(config.data);
     config.data = qs.stringify(config.data)
     config.headers = {
       'Content-Type':'application/x-www-form-urlencoded'
     }
-    if(token){
-      config.params['token'] = token
-      config.params['user'] = user
-    }
+    // if(token){
+    //   config.params['token'] = token
+    //   config.params['user'] = user
+    // }
     return config;
   },
   error => {
