@@ -50,6 +50,7 @@
       }
     },
     methods: {
+      selectChange () {}
     }
   }
 </script>

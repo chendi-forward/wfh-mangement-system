@@ -63,16 +63,28 @@
         <div class="spgl-item--title">推荐返利设置</div>
         <div class="spgl-item--content content2">
           <sub-nav v-model="selected" :sub-list='subList' class="not-border"></sub-nav>
-          <div v-show="selected == 0">
+          <div v-show="selected == 1">
             <div class="edit-div sub-content" v-show='editCommonShow'>
-              <p>返佣比例：<el-input v-model="editCommonForm.every" placeholder="请输入分值"></el-input>（%）</p>
-              <p>邀请有效时间：<el-input v-model="editCommonForm.reach" placeholder="请输入分值"></el-input>（天）</p>
-              <p>提成有效时间：<el-input v-model="editCommonForm.reachEvery" placeholder="请输入分值"></el-input>（天）</p>
+              <p v-for="(item, i) in editCommonForm" :key='i'>
+                {{item.notes}}：<el-input v-model="item.num" placeholder="请输入分值"></el-input>
+                <span v-if="item.type_id=='rebate'">
+                  <!-- （%） -->
+                </span>
+                <span v-else>
+                  （天）
+                </span>
+              </p>
             </div>
             <div class="view-div sub-content" v-show='!editCommonShow'>
-              <p>返佣比例：{{commonForm.every}}（%）</p>
-              <p>邀请有效时间：{{commonForm.reach}}（天）</p>
-              <p>提成有效时间：{{commonForm.reachEvery}}（天）</p>
+              <p v-for="(item, i) in commonForm" :key='i'>
+                {{item.notes}}：{{item.num}}
+                <span v-if="item.type_id=='rebate'">
+                  <!-- （%） -->
+                </span>
+                <span v-else>
+                  （天）
+                </span>
+              </p>
             </div>
             <div class="edit" v-show='!editCommonShow'>
               <el-button size="mini" class="success-btn" @click="editCommon">编辑</el-button>
@@ -82,11 +94,11 @@
               <el-button size="mini" @click="cancelCommon">取消</el-button>
             </div>
           </div>
-          <div v-show="selected == 1">
+          <div v-show="selected == 0">
             <el-table
               class="ssxd-table"
               ref="multipleTable"
-              :data="editAgencyForm.data"
+              :data="editAgencyForm.task"
               tooltip-effect="dark"
               stripe
               style="width: 100%">
@@ -94,37 +106,37 @@
                 label="任务阶段"
                 align='center'
                 width="80">
-                <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.date }}</span></template>
+                <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.task }}</span></template>
               </el-table-column>
               <el-table-column
                 align='center'
                 label="销量要求(罐)">
                 <template slot-scope="scope">
-                  <input-or-text :text-data="scope.row.yjdx" :input-data="scope.row.yjdx" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.yjdx = v}"></input-or-text>
+                  <input-or-text :text-data="scope.row.sell_number" :input-data="scope.row.sell_number" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.sell_number = v}"></input-or-text>
                 </template>
               </el-table-column>
               <el-table-column
                 align='center'
                 label="销售金额(元)">
                 <template slot-scope="scope">
-                  <input-or-text :text-data="scope.row.rwjd" :input-data="scope.row.rwjd" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.rwjd = v}"></input-or-text>
+                  <input-or-text :text-data="scope.row.sell_money" :input-data="scope.row.sell_money" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.sell_money = v}"></input-or-text>
                 </template>
               </el-table-column>
               <el-table-column
                 align='center'
                 label="奖励返利(元)">
                 <template slot-scope="scope">
-                  <input-or-text :text-data="scope.row.tjfled" :input-data="scope.row.tjfled" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.tjfled = v}"></input-or-text>
+                  <input-or-text :text-data="scope.row.rebate_money" :input-data="scope.row.rebate_money" holder="输入分值" :show-input='editAgencyShow' @change="(v)=>{scope.row.rebate_money = v}"></input-or-text>
                 </template>
               </el-table-column>
             </el-table>
             <div class="edit-div sub-content" v-show='editAgencyShow'>
-              <p>邀请有效时间：<el-input v-model="editAgencyForm.reach" placeholder="请输入分值"></el-input>（天）</p>
-              <p>提成有效时间：<el-input v-model="editAgencyForm.reachEvery" placeholder="请输入分值"></el-input>（天）</p>
+              <p v-for="(item, i) in editAgencyForm.time" :key="i">
+                {{item.notes}}：<el-input v-model="item.num" placeholder="请输入分值"></el-input>（天）
+              </p>
             </div>
             <div class="view-div sub-content" v-show='!editAgencyShow'>
-              <p>邀请有效时间：{{agencyForm.reach}}（天）</p>
-              <p>提成有效时间：{{agencyForm.reachEvery}}（天）</p>
+              <p v-for="(item, i) in agencyForm.time" :key="i">{{item.notes}}：{{item.num}}（天）</p>
             </div>
             <div class="edit" v-show='!editAgencyShow'>
               <el-button size="mini" class="success-btn" @click="editAgency">编辑</el-button>

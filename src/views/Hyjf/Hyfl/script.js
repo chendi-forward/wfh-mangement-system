@@ -22,33 +22,78 @@ export default {
       // 代理用户分销拓扑图
       tableItems: [],
       expendList: [],
-      editCommonForm: { // 普通用户
-        every: 1000,
-        reach: 5000,
-        reachEvery: 50
-      },
-      commonForm: {
-        every: 1000,
-        reach: 5000,
-        reachEvery: 50
-      },
+      // 普通用户
+      editCommonForm: [
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        },
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        },
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        }
+      ],
+      commonForm: [
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        },
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        },
+        {
+          notes: '返利比例',
+          num: 0.1,
+          type_id: 'rebate'
+        }
+      ],
       editAgencyForm: { // 代理用户
-        data: [
-          {date: 1, yjdx: 10, rwjd: 2000, tjfled: 2000},
-          {date: 2, yjdx: 10, rwjd: 2000, tjfled: 2000},
-          {date: 3, yjdx: 10, rwjd: 2000, tjfled: 2000}
+        task: [
+          {task: 1, sell_number: 10, sell_money: 2000, rebate_money: 2000},
+          {task: 2, sell_number: 10, sell_money: 2000, rebate_money: 2000},
+          {task: 3, sell_number: 10, sell_money: 2000, rebate_money: 2000}
         ],
-        reach: 5000,
-        reachEvery: 50
+        time: [
+          {
+            notes: '普通用户邀请有效期',
+            num: 20,
+            type_id: '06'
+          },
+          {
+            notes: '普通用户提成有效期',
+            num: 30,
+            type_id: '07'
+          }
+        ]
       },
       agencyForm: {
-        data: [
-          {date: 1, yjdx: 10, rwjd: 2000, tjfled: 2000},
-          {date: 2, yjdx: 10, rwjd: 2000, tjfled: 2000},
-          {date: 3, yjdx: 10, rwjd: 2000, tjfled: 2000}
+        task: [
+          {task: 1, sell_number: 10, sell_money: 2000, rebate_money: 2000},
+          {task: 2, sell_number: 10, sell_money: 2000, rebate_money: 2000},
+          {task: 3, sell_number: 10, sell_money: 2000, rebate_money: 2000}
         ],
-        reach: 5000,
-        reachEvery: 50
+        time: [
+          {
+            notes: '普通用户邀请有效期',
+            num: 20,
+            type_id: '06'
+          },
+          {
+            notes: '普通用户提成有效期',
+            num: 30,
+            type_id: '07'
+          }
+        ]
       },
       page: 1,
       pageSize: 10,
@@ -61,6 +106,8 @@ export default {
   created () {
     this.superUserList()
     this.getIntegralTask()
+    this.getCommonRecommendRebateSetting()
+    this.getSuperRecommendRebateSetting()
   },
   methods: {
     // 获取代销返利设置 /integral/get_sell_rebate_setting
@@ -80,7 +127,53 @@ export default {
       this.tableData.forEach(item => {
         obj[item.level] = JSON.stringify(item)
       })
-      this.$get('/integral/change_sell_rebate_setting', obj).then(res => {
+      this.$post('/integral/change_sell_rebate_setting', obj).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+        } else {
+          this.$message.error('编辑失败')
+        }
+      })
+    },
+    // 获取普通用户的推荐返利设置
+    getCommonRecommendRebateSetting () {
+      this.$get('/integral/get_common_recommend_rebate_setting').then(res => {
+        if (res.data) {
+          this.editAgencyForm = res.data
+          this.agencyForm = JSON.parse(JSON.stringify(res.data))
+        } else {
+          this.$message.error('数据获取异常异常')
+        }
+      })
+    },
+    // 修改普通用户的推荐返利设置
+    changeCommonRecommendRebateSetting () {
+      this.$post('/integral/change_common_recommend_rebate_setting', this.editAgencyForm).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+        } else {
+          this.$message.error('编辑失败')
+        }
+      })
+    },
+    // 获取代理用户的推荐返利设置
+    getSuperRecommendRebateSetting () {
+      this.$get('/integral/get_super_recommend_rebate_setting').then(res => {
+        if (res.data) {
+          this.editCommonForm = res.data
+          this.commonForm = JSON.parse(JSON.stringify(res.data))
+        } else {
+          this.$message.error('数据获取异常异常')
+        }
+      })
+    },
+    // 修改代理用户的推荐返利设置
+    changeSuperRecommendRebateSetting () {
+      let obj = {}
+      this.editCommonForm.forEach(item => {
+        obj[item.type_id] = item.num
+      })
+      this.$post('/integral/change_super_recommend_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
         } else {
@@ -131,6 +224,7 @@ export default {
     },
     saveCommon () {
       Object.assign(this.commonForm, this.editCommonForm)
+      this.changeSuperRecommendRebateSetting()
       this.editCommonShow = false
     },
     cancelCommon () {
@@ -142,6 +236,7 @@ export default {
     },
     saveAgency () {
       Object.assign(this.agencyForm, this.editAgencyForm)
+      this.changeCommonRecommendRebateSetting()
       this.editAgencyShow = false
     },
     cancelAgency () {

@@ -125,6 +125,10 @@
             {
               name: '退款管理',
               path: 'shgl-tkgl'
+            },
+            {
+              name: '评价管理',
+              path: 'shgl-pjgl'
             }
           ],
           childrenNoMenu: [ //无菜单路由
