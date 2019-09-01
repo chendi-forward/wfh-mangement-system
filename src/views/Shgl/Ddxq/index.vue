@@ -147,7 +147,7 @@
         <el-button size="small" @click='cancleItem'>取消订单</el-button>
       </div>
     </div>
-    <dialog-Com :dialogFlag='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
+    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
       <component :is="currentCom.com"></component>
     </dialog-Com>
   </div>

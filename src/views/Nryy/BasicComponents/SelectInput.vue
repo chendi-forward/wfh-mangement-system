@@ -1,6 +1,7 @@
 <template>
   <div class="my-select-input">
     <el-checkbox
+      :name='name'
       v-for="(item, index) in typeEffectList"
       v-model="item.isSelect"
       :key="index"
@@ -14,26 +15,40 @@
   export default {
     name: 'select-input-component',
     props: {
-      preset: Array
+      preset: Array,
+      name: String,
+      value: {
+        type: Array,
+        default: () => []
+      }
     },
     data () {
       return {
-        typeEffectList: this.preset,
         typeEffectAdd: ''
       }
     },
     computed: {
-      typeEffects () {
-        return this.typeEffectList.map(item => item.isSelect && item.name).filter(item => item)
-      }
-    },
-    watch: {
-      typeEffects (n) {
-        this.$emit('input', n)
+      typeEffectList: {
+        get () {
+          if (this.value.length) {
+            return this.value.map(item => {
+              return {
+                name: item,
+                isSelect: true
+              }
+            })
+          } else {
+            return this.preset
+          }
+        },
+        set (val) {
+          let typeEffects = val.map(item => item.isSelect && item.name).filter(item => item)
+          this.$emit('input', typeEffects)
+        }
       }
     },
     methods: {
-      addTypeEffect (val) {
+      addTypeEffect () {
         if (this.typeEffectList.map(item => item.name).includes(this.typeEffectAdd) || !this.typeEffectAdd) {
           return
         }

@@ -147,7 +147,7 @@
         </my-pagination>
       </div>
     </div>
-    <dialog-Com :dialogFlag='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
+    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
       <component :is="currentCom.com"></component>
     </dialog-Com>
   </div>

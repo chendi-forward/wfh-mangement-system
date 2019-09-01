@@ -46,7 +46,7 @@
       </template>
       </el-table-column>
     </el-table>
-    <dialog-Com width='420px' :dialogFlag='dialogFlag' :title='addtitle' @sure-save='sureSave' @cancle-save='cancleSave'>
+    <dialog-Com width='420px' v-model='dialogFlag' :title='addtitle' @sure-save='sureSave' @cancle-save='cancleSave'>
       <div class="add-authority">
         <el-form ref="form" :rules="rules" :model="form" :label-position="labelPosition" label-width="90px">
           <el-form-item label="姓名:" prop="name">
