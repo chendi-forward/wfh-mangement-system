@@ -4,7 +4,7 @@
       <div class="upload-img__box">
         <div class="upload-img--upload">上传长图:</div>
         <div class="upload-img--img">
-          <img-upload class="upload-img--long" v-model="imageUrl_long"></img-upload>
+          <img-upload class="upload-img--long" v-model="imageUrl_long" tip='长图'></img-upload>
         </div>
         <div class="upload-img--step">
           <div class="upload-img__tool">

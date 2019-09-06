@@ -304,6 +304,7 @@
         <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
       </div>
     </div>
+  
     <el-dialog title="展示图片预览" :visible.sync="isShowImgPreview" width="600px">
       <el-carousel trigger="click" :autoplay='false' :arrow='imgListExhibit.length > 1 ? "always" : "never"' height="400px">
         <el-carousel-item v-for="(item, i) in imgListExhibit" :key="i">
