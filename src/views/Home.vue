@@ -241,11 +241,11 @@
       roleArr.push("9")
       menus.forEach((item) => {
           item.children = item.children.filter((data) => {
-            console.log(roleArr.includes(data.id))
+            // console.log(roleArr.includes(data.id))
             return roleArr.includes(data.id)
           })
         })
-      console.log(roleArr, menus, '============')
+      // console.log(roleArr, menus, '============')
     }
   }
 </script>

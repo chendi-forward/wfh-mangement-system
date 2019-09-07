@@ -1,6 +1,5 @@
 /* eslint-disable */
 import axios from 'axios';
-import qs from 'qs';
 import { Message } from 'element-ui';
 
 axios.defaults.timeout = 10000;
@@ -18,19 +17,17 @@ axios.interceptors.request.use(
   config => {
     const token = sessionStorage.getItem('token')
     const user = sessionStorage.getItem('user')
-    // config.data = JSON.stringify(config.data);
-    config.data = qs.stringify(config.data)
     config.headers = {
-      'Content-Type':'application/x-www-form-urlencoded'
+      'Content-Type':'application/json'
     }
     if(token){
-      config.params['token'] = token
-      config.params['user'] = user
+      config.headers['token'] = token
+      config.headers['user'] = user
     }
-    return config;
+    return config
   },
   error => {
-    return Promise.reject(err);
+    return Promise.reject(err)
   }
 );
 
@@ -48,7 +45,7 @@ axios.interceptors.response.use(
         querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
       })
     }
-    return response;
+    return response
   },
   error => {
     return Promise.reject(error)
