@@ -167,7 +167,23 @@
           id: '7',
           name: '营销模块',
           path: 'yxmk',
-          icon: 'el-icon-menu'
+          icon: 'el-icon-menu',
+          children: [
+            {
+              name: '历史活动/优惠券',
+              path: 'yxmk-lshd'
+            },
+            {
+              name: '短信平台',
+              path: 'yxmk-dxpt'
+            }
+          ],
+          childrenNoMenu: [ //无菜单路由
+            {
+              name: '新增优惠券/活动',
+              path: 'yxmk-xjhd'
+            }
+          ]
         },
         {
           id: '8',

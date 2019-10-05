@@ -199,9 +199,19 @@ export default {
           link: 'hyjf-jfsz'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '营销模块',
+          name: '营销模块-历史活动',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yxmk'
+          link: 'yxmk-lshd'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-新建活动',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-xjhd'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-短信平台',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-dxpt'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '数据库',

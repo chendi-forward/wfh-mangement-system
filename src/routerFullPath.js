@@ -84,9 +84,19 @@ export default [{
       component: () => import(/* webpackChunkName: "hyjf-jfsz" */ './views/Hyjf/Jfsz')
     },
     {
-      path: '/yxmk',
-      name: 'yxmk',
-      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk')
+      path: '/yxmk-lshd',
+      name: 'yxmk-lshd',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Lshd')
+    },
+    {
+      path: '/yxmk-xjhd',
+      name: 'yxmk-xjhd',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Xjhd')
+    },
+    {
+      path: '/yxmk-dxpt',
+      name: 'yxmk-dxpt',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Dxpt')
     },
     {
       path: '/sjk',
