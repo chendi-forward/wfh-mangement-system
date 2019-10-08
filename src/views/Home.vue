@@ -125,6 +125,10 @@
             {
               name: '退款管理',
               path: 'shgl-tkgl'
+            },
+            {
+              name: '评价管理',
+              path: 'shgl-pjgl'
             }
           ],
           childrenNoMenu: [ //无菜单路由
@@ -246,6 +250,9 @@
         sessionStorage.clear()
         this.$router.push({path: '/login'})
       }
+    },
+    created () {
+      this.initBreadcrumbs()
     },
     mounted () {
       let role = sessionStorage.getItem('role')

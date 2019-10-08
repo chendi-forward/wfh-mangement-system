@@ -17,17 +17,22 @@ axios.defaults.baseURL = commonsConfig.BASE_URL; // 线上
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    // const token = sessionStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     const user = sessionStorage.getItem('user')
     // config.data = JSON.stringify(config.data);
     config.data = qs.stringify(config.data)
+    console.log(config.data, '.....')
     config.headers = {
       'Content-Type':'application/x-www-form-urlencoded'
     }
-    // if(token){
-    //   config.params['token'] = token
-    //   config.params['user'] = user
-    // }
+    console.log(config, 'config')
+    if(token) {
+      if (!config.params) {
+        config.params = {}
+      }
+      config.params['token'] = token
+      config.params['user'] = user
+    }
     return config;
   },
   error => {
