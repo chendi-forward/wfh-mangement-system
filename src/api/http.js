@@ -1,6 +1,5 @@
 /* eslint-disable */
 import axios from 'axios';
-import qs from 'qs';
 import { Message } from 'element-ui';
 import * as commonsConfig from 'COMMONS/commonsConfig.js'
 
@@ -23,7 +22,7 @@ axios.interceptors.request.use(
     config.data = qs.stringify(config.data)
     console.log(config.data, '.....')
     config.headers = {
-      'Content-Type':'application/x-www-form-urlencoded'
+      'Content-Type':'application/json'
     }
     console.log(config, 'config')
     if(token) {
@@ -33,10 +32,10 @@ axios.interceptors.request.use(
       config.params['token'] = token
       config.params['user'] = user
     }
-    return config;
+    return config
   },
   error => {
-    return Promise.reject(err);
+    return Promise.reject(err)
   }
 );
 
