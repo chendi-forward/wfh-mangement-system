@@ -43,12 +43,13 @@ axios.interceptors.response.use(
     if (response.headers.user_token) {
       sessionStorage.setItem('token', response.headers.user_token)
     }
-    if(response.data.statuscode == 412){
-      window.vm.$router.push({
-        path:"/login",
-        querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
-      })
-    }
+    // if(response.data.statuscode === 412){
+    //   console.log('.........1')
+    //   window.vm.$router.push({
+    //     path:"/login",
+    //     querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
+    //   })
+    // }
     return response;
   },
   error => {

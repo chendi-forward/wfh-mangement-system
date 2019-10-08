@@ -1,0 +1,95 @@
+.el-checkbox__inner {
+  width: 16px;
+  height: 16px;
+}
+.is-checked .el-checkbox__inner::after {
+  border: 2px solid #FF4B57;
+  border-left: 0;
+  border-top: 0;
+  height: 8px;
+  left: 5px;
+}
+.is-checked .el-checkbox__inner:hover,
+.is-checked .el-checkbox__inner:focus,
+.is-checked .el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #FF4B57;
+}
+.is-checked .el-checkbox__input.is-checked .el-checkbox__inner,
+.is-checked .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #fff;
+  border-color: #EBEBEB;
+}
+.el-checkbox__inner:hover,
+.el-checkbox__inner:focus,
+.el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #FF4B57;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #FF4B57;
+}
+.el-button.definition-btn {
+  color: #000;
+  background-color: unset;
+  border: unset;
+  padding: 0;
+  font-size: 18px;
+}
+.tab-model {
+  width: 100%;
+  height: 60px;
+  background: #F1F3F5;
+}
+.tab-model .el-tabs {
+  height: 100%;
+}
+.tab-model .el-tabs .el-tabs__header {
+  height: 100%;
+}
+.tab-model .el-tabs .el-tabs__nav-wrap {
+  height: 100%;
+}
+.tab-model .el-tabs .el-tabs__nav-scroll {
+  height: 100%;
+}
+.tab-model .el-tabs .el-tabs__nav {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+.tab-model .el-tabs .el-tabs__nav .is-active {
+  background: #FF4B57;
+  color: #fff;
+}
+.tab-model .el-tabs .el-tabs__nav .el-tabs__active-bar {
+  display: none;
+}
+.tab-model .el-tabs .el-tabs__nav .el-tabs__item {
+  height: 100%;
+  width: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px 3px 0 0;
+  padding: 0 !important;
+}
+.el-select {
+  height: 40px;
+}
+.el-select .el-input__inner {
+  text-align: center;
+}
+.el-select .el-input__suffix {
+  border-left: 1px solid #DCDFE6;
+}
+.el-select .el-input__suffix .el-input__suffix-inner {
+  margin-left: 5px;
+}
+.el-select-dropdown .selected {
+  color: #374051 !important;
+}
+.el-select-dropdown .el-select-dropdown__item:hover {
+  background: #D5D9DC !important;
+}
+.el-select-dropdown .el-select-dropdown__list {
+  padding: 0 !important;
+}

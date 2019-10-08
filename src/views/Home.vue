@@ -163,7 +163,21 @@
           id: '7',
           name: '营销模块',
           path: 'yxmk',
-          icon: 'el-icon-menu'
+          icon: 'el-icon-menu',
+          children: [
+            {
+              name: '新增活动/优惠券',
+              path: 'yxmk-cjyhq'
+            },
+            {
+              name: '历史活动/优惠券',
+              path: 'yxmk-yhqgl'
+            },
+            {
+              name: '短信平台',
+              path: 'yxmk-dxpt'
+            }
+          ]
         },
         {
           id: '8',
@@ -235,17 +249,17 @@
     },
     mounted () {
       let role = sessionStorage.getItem('role')
-      var roleArr = role.split('')
-      roleArr.push("7")
-      roleArr.push("8")
-      roleArr.push("9")
-      menus.forEach((item) => {
-          item.children = item.children.filter((data) => {
-            console.log(roleArr.includes(data.id))
-            return roleArr.includes(data.id)
-          })
-        })
-      console.log(roleArr, menus, '============')
+      // var roleArr = role.split('')
+      // roleArr.push("7")
+      // roleArr.push("8")
+      // roleArr.push("9")
+      // menus.forEach((item) => {
+      //   item.children = item.children.filter((data) => {
+      //     console.log(roleArr.includes(data.id))
+      //     return roleArr.includes(data.id)
+      //   })
+      // })
+      // console.log(roleArr, menus, '============')
     }
   }
 </script>
@@ -423,6 +437,32 @@
   &:nth-child(7) {
     .el-aside {
       line-height: 320px;
+    }
+  }
+}
+
+.tag-dialog {
+  padding: 30px;
+  .el-dialog__header,
+  .el-dialog__body {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .tag--title {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .save-tag {
+    display: flex;
+    justify-content: center;
+  }
+  .add-tag {
+    margin-bottom: 15px;
+    .add-tag--content {
+      display: flex;
+      .el-input__inner {
+        margin-right: 20px;
+      }
     }
   }
 }

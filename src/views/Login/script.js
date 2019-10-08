@@ -35,7 +35,8 @@ export default {
         this.$message.error('请先正确填写密码')
         return
       }
-      this.$post('/authority/login', { account, password }).then((res) => {
+      this.$emit('login-direct', this.$router.currentRoute.query.from)
+      /* this.$post('/authority/login', { account, password }).then((res) => {
         if (res.status === 'ok') {
           this.validateUser(res)
           .then(() => {
@@ -44,7 +45,7 @@ export default {
         } else {
           this.$message.error('密码或者账户错误，请重新输入！')
         }
-      })
+      }) */
     }
   },
   mounted () {

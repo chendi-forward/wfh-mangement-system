@@ -29,56 +29,66 @@
       </el-table-column>
       <el-table-column
         label="预览"
-        prop="avatar"
         width="80">
+				<template slot-scope="scope"><img class="spgl-list--img" :src="base_url + scope.row.avatar" alt=""></template>
       </el-table-column>
       <el-table-column
         label="商品标编号"
         prop="id"
+        align="center"
         width="110">
       </el-table-column>
       <el-table-column
         label="商品标题"
         prop="title"
+        align="center"
         min-width="140">
       </el-table-column>
       <el-table-column
         label="排序"
         prop="order"
+        align="center"
         width="80">
       </el-table-column>
       <el-table-column
         label="热门推荐"
         prop="hotRecommend"
+        align="center"
         width="90">
       </el-table-column>
       <el-table-column
         label="购物车推荐"
         prop="carRecommend"
+        align="center"
         width="120">
       </el-table-column>
       <el-table-column
         label="产地"
         prop="origin"
+        align="center"
         min-width="200">
       </el-table-column>
       <el-table-column
         label="生产日期"
         prop="data"
+        align="center"
         width="120">
       </el-table-column>
       <el-table-column
         label="规格"
         prop="format"
+        align="center"
         width="80">
       </el-table-column>
       <el-table-column
         label="状态"
-        prop="goodStauts"
+        prop="goodState"
+        align="center"
         width="80">
       </el-table-column>
       <el-table-column
         label="操作"
+        align="center"
         width="130">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" icon="el-icon-edit" size="small"></el-button>
@@ -94,16 +104,19 @@
             <el-table-column
               label="口味"
               prop='taste'
+              align="center"
               width="100">
             </el-table-column>
             <el-table-column
               label="库存"
               prop='stock'
+              align="center"
               width="100">
             </el-table-column>
             <el-table-column
               label="销量"
               prop="sales"
+              align="center"
               width="80">
             </el-table-column>
           </el-table>
@@ -127,10 +140,12 @@
 
 <script>
 import Pagination from 'COMPONENTS/Pagination'
+import * as commonsConfig from 'COMMONS/commonsConfig.js'
+let base_url = commonsConfig.BASE_URL
 
 let state_obj = {
-  '1': '上架',
-  '0': '下架'
+  1: '上架',
+  0: '下架'
 }
 
 export default {
@@ -140,6 +155,7 @@ export default {
   },
   data () {
     return {
+      base_url: base_url,
       activeName: 'spgl',
       searchVal: '',
       tableData: [
@@ -257,6 +273,11 @@ export default {
       .search__input {
         margin-right: 20px;
       }
+    }
+    .spgl-list--img {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
     }
   }
 

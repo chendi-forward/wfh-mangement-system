@@ -345,11 +345,12 @@
 </template>
 
 <script>
+  import $ from 'jquery'
+
   import ImgUpload from '../BasicComponents/ImgUpload'
   import SelectInput from '../BasicComponents/SelectInput'
   import DialogCom from 'COMPONENTS/DialogCom'
   import * as commonsConfig from 'COMMONS/commonsConfig.js'
-  import $ from 'jquery'
   let base_url = commonsConfig.BASE_URL
 
   export default {
@@ -603,7 +604,6 @@
       }
       .spgl-form--label {
         display: inline-block;
-        float: left;
         height: 40px;
         line-height: 40px;
         min-width: 75px;
@@ -794,31 +794,6 @@
       .el-input__prefix {
         right: 5px;
         left: unset;
-      }
-    }
-    .tag-dialog {
-      padding: 30px;
-      .el-dialog__header,
-      .el-dialog__body {
-        padding-left: 50px;
-        padding-right: 50px;
-      }
-      .tag--title {
-        font-size: 16px;
-        margin-bottom: 15px;
-      }
-      .save-tag {
-        display: flex;
-        justify-content: center;
-      }
-      .add-tag {
-        margin-bottom: 15px;
-        .add-tag--content {
-          display: flex;
-          .el-input__inner {
-            margin-right: 20px;
-          }
-        }
       }
     }
     .current-tag {

@@ -96,13 +96,13 @@ export default {
       this.$root.menuData = actualRouter
     },
     signIn (callback) {
-      let jwtToken = sessionStorage.getItem('token')
-      if (!jwtToken) {
-        return this.$router.push({
-          path: '/login',
-          query: {from: this.$router.currentRoute.path}
-        })
-      }
+      // let jwtToken = sessionStorage.getItem('token')
+      // if (!jwtToken) {
+      //   return this.$router.push({
+      //     path: '/login',
+      //     query: {from: this.$router.currentRoute.path}
+      //   })
+      // }
       // 获取可进入权限目录
       // this.axios.get('/api/menus', {
       //   params: {
@@ -193,10 +193,20 @@ export default {
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'hyjf-jfsz'
         }, {
-          id: '2c9180895e13261e015e13469b7e0000',
-          name: '营销模块',
+        id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-优惠券管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yxmk'
+          link: 'yxmk-yhqgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-创建优惠券',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-cjyhq'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-短信平台',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-dxpt'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '数据库',
@@ -215,12 +225,9 @@ export default {
       typeof callback === 'function' && callback()
     },
     loginDirect (newPath) {
-      /*
-      * Monitor login events
-      * Will trigger the events in views/login.vue
-      */
+      console.log('TCL: loginDirect -> newPath', newPath)
       this.signIn(() => {
-        this.$router.replace({path: newPath || '/yjck'})
+        this.$router.replace({path: newPath || 'yjck'})
       })
     }
   }
