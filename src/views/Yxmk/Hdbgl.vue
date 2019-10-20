@@ -1,9 +1,9 @@
 <template>
-  <div class="yxmk-yhqgl">
+  <div class="yxmk-hdbgl">
     <yxmk-head></yxmk-head>
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
-        <div class="body__head--title">优惠券表</div>
+        <div class="body__head--title">活动表</div>
         <div class="body__head--btn"><el-button type="success" @click="showCreateItem">创建</el-button></div>
       </div>
       <div class="yhqgl-body__content">
@@ -19,7 +19,7 @@
             width="55">
           </el-table-column>
           <el-table-column
-            label="优惠券编号"
+            label="活动编号"
             align='center'
             width="150">
             <template slot-scope="scope">{{ scope.row.id }}</template>
@@ -27,7 +27,7 @@
           <el-table-column
             align='center'
             width="150"
-            label="优惠券名称">
+            label="活动名称">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column
@@ -75,7 +75,7 @@
         </el-table>
         <div class="ssxd-footer">
           <div class="selectAll-wrap">
-            <el-button size="mini" @click="offOnline">下线</el-button>
+            <el-button size="mini" @click="offOnline">删除</el-button>
           </div>
           <div class="page-wrap">
             <my-pagination
@@ -87,82 +87,26 @@
         </div>
       </div>
     </div>
-    <div class="yhqgl-footer">
-      <div class="yhqgl-body__head">
-        <div class="body__head--title">新手优惠券设置</div>
-        <div class="body__head--btn">
-          <el-button type="success" @click="showCreateItem">编辑</el-button>
-        </div>
-      </div>
-      <div class="yhqgl-body__content">
-        <el-table
-          class="ssxd-table"
-          ref="multipleTable"
-          :data="newerSetting"
-          tooltip-effect="dark"
-          style="width: 100%">
-          <el-table-column
-            align='center'
-            min-width="150"
-            label="优惠券名称">
-            <template slot-scope="scope">{{ scope.row.name }}</template>
-          </el-table-column>
-          <el-table-column
-            align='center'
-            label="数量"
-            min-width="90">
-            <template slot-scope="scope">{{ scope.row.number }}</template>
-          </el-table-column>
-          <el-table-column
-            align='center'
-            label="折扣比例（%）"
-            min-width="140">
-            <template slot-scope="scope">{{ scope.row.percent }}</template>
-          </el-table-column>
-          <el-table-column
-            align='center'
-            label="扣减金额（元）"
-            min-width="140">
-            <template slot-scope="scope">{{ scope.row.money }}</template>
-          </el-table-column>
-          <el-table-column
-            align='center'
-            label="生效天数"
-            min-width="140">
-            <template slot-scope="scope">{{ scope.row.days }}</template>
-          </el-table-column>
-          <el-table-column
-            label="状态"
-            align='center'
-            min-width="160">
-            <template slot-scope="scope">
-              <el-radio v-model="scope.row.state" label="1">开启</el-radio>
-              <el-radio v-model="scope.row.state" label="0">关闭</el-radio>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
     <div class="yxmk-setting" v-if='isShowSetting'>
-      <yhq-setting @hide-setting="hideSetting"></yhq-setting>
+      <hdb-setting @hide-setting="hideSetting"></hdb-setting>
     </div>
-  </div>
+	</div>
 </template>
 
 <script>
 	import Pagination from 'COMPONENTS/Pagination'
   import YxmkHead from './CommonComponents/YxmkHead'
-  import YhqSetting from './YxmkSetting/YhqSetting'
+  import HdbSetting from './YxmkSetting/HdbSetting'
 
-  export default {
-    name: 'yxmk-yhqgl',
-    components: {
-      'my-pagination': Pagination,
+	export default {
+		name: 'yxmk-hdb',
+		components: {
       'yxmk-head': YxmkHead,
-      'yhq-setting': YhqSetting
-    },
-    data () {
-      return {
+      'my-pagination': Pagination,
+      'hdb-setting': HdbSetting
+  	},
+		data () {
+			return {
 				tableData: [
 					{
 						id: 123123123,
@@ -185,38 +129,32 @@
 						state: '已停用'
 					}
         ],
-        newerSetting: [
-          {
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-            days: 10,
-						state: '1'
-					}
-        ],
         isShowSetting: false
-      }
-    },
-    methods: {
+			}
+		},
+		methods: {
       showCreateItem () {
         this.isShowSetting = true
+      },
+			handleSelectionChange () {
+				// ..
       },
       hideSetting () {
         this.isShowSetting = false
       },
-      handleSelectionChange () {},
-      handleSizeChange () {},
-      handleCurrentChange () {},
-      offOnline () {}
-    }
-  }
+			handleSizeChange () {},
+			handleCurrentChange () {},
+			offOnline () {},
+			editHandle (row) {
+        this.showCreateItem()
+			}
+		}
+	}
 </script>
 
 <style lang="less" scoped>
-.yxmk-yhqgl {
+.yxmk-hdbgl {
   position: relative;
-
   .yhqgl-body,
   .yhqgl-footer {
     .yhqgl-body__head {
@@ -243,11 +181,5 @@
     background-color: #f1f3f5;
     // z-index: 3;
   }
-}
-</style>
-
-<style lang='less'>
-.el-tabs--border-card {
-  box-shadow: none;
 }
 </style>

@@ -89,14 +89,14 @@ export default [{
       component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Yhqgl')
     },
     {
-      path: '/yxmk-cjyhq',
-      name: 'yxmk-cjyhq',
-      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Cjyhq')
+      path: '/yxmk-hdbgl',
+      name: 'yxmk-hdbgl',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Hdbgl')
     },
     {
-      path: '/yxmk-dxpt',
-      name: 'yxmk-dxpt',
-      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Dxpt')
+      path: '/yxmk-xxzx',
+      name: 'yxmk-xxzx',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Xxzx')
     },
     {
       path: '/sjk',

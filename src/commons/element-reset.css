@@ -1,6 +1,7 @@
 .el-checkbox__inner {
   width: 16px;
   height: 16px;
+  z-index: 0;
 }
 .is-checked .el-checkbox__inner::after {
   border: 2px solid #FF4B57;
@@ -33,6 +34,11 @@
   border: unset;
   padding: 0;
   font-size: 18px;
+}
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+  z-index: 0;
 }
 .tab-model {
   width: 100%;

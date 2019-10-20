@@ -204,14 +204,14 @@ export default {
           link: 'yxmk-yhqgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '营销模块-创建优惠券',
+          name: '营销模块-活动表管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yxmk-cjyhq'
+          link: 'yxmk-hdbgl'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
-          name: '营销模块-短信平台',
+          name: '营销模块-消息中心',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yxmk-dxpt'
+          link: 'yxmk-xxzx'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '数据库',

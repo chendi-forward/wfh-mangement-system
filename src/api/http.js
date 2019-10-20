@@ -130,10 +130,10 @@ export function patch(url,data = {}){
 export function put(url,data = {}){
   return new Promise((resolve,reject) => {
     axios.put(url,data)
-         .then(response => {
-           resolve(response.data);
-         },err => {
-           reject(err)
-         })
+      .then(response => {
+        resolve(response.data)
+      },err => {
+        reject(err)
+      })
   })
 }

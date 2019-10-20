@@ -170,16 +170,16 @@
           icon: 'el-icon-menu',
           children: [
             {
-              name: '新增活动/优惠券',
-              path: 'yxmk-cjyhq'
+              name: '活动表管理',
+              path: 'yxmk-hdbgl'
             },
             {
-              name: '历史活动/优惠券',
+              name: '优惠券管理',
               path: 'yxmk-yhqgl'
             },
             {
-              name: '短信平台',
-              path: 'yxmk-dxpt'
+              name: '消息中心',
+              path: 'yxmk-xxzx'
             }
           ]
         },
