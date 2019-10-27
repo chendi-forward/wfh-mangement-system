@@ -13,7 +13,7 @@ import allRoutes from './routerFullPath'
 import {resetRouter} from './router'
 
 // 公共页面白面单
-const whiteLink = ['/login', '/404', '/401', '/componentTest']
+const whiteLink = ['/login', '/404', '/401']
 export default {
   name: 'App',
   data () {
@@ -96,35 +96,32 @@ export default {
       this.$root.menuData = actualRouter
     },
     signIn (callback) {
-      // let jwtToken = sessionStorage.getItem('token')
-      // if (!jwtToken) {
-      //   return this.$router.push({
-      //     path: '/login',
-      //     query: {from: this.$router.currentRoute.path}
-      //   })
-      // }
-      // 获取可进入权限目录
-      // this.axios.get('/api/menus', {
-      //   params: {
-      //     userPermissionId: sessionStorage.userPermissionId
-      //   }
-      // })
-      // .then((res) => {
-      //   let userPermissions = res.data.data
-      //   // Save information, if it is used elsewhere.
-      //   this.$root.userData = userPermissions
-      //   /*
-      //   * Get routePermission form user permissions
-      //   * Like this:
-      //   * { "route1": true, "route2": true, ... }
-      //   */
-      //   let routePermission = this.getRoutes(userPermissions, '/page')
-      //   /*
-      //   * Adding routing privileges to users
-      //   */
-      //   this.extendRoutes(routePermission, '/page')
-      //   typeof callback === 'function' && callback()
-      // })
+      let jwtToken = sessionStorage.getItem('token')
+      console.log('jwtToken>>>>', jwtToken)
+      if (!jwtToken) {
+        return this.$router.push({
+          path: '/login',
+          query: {from: this.$router.currentRoute.path}
+        })
+      }
+      /* 获取可进入权限目录
+      this.axios.get('/api/menus', {
+        params: {
+          userPermissionId: sessionStorage.userPermissionId
+        }
+      })
+      .then((res) => {
+        let userPermissions = res.data.data
+        // Save information, if it is used elsewhere.
+        this.$root.userData = userPermissions
+        // * Get routePermission form user permissions
+        // * Like this:
+        // * { "route1": true, "route2": true, ... }
+        let routePermission = this.getRoutes(userPermissions, '/page')
+        // * Adding routing privileges to users
+        this.extendRoutes(routePermission, '/page')
+        typeof callback === 'function' && callback()
+      }) */
       // 可以访问的路由在这里定义
       let userPermissions = [
         {

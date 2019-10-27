@@ -16,12 +16,14 @@ export default {
     validateUser (res) {
       return new Promise((resolve, reject) => {
         // token保存
-        // let token = 'asfesafeafefaefe'
-        sessionStorage.setItem('token', res.token)
-        sessionStorage.setItem('user', res.data.account)
-        sessionStorage.setItem('role', res.data.role)
-        sessionStorage.setItem('id', res.data.id)
-        store.commit(types.LOGIN, res.token)
+        let token = 'asfesafeafefaefe'
+        sessionStorage.setItem('token', token)
+        // sessionStorage.setItem('token', res.token)
+        // sessionStorage.setItem('user', res.data.account)
+        // sessionStorage.setItem('role', res.data.role)
+        // sessionStorage.setItem('id', res.data.id)
+        // store.commit(types.LOGIN, res.token)
+        // store.commit(types.LOGIN, token)
         resolve()
       })
     },
@@ -35,7 +37,10 @@ export default {
         this.$message.error('请先正确填写密码')
         return
       }
-      this.$emit('login-direct', this.$router.currentRoute.query.from)
+      this.validateUser()
+      .then(() => {
+        this.$emit('login-direct', this.$router.currentRoute.query.from)
+      })
       /* this.$post('/authority/login', { account, password }).then((res) => {
         if (res.status === 'ok') {
           this.validateUser(res)
