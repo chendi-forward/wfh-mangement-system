@@ -33,6 +33,7 @@ export default {
     }
   },
   created () {
+    this.search()
     this.getIntegralTask()
     this.getIntegralAdvance()
   },
@@ -52,10 +53,10 @@ export default {
     changeIntegralTask (data) {
       let obj = {}
       data.forEach(item => {
-        obj[item.integral_id] = JSON.stringify(item)
+        obj[item.integral_id] = item
       })
       console.log(obj, data)
-      this.$get('/integral/change_integral_setting', obj).then(res => {
+      this.$post('/integral/change_integral_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
         } else {
@@ -76,6 +77,7 @@ export default {
     },
     // 修改积分兑换门槛
     changeIntegralAdvance () {
+      console.log('this.SillForm', this.SillForm)
       this.$post('/integral/change_integral_setting', this.SillForm).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')

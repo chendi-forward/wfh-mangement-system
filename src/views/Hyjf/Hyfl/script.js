@@ -125,7 +125,7 @@ export default {
     changeIntegralTask () {
       let obj = {}
       this.tableData.forEach(item => {
-        obj[item.level] = JSON.stringify(item)
+        obj[item.level] = item
       })
       this.$post('/integral/change_sell_rebate_setting', obj).then(res => {
         if (res.data) {
