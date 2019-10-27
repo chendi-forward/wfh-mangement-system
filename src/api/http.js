@@ -1,11 +1,10 @@
 /* eslint-disable */
 import axios from 'axios';
 import { Message } from 'element-ui';
-import * as commonsConfig from 'COMMONS/commonsConfig.js'
 
-axios.defaults.timeout = 10000
-axios.defaults.baseURL = commonsConfig.BASE_URL; // 线上
-// axios.defaults.baseURL = 'http://127.0.0.1:7777/'; // 线下
+axios.defaults.timeout = 10000;
+axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
+// axios.defaults.baseURL ='http://127.0.0.1:7777/'; // 线下
 
 // const token = sessionStorage.getItem('token')
 // axios.defaults.timeout = 5000
@@ -18,19 +17,12 @@ axios.interceptors.request.use(
   config => {
     const token = sessionStorage.getItem('token')
     const user = sessionStorage.getItem('user')
-    // config.data = JSON.stringify(config.data);
-    config.data = qs.stringify(config.data)
-    console.log(config.data, '.....')
     config.headers = {
       'Content-Type':'application/json'
     }
-    console.log(config, 'config')
-    if(token) {
-      if (!config.params) {
-        config.params = {}
-      }
-      config.params['token'] = token
-      config.params['user'] = user
+    if(token){
+      config.headers['token'] = token
+      config.headers['user'] = user
     }
     return config
   },
@@ -47,14 +39,13 @@ axios.interceptors.response.use(
     if (response.headers.user_token) {
       sessionStorage.setItem('token', response.headers.user_token)
     }
-    // if(response.data.statuscode === 412){
-    //   console.log('.........1')
-    //   window.vm.$router.push({
-    //     path:"/login",
-    //     querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
-    //   })
-    // }
-    return response;
+    if(response.data.statuscode == 412){
+      window.vm.$router.push({
+        path:"/login",
+        querry:{redirect: window.vm.$router.currentRoute.fullPath} //从哪个页面跳转
+      })
+    }
+    return response
   },
   error => {
     return Promise.reject(error)
@@ -130,10 +121,10 @@ export function patch(url,data = {}){
 export function put(url,data = {}){
   return new Promise((resolve,reject) => {
     axios.put(url,data)
-      .then(response => {
-        resolve(response.data)
-      },err => {
-        reject(err)
-      })
+         .then(response => {
+           resolve(response.data);
+         },err => {
+           reject(err)
+         })
   })
 }
