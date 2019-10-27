@@ -611,7 +611,7 @@
         span {
           display: inline-block;
           &:first-of-type {
-            width: 60px;
+            width: 65px;
             font-size: 15px;
             text-align-last: justify;
           }

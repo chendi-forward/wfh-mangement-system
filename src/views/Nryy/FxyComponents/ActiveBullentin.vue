@@ -78,7 +78,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="table-footer">
+      <!-- <div class="table-footer">
         <el-checkbox label="全选"></el-checkbox>
         <el-button>批量删除</el-button>
         <el-pagination
@@ -91,6 +91,18 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="400">
         </el-pagination>
+      </div> -->
+      <div class="ssxd-footer">
+        <div class="selectAll-wrap">
+          <el-button size="mini" class="success-btn">批量删除</el-button>
+        </div>
+        <div class="page-wrap">
+          <my-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :total="400">
+          </my-pagination>
+        </div>
       </div>
     </div>
     <div v-else class="content-setting">
@@ -105,10 +117,12 @@
   import befautify2 from 'ASSETS/image/timg (2).jpg'
   import befautify3 from 'ASSETS/image/timg (3).jpg'
   import ContentSetting from '../BasicComponents/ContentSetting'
+  import Pagination from 'COMPONENTS/Pagination'
   export default {
     name: 'fxy',
     components: {
-      'content-setting': ContentSetting
+      'content-setting': ContentSetting,
+      'my-pagination': Pagination
     },
     data () {
       return {
