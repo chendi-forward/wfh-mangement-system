@@ -30,10 +30,12 @@ export default {
         invite_code: '23131',
         order: 12313,
         deal_money: 321341,
-        expend: '111'
+        expend: '111',
+        status: 0
       }],
+      status: ['已付款', '已发货', '已完成'],
       tabs: [
-        {label: '新申请', name: '0'}, {label: '退款中', name: '1'}, {label: '退款完成', name: '2'}
+        {label: '退款中', name: '0'}, {label: '退款完成', name: '1'}
       ],
       currentTab: '0',
       // 退款时间线

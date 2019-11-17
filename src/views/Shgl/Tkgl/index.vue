@@ -46,6 +46,14 @@
           width="100">
         </el-table-column>
         <el-table-column
+          align='center'
+          label="状态"
+          width="100">
+          <template slot-scope="scope">
+            {{status[scope.row.status]}}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop='province'
           align='center'
           label="售后类型">
@@ -64,7 +72,7 @@
         <el-table-column
           prop='ydh'
           align='center'
-          label="运单号"
+          label="退运单号"
           width="150">
         </el-table-column>
         <el-table-column

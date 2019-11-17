@@ -124,9 +124,20 @@ export default {
     //修改代销返利设置 /integral/change_sell_rebate_setting
     changeIntegralTask () {
       let obj = {}
+      let error
       this.tableData.forEach(item => {
+        for (const key in item) {
+          if (item.hasOwnProperty(key)) {
+            const element = item[key] - 0
+            if (element < 0 || isNaN(element)) {
+              item[key] = 0
+              error = true
+            }
+          }
+        }
         obj[item.level] = item
       })
+      if (error) return error
       this.$post('/integral/change_sell_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
@@ -148,6 +159,26 @@ export default {
     },
     // 修改普通用户的推荐返利设置
     changeCommonRecommendRebateSetting () {
+      let task = this.editAgencyForm.task
+      let time = this.editAgencyForm.time
+      for (let i = 0; i < task.length; i++) {
+        const element = task[i]
+        for (const key in element) {
+          if (element.hasOwnProperty(key)) {
+            const item = element[key];
+            if(!(item - 0 >= 0)) {
+              element[key] = 0
+              return true
+            }
+          }
+        }
+      }
+      for (let i = 0; i < time.length; i++) {
+        if (!(time[i].num - 0 >= 0)) {
+          time[i].num = 0
+          return true
+        }
+      }
       this.$post('/integral/change_common_recommend_rebate_setting', this.editAgencyForm).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
@@ -170,9 +201,15 @@ export default {
     // 修改代理用户的推荐返利设置
     changeSuperRecommendRebateSetting () {
       let obj = {}
+      let error
       this.editCommonForm.forEach(item => {
+        if (!(item.num - 0 >= 0)) {
+          error = true
+          item.num = 0
+        }
         obj[item.type_id] = item.num
       })
+      if (error) return error
       this.$post('/integral/change_super_recommend_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
@@ -211,7 +248,8 @@ export default {
       this.editTaskShow = true
     },
     saveTaskFn () {
-      this.changeIntegralTask()
+      let res = this.changeIntegralTask()
+      if (res) return this.$message.error('请输入大于等于零的数字')
       this.editTaskShow = false
     },
     cancelTaskFn () {
@@ -224,7 +262,8 @@ export default {
     },
     saveCommon () {
       Object.assign(this.commonForm, this.editCommonForm)
-      this.changeSuperRecommendRebateSetting()
+      let res = this.changeSuperRecommendRebateSetting()
+      if (res) return this.$message.error('请输入大于等于零的数字')
       this.editCommonShow = false
     },
     cancelCommon () {
@@ -236,13 +275,16 @@ export default {
     },
     saveAgency () {
       Object.assign(this.agencyForm, this.editAgencyForm)
-      this.changeCommonRecommendRebateSetting()
+      let res = this.changeCommonRecommendRebateSetting()
+      if (res) return this.$message.error('请输入大于等于零的数字')
       this.editAgencyShow = false
     },
     cancelAgency () {
       this.editAgencyShow = false
     },
-    handleSizeChange () {
+    handleSizeChange (v) {
+      this.pageSize = v
+      this.superUserList()
     },
     handleCurrentChange (v) {
       this.page = v
