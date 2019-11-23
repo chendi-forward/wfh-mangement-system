@@ -55,15 +55,19 @@ export default {
       dialogFlag: false,
       currentCom: {},
       coms: [
-        {name: '确认收货', com: 'receiving-dialog', data: null},
+        {name: '退款信息', com: 'add-dialog', data: null},
         {name: '确认退款', com: 'refund-dialog', data: null},
-        {name: '退款信息', com: 'add-dialog', data: null}
+        {name: '确认收货', com: 'receiving-dialog', data: null}
       ]
     }
   },
   methods: {
     tabChage (v) {
       this.currentTab = v.name
+    },
+    openDialog (index) {
+      this.dialogFlag = true
+      this.currentCom = this.coms[index]
     },
     receivingHandle () {
       this.dialogFlag = true
