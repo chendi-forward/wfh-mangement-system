@@ -218,6 +218,9 @@
     grid-template-columns: 7fr 5fr;
     .footer__header--tabs {
       box-shadow: unset;
+      & /deep/ .el-tabs__item {
+        width: auto;
+      }
     }
     .footer--map,
     .footer--list {
