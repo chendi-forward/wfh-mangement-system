@@ -71,11 +71,13 @@
       name: '主页',
       children: [
         {
+          id: '1',
           name: '业绩查看',
           path: 'yjck',
           icon: 'el-icon-setting'
         },
         {
+          id: '2',
           name: '内容运营',
           path: 'nryy',
           icon: 'el-icon-location',
@@ -99,16 +101,19 @@
           ]
         },
         {
+          id: '3',
           name: '用户管理',
           path: 'yhgl',
           icon: 'el-icon-menu'
         },
         {
+          id: '4',
           name: '权限管理',
           path: 'qxgl',
           icon: 'el-icon-menu'
         },
         {
+          id: '5',
           name: '售后管理',
           path: 'shgl',
           icon: 'el-icon-menu',
@@ -120,6 +125,10 @@
             {
               name: '退款管理',
               path: 'shgl-tkgl'
+            },
+            {
+              name: '评价管理',
+              path: 'shgl-pjgl'
             }
           ],
           childrenNoMenu: [ //无菜单路由
@@ -135,6 +144,7 @@
       name: '设置',
       children: [
         {
+          id: '6',
           name: '会员积分',
           path: 'hyjf',
           icon: 'el-icon-setting',
@@ -154,16 +164,33 @@
           ]
         },
         {
+          id: '7',
           name: '营销模块',
           path: 'yxmk',
-          icon: 'el-icon-menu'
+          icon: 'el-icon-menu',
+          children: [
+            {
+              name: '活动表管理',
+              path: 'yxmk-hdbgl'
+            },
+            {
+              name: '优惠券管理',
+              path: 'yxmk-yhqgl'
+            },
+            {
+              name: '消息中心',
+              path: 'yxmk-xxzx'
+            }
+          ]
         },
         {
+          id: '8',
           name: '数据库',
           path: 'sjk',
           icon: 'el-icon-menu'
         },
         {
+          id: '9',
           name: '会计模块',
           path: 'kjmk',
           icon: 'el-icon-menu'
@@ -226,6 +253,20 @@
     },
     created () {
       this.initBreadcrumbs()
+    },
+    mounted () {
+      let role = sessionStorage.getItem('role')
+      // var roleArr = role.split('')
+      // roleArr.push("7")
+      // roleArr.push("8")
+      // roleArr.push("9")
+      // menus.forEach((item) => {
+      //   item.children = item.children.filter((data) => {
+      //     console.log(roleArr.includes(data.id))
+      //     return roleArr.includes(data.id)
+      //   })
+      // })
+      // console.log(roleArr, menus, '============')
     }
   }
 </script>
@@ -403,6 +444,32 @@
   &:nth-child(7) {
     .el-aside {
       line-height: 320px;
+    }
+  }
+}
+
+.tag-dialog {
+  padding: 30px;
+  .el-dialog__header,
+  .el-dialog__body {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .tag--title {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .save-tag {
+    display: flex;
+    justify-content: center;
+  }
+  .add-tag {
+    margin-bottom: 15px;
+    .add-tag--content {
+      display: flex;
+      .el-input__inner {
+        margin-right: 20px;
+      }
     }
   }
 }

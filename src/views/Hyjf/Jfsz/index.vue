@@ -15,28 +15,29 @@
               label="任务"
               align='center'
               width="150">
-              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.date }}</span></template>
+              <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.intro }}</span></template>
             </el-table-column>
             <el-table-column
               align='center'
               label="周内上限次数">
               <template slot-scope="scope">
-                <input-or-text v-if="scope.row.id!==6 && scope.row.id!==7" :text-data="scope.row.yjdx" :input-data="scope.row.yjdx" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.yjdx = v}"></input-or-text>
-                <span v-if="scope.row.id==6 || scope.row.id==7" class='text-overflow'>{{ scope.row.yjdx }}</span>
+                <input-or-text v-if="scope.row.integral_id!=='06' && scope.row.integral_id!=='07'" :text-data="scope.row.max_count" :input-data="scope.row.max_count" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.max_count = v}"></input-or-text>
+                <span v-if="scope.row.integral_id=='06'" class='text-overflow'>永久{{scope.row.max_count}}次</span>
+                <span v-if="scope.row.integral_id=='07'" class='text-overflow'>{{scope.row.max_count}}</span>
               </template>
             </el-table-column>
             <el-table-column
               align='center'
               label="对应分值">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.rwjd" :input-data="scope.row.rwjd" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.rwjd = v}"></input-or-text>
+                <input-or-text :text-data="scope.row.integral_num" :input-data="scope.row.integral_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.integral_num = v}"></input-or-text>
               </template>
             </el-table-column>
             <el-table-column
               align='center'
               label="顶格分值">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.tjfled" :input-data="scope.row.tjfled" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.tjfled = v}"></input-or-text>
+                <input-or-text :text-data="scope.row.max_integral" :input-data="scope.row.max_integral" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.max_integral = v}"></input-or-text>
               </template>
             </el-table-column>
           </el-table>
@@ -53,15 +54,15 @@
         <div class="spgl-item--title">积分兑现门槛</div>
         <div class="spgl-item--content content2">
           <div class="edit-div sub-content" v-show='editSillShow'>
-            <p>每<el-input v-model="editSillForm.every" placeholder="请输入分值"></el-input>（分），
-            可领取<el-input v-model="editSillForm.everyM" placeholder="请输入金额"></el-input>（元）；</p>
-            <p>达<el-input v-model="editSillForm.reach" placeholder="请输入分值"></el-input>（分）之后，
-            每<el-input v-model="editSillForm.reachEvery" placeholder="请输入分值"></el-input>（分），
-            可领取<el-input v-model="editSillForm.reachEveryM" placeholder="请输入金额"></el-input>（元）。</p>
+            <p>每<el-input v-model="editSillForm.low_base" placeholder="请输入分值"></el-input>（分），
+            可领取<el-input v-model="editSillForm.low_ratio" placeholder="请输入金额"></el-input>（元）；</p>
+            <p>达<el-input v-model="editSillForm.threshold" placeholder="请输入分值"></el-input>（分）之后，
+            每<el-input v-model="editSillForm.hig_base" placeholder="请输入分值"></el-input>（分），
+            可领取<el-input v-model="editSillForm.hig_ratio" placeholder="请输入金额"></el-input>（元）。</p>
           </div>
           <div class="view-div sub-content" v-show='!editSillShow'>
-            <p>每{{SillForm.every}}（分），可领取{{SillForm.everyM}}（元）奖励；</p>
-            <p>达{{SillForm.reach}}（分）之后，每{{SillForm.reachEvery}}（分），可领取{{SillForm.reachEveryM}}（元）奖励。</p>
+            <p>每{{SillForm.low_base}}（分），可领取{{SillForm.low_ratio}}（元）奖励；</p>
+            <p>达{{SillForm.threshold}}（分）之后，每{{SillForm.hig_base}}（分），可领取{{SillForm.hig_ratio}}（元）奖励。</p>
           </div>
           <div class="edit" v-show='!editSillShow'>
             <el-button size="mini" class="success-btn" @click="editSill">编辑</el-button>

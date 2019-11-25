@@ -86,25 +86,24 @@
         <el-button size="mini" class="success-btn" @click="createFn">新建</el-button>
       </div>
       <div class="page-wrap">
-        <el-pagination
+        <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="5"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
           :total="400">
-        </el-pagination>
-        <el-button size="mini" class="success-btn" @click="submit">确定</el-button>
+        </my-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from 'COMPONENTS/Pagination'
+
 export default {
   name: 'ssxd',
+  components: {
+    'my-pagination': Pagination
+  },
   data () {
     return {
       formSsxd: {

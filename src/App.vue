@@ -11,8 +11,9 @@
 import {deepcopy} from './commons/util'
 import allRoutes from './routerFullPath'
 import {resetRouter} from './router'
+
 // 公共页面白面单
-const whiteLink = ['/login', '/404', '/401', '/componentTest']
+const whiteLink = ['/login', '/404', '/401']
 export default {
   name: 'App',
   data () {
@@ -96,34 +97,31 @@ export default {
     },
     signIn (callback) {
       let jwtToken = sessionStorage.getItem('token')
+      console.log('jwtToken>>>>', jwtToken)
       if (!jwtToken) {
         return this.$router.push({
           path: '/login',
           query: {from: this.$router.currentRoute.path}
         })
       }
-      // 获取可进入权限目录
-      // this.axios.get('/api/menus', {
-      //   params: {
-      //     userPermissionId: sessionStorage.userPermissionId
-      //   }
-      // })
-      // .then((res) => {
-      //   let userPermissions = res.data.data
-      //   // Save information, if it is used elsewhere.
-      //   this.$root.userData = userPermissions
-      //   /*
-      //   * Get routePermission form user permissions
-      //   * Like this:
-      //   * { "route1": true, "route2": true, ... }
-      //   */
-      //   let routePermission = this.getRoutes(userPermissions, '/page')
-      //   /*
-      //   * Adding routing privileges to users
-      //   */
-      //   this.extendRoutes(routePermission, '/page')
-      //   typeof callback === 'function' && callback()
-      // })
+      /* 获取可进入权限目录
+      this.axios.get('/api/menus', {
+        params: {
+          userPermissionId: sessionStorage.userPermissionId
+        }
+      })
+      .then((res) => {
+        let userPermissions = res.data.data
+        // Save information, if it is used elsewhere.
+        this.$root.userData = userPermissions
+        // * Get routePermission form user permissions
+        // * Like this:
+        // * { "route1": true, "route2": true, ... }
+        let routePermission = this.getRoutes(userPermissions, '/page')
+        // * Adding routing privileges to users
+        this.extendRoutes(routePermission, '/page')
+        typeof callback === 'function' && callback()
+      }) */
       // 可以访问的路由在这里定义
       let userPermissions = [
         {
@@ -178,6 +176,11 @@ export default {
           link: 'shgl-ddxq'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
+          name: '售后管理-评价管理',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'shgl-pjgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
           name: '会员积分-时间设置',
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'hyjf-sjsz'
@@ -192,10 +195,20 @@ export default {
           parentId: '2c9180895e13261e015e13469b7e0000',
           link: 'hyjf-jfsz'
         }, {
-          id: '2c9180895e13261e015e13469b7e0000',
-          name: '营销模块',
+        id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-优惠券管理',
           parentId: '2c9180895e13261e015e13469b7e0000',
-          link: 'yxmk'
+          link: 'yxmk-yhqgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-活动表管理',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-hdbgl'
+        }, {
+          id: '2c9180895e13261e015e13469b7e0000',
+          name: '营销模块-消息中心',
+          parentId: '2c9180895e13261e015e13469b7e0000',
+          link: 'yxmk-xxzx'
         }, {
           id: '2c9180895e13261e015e13469b7e0000',
           name: '数据库',
@@ -214,12 +227,9 @@ export default {
       typeof callback === 'function' && callback()
     },
     loginDirect (newPath) {
-      /*
-      * Monitor login events
-      * Will trigger the events in views/login.vue
-      */
+      console.log('TCL: loginDirect -> newPath', newPath)
       this.signIn(() => {
-        this.$router.replace({path: newPath || '/yjck'})
+        this.$router.replace({path: newPath || 'yjck'})
       })
     }
   }

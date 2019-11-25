@@ -1,4 +1,4 @@
-import {get, post} from '../http'
+import {get, post} from './http'
 
 // 接口统一管理
 export default {

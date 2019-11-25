@@ -1,95 +1,112 @@
 <template>
-  <div class="find-active">
-    <div class="newMan-content">
-      <div class="con-num">
-        共22条
+  <div>
+    <div v-if="!isShowSetting" class="find-active">
+      <div class="newMan-content">
+        <div class="con-num">
+          共22条
+        </div>
+        <div class="con-search">
+          <el-input
+            placeholder="请输入历史内容关键字..."
+            v-model="newSearch">
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <el-button type="danger">搜索</el-button>
+        </div>
+        <div class="con-new">
+          <el-button type="danger" @click="showSetting">新建</el-button>
+        </div>
       </div>
-      <div class="con-search">
-        <el-input
-          placeholder="请输入历史内容关键字..."
-          v-model="newSearch">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-        <el-button type="danger">搜索</el-button>
-      </div>
-      <div class="con-new">
-        <el-button type="danger">新建</el-button>
-      </div>
-    </div>
-    <div class="table-content">
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          label="内容"
-          min-width='340'>
-          <template slot-scope="scope">
-            <div class="con-box">
-              <div class="con-img">
-                <img :src="scope.row.img" alt="">
+      <div class="table-content">
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            label="内容"
+            min-width='340'>
+            <template slot-scope="scope">
+              <div class="con-box">
+                <div class="con-img">
+                  <img :src="scope.row.img" alt="">
+                </div>
+                <div class="con-text">
+                  {{ scope.row.text }}
+                </div>
               </div>
-              <div class="con-text">
-                {{ scope.row.text }}
-              </div>
+          </template>
+          </el-table-column>
+          <el-table-column
+            prop="label"
+            label="标签类别">
+          </el-table-column>
+          <el-table-column
+            prop="time"
+            label="发布时间"
+            width="220">
+          </el-table-column>
+          <el-table-column
+            prop='status'
+            label="状态"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            width="200"
+            label="排序">
+            <div class="order-con">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleEdit(scope.$index, scope.row)">上移</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">下移</el-button>
             </div>
-        </template>
-        </el-table-column>
-        <el-table-column
-          prop="label"
-          label="标签类别">
-        </el-table-column>
-        <el-table-column
-          prop="time"
-          label="发布时间"
-          width="150">
-        </el-table-column>
-        <el-table-column
-          prop='status'
-          label="状态"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          width="150"
-          label="排序">
-          <div class="order-con">
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleEdit(scope.$index, scope.row)">上移</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)">下移</el-button>
-          </div>
-        </el-table-column>
-        <el-table-column label="操作" width="86">
-          <div class="con-icon">
-            <i class="el-icon-edit"></i>
-            <i class="el-icon-delete"></i>
-          </div>
-        </el-table-column>
-      </el-table>
+          </el-table-column>
+          <el-table-column label="操作" width="86">
+            <div class="con-icon">
+              <i class="el-icon-edit"></i>
+              <i class="el-icon-delete"></i>
+            </div>
+          </el-table-column>
+        </el-table>
+      </div>
+      <!-- <div class="table-footer">
+        <el-checkbox label="全选"></el-checkbox>
+        <el-button>批量删除</el-button>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage4"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          background
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400">
+        </el-pagination>
+      </div> -->
+      <div class="ssxd-footer">
+        <div class="selectAll-wrap">
+          <el-button size="mini" class="success-btn">批量删除</el-button>
+        </div>
+        <div class="page-wrap">
+          <my-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :total="400">
+          </my-pagination>
+        </div>
+      </div>
     </div>
-    <div class="table-footer">
-      <el-checkbox label="全选"></el-checkbox>
-      <el-button>批量删除</el-button>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
-      </el-pagination>
+    <div v-else class="content-setting">
+      <content-setting></content-setting>
     </div>
   </div>
 </template>
@@ -99,10 +116,17 @@
   import befautify1 from 'ASSETS/image/timg (1).jpg'
   import befautify2 from 'ASSETS/image/timg (2).jpg'
   import befautify3 from 'ASSETS/image/timg (3).jpg'
+  import ContentSetting from '../BasicComponents/ContentSetting'
+  import Pagination from 'COMPONENTS/Pagination'
   export default {
     name: 'fxy',
+    components: {
+      'content-setting': ContentSetting,
+      'my-pagination': Pagination
+    },
     data () {
       return {
+        isShowSetting: false, // 是否显示内容设置页
         currentPage4: 1,
         newSearch: null, // 新手入门的搜索关键字
         tableData: [{
@@ -145,7 +169,10 @@
       handleEdit () {},
       handleSelectionChange () {},
       handleSizeChange () {},
-      handleCurrentChange () {}
+      handleCurrentChange () {},
+      showSetting () {
+        this.isShowSetting = true
+      }
     }
   }
 </script>
