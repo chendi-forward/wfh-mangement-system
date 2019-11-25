@@ -20,4 +20,4 @@ app.use('/', proxy({
     changeOrigin: true
 }))
 app.listen(3000)
-console.log('\x1B[4m%s\x1B[24m', 'http://47.94.133.35:3000')
+console.log('\x1B[4m%s\x1B[24m', 'http://0.0.0.0:3000')
