@@ -6,11 +6,10 @@ axios.defaults.timeout = 10000;
 axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
 // axios.defaults.baseURL ='http://127.0.0.1:7777/'; // 线下
 
-// const token = sessionStorage.getItem('token')
-// axios.defaults.timeout = 5000
-// axios.defaults.baseURL ='http://47.94.133.35:5500/'
-// axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
-// axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
+const token = sessionStorage.getItem('token')
+axios.defaults.timeout = 5000
+axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
+axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 
 //http request 拦截器
 axios.interceptors.request.use(
