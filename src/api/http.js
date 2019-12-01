@@ -1,10 +1,10 @@
 /* eslint-disable */
 import axios from 'axios';
 import { Message } from 'element-ui';
+import CONFIG from '@/config/baseURL'
 
 axios.defaults.timeout = 10000;
-axios.defaults.baseURL ='http://47.94.133.35:5500/'; // 线上
-// axios.defaults.baseURL ='http://127.0.0.1:7777/'; // 线下
+axios.defaults.baseURL = CONFIG.api;
 
 // const token = sessionStorage.getItem('token')
 // axios.defaults.timeout = 5000

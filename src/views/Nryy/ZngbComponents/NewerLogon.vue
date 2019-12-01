@@ -11,15 +11,18 @@
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
-          <label class="ssxd-form--label">
+          <!-- <label class="ssxd-form--label">
             <span>触发等级</span>
             <span>：</span>
           </label>
-          <el-input
-            class="ssxd-form--input"
-            v-model="formSsxd.touchLevel"
-            placeholder='输入内容...'>
-          </el-input>
+          <el-select class="ssxd-form--input" v-model="formSsxd.touchLevel" placeholder="输入内容...">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select> -->
         </div>
         <div class="ssxd-form-item">
           <label class="ssxd-form--label">
@@ -36,7 +39,7 @@
           </label>
           <el-input
             class="ssxd-form--input"
-            v-model="formSsxd.touchLevel"
+            v-model="formSsxd.count"
             placeholder='输入内容...'>
           </el-input>
           <div class="ssxd-form--btn">
@@ -93,7 +96,6 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini" class="success-btn" @click="createFn">新建</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
@@ -119,7 +121,7 @@ export default {
       formSsxd: {
         touchStauts: 1,
         scriptStauts: 1,
-        touchLevel: 'v2'
+        count: 10
       },
       tableData: [
         {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
@@ -136,7 +138,6 @@ export default {
     handleSelectionChange () {},
     editHandle () {},
     deleteHandle () {},
-    createFn () {},
     handleSizeChange () {},
     handleCurrentChange () {},
     currentPage () {},

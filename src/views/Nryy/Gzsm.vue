@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="hydj gzsm-box">
-        <div class="title">我的邀请码</div>
+        <div class="title">我的邀请码说明</div>
         <div class="content">
           <img-upload class="upload-img" v-model="imageUrl_wdyqm"></img-upload>
           <div class="content-tool">
@@ -96,7 +96,6 @@
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
       grid-column-gap: 25px;
-      grid-row-gap: 18px;
       height: 861px;
     }
     .gzsm-footer {
@@ -119,6 +118,7 @@
       }
     }
     .gzsm-box {
+      margin-bottom: 18px;
       border-radius: 4px;
       background-color: #fff;
       .title {

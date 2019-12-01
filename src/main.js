@@ -4,13 +4,11 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'COMMONS/element-reset.less'
-import 'COMMONS/commons.less'
-import 'COMMONS/tabs.less'
-import 'COMMONS/iconfont.less'
+import '@/styles/index.less'
 import {post, get, patch, put} from './api/http'
 
 Vue.config.productionTip = false
+import '@/icons' // icon
 
 //定义全局变量
 Vue.prototype.$post = post

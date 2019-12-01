@@ -20,7 +20,7 @@
             </el-select>
             <div class="form--dateSelect">
               <el-date-picker
-                class="data-input"
+                popper-class="data-input"
                 v-model="effectiveDate_s"
                 type="datetime"
                 placeholder="选择时间..."
@@ -29,7 +29,7 @@
                 <div class="date-throught"></div>
               </div>
               <el-date-picker
-                class="data-input"
+                popper-class="data-input"
                 v-model="effectiveDate_e"
                 type="datetime"
                 placeholder="选择时间..."
@@ -72,20 +72,11 @@
           <el-tabs class="footer__header--tabs" type="border-card" v-model="activeName1">
             <el-tab-pane label="用户地图" name="yhdt">
               <div id='yhdtMap' class="footer--map"></div>
-              <div class="footer__top">
-                <div class="footer__top--item" v-for="item in 8">
-                  <span class="footer__top--item__inner footer__top--item--index">{{item}}</span>
-                  <span class="footer__top--item__inner footer__top--item--province">广东</span>
-                  <span class="footer__top--item__inner footer__top--item--percent">30%</span>
-                  <div class="footer__top--item__inner footer__top--item--bar">
-                    <div class="footer__top--item--bar__inner"></div>
-                  </div>
-                </div>
-              </div>
+              <map-legend class="footer__top"></map-legend>
             </el-tab-pane>
             <el-tab-pane label="销售地图" name="xsdt">
               <div id='xsdtMap' class="footer--map"></div>
-              <div class="footer--top"></div>
+              <map-legend class="footer__top"></map-legend>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -235,43 +226,12 @@
     .el-tab-pane {
       position: relative;
     }
-    .footer__top {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 300px;
-      height: 100%;
-      padding: 40px;
-      padding-left: unset;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      .footer__top--item {
-        display: flex;
-        align-items: center;
-      }
-      .footer__top--item--index {
-        margin-right: 20px;
-      }
-      .footer__top--item--province {
-        margin-right: 30px;
-      }
-      .footer__top--item--percent {
-        margin-right: 25px;
-      }
-      .footer__top--item--bar {
-        display: inline-block;
-        width: 40%;
-        height: 50%;
-        border-radius: 8px;
-        background-color: #f1f3f5;
-        .footer__top--item--bar__inner {
-          width: 57%;
-          background: #FF4B57;
-          height: 100%;
-          border-radius: 8px;
-        }
-      }
+  }
+</style>
+<style lang="less">
+  .data-input {
+    .el-button--text {
+      display: none;
     }
   }
 </style>
