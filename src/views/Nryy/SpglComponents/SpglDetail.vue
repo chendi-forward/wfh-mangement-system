@@ -3,9 +3,9 @@
     <div class="spgl-item">
       <div class="spgl-item--title">商品信息</div>
       <div class="spgl-item--content">
-        <form name="spxx" class="spgl-form">
-          <div class="spgl-form-item">
-            <label for="goodsTitle" class="spgl-form--label">
+        <el-form name="spxx" ref="spxxForm" :model='formSpxx' class="spgl-form">
+          <el-form-item prop="goodsTitle" :rules="rules.title">
+            <label for="typeEffect" class="spgl-form--label required">
               <span>商品标题</span>
               <span>：</span>
             </label>
@@ -15,9 +15,8 @@
               placeholder='输入标题...'
               name="goodsTitle">
             </el-input>
-            <div class="spgl-form--rule">*必填项，30个字符以内</div>
-          </div>
-          <div class="spgl-form-item">
+          </el-form-item>
+          <el-form-item class="spgl-form-item" prop="typeEffects">
             <label for="typeEffect" class="spgl-form--label">
               <span>类型功效</span>
               <span>：</span>
@@ -28,9 +27,9 @@
                 v-model="formSpxx.typeEffects"
               ></select-input>
             </div>
-          </div>
-          <div class="spgl-form-item">
-            <label for="price" class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="price" :rules="rules.required">
+            <label for="price" class="spgl-form--label required">
               <span>价格</span>
               <span>：</span>
             </label>
@@ -41,9 +40,8 @@
               name="price">
             </el-input>
             <div class="spgl-form--unit">（单位：元）</div>
-            <div class="spgl-form--rule">*必填项</div>
-          </div>
-          <div class="spgl-form-item">
+          </el-form-item>
+          <el-form-item class="spgl-form-item">
             <label for="num" class="spgl-form--label">
               <span>返利比例</span>
               <span>：</span>
@@ -51,49 +49,59 @@
             <div class="spgl-form--input">
               <div class="spgl-form--num">
                 <span>V1</span>
-                <el-input
-                  class="spgl-form--num__input"
-                  v-model="formSpxx.v1"
-                  name="num">
-                </el-input>
+                <el-form-item>
+                  <el-input
+                    class="spgl-form--num__input"
+                    v-model="formSpxx.v1"
+                    name="num">
+                  </el-input>
+                </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V2</span>
-                <el-input
-                  class="spgl-form--num__input"
-                  v-model="formSpxx.v2"
-                  name="num">
-                </el-input>
+                <el-form-item>
+                  <el-input
+                    class="spgl-form--num__input"
+                    v-model="formSpxx.v2"
+                    name="num">
+                  </el-input>
+                </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V3</span>
-                <el-input
-                  class="spgl-form--num__input"
-                  v-model="formSpxx.v3"
-                  name="num">
-                </el-input>
+                <el-form-item>
+                  <el-input
+                    class="spgl-form--num__input"
+                    v-model="formSpxx.v3"
+                    name="num">
+                  </el-input>
+                </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V4</span>
-                <el-input
-                  class="spgl-form--num__input"
-                  v-model="formSpxx.v4"
-                  name="num">
-                </el-input>
+                <el-form-item>
+                  <el-input
+                    class="spgl-form--num__input"
+                    v-model="formSpxx.v4"
+                    name="num">
+                  </el-input>
+                </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V5</span>
-                <el-input
-                  class="spgl-form--num__input"
-                  v-model="formSpxx.v5"
-                  name="num">
-                </el-input>
+                <el-form-item>
+                  <el-input
+                    class="spgl-form--num__input"
+                    v-model="formSpxx.v5"
+                    name="num">
+                  </el-input>
+                </el-form-item>
               </div>
             </div>
             <div class="spgl-form--unit">（单位：%）</div>
-          </div>
-          <div class="spgl-form-item">
-            <label for="date" class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="date" :rules="rules.required">
+            <label for="date" class="spgl-form--label required">
               <span>生产日期</span>
               <span>：</span>
             </label>
@@ -103,10 +111,9 @@
               type="date"
               placeholder="选择日期">
             </el-date-picker>
-            <div class="spgl-form--rule">*必填项</div>
-          </div>
-          <div class="spgl-form-item">
-            <label for="origin" class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="origin" :rules="rules.required">
+            <label for="origin" class="spgl-form--label required">
               <span>产地</span>
               <span>：</span>
             </label>
@@ -116,10 +123,9 @@
               placeholder='输入产地...'
               name="origin">
             </el-input>
-            <div class="spgl-form--rule">*必填项</div>
-          </div>
-          <div class="spgl-form-item">
-            <label for="typeEffect" class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="description" :rules="rules.required">
+            <label for="typeEffect" class="spgl-form--label required">
               <span>说明</span>
               <span>：</span>
             </label>
@@ -130,26 +136,26 @@
               <el-checkbox label="极速退款"></el-checkbox>
             </el-checkbox-group>
             </div>
-          </div>
-        </form>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
     <div class="spgl-item">
       <div class="spgl-item--title">显示设置</div>
       <div class="spgl-item--content">
-        <form name="xssz" class="spgl-form">
-          <div class="spgl-form-item">
-            <label for="goodStauts" class="spgl-form--label">
+        <el-form name="xssz" ref="xsszForm" :model="formXssz" class="spgl-form">
+          <el-form-item prop="goodStauts" :rules="rules.required">
+            <label for="goodStauts" class="spgl-form--label required">
               <span>商品状态</span>
               <span>：</span>
             </label>
             <el-radio-group class="spgl-form--content" v-model="formXssz.goodStauts">
-              <el-radio :label="1">上线</el-radio>
+              <el-radio :label="1">上架</el-radio>
               <el-radio :label="0">下架</el-radio>
             </el-radio-group>
-          </div>
-          <div class="spgl-form-item spgl-form__state">
-            <label for="activeLabel" class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="activeLabel" :rules="rules.required" class="spgl-form-item spgl-form__state">
+            <label for="activeLabel" class="spgl-form--label required">
               <span>活动标签</span>
               <span>：</span>
             </label>
@@ -162,9 +168,9 @@
               </el-option>
             </el-select>
             <el-button class="spgl-form--setLabel" size="small" @click="setLabel">设置标签</el-button>
-          </div>
-          <div class="spgl-form-item">
-            <label class="spgl-form--label">
+          </el-form-item>
+          <el-form-item prop="formatAdd" :rules="rules.required">
+            <label class="spgl-form--label required">
               <span>规格设置</span>
               <span>：</span>
             </label>
@@ -177,9 +183,9 @@
               </el-input>
             </div>
             <div class="spgl-form--unit">（单位：g）</div>
-          </div>
+          </el-form-item>
           <div class="spgl-form-item">
-            <label class="spgl-form--label">
+            <label class="spgl-form--label required">
               <span>口味设置</span>
               <span>：</span>
             </label>
@@ -189,17 +195,19 @@
                   <div class="taste-box__text text-overflow"><span class="taste-box__text--span">{{item.taste}}</span></div>
                   <span class="avater-delete" @click="deleteTaste(i)">×</span>
                 </div>
-                <label class="taste__label">库存：</label>
-                <el-input
-                  class="spgl-form--format__input taste__input"
-                  type="number"
-                  placeholder="输入数量..."
-                  v-model="item.stock">
-                </el-input>
-                <div class="spgl-form--unit taste--unit">（单位：件）</div>
+                <label class="taste__label">库存（件）：</label>
+                <el-form-item :prop="'taste.' + i + '.stock'" :rules="rules.required">
+                  <el-input
+                    class="spgl-form--format__input taste__input"
+                    type="number"
+                    placeholder="输入数量..."
+                    v-model="item.stock">
+                  </el-input>
+                </el-form-item>
               </div>
               <input
                 class="el-input__inner"
+                style="font-size: 14px;"
                 type='text'
                 placeholder="输入口味并回车..."
                 v-model="taste"
@@ -207,13 +215,13 @@
               />
             </div>
           </div>
-        </form>
+        </el-form>
       </div>
     </div>
     <div class="spgl-item">
       <div class="spgl-item--title">上传图片</div>
       <div class="spgl-item--content">
-        <p class="spgl-item--content__sub">
+        <p class="spgl-item--content__sub required">
           展示图片：
           <span>
             <span>*支持jpg/png格式，不超过10M</span>
@@ -239,7 +247,7 @@
         </div>
       </div>
       <div class="spgl-item--content">
-        <p class="spgl-item--content__sub">
+        <p class="spgl-item--content__sub required">
           商品详情长图：
           <span>
             <span>*支持jpg/png格式，不超过10M</span>
@@ -261,7 +269,6 @@
               @upload-success='detailUploadSuccess'
               @upload-error='detailUploadError'>
             </img-upload>
-            <!-- <img-upload size='10' class="spgl-item--content__img" v-show="imgListDetail.length < 6" :is-show-img='false' @input="inputDetail"></img-upload> -->
           </div>
         </div>
       </div>
@@ -273,6 +280,7 @@
           <el-checkbox class="spgl-item--content__setTime" v-model="isDefinitTime">定时发布：</el-checkbox>
           <div class="spgl-form--dateSelect">
             <el-date-picker
+              :disabled="!isDefinitTime"
               class="spgl-form--input data-input"
               v-model="definitData"
               type="datetime"
@@ -352,6 +360,7 @@
   import SelectInput from '../BasicComponents/SelectInput'
   import DialogCom from 'COMPONENTS/DialogCom'
   import * as commonsConfig from 'COMMONS/commonsConfig.js'
+  import moment from 'moment'
   let base_url = commonsConfig.BASE_URL
 
   export default {
@@ -362,6 +371,25 @@
       'dialog-com': DialogCom
     },
     data () {
+      let validateTitle = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入商品标题'))
+        } else if (value.length > 30) {
+          callback(new Error('30个字符以内！'))
+        } else {
+          callback()
+        }
+      }
+      let validateMenoy = (rule, value, callback) => {
+        let regx = /^0\.\d+$|^[1-9]+(\.\d+)?$/
+        if (value === '') {
+          callback(new Error('该项不能为空！'))
+        } else if (regx.test(+value)) {
+          callback(new Error('请输入正数！'))
+        } else {
+          callback()
+        }
+      }
       return {
         isShowImgPreview: false,
         isShowImgDetail: false,
@@ -371,16 +399,23 @@
           {name: '塑形', isSelect: false},
           {name: '增肌', isSelect: false}
         ],
+        rules: {
+          required: [
+            {required: true, message: '该项为必填项'}
+          ],
+          title: [
+            {validator: validateTitle, trigger: 'blur'}
+          ]
+        },
         formSpxx: {
           goodsTitle: '',
-          typeEffects: [],
           price: '',
           v1: '',
           v2: '',
           v3: '',
           v4: '',
           v5: '',
-          data: '', // 生产日期
+          date: '', // 生产日期
           origin: '', // 产地
           description: [] // 说明
         },
@@ -411,6 +446,17 @@
             return time.getTime() <= Date.now()
           }
         } 
+      }
+    },
+    computed: {
+      'formSpxx.typeEffects' () {
+        let res = []
+        this.preset_typeEffect.forEach(item => {
+          if (item.isSelect) {
+            res.push(item.name)
+          }
+        })
+        return res
       }
     },
     mounted () {
@@ -494,6 +540,7 @@
       exhibitUploadSuccess (res) {
         if (res.message === 'ok') {
           this.imgListExhibit.push(base_url + res.path)
+          console.log(this.imgListExhibit);
         }
       },
       exhibitUploadError (res) {
@@ -523,11 +570,28 @@
       },
 
       save () {
+        let valides = []
+        this.$refs.spxxForm.validate(valid => {
+          if (valid) {
+            valides.push(true)
+          } else {
+            valides.push(false)
+          }
+        })
+        this.$refs.xsszForm.validate(valid => {
+          if (valid) {
+            valides.push(true)
+          } else {
+            valides.push(false)
+          }
+        })
+        if (!valides.every(item => item)) return this.$alert('请按照规则填写！')
         let parmas = {
           'title': this.formSpxx.goodsTitle,
           'price': this.formSpxx.price,
-          'data': this.formSpxx.data,
+          'date': moment(this.formSpxx.date).format('YYYY-MM-DD'),
           'origin': this.formSpxx.origin,
+          'content': '11111',
           'description': this.formSpxx.description.length ? this.formSpxx.description.join(',') : '', // 说明
           'rebate': {   // 返利设置(key:会员等级，value:返利金额)
             '1': this.formSpxx.v1,
@@ -540,14 +604,22 @@
           'detail_pic': this.imgListDetail.length ? this.imgListDetail.join(',') : '',
           'weight': this.formXssz.formatAdd + 'g', // --> 规格（重量）
           'specification': this.formXssz.taste,
-          'mind_order': this.recommends[0].isSelect ? this.recommends[0].isSelect.value : '', // --> 主页推荐顺序(不传默认不推荐)
-          'cart_order': this.recommends[1].isSelect ? this.recommends[1].isSelect.value : '', // --> 购物车推荐顺序(不传默认不推荐)
-          'efficacy': this.formSpxx.typeEffects, // --> 功效(可以不传)
+          'mind_order': this.recommends[0].isSelect ? this.recommends[0].value : '', // --> 主页推荐顺序(不传默认不推荐)
+          'cart_order': this.recommends[1].isSelect ? this.recommends[1].value : '', // --> 购物车推荐顺序(不传默认不推荐)
+          'efficacy': this.formSpxx.typeEffects.length ? this.formSpxx.typeEffects.join(',') : '', // --> 功效(可以不传)
           'state': this.formXssz.goodStauts, // --> 上架下架状态（1：上架，0：下架）(默认是1)
           'label_id': this.formXssz.activeLabel, // --> 标签id
-          'publish_time': this.isDefinitTime ? this.definitData : '' // --> 定时上架时间(不传，默认立即上架)
+          'publish_time': this.isDefinitTime ? moment(this.definitData).format('YYYY-MM-DD HH:mm:ss') : '' // --> 定时上架时间(不传，默认立即上架)
         }
         console.log(parmas)
+        this.$post('/content/goods/add_goods', parmas)
+        .then(res => {
+          console.log(res);
+          
+        })
+        .catch((e) => {
+          this.$alert(e)
+        })
       },
       cancel () {
         this.$emit('toggle-component', 'cancel')
@@ -559,8 +631,8 @@
 <style lang='less' scoped>
   .spgl-detail {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-gap: 37px 18px;
+    grid-template-columns: 9fr 7fr;
+    grid-gap: 18px;
     .spgl-item {
       .spgl-item__padding {
         padding-right: 5%;
@@ -568,7 +640,7 @@
       }
     }
     .spgl-item--content {
-      padding: 0 30px;
+      padding: 0 15px;
       margin-top: 16px;
       margin-bottom: 30px;
       .upload-img__tool {
@@ -627,7 +699,7 @@
       .spgl-form--input {
         display: flex;
         justify-content: space-between;
-        width: 53%;
+        width: 60%;
       }
       .spgl-form--checkbox {
         display: inline-block;
@@ -653,13 +725,13 @@
         color: #fe4a56;
       }
       .spgl-form--num {
-        display: inline-block;
+        display: flex;
         span {
           margin-right: 4px;
         }
         .spgl-form--num__input {
           width: 35px;
-          .el-input__inner {
+          /deep/ .el-input__inner {
             padding: 0 5px;
           }
         }
@@ -669,7 +741,6 @@
       }
       .spgl-form--content {
         display: inline-block;
-        width: 46%;
         .el-radio {
           height: 40px;
           line-height: 40px;
@@ -711,9 +782,9 @@
         display: flex;
         align-items: center;
         position: relative;
-        margin-bottom: 20px;
+        margin-top: -22px;
         .taste-box {
-          width: 90px;
+          width: 70px;
           line-height: 30px;
           height: 30px;
           margin-right: 15px;
@@ -722,10 +793,11 @@
           border: 1px solid #363f51;
           border-radius: 3px;
           .taste-box__text {
-            width: 90px;
+            width: 70px;
             padding: 0 10px;
             .taste-box__text--span {
               white-space: nowrap;
+              font-size: 14px;
             }
           }
         }
@@ -734,6 +806,7 @@
         }
         .taste__input {
           width: 100px;
+          margin-top: 22px;
         }
         .taste--unit {
           position: absolute;
@@ -772,13 +845,18 @@
         margin-right: 10px;
         line-height: 40px;
       }
-      .el-checkbox__label {
-        padding-left: 5px;
+    }
+    .el-form-item__content {
+      width: 100%;
+      display: flex;
+      align-content: flex-start;
+      .el-form-item__error {
+        margin-left: 94px;
       }
     }
-    .spgl-form-item {
-      .el-input__inner {
-        padding: 0 6px;
+    .spgl-form__taste {
+      .el-form-item__content .el-form-item__error {
+        margin-left: unset;
       }
     }
     .spgl-form__state {
@@ -792,15 +870,6 @@
         .el-checkbox {
           line-height: 40px;
         }
-      }
-    }
-    .data-input {
-      .el-input__inner {
-        padding-right: 25px;
-      }
-      .el-input__prefix {
-        right: 5px;
-        left: unset;
       }
     }
     .current-tag {

@@ -97,7 +97,6 @@ export default {
     },
     signIn (callback) {
       let jwtToken = sessionStorage.getItem('token')
-      console.log('jwtToken>>>>', jwtToken)
       if (!jwtToken) {
         return this.$router.push({
           path: '/login',

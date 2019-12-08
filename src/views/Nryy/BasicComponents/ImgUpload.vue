@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import * as commonsConfig from 'COMMONS/commonsConfig.js'
+  import { BASE_URL } from 'COMMONS/commonsConfig.js'
   export default {
     name: 'img-upload-component',
     props: {
@@ -38,12 +38,11 @@
     data () {
       return {
         imageUrl: '',
-        action_url: commonsConfig.BASE_URL + '/pic/push_goods_pic'
+        action_url: BASE_URL + '/pic/push_goods_pic'
       }
     },
     methods: {
       deleteImg () {
-        this.imageUrl = ''
         this.$emit('delete-img')
       },
       beforeAvatarUpload (file) {
