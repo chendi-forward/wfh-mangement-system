@@ -4,7 +4,7 @@
       <div class="commom-card">
         <div class="top-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
+            <span class="num-value">{{saleHead.all_count.delivered}}</span>
             <span class="num-name">已发货总数量 </span>
           </div>
           <div class="gross-icon">
@@ -13,19 +13,19 @@
         </div>
         <div class="bottom-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
-            <span class="num-name">袋鼠系列蛋白粉 </span>
+            <span class="num-value">{{saleHead.delivered[saleHeadIndex.delivered].count}}</span>
+            <span class="num-name">{{saleHead.delivered[saleHeadIndex.delivered].goods_title}}</span>
           </div>
           <div class="gross-icon">
-            <i class="el-icon-caret-top"></i>
-            <i class="el-icon-caret-bottom"></i>
+            <i class="el-icon-caret-top" @click="lunbo('delivered', 'up')"></i>
+            <i class="el-icon-caret-bottom" @click="lunbo('delivered')"></i>
           </div>
         </div>
       </div>
       <div class="commom-card">
         <div class="top-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
+            <span class="num-value">{{saleHead.all_count.undelivered}}</span>
             <span class="num-name">待发货总数量  </span>
           </div>
           <div class="gross-icon">
@@ -34,19 +34,19 @@
         </div>
         <div class="bottom-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
-            <span class="num-name">袋鼠系列蛋白粉 </span>
+            <span class="num-value">{{saleHead.undelivered[saleHeadIndex.undelivered].count}}</span>
+            <span class="num-name">{{saleHead.undelivered[saleHeadIndex.undelivered].goods_title}}</span>
           </div>
           <div class="gross-icon">
-            <i class="el-icon-caret-top"></i>
-            <i class="el-icon-caret-bottom"></i>
+            <i class="el-icon-caret-top" @click="lunbo('undelivered', 'up')"></i>
+            <i class="el-icon-caret-bottom" @click="lunbo('undelivered')"></i>
           </div>
         </div>
       </div>
       <div class="commom-card">
         <div class="top-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
+            <span class="num-value">{{saleHead.all_count.inventory}}</span>
             <span class="num-name">库存总数量 </span>
           </div>
           <div class="gross-icon">
@@ -55,12 +55,12 @@
         </div>
         <div class="bottom-card">
           <div class="gross-num">
-            <span class="num-value">20000</span>
-            <span class="num-name">袋鼠系列蛋白粉 </span>
+            <span class="num-value">{{saleHead.inventory[saleHeadIndex.inventory].count}}</span>
+            <span class="num-name">{{saleHead.inventory[saleHeadIndex.inventory].goods_title}}</span>
           </div>
           <div class="gross-icon">
-            <i class="el-icon-caret-top"></i>
-            <i class="el-icon-caret-bottom"></i>
+            <i class="el-icon-caret-top" @click="lunbo('inventory', 'up')"></i>
+            <i class="el-icon-caret-bottom" @click="lunbo('inventory')"></i>
           </div>
         </div>
       </div>
