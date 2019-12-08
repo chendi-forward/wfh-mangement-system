@@ -276,6 +276,7 @@
               class="spgl-form--input data-input"
               v-model="definitData"
               type="datetime"
+              :picker-options="pickerOptions"
               placeholder="选择发布时间">
             </el-date-picker>
           </div>
@@ -403,7 +404,13 @@
         ],
         selectTag: '',
         currentTag: [],
-        newTag: ''
+        newTag: '',
+        // date
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() <= Date.now()
+          }
+        } 
       }
     },
     mounted () {

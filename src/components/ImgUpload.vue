@@ -34,11 +34,9 @@
     },
     methods: {
       uploadSuccess (res) {
-        console.log('TCL: uploadSuccess -> res', res)
         this.$emit('upload-success', res)
       },
       uploadError (res) {
-        console.log('TCL: uploadError -> res', res)
         this.$emit('upload-error', res)
       },
       uploadImgAction (request) {

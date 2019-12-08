@@ -15,11 +15,6 @@ let baseRoute = [
     component: Login
   },
   {
-    path: '/componentTest',
-    name: '测试组件',
-    component: () => import(/* webpackChunkName: "testComp" */ './views/componentTest.vue')
-  },
-  {
     path: '/401',
     name: '无权访问',
     component: () => import(/* webpackChunkName: "401" */ './views/401.vue')

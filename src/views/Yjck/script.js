@@ -3,9 +3,10 @@ import NumberStatistics from './BasicComponents/NumberStatistics'
 import TotalNumber from './BasicComponents/TotalNumber'
 import PieChart from './BasicComponents/PieChart'
 import echarts from 'echarts'
-import 'echarts/map/js/china'
 import { get } from 'http'
 import moment from 'moment'
+import MapLegend from './BasicComponents/MapLegend'
+import methods from './methods'
 
 export default {
   name: 'yjck',
@@ -13,8 +14,10 @@ export default {
     'goods-list': GoodsList,
     'number-statistics': NumberStatistics,
     'total-number': TotalNumber,
-    'pie-chart': PieChart
+    'pie-chart': PieChart,
+    MapLegend
   },
+  mixins: [methods],
   data() {
     return {
       titleList: [
@@ -40,6 +43,9 @@ export default {
         }
       ],
       options: [{
+        value: 'cike',
+        label: '此刻'
+      }, {
         value: 'zuotian',
         label: '昨天'
       }, {
@@ -250,6 +256,19 @@ export default {
       ]
     }
   },
+  watch: {
+    activeName1(val) {
+      if (val === 'yhdt') {
+        this.$nextTick(() => {
+          this.chartMap('yhdtMap')
+        })
+      } else {
+        this.$nextTick(() => {
+          this.chartMap('xsdtMap')
+        })
+      }
+    }
+  },
   filters: {
     thousand_tranf: function (value) {
       value = String(value)
@@ -263,15 +282,15 @@ export default {
   },
   mounted() {
     this.chartLine()
-    this.chartMap()
+    this.chartMap('yhdtMap')
     this.computedCount()
     this.getYesterDay()
   },
   methods: {
-    changeDataRange () {
+    changeDataRange() {
       this.getYesterDay()
     },
-    getYesterDay () {
+    getYesterDay() {
       let yesterDay = moment().subtract(-1, 'd')
       this.dateList = []
       for (let index = 0; index < 24; index++) {
@@ -314,87 +333,7 @@ export default {
       }
       lineWrap.setOption(option)
     },
-    chartMap() {
-      let data = this.chinaData
-      let yData = []
-      data.sort((o1, o2) => {
-        if (isNaN(o1.value) || o1.value == null) return -1
-        if (isNaN(o2.value) || o2.value == null) return 1
-        return o1.value - o2.value
-      })
-      for (var i = 0; i < data.length; i++) {
-        yData.push(data[i].name)
-      }
-      let chartWrap = echarts.init(document.getElementById('yhdtMap'))
-      this.option = {
-        tooltip: {
-          show: true,
-          formatter: function(params) {
-            return params.name + "：" + params.data["value"] + "%";
-          }
-        },
-        visualMap: {
-          type: "piecewise",
-          text: ["高", "低"],
-          showLabel: false,
-          seriesIndex: [0],
-          min: 0,
-          max: 7,
-          inverse: true,
-          inRange: {
-            color: ["#edfbfb", "#b7d6f3", "#40a9ed", "#3598c1", "#215096"]
-          },
-          textStyle: {
-            color: "#000"
-          },
-          orient: 'horizontal',
-          bottom: 30,
-          left: 30
-        },
-        grid: {
-          right: 10,
-          top: 80,
-          bottom: 30,
-          width: "20%"
-        },
-        xAxis: {
-          show: false
-        },
-        yAxis: {
-          type: "category",
-          data: yData,
-          show: false
-        },
-        geo: {
-          zoom: 0.75,
-          map: "china",
-          left: "left",
-          right: "300",
-          label: {
-            emphasis: {
-              show: false
-            }
-          },
-          itemStyle: {
-            borderColor: '#fff'
-          }
-        },
-        series: [
-          {
-            name: "mapSer",
-            type: "map",
-            roam: false,
-            geoIndex: 0,
-            label: {
-              show: false
-            },
-            data: data
-          }
-        ]
-      }
-      chartWrap.setOption(this.option)
-    },
-    computedCount () {
+    computedCount() {
       let data = this.chinaData.sort((o1, o2) => {
         if (isNaN(o1.value) || o1.value == null) return -1
         if (isNaN(o2.value) || o2.value == null) return 1
