@@ -47,6 +47,11 @@ export default {
         query: row
       })
     },
+    toList (name) {
+      this.$router.push({
+        name
+      })
+    },
     editHandle () {},
     handleSizeChange () {},
     handleCurrentChange () {}

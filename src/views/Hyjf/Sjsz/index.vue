@@ -7,7 +7,7 @@
           <p class="row" v-for="(item, i) in time" :key="i"><span class="row-name">{{item.notes}}：</span>{{item.time_days}}天</p>
         </div>
         <div class="set-time" v-show='editTimeShow'>
-          <p class="row" v-for="(item, i) in editTime" :key="i"><span class="row-name">{{item.notes}}：</span><el-input v-model="item.time_days" placeholder="请输入数字"></el-input>（单位：天）</p>
+          <p class="row" v-for="(item, i) in editTime" :key="i"><span class="row-name">{{item.notes}}：</span><el-input type="number" min=0 v-model="item.time_days" placeholder="请输入数字"></el-input>（单位：天）</p>
         </div>
         <div class="edit" v-show='!editTimeShow'>
           <el-button size="mini" class="success-btn" @click="editTimeFn">编辑</el-button>

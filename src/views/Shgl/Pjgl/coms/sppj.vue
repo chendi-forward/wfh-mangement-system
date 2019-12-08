@@ -95,19 +95,20 @@
             align='center'
             width="100">
             </el-table-column>
-            <el-table-column align='center' label="操作" width="100">
+            <el-table-column align='center' label="操作" width="200">
                 <template slot-scope="scope">
                    <div @click='receivingHandle(scope.row)' class="con-icon">
-                        <el-button type="danger" size="mini" plain>回复</el-button>
-                        <!-- <span>已回复</span> -->
+                        <!-- <el-button type="danger" size="mini" plain>回复</el-button> -->
+                        <span>已回复</span>
                     </div>
-                    <!-- <div @click='refundHandle(scope.row)' class="con-icon">
+                    
+                    <div class="con-icon theme-color">
                         显示
                     </div>
                     |
-                    <div @click='refundHandle(scope.row)' class="con-icon">
+                    <div class="con-icon">
                         隐藏
-                    </div> -->
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
