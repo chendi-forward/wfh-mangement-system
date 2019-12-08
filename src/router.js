@@ -27,7 +27,7 @@ let baseRoute = [
 ]
 
 let createRouter = () => new Router({
-  mode: 'history',
+  // mode: 'history',
   /* eslint-disable */
   base: process.env.BASE_URL,
   /* eslint-enable */

@@ -227,7 +227,6 @@ export default {
       typeof callback === 'function' && callback()
     },
     loginDirect (newPath) {
-      console.log('TCL: loginDirect -> newPath', newPath)
       this.signIn(() => {
         this.$router.replace({path: newPath || 'yjck'})
       })
