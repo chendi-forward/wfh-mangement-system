@@ -60,12 +60,12 @@
           </el-form-item>
           <el-form-item label="角色权限:" prop="role">
             <el-checkbox-group v-model="form.role">
-              <el-checkbox label="1" name="role">售后</el-checkbox>
-              <el-checkbox label="2" name="role">会计</el-checkbox>
-              <el-checkbox label="3" name="role">会员</el-checkbox>
-              <el-checkbox label="4" name="role">内容</el-checkbox>
-              <el-checkbox label="5" name="role">营销</el-checkbox>
-              <el-checkbox label="6" name="role">数据库</el-checkbox>
+              <el-checkbox label="1" name="role">业绩面板</el-checkbox>
+              <el-checkbox label="2" name="role">内容</el-checkbox>
+              <el-checkbox label="5" name="role">售后</el-checkbox>
+              <el-checkbox label="6" name="role">会员</el-checkbox>
+              <el-checkbox label="7" name="role">营销</el-checkbox>
+              <el-checkbox label="8" name="role">会计</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-form>

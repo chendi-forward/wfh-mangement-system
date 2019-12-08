@@ -46,7 +46,7 @@
           <div class="main-header__user">
             <div class="user-box__name">
               <span>{{timeStr[currentTime]}}，</span>
-              <span>admin</span>
+              <span>{{user}}</span>
             </div>
             <div class="user-box__logout">
               <span>退出</span>&nbsp;&nbsp;
@@ -185,12 +185,6 @@
         },
         {
           id: '8',
-          name: '数据库',
-          path: 'sjk',
-          icon: 'el-icon-menu'
-        },
-        {
-          id: '9',
           name: '会计模块',
           path: 'kjmk',
           icon: 'el-icon-menu'
@@ -202,6 +196,7 @@
     name: 'App',
     data () {
     return {
+        user: sessionStorage.getItem('user'),
         searchVal: '',
         timeStr: {
           am: '上午好',
@@ -216,6 +211,7 @@
     watch: {
       '$route' () {
         this.initBreadcrumbs()
+        this.menuChange()
       }
     },
     methods: {
@@ -249,24 +245,29 @@
         localStorage.clear()
         sessionStorage.clear()
         this.$router.push({path: '/login'})
+      },
+      // 菜单
+      menuChange () {
+        let role = sessionStorage.getItem('role')
+        var roleArr = role.split('')
+        if (sessionStorage.getItem('id') == 1) {
+          roleArr.push("3")
+          roleArr.push("4")
+        }
+        menus.forEach((item) => {
+          item.children = item.children.filter((data) => {
+            return roleArr.includes(data.id)
+          })
+        })
       }
     },
     created () {
       this.initBreadcrumbs()
     },
     mounted () {
-      let role = sessionStorage.getItem('role')
-      // var roleArr = role.split('')
-      // roleArr.push("7")
-      // roleArr.push("8")
-      // roleArr.push("9")
-      // menus.forEach((item) => {
-      //   item.children = item.children.filter((data) => {
-      //     console.log(roleArr.includes(data.id))
-      //     return roleArr.includes(data.id)
-      //   })
-      // })
-      // console.log(roleArr, menus, '============')
+      setTimeout(() => {
+        this.menuChange()
+      }, 100)
     }
   }
 </script>
