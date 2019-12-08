@@ -3,6 +3,7 @@ import boxIcon from 'ASSETS/image/box_icon.png'
 import carIcon from 'ASSETS/image/car_icon.png'
 import homeIcon from 'ASSETS/image/home_icon.png'
 import {saleHead, orderList} from 'API/Shgl'
+import moment from 'moment'
 
 export default {
   name: 'shgl-ddlb',
@@ -15,8 +16,6 @@ export default {
       carIcon,
       homeIcon,
       currentPage: 1,
-      searchOrder: '',
-      searchUser: '',
       saleHead: {
         all_count: {},
         delivered: [{}],
@@ -52,6 +51,10 @@ export default {
         current_page: 0,
         page_count: 10,
         status: '',
+        number: '',
+        user: ''
+        // s_time: moment(this.time[0]).format('YYYY-MM-DD'),
+        // e_time: moment(this.time[1]).format('YYYY-MM-DD')
       }
     }
   },
@@ -63,11 +66,9 @@ export default {
       saleHead().then(res => {
         this.saleHead = res.data
       })
-      orderList().then(res => {
-        console.log('orderList', res)
-      })
+      this.getOrderList()
     },
-    getOrderList () {
+    getOrderList (data={}) {
       // > number  -- 订单id
       // > user    -- 用户信息(用户id 或昵称)
       // > s_time   -- 开始时间
@@ -75,8 +76,15 @@ export default {
       // > status      --订单状态 (0 待付款， 1 已付款， 2 已发货,  3. 已成交  5. 退款中  6.已关闭, 全部传入空)
       // > page_count     -- 每页的数量
       // > current_page  -- 当前也
-      orderList().then(res => {
+      orderList(Object.assign(this.orderParams, data)).then(res => {
         console.log('orderList', res)
+      })
+    },
+    search () {
+      this.getOrderList({
+        user: searchUser,
+        number: searchOrder,
+
       })
     },
     lunbo (prop, type) {

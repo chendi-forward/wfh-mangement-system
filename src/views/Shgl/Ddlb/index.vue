@@ -69,13 +69,13 @@
       <span class="lebel">订单搜索：</span>
       <el-input
         placeholder="输入订单编号/商品编号..."
-        v-model="searchOrder"
+        v-model="orderParams.number"
         prefix-icon="el-icon-search">
       </el-input>
       <span class="lebel">用户搜索：</span>
       <el-input
         placeholder="输入用户ID/昵称..."
-        v-model="searchUser"
+        v-model="orderParams.user"
         prefix-icon="el-icon-search">
       </el-input>
       <span class="lebel">时间查找：</span>
@@ -85,7 +85,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期">
       </el-date-picker>
-      <el-button type="danger" size="small" plain>搜索</el-button>
+      <el-button type="danger" size="small" plain @click="search">搜索</el-button>
     </div>
     <div class="data-list">
       <div class="tab-model">
@@ -202,7 +202,7 @@
         <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :currentPage="currentPage"
+          :currentPage="orderParams.current_page"
           :total="400">
         </my-pagination>
       </div>
