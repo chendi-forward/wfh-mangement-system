@@ -1,20 +1,32 @@
 <template>
   <div>
-    <div v-if="!isShowSetting" class="find-active">
+    <div
+      v-if="!isShowSetting"
+      class="find-active"
+    >
       <div class="newMan-content">
         <div class="con-num">
-          共22条
+          活动搜索：
         </div>
         <div class="con-search">
           <el-input
             placeholder="请输入历史内容关键字..."
-            v-model="newSearch">
+            v-model="searchVal"
+          >
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
-          <el-button type="danger">搜索</el-button>
+          <el-button
+            type="danger"
+            size="mini"
+            @click="search"
+          >搜索</el-button>
         </div>
         <div class="con-new">
-          <el-button type="danger" @click="showSetting">新建</el-button>
+          <el-button
+            type="danger"
+            @click="showSetting"
+            size="mini"
+          >新建</el-button>
         </div>
       </div>
       <div class="table-content">
@@ -23,54 +35,70 @@
           :data="tableData"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="handleSelectionChange">
+          row-key="active_id"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column
             type="selection"
-            width="55">
+            width="55"
+          >
           </el-table-column>
           <el-table-column
             label="内容"
-            min-width='340'>
+            min-width='300'
+          >
             <template slot-scope="scope">
               <div class="con-box">
                 <div class="con-img">
-                  <img :src="scope.row.img" alt="">
+                  <img :src="scope.row.cover_pic" alt="" >
                 </div>
                 <div class="con-text">
-                  {{ scope.row.text }}
+                  {{ scope.row.title }}
                 </div>
               </div>
-          </template>
+            </template>
           </el-table-column>
           <el-table-column
             prop="label"
-            label="标签类别">
+            label="标签类别"
+            width="120"
+          >
           </el-table-column>
           <el-table-column
             prop="time"
             label="发布时间"
-            width="220">
+            width="220"
+          >
           </el-table-column>
           <el-table-column
             prop='status'
             label="状态"
-            width="150">
+            width="80"
+          >
           </el-table-column>
           <el-table-column
-            width="200"
-            label="排序">
+            width="140"
+            label="排序"
+          >
+          <template slot-scope="scope">
             <div class="order-con">
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleEdit(scope.$index, scope.row)">上移</el-button>
+                @click="handleSortUp(scope.$index, scope.row)"
+              >上移</el-button>
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">下移</el-button>
+                @click="handleSortDown(scope.$index, scope.row)"
+              >下移</el-button>
             </div>
+          </template>
           </el-table-column>
-          <el-table-column label="操作" width="86">
+          <el-table-column
+            label="操作"
+            width="100"
+          >
             <div class="con-icon">
               <i class="el-icon-edit"></i>
               <i class="el-icon-delete"></i>
@@ -94,91 +122,119 @@
       </div> -->
       <div class="ssxd-footer">
         <div class="selectAll-wrap">
-          <el-button size="mini" class="success-btn">批量删除</el-button>
+          <el-button
+            size="mini"
+            class="success-btn"
+          >批量删除</el-button>
         </div>
-        <div class="page-wrap">
+        <div class="page-wrap" v-show="total">
           <my-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :total="400">
+            :total="total"
+          >
           </my-pagination>
         </div>
       </div>
     </div>
-    <div v-else class="content-setting">
+    <div
+      v-else
+      class="content-setting"
+    >
       <content-setting></content-setting>
     </div>
   </div>
 </template>
 
 <script>
-  import befautify from '../timg.jpg'
-  import befautify1 from 'ASSETS/image/timg (1).jpg'
-  import befautify2 from 'ASSETS/image/timg (2).jpg'
-  import befautify3 from 'ASSETS/image/timg (3).jpg'
-  import ContentSetting from '../BasicComponents/ContentSetting'
-  import Pagination from 'COMPONENTS/Pagination'
-  export default {
-    name: 'fxy',
-    components: {
-      'content-setting': ContentSetting,
-      'my-pagination': Pagination
+import ContentSetting from '../BasicComponents/ContentSetting'
+import Pagination from 'COMPONENTS/Pagination'
+import moment from 'moment'
+import * as commonsConfig from 'COMMONS/commonsConfig.js'
+
+let base_url = commonsConfig.BASE_URL
+
+export default {
+  name: 'fxy',
+  components: {
+    'content-setting': ContentSetting,
+    'my-pagination': Pagination
+  },
+  data() {
+    return {
+      isShowSetting: false, // 是否显示内容设置页
+      currentPage4: 1,
+      searchVal: null, // 新手入门的搜索关键字
+      tableData: [
+      ],
+      total: 0,
+      page_count: 10,
+      current_page: 1
+    }
+  },
+  created() {
+    this.getData()
+  },
+  methods: {
+    search() {},
+    handleDelete() {},
+    handleEdit() {},
+    handleSelectionChange() {},
+    handleSizeChange() {},
+    handleCurrentChange() {},
+    showSetting() {
+      this.isShowSetting = true
     },
-    data () {
-      return {
-        isShowSetting: false, // 是否显示内容设置页
-        currentPage4: 1,
-        newSearch: null, // 新手入门的搜索关键字
-        tableData: [{
-          img: befautify,
-          text: '新品来袭，震撼上市',
-          label: '新品推广',
-          time: '2019-05-03 17:33:33',
-          status: '显示',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          img: befautify1,
-          text: '新品来袭，震撼上市',
-          label: '新品推广',
-          time: '2019-05-03 17:33:33',
-          status: '显示',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          img: befautify2,
-          text: '新品来袭，震撼上市',
-          label: '新品推广',
-          time: '2019-05-03 17:33:33',
-          status: '显示',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          img: befautify3,
-          text: '新品来袭，震撼上市',
-          label: '优惠活动',
-          time: '2019-05-03 17:33:33',
-          status: '显示',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+    handleSortUp(index, row) {
+      let params = {
+        active_id: row.active_id,
+        order: 'up'
       }
+      this.updateData(params)
     },
-    methods: {
-      handleDelete () {},
-      handleEdit () {},
-      handleSelectionChange () {},
-      handleSizeChange () {},
-      handleCurrentChange () {},
-      showSetting () {
-        this.isShowSetting = true
+    handleSortDown(index, row) {
+      let params = {
+        active_id: row.active_id,
+        order: 'down'
       }
+      this.updateData(params)
+    },
+    updateData(params) {
+      return this.$post('/content/active/update_goods', params)
+      .then(res => {
+        this.getData()
+        return res
+      })
+      .catch(err => {
+        return Promise.reject()
+      })
+    },
+    getData() {
+      let params = {
+        page_count: this.page_count,
+        current_page: this.current_page
+      }
+      if (!!this.searchVal) params.search = this.searchVal
+      this.$get('/content/active/get_goods', params).then(res => {
+        if (res.message === 'ok') {
+          this.total = res.data.count
+          let result = res.data.content
+          this.tableData = result.map(item => {
+            return {
+              ...item,
+              cover_pic: base_url + item.cover_pic,
+              status: item.state === 1 ? '显示' : '隐藏',
+              time: moment(item.item).format('YYYY-MM-DD HH:mm:ss')
+            }
+          })
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="less">
-
 .el-tabs--border-card {
   box-shadow: none;
 }
@@ -187,21 +243,15 @@
   width: 100%;
   height: 100%;
   .newMan-content {
-    height: 120px;
     display: flex;
+    padding: 25px;
     // justify-content: center;
     align-items: center;
     background: #fff;
-    padding: 0 20px 0 70px;
     border-radius: 0 0 6px 6px;
-    .con-num {
-      width: 50px;
-    }
     .con-search {
       flex: 1;
-      margin-left: 50px;
       display: flex;
-      // justify-content: center;
       align-items: center;
       .el-input {
         width: 400px;
@@ -243,7 +293,7 @@
         margin-left: 3px;
       }
       .el-icon-edit {
-        color: #FF4B57;
+        color: #ff4b57;
       }
     }
     .order-con {
@@ -254,7 +304,7 @@
         height: 30px;
         padding: 0;
         border: 1px solid rgba(255, 75, 87, 1);
-        color: #FF4B57;
+        color: #ff4b57;
         background: rgba(255, 224, 226, 1);
       }
     }
@@ -272,7 +322,6 @@
       width: 170px;
       height: 80px;
       img {
-        width: 100%;
         height: 100%;
       }
     }

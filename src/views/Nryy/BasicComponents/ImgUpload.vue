@@ -57,6 +57,7 @@
         return isJPG_PNG && size
       },
       uploadSuccess (res) {
+        this.imageUrl = BASE_URL + res.path
         this.$emit('upload-success', res)
       },
       uploadError (res) {

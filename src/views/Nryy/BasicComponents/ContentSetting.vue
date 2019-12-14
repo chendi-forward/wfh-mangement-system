@@ -4,35 +4,43 @@
       <div class="content-title">
         内容设置
       </div>
-      <div class="content-body__wrap">
-        <div class="content-body__item">
-          <div class="item__label">文章标题：</div>
+      <el-form name="contentSetting" ref="contentSetting" :model='formContentSetting' class="content-body__wrap">
+        <el-form-item class="content-body__item" prop="title" re>
+          <div class="item__label required">文章标题：</div>
           <div class="item__input">
             <el-input
               placeholder="输入标题..."
-              v-model="title"
+              v-model="formContentSetting.title"
             ></el-input>
           </div>
           <div class="item__rule">
             *必填项，30个字符以内
           </div>
-        </div>
-        <div class="content-body__item">
-          <div class="item__label">标签类别：</div>
+        </el-form-item>
+        <el-form-item class="content-body__item" prop="label">
+          <div class="item__label required">标签类别：</div>
           <div class="item__input">
             <el-input
               placeholder="输入标签..."
-              v-model="label"
+              v-model="formContentSetting.label"
             ></el-input>
           </div>
           <div class="item__rule">
             *必填项，8 个字符以内
           </div>
-        </div>
-        <div class="content-body__item">
-          <div class="item__label">上传封面：</div>
+        </el-form-item>
+        <div class="content-body__item img-item">
+          <div class="item__label required" >上传封面：</div>
           <div class="item__input">
-            <img-upload v-model="imageUrl_cover" class="upload-img--cover" tip='封面'></img-upload>
+            <img-upload
+              size='5'
+              class="upload-img--cover"
+              :is-show-img='false'
+              key-name="goods"
+              tip='封面'
+              @upload-success='coverUploadSuccess'
+              @upload-error='coverUploadError'>
+            </img-upload>
           </div>
           <div class="item__rule item__rule--upload">
             <span>
@@ -42,9 +50,17 @@
           </div>
         </div>
         <div class="content-body__item">
-          <div class="item__label">上传长图：</div>
+          <div class="item__label required">上传长图：</div>
           <div class="item__input">
-            <img-upload class="upload-img--long" v-model="imageUrl_long" tip='长图'></img-upload>
+            <img-upload
+              size='5'
+              class="upload-img--long"
+              :is-show-img='false'
+              key-name="goods"
+              tip='长图'
+              @upload-success='longUploadSuccess'
+              @upload-error='coverUploadError'>
+            </img-upload>
           </div>
           <div class="item__rule item__rule--upload">
             <span>
@@ -53,7 +69,7 @@
             <el-button class="upload-img__tool--preview" size="small" @click="previewCover">预览</el-button>
           </div>
         </div>
-      </div>
+      </el-form>
     </div>
     <div class="content-footer">
       <div class="content-title">发布设置</div>
@@ -77,6 +93,7 @@
             </el-radio-group>
           </div>
           <el-date-picker
+              v-show="!publicTime"
               class="spgl-form--input data-input"
               v-model="definitData"
               type="datetime"
@@ -94,8 +111,9 @@
 </template>
 
 <script>
-  // import * as commonsConfig from 'COMMONS/commonsConfig.js'
   import ImgUpload from './ImgUpload'
+  import { BASE_URL } from 'COMMONS/commonsConfig.js'
+
   export default {
     name: 'content-setting',
     components: {
@@ -105,8 +123,10 @@
     },
     data () {
       return {
-        title: '',
-        label: '',
+        formContentSetting: {
+          title: '',
+          label: ''
+        },
         imageUrl_cover: '',
         imageUrl_long: '',
         publicStauts: 1,
@@ -123,10 +143,34 @@
         // ..
       },
       save () {
-        // ..
+        if (!this.imageUrl_cover || !this.imageUrl_long) return this.$alert('请上传图片！')
+        this.$refs.formContentSetting.validate(valid => {
+          let params = {
+            "title": this.formContentSetting.title,
+            "cover_pic": "/pic/goods/9a95db2badcfa8ab7939b9da2436046b.png",
+            "content_pic": "",
+            "state": "0",
+            "label_id": "",
+            "publish_time": "2019-07-21 15:00:00",
+            "recommend": "1",
+            "is_drafts": "0"
+          }
+        })
       },
       cancel () {
         // ..
+      },
+      coverUploadSuccess () {
+        this.imageUrl_cover = BASE_URL + res.path
+      },
+      coverUploadError () {
+        this.$message({
+          type: 'error',
+          message: '上传错误！'
+        })
+      },
+      longUploadSuccess () {
+        this.imageUrl_long = BASE_URL + res.path
       }
     }
   }
@@ -148,9 +192,12 @@
       background-color: #fff;
       padding: 50px 100px 50px 50px;
     }
+    /deep/ .el-form-item__content {
+      display: flex;
+      width: 100%;
+    }
     .content-body__item {
       display: flex;
-      margin-bottom: 50px;
       & > div {
         line-height: 40px;
       }
@@ -180,6 +227,9 @@
         width: 368px;
         height: 176px;
       }
+    }
+    .img-item {
+      margin-bottom: 22px;
     }
     .content-footer__item {
       display: flex;

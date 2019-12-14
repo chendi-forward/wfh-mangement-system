@@ -540,7 +540,6 @@
       exhibitUploadSuccess (res) {
         if (res.message === 'ok') {
           this.imgListExhibit.push(base_url + res.path)
-          console.log(this.imgListExhibit);
         }
       },
       exhibitUploadError (res) {
@@ -622,7 +621,7 @@
         })
       },
       cancel () {
-        this.$emit('toggle-component', 'cancel')
+        this.$emit('toggle-component', {action: 'cancel'})
       }
     }
   }
