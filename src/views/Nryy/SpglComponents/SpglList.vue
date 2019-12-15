@@ -93,7 +93,7 @@
         width="130">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row, scope.$index)" icon="el-icon-edit" size="small"></el-button>
-          <el-button @click="deleteClick(scope.row, scope.$index)" icon="el-icon-delete" size="small">{{scope.index}}</el-button>
+          <el-button @click="deleteClick(scope.row, scope.$index)" icon="el-icon-delete" size="small"></el-button>
         </template>
       </el-table-column>
       <!-- 表格扩展 -->

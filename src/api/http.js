@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 import CONFIG from '@/config/baseURL'
 
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 60000;
 axios.defaults.baseURL = CONFIG.api;
 
 // const token = sessionStorage.getItem('token')

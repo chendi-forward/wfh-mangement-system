@@ -50,7 +50,7 @@
             <template slot-scope="scope">
               <div class="con-box">
                 <div class="con-img">
-                  <img :src="scope.row.cover_pic" alt="" >
+                  <img :src="base_url + scope.row.cover_pic" alt="" >
                 </div>
                 <div class="con-text">
                   {{ scope.row.title }}
@@ -61,7 +61,7 @@
           <el-table-column
             prop="label"
             label="标签类别"
-            width="120"
+            width="200"
           >
           </el-table-column>
           <el-table-column
@@ -97,12 +97,12 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="100"
+            width="130"
           >
-            <div class="con-icon">
-              <i class="el-icon-edit"></i>
-              <i class="el-icon-delete"></i>
-            </div>
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row, scope.$index)" icon="el-icon-edit" size="small"></el-button>
+            <el-button @click="deleteClick(scope.row, scope.$index)" icon="el-icon-delete" size="small"></el-button>
+          </template>
           </el-table-column>
         </el-table>
       </div>
@@ -125,7 +125,8 @@
           <el-button
             size="mini"
             class="success-btn"
-          >批量删除</el-button>
+            @click="deleteClickMulti"
+          >删除</el-button>
         </div>
         <div class="page-wrap" v-show="total">
           <my-pagination
@@ -137,11 +138,8 @@
         </div>
       </div>
     </div>
-    <div
-      v-else
-      class="content-setting"
-    >
-      <content-setting></content-setting>
+    <div v-else class="content-setting" >
+      <content-setting @hide-setting='hideSetting' :detail='detail'></content-setting>
     </div>
   </div>
 </template>
@@ -162,11 +160,11 @@ export default {
   },
   data() {
     return {
+      base_url: base_url,
+      searchVal: '', // 搜索关键字
+      tableData: [],
       isShowSetting: false, // 是否显示内容设置页
-      currentPage4: 1,
-      searchVal: null, // 新手入门的搜索关键字
-      tableData: [
-      ],
+      detail: {},
       total: 0,
       page_count: 10,
       current_page: 1
@@ -176,14 +174,53 @@ export default {
     this.getData()
   },
   methods: {
-    search() {},
-    handleDelete() {},
-    handleEdit() {},
-    handleSelectionChange() {},
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    search () {
+      this.current_page = 1
+      this.getData()
+    },
+    deleteClickMulti () {
+      if (!this.multipleSelection.length) return
+      let ids = this.multipleSelection.map(item => item.active_id)
+      let names = this.multipleSelection.map(item => item.title)
+      this.handleDelete(ids, names)
+    },
+    deleteClick (row, index) {
+      let current = this.tableData[index]
+      let ids = [current.active_id]
+      let names = [current.title]
+      this.handleDelete(ids, names)
+    },
+    handleDelete (_ids, _names) {
+      let names = _names.join(',')
+      let ids = _ids.join(',')
+      this.$confirm(`确定要删除“${names}”吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.deleteData(ids)
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      })
+    },
+    handleEdit(row, index) {
+      this.detail = row
+      this.isShowSetting = true
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     showSetting() {
       this.isShowSetting = true
+    },
+    hideSetting(v) {
+      this.isShowSetting = false
+      if (v.action !== 'cancel') {
+        this.getData()
+      }
     },
     handleSortUp(index, row) {
       let params = {
@@ -209,6 +246,26 @@ export default {
         return Promise.reject()
       })
     },
+    handleSizeChange (v) {
+      this.page_count = v
+      this.current_page = 1
+      this.getData()
+    },
+    handleCurrentChange (v) {
+      this.current_page = v
+      this.getData()
+    },
+    deleteData (ids) {
+      this.$get('/content/active/del_goods', {active_id: ids})
+      .then(res => {
+        this.getData()
+      }).catch(err => {
+        this.$message({
+          type: 'warning',
+          message: '请求出错!'
+        })
+      })
+    },
     getData() {
       let params = {
         page_count: this.page_count,
@@ -222,9 +279,8 @@ export default {
           this.tableData = result.map(item => {
             return {
               ...item,
-              cover_pic: base_url + item.cover_pic,
               status: item.state === 1 ? '显示' : '隐藏',
-              time: moment(item.item).format('YYYY-MM-DD HH:mm:ss')
+              time: item.time ? moment(item.time).format('YYYY-MM-DD HH:mm:ss') : '立即发布'
             }
           })
         }
