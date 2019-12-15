@@ -1,7 +1,7 @@
 import Pagination from 'COMPONENTS/Pagination'
 import Ddpj from './coms/ddpj'
 import Sppj from './coms/sppj'
-import { goodsEvaluationList } from 'API/Shgl'
+import { goodsEvaluationList, orderEvaluationList, delGoodsEvaluation, delOrderEvaluation } from 'API/Shgl'
 import moment from 'moment'
 
 export default {
@@ -13,6 +13,14 @@ export default {
     },
     data() {
         return {
+            order_Params: [],
+            goodsParams: [],
+            orderParams: {
+                order_id: null,
+                user_info: null,
+                start_time: moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
+                end_time: moment().week(moment().week()).endOf('week').format('YYYY-MM-DD')
+            },
             params: {
                 searchOrder: '',
                 selectKey: null,
@@ -42,8 +50,60 @@ export default {
         }
     },
     methods: {
+        deleteitem(n) {
+            if (this.currentTab == '0') {
+                console.log(n, '=dw=d=wa=dwa')
+                this.goodsParams = n
+            } else {
+                this.order_Params = n
+                console.log(n, '=dw=d=dwadawda----------------wa=dwa')
+            }
+        },
+        deletePingjia() {
+            console.log(this.currentTab, '=====')
+            if (this.currentTab == '0') {
+                // this.getData()
+                console.log(this.goodsParams, '=====')
+                let arr = []
+                this.goodsParams.forEach((item) => {
+                    arr.push(item.id)
+                })
+                let data = {
+                    id_list: arr
+                }
+                console.log(data, '===id_list===')
+                delGoodsEvaluation(data).then(res => {
+                    console.log(res)
+                    this.getData()
+                })
+            } else {
+                let arr = []
+                this.order_Params.forEach((item) => {
+                    arr.push(item.id)
+                })
+                let data = {
+                    order_id: arr
+                }
+                delOrderEvaluation(data).then(res => {
+                    console.log(res)
+                    this.getOrderData()
+                })
+            }
+        },
+        searchParams(data) {
+            this.orderParams = data
+            this.getOrderData()
+        },
+        updateData() {
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
+        },
         getSearchData(data) {
             this.params = data
+            console.log(this.params, '====')
             this.getData()
         },
         getData() {
@@ -65,17 +125,44 @@ export default {
                 console.log(count, data, '========')
             })
         },
+        getOrderData() {
+            let data = {
+                page_count: this.pageSize,
+                current_page: this.currentPage,
+                ...this.orderParams
+            }
+            console.log(data, '====')
+            orderEvaluationList(data).then((res) => {
+                console.log(res)
+                this.tableData = res.data.data_list
+                this.total = res.data.count
+            })
+        },
         tabChage(v) {
             this.currentTab = v.name
+            this.currentPage = 1
+            if (v.name == '商品评价') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
         },
         handleSelectionChange(n) {
             console.log(n, '=========')
             this.currentPage = n
-            this.getData()
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
         },
         handleSizeChange(n) {
             this.pageSize = n
-            this.getData()
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
         },
         handleCurrentChange() {}
     },
