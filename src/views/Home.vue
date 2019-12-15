@@ -254,7 +254,7 @@
           roleArr.push("3")
           roleArr.push("4")
         }
-        menus.forEach((item) => {
+        this.menus.forEach((item) => {
           item.children = item.children.filter((data) => {
             return roleArr.includes(data.id)
           })
@@ -267,7 +267,7 @@
     mounted () {
       setTimeout(() => {
         this.menuChange()
-      }, 100)
+      })
     }
   }
 </script>
