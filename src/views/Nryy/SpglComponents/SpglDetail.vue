@@ -231,7 +231,7 @@
         <div class="upload-img__tool">
           <div class="img__list">
             <div class="img__list--wrap" v-for="(imgUrl, i) in imgListExhibit" :key="i">
-              <img  class="img__list--item" :src="imgUrl">
+              <img  class="img__list--item" :src="base_url + imgUrl">
               <span class="avater-delete" @click.stop="deleteExhibitImg(i)">×</span>
             </div>
             <img-upload
@@ -257,7 +257,7 @@
         <div class="upload-img__tool">
           <div class="img__list">
             <div class="img__list--wrap" v-for="(imgUrl, i) in imgListDetail" :key="i">
-              <img  class="img__list--item" :src="imgUrl">
+              <img  class="img__list--item" :src="base_url + imgUrl">
               <span class="avater-delete" @click.stop="deleteDetailImg(i)">×</span>
             </div>
             <img-upload
@@ -391,6 +391,7 @@
         }
       }
       return {
+        base_url: base_url,
         isShowImgPreview: false,
         isShowImgDetail: false,
         isShowTag: false,
@@ -445,7 +446,7 @@
           disabledDate(time) {
             return time.getTime() <= Date.now()
           }
-        } 
+        }
       }
     },
     computed: {
@@ -539,7 +540,7 @@
       // 上传展示图
       exhibitUploadSuccess (res) {
         if (res.message === 'ok') {
-          this.imgListExhibit.push(base_url + res.path)
+          this.imgListExhibit.push(res.path)
         }
       },
       exhibitUploadError (res) {
@@ -551,7 +552,7 @@
       // 上传长图
       detailUploadSuccess (res) {
         if (res.message === 'ok') {
-          this.imgListDetail.push(base_url + res.path)
+          this.imgListDetail.push(res.path)
         }
       },
       detailUploadError () {
@@ -587,7 +588,7 @@
         if (!valides.every(item => item)) return this.$alert('请按照规则填写！')
         let parmas = {
           'title': this.formSpxx.goodsTitle,
-          'price': this.formSpxx.price,
+          'price': +this.formSpxx.price,
           'date': moment(this.formSpxx.date).format('YYYY-MM-DD'),
           'origin': this.formSpxx.origin,
           'content': '11111',
@@ -608,16 +609,19 @@
           'efficacy': this.formSpxx.typeEffects.length ? this.formSpxx.typeEffects.join(',') : '', // --> 功效(可以不传)
           'state': this.formXssz.goodStauts, // --> 上架下架状态（1：上架，0：下架）(默认是1)
           'label_id': this.formXssz.activeLabel, // --> 标签id
-          'publish_time': this.isDefinitTime ? moment(this.definitData).format('YYYY-MM-DD HH:mm:ss') : '' // --> 定时上架时间(不传，默认立即上架)
+          'publish_time': (this.isDefinitTime && this.definitData) ? moment(this.definitData).format('YYYY-MM-DD HH:mm:ss') : '' // --> 定时上架时间(不传，默认立即上架)
         }
         console.log(parmas)
         this.$post('/content/goods/add_goods', parmas)
         .then(res => {
-          console.log(res);
-          
+          this.$message({
+            type: 'success',
+            message: '添加成功！'
+          })
+          this.$emit('toggle-component', {action: 'cancel'})
         })
         .catch((e) => {
-          this.$alert(e)
+          this.$alert('添加错误！')
         })
       },
       cancel () {
