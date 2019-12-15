@@ -97,7 +97,6 @@ export default {
     },
     signIn (callback) {
       let jwtToken = sessionStorage.getItem('token')
-      console.log('jwtToken>>>>', jwtToken)
       if (!jwtToken) {
         return this.$router.push({
           path: '/login',
@@ -222,7 +221,6 @@ export default {
       typeof callback === 'function' && callback()
     },
     loginDirect (newPath) {
-      console.log('TCL: loginDirect -> newPath', newPath)
       this.signIn(() => {
         this.$router.replace({path: newPath || 'yjck'})
       })

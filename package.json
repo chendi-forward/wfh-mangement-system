@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "m-dev": "nodemon node-proxy.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

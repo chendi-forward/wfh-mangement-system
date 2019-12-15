@@ -192,7 +192,7 @@ input::-webkit-inner-spin-button {
   height: 63px;
   line-height: 63px;
   border-radius: 4px 4px 0 0;
-  padding: 0 21px;
+  padding: 0 15px;
   background-color: #F7F8F9;
   font-size: 18px;
 }
@@ -255,5 +255,17 @@ input::-webkit-inner-spin-button {
     position: absolute;
     top: -10px;
     right: -10px;
+  }
+}
+
+// 表单验证
+.required {
+  position: relative;
+  &::before {
+    content: '*';
+    position: absolute;
+    top: 0;
+    left: -8px;
+    color: #F56C6C;
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="250px">
+      <el-aside width="220px">
         <el-header class="logo-header">WFH</el-header>
         <div class="nav-menu">
           <el-menu
@@ -195,7 +195,7 @@
   export default {
     name: 'App',
     data () {
-    return {
+      return {
         user: sessionStorage.getItem('user'),
         searchVal: '',
         timeStr: {

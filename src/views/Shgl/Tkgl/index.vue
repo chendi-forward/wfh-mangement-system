@@ -5,9 +5,9 @@
         <el-tabs v-model="currentTab" @tab-click="tabChage">
           <el-tab-pane :label="item.label" :name="item.name" v-for="item in tabs" :key="item.name"></el-tab-pane>
         </el-tabs>
-        <div class="btn-wrap">
+        <!-- <div class="btn-wrap">
           <el-button size="mini" type="danger" @click="addHandle">新建</el-button>
-        </div>
+        </div> -->
       </div>
       <el-table
         ref="multipleTable"
@@ -46,6 +46,14 @@
           width="100">
         </el-table-column>
         <el-table-column
+          align='center'
+          label="状态"
+          width="100">
+          <template slot-scope="scope">
+            {{status[scope.row.status]}}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop='province'
           align='center'
           label="售后类型">
@@ -64,7 +72,7 @@
         <el-table-column
           prop='ydh'
           align='center'
-          label="运单号"
+          label="退运单号"
           width="150">
         </el-table-column>
         <el-table-column
@@ -97,9 +105,8 @@
           align='center'
           width="100">
         </el-table-column>
-        <el-table-column align='center' label="操作" width="100">
+        <!-- <el-table-column align='center' label="操作" width="100">
           <template slot-scope="scope">
-            <!-- 新申请显示 -->
             <div v-show="currentTab=='0'">
               <div @click='receivingHandle(scope.row)' class="con-icon">
                 <i class="el-icon-circle-check"></i>
@@ -108,14 +115,13 @@
                 <i class="el-icon-circle-close"></i>
               </div>
             </div>
-            <!-- 退款中显示 -->
             <div v-show="currentTab!='0'">
               <div @click='refundHandle(scope.row)' class="con-icon">
                 <i class="el-icon-edit theme-color"></i>
               </div>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           type="expand"
           align='center'>
@@ -126,7 +132,9 @@
                   v-for="(activity, index) in activities"
                   :key="index"
                   :type="activity.type">
-                  {{activity.content }}<span class="my-timestamp">{{activity.timestamp}}</span><i class="el-icon-circle-check icon" :class="activity.class"></i>
+                  {{activity.content }}
+                  <span class="my-timestamp">{{activity.timestamp}}</span>
+                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(index)"></i>
                 </el-timeline-item>
               </el-timeline>
             </div>
