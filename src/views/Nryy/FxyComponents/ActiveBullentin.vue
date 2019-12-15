@@ -73,11 +73,11 @@
           <el-table-column
             prop='status'
             label="状态"
-            width="80"
+            width="120"
           >
           </el-table-column>
           <el-table-column
-            width="140"
+            width="190"
             label="排序"
           >
           <template slot-scope="scope">
@@ -97,7 +97,7 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="130"
+            width="150"
           >
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row, scope.$index)" icon="el-icon-edit" size="small"></el-button>
@@ -106,20 +106,6 @@
           </el-table-column>
         </el-table>
       </div>
-      <!-- <div class="table-footer">
-        <el-checkbox label="全选"></el-checkbox>
-        <el-button>批量删除</el-button>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
-        </el-pagination>
-      </div> -->
       <div class="ssxd-footer">
         <div class="selectAll-wrap">
           <el-button
@@ -149,8 +135,7 @@ import ContentSetting from '../BasicComponents/ContentSetting'
 import Pagination from 'COMPONENTS/Pagination'
 import moment from 'moment'
 import * as commonsConfig from 'COMMONS/commonsConfig.js'
-
-let base_url = commonsConfig.BASE_URL
+const base_url = commonsConfig.BASE_URL
 
 export default {
   name: 'fxy',

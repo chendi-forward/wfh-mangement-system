@@ -3,19 +3,13 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 import CONFIG from '@/config/baseURL'
 
-<<<<<<< HEAD
 axios.defaults.timeout = 60000;
 axios.defaults.baseURL = CONFIG.api;
-=======
-axios.defaults.timeout = 10000;
-// axios.defaults.baseURL = CONFIG.api;
->>>>>>> 92f5bf6f6b8e4dc953a843b576ccd9e0900cee71
 
 // const token = sessionStorage.getItem('token')
 // axios.defaults.timeout = 5000
-axios.defaults.baseURL = 'http://yangming.natapp1.cc/'
-    // axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
-    // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
+// axios.defaults.headers.common['Authorization'] = 'Bearer '+ token
+// axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 
 //http request 拦截器
 axios.interceptors.request.use(

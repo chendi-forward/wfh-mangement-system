@@ -56,6 +56,7 @@
               key-name="goods"
               tip='封面'
               :imgurl='imageUrl_cover'
+              @delete-img='coverDelete'
               @upload-success='coverUploadSuccess'
               @upload-error='coverUploadError'
             >
@@ -81,6 +82,7 @@
               key-name="goods"
               tip='长图'
               :imgurl='imageUrl_long'
+              @delete-img='longDelete'
               @upload-success='longUploadSuccess'
               @upload-error='coverUploadError'
             >
@@ -93,7 +95,7 @@
             <el-button
               class="upload-img__tool--preview"
               size="small"
-              @click="previewCover"
+              @click="previewLong"
             >预览</el-button>
           </div>
         </div>
@@ -155,13 +157,25 @@
         @click="cancel"
       >取消</el-button>
     </div>
+    <el-dialog
+      title="图片预览"
+      :visible.sync="isShowImgPreview"
+    >
+      <img
+        style='width: 100%'
+        :src="image_preview"
+        alt="图片预览"
+      >
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ImgUpload from './ImgUpload'
-import { BASE_URL } from 'COMMONS/commonsConfig.js'
 import moment from 'moment'
+
+import * as commonsConfig from 'COMMONS/commonsConfig.js'
+const base_url = commonsConfig.BASE_URL
 
 export default {
   name: 'content-setting',
@@ -190,7 +204,11 @@ export default {
         disabledDate(time) {
           return time.getTime() <= Date.now()
         }
-      }
+      },
+
+      // dialog
+      isShowImgPreview: false,
+      image_preview: ''
     }
   },
   async created() {
@@ -210,11 +228,22 @@ export default {
     }
   },
   methods: {
+    previewLong() {
+      this.isShowImgPreview = true
+      this.image_preview = base_url + this.imageUrl_long
+    },
     previewCover() {
-      // ..
+      this.isShowImgPreview = true
+      this.image_preview = base_url + this.imageUrl_cover
     },
     saveToDraft() {
       // ..
+    },
+    longDelete() {
+      this.imageUrl_long = ''
+    },
+    coverDelete() {
+      this.imageUrl_cover = ''
     },
     save() {
       if (!this.imageUrl_cover || !this.imageUrl_long)

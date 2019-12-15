@@ -50,6 +50,7 @@
     },
     methods: {
       deleteImg () {
+        this.imageUrl = ''
         this.$emit('delete-img')
       },
       beforeAvatarUpload (file) {

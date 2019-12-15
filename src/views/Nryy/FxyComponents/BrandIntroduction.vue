@@ -10,6 +10,7 @@
             key-name="goods"
             tip='长图'
             :imgurl='imageUrl_long'
+            @delete-img='longDelete'
             @upload-success='longUploadSuccess'
             @upload-error='coverUploadError'
           >
@@ -37,6 +38,7 @@
             key-name="goods"
             tip='封面'
             :imgurl='imageUrl_cover'
+            @delete-img='coverDelete'
             @upload-success='coverUploadSuccess'
             @upload-error='coverUploadError'
           >
@@ -70,6 +72,7 @@
       :visible.sync="isShowImgPreview"
     >
       <img
+        style='width: 100%'
         :src="image_preview"
         alt="图片预览"
       >
@@ -79,6 +82,9 @@
 
 <script>
 import ImgUpload from '../BasicComponents/ImgUpload'
+import * as commonsConfig from 'COMMONS/commonsConfig.js'
+const base_url = commonsConfig.BASE_URL
+
 export default {
   name: 'brand-introduction',
   components: {
@@ -91,6 +97,9 @@ export default {
       isShowImgPreview: false,
       image_preview: ''
     }
+  },
+  created() {
+    this.getData()
   },
   methods: {
     coverUploadSuccess(res) {
@@ -107,13 +116,20 @@ export default {
     },
     previewLong() {
       this.isShowImgPreview = true
-      this.image_preview = this.imageUrl_long
+      this.image_preview = base_url + this.imageUrl_long
     },
     previewCover() {
       this.isShowImgPreview = true
-      this.image_preview = this.imageUrl_cover
+      this.image_preview = base_url + this.imageUrl_cover
+    },
+    longDelete() {
+      this.imageUrl_long = ''
+    },
+    coverDelete() {
+      this.imageUrl_cover = ''
     },
     save() {
+      if (!this.imageUrl_cover || !this.imageUrl_long) return this.$alert('请上传图片！')
       let params = {
         source: 'brand',
         cover_pic: this.imageUrl_cover,
@@ -127,7 +143,14 @@ export default {
       })
     },
     getData() {
-      // ..
+      let params = {
+        type: 'brand'
+      }
+      this.$get('/discover/active_other_info', params)
+      .then(res => {
+        this.imageUrl_long = res.data[0].content_pic
+        this.imageUrl_cover = res.data[0].pic_link
+      })
     }
   }
 }
