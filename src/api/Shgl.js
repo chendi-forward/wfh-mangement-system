@@ -4,8 +4,13 @@ import { post, get, patch, put } from '@/api/http'
 export function logisticsManage() {
     return get('/after_sale/logistics_manage')
 }
+<<<<<<< HEAD
 // Mark
 export function postLogisticsManage(data) {
+=======
+// 添加物流公司
+export function postLogisticsManage (data) {
+>>>>>>> d67c108c050bff1008498fe61f2bc8def0a17d2c
     return post('/after_sale/logistics_manage', data)
 }
 // 售后模块上面的头部部分
@@ -32,9 +37,15 @@ export function newEvaluation() {
 export function orderGoods(data) {
     return get('/after_sale/get_order_goods', data)
 }
+<<<<<<< HEAD
 // MARK 创建退款
 export function postOrderGoods(data) {
     return post('/after_sale/get_order_goods', data)
+=======
+// 创建退款
+export function applyRefund (data) {
+    return post('/after_sale/apply_refund', data)
+>>>>>>> d67c108c050bff1008498fe61f2bc8def0a17d2c
 }
 // 获取退款列表
 export function refundList(data) {
@@ -69,7 +80,11 @@ export function goodsEvaluationList(data) {
     return get('/after_sale/goods_evaluation_list', data)
 }
 // 订单追加评价和修改显示状态
+<<<<<<< HEAD
 export function postGoodsEvaluationList(data) {
+=======
+export function postGoodsEvaluationList (data) {
+>>>>>>> d67c108c050bff1008498fe61f2bc8def0a17d2c
     return post('/after_sale/update_goods_evaluation', data)
 }
 // 删除订单的评价

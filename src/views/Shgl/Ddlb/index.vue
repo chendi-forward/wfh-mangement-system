@@ -106,72 +106,60 @@
           width="55">
         </el-table-column>
         <el-table-column
-          prop="user_id"
+          prop="order_id"
           align='center'
           label="订单编号"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="nickname"
+          prop="user_id"
           label="用户ID"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='add_time'
+          prop='nickname'
           label="昵称"
           align='center'
           min-width="100">
         </el-table-column>
         <el-table-column
-          prop='gender'
+          prop='wechat_id'
           align='center'
           label="微信交易号"
           width="100">
         </el-table-column>
         <el-table-column
-          prop='province'
+          prop='order_state'
           align='center'
           label="状态">
         </el-table-column>
         <el-table-column
-          prop='level'
+          prop='update_time'
           align='center'
           label="最新操作时间"
           width="150">
         </el-table-column>
         <el-table-column
-          prop='balance'
-          label="商品名称"
-          align='center'
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop='invite_code'
-          label="数量"
-          align='center'
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop='order'
+          prop='pay_money'
           label="实付总额"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='deal_money'
+          prop='rebate_money'
           label="返利总额"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='label'
+          prop='address'
           label="收货信息"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='summeroy'
+          prop='express_number'
           label="物流单号"
           align='center'
           width="100">
@@ -181,29 +169,29 @@
           <div @click='lineItem(scope.row)' class="con-icon theme-color">
             <i class="icon iconfont icon-sousuowenjian"></i>
           </div>
-          <div @click='editHandle(scope.row)' class="con-icon theme-color">
+          <!-- <div @click='xiazai(scope.row)' class="con-icon theme-color">
             <i class="icon iconfont icon-xiazai"></i>
-          </div>
-          <div @click='editHandle(scope.row)' class="con-icon">
+          </div> -->
+          <div @click='tuikuan(scope.row)' class="con-icon">
             <i class="icon iconfont icon-fanhui"></i>
           </div>
-          <div @click='editHandle(scope.row)' class="con-icon">
+          <!-- <div @click='deleteOrder(scope.row)' class="con-icon">
             <i class="el-icon-circle-close"></i>
-          </div>
+          </div> -->
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini">取消订单</el-button>
+        <el-button size="mini" @click="xiazai">导出数据</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :currentPage="orderParams.current_page"
-          :total="400">
+          :total="total">
         </my-pagination>
       </div>
     </div>
@@ -233,6 +221,9 @@
         </div>
       </div>
     </div>
+    <dialog-com v-model='dialogFlag' title='新建退款' @sure-save='sureSave' @cancle-save='cancleSave'>
+      <create-com :data="tlxx"/>
+    </dialog-com>
   </div>
 </template>
 <script src="./script.js"></script>
