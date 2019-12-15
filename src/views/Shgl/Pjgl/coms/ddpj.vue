@@ -20,7 +20,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
             </el-date-picker>
-            <el-button type="danger" size="small" plain>搜索</el-button>
+            <el-button type="danger" size="small" plain @click="searchData">搜索</el-button>
         </div>
         <el-table
             ref="multipleTable"
@@ -35,13 +35,13 @@
             width="55">
             </el-table-column>
             <el-table-column
-            prop="user_id"
+            prop="order_id"
             align='center'
             label="订单编号"
             width="100">
             </el-table-column>
             <el-table-column
-            prop='add_time'
+            prop='nickname'
             label="用户昵称"
             align='center'
             min-width="100">
@@ -53,24 +53,24 @@
             width="100">
             </el-table-column>
             <el-table-column
-            prop='gender'
+            prop='time'
             align='center'
             label="评价时间"
             width="100">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
             prop='province'
             align='center'
             label="商品名称">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
             prop='progress'
             align='center'
             width="150"
             label="产品口味">
-            <template>
+            <template slot-scope="scope">
                 <el-rate
-                    v-model="rate1"
+                    v-model="scope.row.taste_score"
                     disabled
                     :colors="['#FF4B57', '#FF4B57', '#FF4B57']"
                     disabled-void-color="#A6AFBF">
@@ -82,9 +82,9 @@
             align='center'
             label="服务态度"
             width="150">
-            <template>
+            <template slot-scope="scope">
                 <el-rate
-                    v-model="rate1"
+                    v-model="scope.row.service_score"
                     disabled
                     :colors="['#FF4B57', '#FF4B57', '#FF4B57']"
                     disabled-void-color="#A6AFBF">
@@ -96,9 +96,9 @@
             align='center'
             label="物流服务"
             width="150">
-            <template>
+            <template slot-scope="scope">
                 <el-rate
-                    v-model="rate1"
+                    v-model="scope.row.express_score"
                     disabled
                     :colors="['#FF4B57', '#FF4B57', '#FF4B57']"
                     disabled-void-color="#A6AFBF">
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import moment from 'moment'
   export default {
     props: {
       data: {
@@ -138,12 +139,23 @@
         return {
             searchOrder: '',
             searchUser: '',
-            time: [new Date(), new Date()],
+            time: [moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'), moment().week(moment().week()).endOf('week').format('YYYY-MM-DD')],
             rate1: 4
         }
     },
     methods: {
-        handleSelectionChange () {}
+        searchData () {
+            let data = {
+                order_id: this.searchOrder,
+                user_info: this.searchUser,
+                start_time: moment(this.time[0]).format('YYYY-MM-DD'),
+                end_time: moment(this.time[1]).format('YYYY-MM-DD')
+            }
+            this.$emit('searchParams', data)
+        },
+        handleSelectionChange (n) {
+            this.$emit('deleteitem', n)
+        }
     }
   }
 </script>
