@@ -4,7 +4,7 @@ import {post, get, patch, put} from '@/api/http'
 export function logisticsManage () {
     return get('/after_sale/logistics_manage')
 }
-// Mark
+// 添加物流公司
 export function postLogisticsManage (data) {
     return post('/after_sale/logistics_manage', data)
 }
@@ -32,9 +32,9 @@ export function newEvaluation () {
 export function orderGoods (data) {
     return get('/after_sale/get_order_goods', data)
 }
-// MARK 创建退款
-export function postOrderGoods (data) {
-    return post('/after_sale/get_order_goods', data)
+// 创建退款
+export function applyRefund (data) {
+    return post('/after_sale/apply_refund', data)
 }
 // 获取退款列表
 export function refundList (data) {
@@ -70,7 +70,7 @@ export function goodsEvaluationList (data) {
 }
 // 订单追加评价和修改显示状态
 export function postGoodsEvaluationList (data) {
-    return post('/after_sale/goods_evaluation_list', data)
+    return post('/after_sale/update_goods_evaluation', data)
 }
 // 删除订单的评价
 export function delGoodsEvaluation (data) {
