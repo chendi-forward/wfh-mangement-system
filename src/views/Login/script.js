@@ -1,6 +1,3 @@
-// import * as types from '../../store/types'
-// import store from '../../store'
-
 export default {
     name: 'login',
     data() {
