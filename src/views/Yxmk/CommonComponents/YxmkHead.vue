@@ -36,10 +36,9 @@ export default {
     margin-bottom: 15px;
     .yxmk-head__item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       background-color: #fff;
-      padding: 10px 57px 10px 10px;
+      padding: 10px;
     }
     .head__item--num {
       font-size: 36px;
@@ -49,6 +48,7 @@ export default {
       line-height: 60px;
       background-color: #f7f8f9;
       padding: 0 20px;
+      margin-right: 20px;
     }
   }
 </style>

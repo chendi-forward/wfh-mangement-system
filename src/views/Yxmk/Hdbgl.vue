@@ -4,7 +4,7 @@
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
         <div class="body__head--title">活动表</div>
-        <div class="body__head--btn"><el-button type="success" @click="showCreateItem">创建</el-button></div>
+        <div class="body__head--btn"><el-button size="small" type="success" @click="showCreateItem">创建</el-button></div>
       </div>
       <div class="yhqgl-body__content">
         <el-table
@@ -21,7 +21,7 @@
           <el-table-column
             label="活动编号"
             align='center'
-            width="150">
+            width="120">
             <template slot-scope="scope">{{ scope.row.id }}</template>
           </el-table-column>
           <el-table-column
@@ -39,7 +39,7 @@
           <el-table-column
             align='center'
             label="折扣比例（%）"
-            width="140">
+            width="120">
             <template slot-scope="scope">{{ scope.row.percent }}</template>
           </el-table-column>
           <el-table-column
@@ -50,11 +50,13 @@
           </el-table-column>
           <el-table-column
             align='center'
+            min-width="170"
             label="起始时间">
             <template slot-scope="scope">{{ scope.row.s_time }}</template>
           </el-table-column>
           <el-table-column
             align='center'
+            min-width="170"
             label="结束时间">
             <template slot-scope="scope">{{ scope.row.e_time }}</template>
           </el-table-column>
@@ -67,7 +69,7 @@
           <el-table-column
             label="操作"
             align='center'
-            width="160">
+            width="120">
             <template slot-scope="scope">
               <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
             </template>

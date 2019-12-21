@@ -5,6 +5,8 @@ function resolve(dir) {
 }
 
 module.exports = {
+	lintOnSave: false,
+
   configureWebpack: config => {
     config.resolve.extensions = ['.js', '.json', '.css', '.less', '.vue']
     //  src目录下的各个文件夹的简称

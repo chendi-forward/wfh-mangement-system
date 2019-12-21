@@ -1,6 +1,7 @@
 import DialogCom from 'COMPONENTS/DialogCom'
 import EditLogistics from '../coms/editLogistics'
 import Logistics from '../coms/logistics'
+import {orderDetail} from 'API/Shgl'
 
 export default {
   name: 'shgl-ddxq',
