@@ -32,7 +32,7 @@ export default {
     height: 80px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 35px;
+    grid-column-gap: 25px;
     margin-bottom: 15px;
     .yxmk-head__item {
       display: flex;
@@ -47,7 +47,7 @@ export default {
     .head__item--text {
       line-height: 60px;
       background-color: #f7f8f9;
-      padding: 0 20px;
+      padding: 0 15px;
       margin-right: 20px;
     }
   }
