@@ -48,8 +48,8 @@
         </div>
       </div>
       <div class="dxtx-body__btns">
-        <el-button type="success">保存</el-button>
-        <el-button >取消</el-button>
+        <el-button type="success" size="small">保存</el-button>
+        <el-button size="small">取消</el-button>
       </div>
     </div>
   </div>

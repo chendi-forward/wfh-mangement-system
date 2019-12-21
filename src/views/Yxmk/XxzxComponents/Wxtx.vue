@@ -19,7 +19,7 @@
       <div class="dxtx-head__send" v-show="!isShowMessage">
         <div class="head__send--text">剩余优惠券手动提醒：</div>
         <div>
-          <el-button type="success" @click="sendMessage">发送</el-button>
+          <el-button type="success" @click="sendMessage" size="small">发送</el-button>
         </div>
       </div>
     </div>
@@ -48,8 +48,8 @@
         </div>
       </div>
       <div class="dxtx-body__btns">
-        <el-button type="success">保存</el-button>
-        <el-button >取消</el-button>
+        <el-button type="success" size="small">保存</el-button>
+        <el-button size="small">取消</el-button>
       </div>
     </div>
   </div>
