@@ -41,13 +41,14 @@ export default {
       padding: 10px;
     }
     .head__item--num {
+      flex: 1;
       font-size: 36px;
       color: #ff4b57;
     }
     .head__item--text {
       line-height: 60px;
       background-color: #f7f8f9;
-      padding: 0 20px;
+      // padding: 0 20px;
       margin-right: 20px;
     }
   }
