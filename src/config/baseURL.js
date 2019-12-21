@@ -4,8 +4,8 @@ export default (
   function () {
     if (ENV === 'PRO') {
       return {
-        'api': 'http://127.0.0.1:7777/',
-        'imgPath': 'http://127.0.0.1:7777/'
+        'api': 'http://47.94.133.35:5500/',
+        'imgPath': 'http://47.94.133.35:5500/'
       }
     } else {
       return {

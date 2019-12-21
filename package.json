@@ -16,6 +16,7 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "svg-sprite-loader": "^4.1.6",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
