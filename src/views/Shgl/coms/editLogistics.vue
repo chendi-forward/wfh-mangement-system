@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { logisticsManage } from 'API/Shgl'
   export default {
     props: {
       data: {
@@ -43,6 +44,10 @@
                 }]
             }
         }
+      },
+      goodsid: {
+         type: String,
+         default: '1'
       }
     },
     data () {
@@ -51,6 +56,9 @@
     },
     methods: {
       selectChange () {}
+    },
+    mounted () {
+      console.log(this.goodsid, '===goidawdwifda')
     }
   }
 </script>
