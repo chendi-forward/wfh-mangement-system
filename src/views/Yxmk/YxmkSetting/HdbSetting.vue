@@ -267,7 +267,7 @@ export default {
     }
   },
   mounted () {
-    let wrapH = $('.yhsz-search').height() - 62 - 70 - 2
+    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
     $('.content__search--options').height(wrapH)
   },
 	methods: {
