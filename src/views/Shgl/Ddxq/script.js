@@ -13,33 +13,53 @@ export default {
   data () {
     return {
       tableData1: [{
-        user_id: 'WFH001',
-        nickname: 'WFH001',
-        gender: 'WFH001',
-        label: '新品推广',
-        add_time: '王小虎',
-        province: '未付款',
-        level: '2019-05-03 17:33:33',
-        balance: '/',
-        invite_code: '/',
-        order: '/'
+        "confirm_time": null, //       -- 确认收货时间
+        "deliver_time": null, //       -- 发货时间
+        "nickname": "WFH49939757", //  -- 用户昵称
+        "order_id": "WFH49939757201909071733433102", //  -- 订单id
+        "order_state": "订单完成", //            -- 订单状态
+        "order_time": null, //                  -- 下单时间
+        "pay_time": null, //                   -- 支付时间
+        "user_id": "WFH49939757", //           -- 用户的id
+        "wechat_id": null  //                  -- 微信的id
       }],
       tableData2: [{
-        user_id: '',
-        nickname: '',
-        add_time: 20,
-        gender: 2000,
-        province: '',
-        label: 2000
+        count: 20,
+        goods_title: '',
+        original_price: 2000,
+        rebate_money: '',
+        taste: ''
       },
-      {
-        user_id: '考拉系列乳清蛋白粉',
-        nickname: '奶茶，500g',
-        add_time: 10,
-        gender: 1000,
-        province: '优惠券返利',
-        label: 20
+      {                      
+        "count": 2, //                -- 商品数量
+        "goods_title": "哇哈哈", //    -- 商品名称
+        "original_price": 10000.3, // -- 付款时的单价
+        "rebate_money": null, //      -- 返利金额
+        "taste": "橘子味" //           -- 口味
       }],
+      addressee_info: { // 收货详情
+        "address": "北京",  //      -- 收货地址     
+        "recipient": "张三", //     -- 收货姓名
+        "recipient_tel": "18312341234" //  -- 收货电话
+      },
+      express_info: { //         -- 物流信息
+        "express_name": null, //         -- 快递名称
+        "express_number": null, //       -- 快递单号
+        "express_type": 1, //            -- 快递类型 0/顺丰到付，1/普通快递
+        "postage": 10.0, //               -- 快递费
+        "remark": '' // 备注
+      },
+      invoice_info: { //               发票信息
+        "express_name": null, //         -- 发票快递名称
+        "express_number": null, //       -- 发票快递单号 
+        "invoice_title": "李四", //       -- 发票抬头
+        "is_company": 0, //              -- 是否是公司发票
+        "is_e_invoice": 1, //            -- 是否是电子发票
+        "recipient": "张三", //           -- 收件人
+        "recipient_address": "hhhh@qq.com", //  --收件地址/邮箱
+        "recipient_tel": "12312341234", //      -- 收件人手机号
+        "tin_number": ""  //                    -- 发票税号
+      },
       // 弹框部分
       dialogFlag: false,
       currentCom: {},
@@ -49,7 +69,29 @@ export default {
       ]
     }
   },
+  created () {
+    this.getData()
+  },
   methods: {
+    getData () {
+      this.tableData1 = []
+      this.tableData2 = []
+      orderDetail({order_id: this.$route.query.order_id}).then(res => {
+        this.tableData1.push(res.data.order_detail)
+        let obj = {
+          count: res.data.goods_detail.all_count,
+          goods_title: '',
+          original_price: res.data.goods_detail.all_money,
+          rebate_money: '',
+          taste: ''
+        }
+        res.data.goods_detail.goods_list.unshift(obj)
+        this.tableData2 = res.data.goods_detail.goods_list
+        this.addressee_info = res.data.addressee_info
+        this.express_info = res.data.express_info
+        this.invoice_info = res.data.invoice_info
+      })
+    },
     goBack () {
       this.$router.push({name: 'shgl-ddlb'})
     },
