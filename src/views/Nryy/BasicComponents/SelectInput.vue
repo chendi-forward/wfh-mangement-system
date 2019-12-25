@@ -37,6 +37,20 @@ export default {
       typeEffectList: []
     }
   },
+  watch: {
+    preset: {
+      handler(v) {
+        this.typeEffectList = this.value.length
+          ? this.value.map(item => {
+              return {
+                name: item,
+                isSelect: true
+              }
+            })
+          : v
+      }
+    }
+  },
   created() {
     this.typeEffectList = this.value.length
       ? this.value.map(item => {
