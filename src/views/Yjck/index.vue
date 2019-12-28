@@ -35,7 +35,7 @@
                 placeholder="选择时间..."
               ></el-date-picker>
               <div class="select-btn">
-                <el-button type="success">查找</el-button>
+                <el-button type="success" size='small'>查找</el-button>
               </div>
             </div>
           </div>
@@ -151,9 +151,7 @@
         }
         .select-btn {
           margin: 0 20px;
-          .el-button {
-            height: 40px;
-          }
+          line-height: 40px;
         }
       }
       .date-throught {

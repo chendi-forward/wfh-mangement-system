@@ -58,8 +58,8 @@
     </main>
     <footer class="brand-introduction__footer">
       <el-button
-        class="upload-img__btn--save upload__btn--sure"
         size="small"
+        type="success"
         @click="save"
       >保存</el-button>
       <el-button

@@ -59,6 +59,7 @@
           prop="user_id"
           align='center'
           :show-overflow-tooltip='true'
+          min-width="130"
           label="用户ID">
         </el-table-column>
         <el-table-column
@@ -66,23 +67,25 @@
           label="昵称"
           :show-overflow-tooltip='true'
           align='center'
-          width="100">
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop='add_time'
           label="注册时间"
           :show-overflow-tooltip='true'
           align='center'
-          min-width="160">
+          width="160">
         </el-table-column>
         <el-table-column
           prop='gender'
           align='center'
+          width="90"
           label="性别">
         </el-table-column>
         <el-table-column
           prop='province'
           align='center'
+          width="100"
           label="地区">
         </el-table-column>
         <el-table-column
@@ -102,7 +105,7 @@
           label="推荐码"
           :show-overflow-tooltip='true'
           align='center'
-          width="100">
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop='order'
@@ -131,9 +134,7 @@
         </el-table-column>
         <el-table-column align='center' label="操作" width="86">
           <template slot-scope="scope">
-          <div @click='editHandle(scope.row)' class="con-icon">
-            <i class="el-icon-edit"></i>
-          </div>
+            <el-button size="small" plain icon='el-icon-edit' @click='editHandle(scope.row)'></el-button>
           </template>
         </el-table-column>
       </el-table>

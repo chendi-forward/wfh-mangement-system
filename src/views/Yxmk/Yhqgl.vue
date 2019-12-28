@@ -21,63 +21,63 @@
           <el-table-column
             label="优惠券编号"
             align='center'
-            width="120">
-            <template slot-scope="scope">{{ scope.row.id }}</template>
+            prop="id"
+            min-width="120">
           </el-table-column>
           <el-table-column
             align='center'
-            width="150"
+            min-width="150"
+            prop="name"
             label="优惠券名称">
-            <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="数量"
+            prop="number"
             width="90">
-            <template slot-scope="scope">{{ scope.row.number }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="折扣比例（%）"
+            prop="percent"
             width="120">
-            <template slot-scope="scope">{{ scope.row.percent }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="扣减金额（元）"
+            prop="money"
             width="140">
-            <template slot-scope="scope">{{ scope.row.money }}</template>
           </el-table-column>
           <el-table-column
             align='center'
-            min-width="170"
+            width="170"
+            prop="s_time"
             label="起始时间">
-            <template slot-scope="scope">{{ scope.row.s_time }}</template>
           </el-table-column>
           <el-table-column
             align='center'
-            min-width="170"
+            width="170"
+            prop="e_time"
             label="结束时间">
-            <template slot-scope="scope">{{ scope.row.e_time }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="状态"
+            prop="state"
             width="80">
-            <template slot-scope="scope">{{ scope.row.state }}</template>
           </el-table-column>
           <el-table-column
             label="操作"
             align='center'
             width="120">
             <template slot-scope="scope">
-              <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+              <el-button size="small" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="ssxd-footer">
           <div class="selectAll-wrap">
-            <el-button size="mini" @click="offOnline">下线</el-button>
+            <el-button size="small" type="danger" @click="offOnline">下线</el-button>
           </div>
           <div class="page-wrap">
             <my-pagination

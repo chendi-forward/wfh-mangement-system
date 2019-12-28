@@ -454,15 +454,15 @@
       <div class="spgl-item--space"></div>
       <div class="spgl-item--footer spgl-item__padding">
         <el-button
-          size="mini"
-          class="success-btn"
+          size="small"
+          type="success"
           @click="save"
         >保存并发布</el-button>
         <el-button
-          size="mini"
+          size="small"
           class="cancel-btn"
           @click="cancel"
-        >取消</el-button>
+        >返回</el-button>
       </div>
     </div>
 

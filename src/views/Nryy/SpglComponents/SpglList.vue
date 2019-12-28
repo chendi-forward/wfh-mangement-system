@@ -12,10 +12,10 @@
           prefix-icon="el-icon-search"
           v-model="searchVal">
         </el-input>
-        <el-button size="mini" class="success-btn" @click="search">搜索</el-button>
+        <el-button size="small" plain @click="search">搜索</el-button>
       </div>
       <div>
-        <el-button size="mini" class="success-btn" @click="newGoods">新建</el-button>
+        <el-button size="small" type="success" @click="newGoods">新建</el-button>
       </div>
     </div>
     <el-table
@@ -31,7 +31,9 @@
       <el-table-column
         label="预览"
         width="80">
-				<template slot-scope="scope"><img class="spgl-list--img" :src="base_url + scope.row.avatar" alt=""></template>
+				<template slot-scope="scope">
+          <img class="spgl-list--img" :src="base_url + scope.row.avatar" alt="">
+        </template>
       </el-table-column>
       <el-table-column
         label="商品标编号"
@@ -43,7 +45,7 @@
         label="商品标题"
         prop="title"
         align="center"
-        min-width="140">
+        min-width="200">
       </el-table-column>
       <el-table-column
         label="排序"
@@ -67,7 +69,7 @@
         label="产地"
         prop="origin"
         align="center"
-        min-width="200">
+        min-width="140">
       </el-table-column>
       <el-table-column
         label="生产日期"
@@ -126,7 +128,7 @@
     </el-table>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini" @click="deleteClickMulti">删除</el-button>
+        <el-button size="small" type="danger" @click="deleteClickMulti">删除</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination

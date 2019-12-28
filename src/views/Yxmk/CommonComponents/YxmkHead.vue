@@ -42,6 +42,7 @@ export default {
     }
     .head__item--num {
       flex: 1;
+      text-align: center;
       font-size: 28px;
       color: #ff4b57;
     }

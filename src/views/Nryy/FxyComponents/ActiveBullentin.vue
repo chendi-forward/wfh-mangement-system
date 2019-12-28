@@ -16,16 +16,16 @@
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <el-button
-            type="danger"
-            size="mini"
+            size="small"
+            plain
             @click="search"
           >搜索</el-button>
         </div>
         <div class="con-new">
           <el-button
-            type="danger"
+            type="success"
             @click="showSetting"
-            size="mini"
+            size="small"
           >新建</el-button>
         </div>
       </div>
@@ -45,7 +45,7 @@
           </el-table-column>
           <el-table-column
             label="内容"
-            min-width='300'
+            min-width='270'
           >
             <template slot-scope="scope">
               <div class="con-box">
@@ -61,38 +61,38 @@
           <el-table-column
             prop="label"
             label="标签类别"
-            width="200"
+            width="120"
           >
           </el-table-column>
           <el-table-column
             prop="time"
             label="发布时间"
-            width="220"
+            width="170"
           >
           </el-table-column>
           <el-table-column
             prop='status'
             label="状态"
-            width="120"
+            width="90"
           >
           </el-table-column>
           <el-table-column
-            width="190"
+            width="160"
             label="排序"
           >
           <template slot-scope="scope">
-            <div class="order-con">
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleSortUp(scope.$index, scope.row)"
-              >上移</el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleSortDown(scope.$index, scope.row)"
-              >下移</el-button>
-            </div>
+            <el-button
+              size="mini"
+              type="danger"
+              plain
+              @click="handleSortUp(scope.$index, scope.row)"
+            >上移</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              plain
+              @click="handleSortDown(scope.$index, scope.row)"
+            >下移</el-button>
           </template>
           </el-table-column>
           <el-table-column
@@ -109,8 +109,8 @@
       <div class="ssxd-footer">
         <div class="selectAll-wrap">
           <el-button
-            size="mini"
-            class="success-btn"
+            size="small"
+            type="danger"
             @click="deleteClickMulti"
           >删除</el-button>
         </div>
@@ -118,8 +118,7 @@
           <my-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :total="total"
-          >
+            :total="total">
           </my-pagination>
         </div>
       </div>
@@ -296,24 +295,7 @@ export default {
       align-items: center;
       .el-input {
         width: 400px;
-        height: 40px;
         margin-right: 30px;
-      }
-      .el-button {
-        width: 70px;
-        height: 30px;
-        padding: 0;
-      }
-    }
-    .con-new {
-      .el-button {
-        padding: 0;
-      }
-      button {
-        background: #fe3a56;
-        width: 70px;
-        height: 30px;
-        font-size: 15px;
       }
     }
   }
@@ -335,18 +317,6 @@ export default {
       }
       .el-icon-edit {
         color: #ff4b57;
-      }
-    }
-    .order-con {
-      padding: 0;
-      display: flex;
-      .el-button {
-        width: 65px;
-        height: 30px;
-        padding: 0;
-        border: 1px solid rgba(255, 75, 87, 1);
-        color: #ff4b57;
-        background: rgba(255, 224, 226, 1);
       }
     }
     .el-table {

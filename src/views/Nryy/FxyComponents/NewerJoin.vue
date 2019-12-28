@@ -55,12 +55,11 @@
     </main>
     <footer class="brand-introduction__footer">
       <el-button
-        class="upload-img__btn--save upload__btn--sure"
+        type="success"
         size="small"
         @click="save"
       >保存</el-button>
       <el-button
-        class="upload-img__btn--cancel"
         size="small"
       >取消</el-button>
     </footer>
