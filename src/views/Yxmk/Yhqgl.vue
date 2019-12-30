@@ -4,7 +4,13 @@
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
         <div class="body__head--title">优惠券表</div>
-        <div class="body__head--btn"><el-button type="success" @click="showCreateItem" size="small">创建</el-button></div>
+        <div class="body__head--btn">
+          <el-button
+            type="success"
+            @click="showCreateItem('普通')"
+            size="small"
+          >创建</el-button>
+        </div>
       </div>
       <div class="yhqgl-body__content">
         <el-table
@@ -13,77 +19,97 @@
           :data="tableData"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="handleSelectionChange">
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column
             type="selection"
-            width="55">
+            width="55"
+          >
           </el-table-column>
           <el-table-column
             label="优惠券编号"
             align='center'
-            prop="id"
-            min-width="120">
+            prop="coupon_no"
+            min-width="120"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             min-width="150"
-            prop="name"
-            label="优惠券名称">
+            prop="coupon_name"
+            label="优惠券名称"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             label="数量"
-            prop="number"
-            width="90">
+            prop="coupon_num"
+            width="90"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             label="折扣比例（%）"
-            prop="percent"
-            width="120">
+            prop="discount_percent"
+            width="120"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             label="扣减金额（元）"
-            prop="money"
-            width="140">
+            prop="discount_money"
+            width="140"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             width="170"
-            prop="s_time"
-            label="起始时间">
+            prop="start_time"
+            label="起始时间"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             width="170"
-            prop="e_time"
-            label="结束时间">
+            prop="end_time"
+            label="结束时间"
+          >
           </el-table-column>
           <el-table-column
             align='center'
             label="状态"
             prop="state"
-            width="80">
+            width="80"
+          >
           </el-table-column>
           <el-table-column
             label="操作"
             align='center'
-            width="120">
+            width="120"
+          >
             <template slot-scope="scope">
-              <el-button size="small" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+              <el-button
+                size="small"
+                icon="el-icon-edit"
+                @click='editHandle(scope.row)'
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="ssxd-footer">
           <div class="selectAll-wrap">
-            <el-button size="small" type="danger" @click="offOnline">下线</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="offOnline"
+            >下线</el-button>
           </div>
           <div class="page-wrap">
             <my-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :total="400">
+              :total="total"
+            >
             </my-pagination>
           </div>
         </div>
@@ -93,7 +119,11 @@
       <div class="yhqgl-body__head">
         <div class="body__head--title">新手优惠券设置</div>
         <div class="body__head--btn">
-          <el-button type="success" @click="showCreateItem" size="small">编辑</el-button>
+          <el-button
+            type="success"
+            @click="showCreateItem('新手')"
+            size="small"
+          >创建</el-button>
         </div>
       </div>
       <div class="yhqgl-body__content">
@@ -102,117 +132,163 @@
           ref="multipleTable"
           :data="newerSetting"
           tooltip-effect="dark"
-          style="width: 100%">
+          style="width: 100%"
+        >
           <el-table-column
             align='center'
             min-width="150"
-            label="优惠券名称">
-            <template slot-scope="scope">{{ scope.row.name }}</template>
+            label="优惠券名称"
+          >
+            <template slot-scope="scope">{{ scope.row.coupon_name }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="数量"
-            min-width="90">
-            <template slot-scope="scope">{{ scope.row.number }}</template>
+            min-width="90"
+          >
+            <template slot-scope="scope">{{ scope.row.coupon_num }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="折扣比例（%）"
-            min-width="140">
-            <template slot-scope="scope">{{ scope.row.percent }}</template>
+            min-width="140"
+          >
+            <template slot-scope="scope">{{ scope.row.discount_percent }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="扣减金额（元）"
-            min-width="140">
-            <template slot-scope="scope">{{ scope.row.money }}</template>
+            min-width="140"
+          >
+            <template slot-scope="scope">{{ scope.row.discount_money }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="生效天数"
-            min-width="140">
+            min-width="140"
+          >
             <template slot-scope="scope">{{ scope.row.days }}</template>
           </el-table-column>
           <el-table-column
             label="状态"
             align='center'
-            min-width="160">
+            min-width="160"
+          >
             <template slot-scope="scope">
-              <el-radio v-model="scope.row.state" label="1">开启</el-radio>
-              <el-radio v-model="scope.row.state" label="0">关闭</el-radio>
+              <el-radio
+                v-model="scope.row.is_close"
+                :label="0"
+              >开启</el-radio>
+              <el-radio
+                v-model="scope.row.is_close"
+                :label="1"
+              >关闭</el-radio>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
     <div class="yxmk-setting" v-if='isShowSetting'>
-      <yhq-setting @hide-setting="hideSetting"></yhq-setting>
+      <yhq-setting @hide-setting="hideSetting" :action='action' :type='type'></yhq-setting>
     </div>
   </div>
 </template>
 
 <script>
-	import Pagination from 'COMPONENTS/Pagination'
-  import YxmkHead from './CommonComponents/YxmkHead'
-  import YhqSetting from './YxmkSetting/YhqSetting'
+import Pagination from 'COMPONENTS/Pagination'
+import YxmkHead from './CommonComponents/YxmkHead'
+import YhqSetting from './YxmkSetting/YhqSetting'
+import moment from 'moment'
 
-  export default {
-    name: 'yxmk-yhqgl',
-    components: {
-      'my-pagination': Pagination,
-      'yxmk-head': YxmkHead,
-      'yhq-setting': YhqSetting
+export default {
+  name: 'yxmk-yhqgl',
+  components: {
+    'my-pagination': Pagination,
+    'yxmk-head': YxmkHead,
+    'yhq-setting': YhqSetting
+  },
+  data() {
+    return {
+      tableData: [],
+      newerSetting: [],
+      total: 0,
+      isShowSetting: false,
+      action: 'add',
+      type: '普通'
+    }
+  },
+  created() {
+    this.getData('普通')
+    this.getData('新手')
+  },
+  methods: {
+    showCreateItem(type) {
+      this.isShowSetting = true
+      this.action = 'add'
+      this.type = type
     },
-    data () {
-      return {
-				tableData: [
-					{
-						id: 123123123,
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-						s_time: '2019-09-20 12:21:00',
-						e_time: '2019-09-20 12:12:00',
-						state: '已停用'
-					},
-					{
-						id: 123123123,
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-						s_time: '2019-09-20 12:21:00',
-						e_time: '2019-09-20 12:12:00',
-						state: '已停用'
-					}
-        ],
-        newerSetting: [
-          {
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-            days: 10,
-						state: '1'
-					}
-        ],
-        isShowSetting: false
+    hideSetting(val) {
+      this.isShowSetting = false
+      if (Object.keys(val) && val.state === 'success') {
+        this.getData(val.type)
       }
     },
-    methods: {
-      showCreateItem () {
-        this.isShowSetting = true
-      },
-      hideSetting () {
-        this.isShowSetting = false
-      },
-      handleSelectionChange () {},
-      handleSizeChange () {},
-      handleCurrentChange () {},
-      offOnline () {}
+    editHandle() {
+      this.isShowSetting = true
+      this.action = 'edit'
+    },
+    handleSizeChange(v) {
+      this.page_count = v
+      this.current_page = 1
+      this.getData('普通')
+    },
+    handleCurrentChange(v) {
+      this.current_page = v
+      this.getData('普通')
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    offOnline() {},
+
+    getData(coupon_type) {
+      let params = {
+        page_count: this.page_count,
+        current_page: this.current_page,
+        coupon_type
+      }
+      if (coupon_type === '新手') {
+        params.current_page = 1
+        params.page_count = 1000
+      }
+      this.$get('/marketing/get_coupon_list', params).then(res => {
+        console.log(res)
+        if (res.message === 'ok') {
+          if (coupon_type === '新手') {
+            this.newerSetting = res.data.data_list.map(item => {
+              let days = moment(item.end_time) - moment(item.start_time)
+              return {
+                ...item,
+                days: moment.duration(days).days(),
+                discount_percent: item.discount_type === '折扣' ? item.discount_num : '',
+                discount_money: item.discount_type === '折扣' ? '' : item.discount_num
+              }
+            })
+          } else {
+            this.tableData = res.data.data_list.map(item => {
+              return {
+                ...item,
+                discount_percent: item.discount_type === '折扣' ? item.discount_num : '',
+                discount_money: item.discount_type === '折扣' ? '' : item.discount_num
+              }
+            })
+            this.total = res.data.count
+          }
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="less" scoped>

@@ -660,8 +660,6 @@ export default {
   },
   async mounted() {
     await this.getLabel()
-    console.log('==========>', this.current)
-    console.log('==========>', this.currentTag)
     if (Object.keys(this.current).length) {
       await this.$get(
         `/content/goods/goods_detail?goods_id=${this.current.id}`
