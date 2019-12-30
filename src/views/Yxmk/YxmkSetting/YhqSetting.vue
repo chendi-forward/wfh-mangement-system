@@ -94,7 +94,7 @@
           >
             <el-radio-group v-model="formXxsz.coupon_num">
               <div class="form--radio__ff">
-                <el-radio label="张" >每人限发</el-radio>
+                <el-radio label="张">每人限发</el-radio>
                 <el-input
                   placeholder="输入数字..."
                   type="number"
@@ -115,7 +115,7 @@
           >
             <el-radio-group v-model="formXxsz.threshold_type">
               <div class="form--radio__ff">
-                <el-radio label="元" >金额达到</el-radio>
+                <el-radio label="元">金额达到</el-radio>
                 <el-input
                   placeholder="输入数字..."
                   type="number"
@@ -171,7 +171,11 @@
           label-width="130px"
           label-position="left"
         >
-          <el-form-item label="参与优惠商品：" class="item__sale--wrap" prop="activeGoods">
+          <el-form-item
+            label="参与优惠商品："
+            class="item__sale--wrap"
+            prop="activeGoods"
+          >
             <div
               class="item__sale"
               v-for="item in activeGoods"
@@ -236,19 +240,21 @@
           >
             <el-input
               type="text"
+              v-model="userKey"
               placeholder="输入用户ID..."
             ></el-input>
-            <el-button size="small">搜索</el-button>
+            <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
         <div class="content__search--options">
-          <el-checkbox-group v-model="checkList">
+          <el-checkbox-group v-model="checkList" v-infinite-scroll="loadData">
             <el-checkbox
               v-for="item in checkLists"
               :key="item.user_id"
               :label="item.user_id"
             >{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
+          <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="userPageOver">没有更多了~~</div>
         </div>
         <div class="content__group--btn">
           <el-button
@@ -313,7 +319,11 @@
                 width="100"
               >
                 <template slot-scope="scope">
-                  <img class="dialog-img" :src="base_url + scope.row.pic_link" alt="">
+                  <img
+                    class="dialog-img"
+                    :src="base_url + scope.row.pic_link"
+                    alt=""
+                  >
                 </template>
               </el-table-column>
               <el-table-column
@@ -334,8 +344,15 @@
         </div>
       </div>
       <div class="dialog-btns">
-        <el-button size="small" type="success" @click="handleAddGoods">确定</el-button>
-        <el-button size="small" @click="hideTag">取消</el-button>
+        <el-button
+          size="small"
+          type="success"
+          @click="handleAddGoods"
+        >确定</el-button>
+        <el-button
+          size="small"
+          @click="hideTag"
+        >取消</el-button>
       </div>
     </dialog-com>
   </div>
@@ -347,17 +364,19 @@ import $ from 'jquery'
 import { BASE_URL } from 'COMMONS/commonsConfig.js'
 import _ from 'lodash'
 import moment from 'moment'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
-	name: "yxmk-cjyhq",
-	components: {
-		'dialog-com': DialogCom
+  name: 'yxmk-cjyhq',
+  components: {
+    'dialog-com': DialogCom,
+    InfiniteLoading
   },
   props: {
     action: String,
     type: String
   },
-  data () {
+  data() {
     let length10 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('该项不能为空'))
@@ -455,76 +474,105 @@ export default {
         coupon_limit: '',
         threshold_type: '',
         discount_type: ''
-			},
-			isShowTag: false,
-      effectiveDate_s: "",
-      effectiveDate_e: "",
+      },
+      isShowTag: false,
+      effectiveDate_s: '',
+      effectiveDate_e: '',
       options: [],
       formYhsz: {},
       rules: {
-        number: [ {type: 'number', required: true, message: '必须是数字'} ],
-        required: [ {validator: required, message: '该项不能不空', trigger: 'blur'} ],
-        length10: [ {validator: length10, trigger: 'blur'} ],
-        length5: [ {validator: length5, trigger: 'blur'} ],
-        dateRange: [ {validator: dateRange, trigger: 'blur'} ],
-        coupon_num: [ {validator: coupon_num, trigger: 'blur'} ],
-        threshold_type: [ {validator: threshold_type, trigger: 'blur'} ],
-        discount_type: [ {validator: discount_type, trigger: 'blur'} ]
+        number: [{ type: 'number', required: true, message: '必须是数字' }],
+        required: [
+          { validator: required, message: '该项不能不空', trigger: 'blur' }
+        ],
+        length10: [{ validator: length10, trigger: 'blur' }],
+        length5: [{ validator: length5, trigger: 'blur' }],
+        dateRange: [{ validator: dateRange, trigger: 'blur' }],
+        coupon_num: [{ validator: coupon_num, trigger: 'blur' }],
+        threshold_type: [{ validator: threshold_type, trigger: 'blur' }],
+        discount_type: [{ validator: discount_type, trigger: 'blur' }]
       },
+      userPage: 1,
+      userPageOver: false, // 无限加载完毕
+      userKey: '',
       checkList: [],
       checkLists: [],
-			activeSearch: '',
-			activeGoods: [],
+      activeSearch: '',
+      activeGoods: [],
       goodList: [],
 
       multipleSelection: []
     }
   },
+  directives: {
+    loadmore: {
+      // 指令的定义
+      bind(el, binding, vnode) {
+        const selectWrap = el.querySelector('.el-table__body-wrapper')
+        selectWrap.addEventListener('scroll', function() {
+          const sign = 10
+          const scrollDistance =
+            this.scrollHeight - this.scrollTop - this.clientHeight
+          if (scrollDistance <= sign) {
+            binding.value()
+            // console.log('距离底部小于100了')
+            // console.log(vnode.context)
+            // // 指令中不能用this关键字
+            // vnode.context.getNewData()
+          }
+        })
+      }
+    }
+  },
   async created() {
     if (this.action === 'add') {
       let a = this.getLabelData()
-      let b = this.getUserList()
+      // let b = this.getUserList()
       await a
-      this.checkLists = await b
     } else {
       await this.getLabelData()
       await this.getDetail()
-      this.checkLists = await this.getUserList()
     }
   },
-  mounted () {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
+  mounted() {
+    let wrapH =
+      $('.cjyhq-xxsz').height() +
+      $('.cjyhq-spsz').height() -
+      63 -
+      70 -
+      70 -
+      62 -
+      3
     $('.content__search--options').height(wrapH)
     let wrapW = $('.item__sale--wrap').width() - 130
     $('.item__sale--wrap .el-form-item__content').width(wrapW)
   },
-	methods: {
+  methods: {
     changeDate(type) {
       if (type === 'start_time') {
         this.formXxsz.dateRange[0] = this.formXxsz.start_time
       } else {
         this.formXxsz.dateRange[1] = this.formXxsz.end_time
       }
-
     },
-		showTag () {
+    showTag() {
       this.isShowTag = true
       let params = {
         page_count: 10,
         current_page: 1
       }
-      this.getGoodsList(params)
-      .then(res => {
+      this.getGoodsList(params).then(res => {
         this.goodList = res
       })
-		},
-		hideTag () {
-			this.isShowTag = false
     },
-    hideSetting (v = {}) {
+    hideTag() {
+      this.isShowTag = false
+    },
+    hideSetting(v = {}) {
       this.$emit('hide-setting', v)
     },
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
+      this.userPageOver = false
       this.multipleSelection = val
     },
     handleAddGoods() {
@@ -532,35 +580,57 @@ export default {
       this.activeGoods = _.cloneDeep(this.multipleSelection)
     },
 
-    async changeUserLabel() {
-      this.checkLists = await this.getUserList()
+    changeUserLabel() {
+      this.userPage = 1
+      this.checkLists = []
+      this.getUserList()
+    },
+    handleSearch() {
+      this.userPage = 1
+      this.checkLists = []
+      this.getUserList()
     },
 
     handleSave() {
+      if (!this.activeGoods.length) {
+        return this.$alert('活动商品不能为空！')
+      }
+      if (!this.checkList.length) {
+        return this.$alert('用户列表不能为空！')
+      }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
           let params = {
-            'coupon_type': this.type,
-            'coupon_no': this.formXxsz.coupon_no,
-            'coupon_name': this.formXxsz.coupon_name,
-            'order_show_name': this.formXxsz.order_show_name,
-            'trolley_show_name': this.formXxsz.trolley_show_name,
-            'start_time': moment(this.formXxsz.start_time).format('YYYY-MM-DD HH:mm:ss'),
-            'end_time': moment(this.formXxsz.end_time).format('YYYY-MM-DD HH:mm:ss'),
-            'threshold_type': this.formXxsz.threshold_type,
-            'threshold_num': this.formXxsz.threshold_type === '元' ? +this.formXxsz.ddMoney : +this.formXxsz.ddNumber,
-            'discount_type': this.formXxsz.discount_type,
-            'discount_num': this.formXxsz.discount_type === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
-            'coupon_num': this.formXxsz.coupon_num = '不限' ? 9999 : this.formXxsz.coupon_limit,
-            'goods_list': (this.activeGoods || []).map(item => item.goods_id),
-            'label_id': +this.formYhsz.user_label_id,
-            'user_list': this.checkList
+            coupon_type: this.type,
+            coupon_no: this.formXxsz.coupon_no,
+            coupon_name: this.formXxsz.coupon_name,
+            order_show_name: this.formXxsz.order_show_name,
+            trolley_show_name: this.formXxsz.trolley_show_name,
+            start_time: moment(this.formXxsz.start_time).format(
+              'YYYY-MM-DD HH:mm:ss'
+            ),
+            end_time: moment(this.formXxsz.end_time).format(
+              'YYYY-MM-DD HH:mm:ss'
+            ),
+            threshold_type: this.formXxsz.threshold_type,
+            threshold_num:
+              this.formXxsz.threshold_type === '元'
+                ? +this.formXxsz.ddMoney
+                : +this.formXxsz.ddNumber,
+            discount_type: this.formXxsz.discount_type,
+            discount_num:
+              this.formXxsz.discount_type === '金额'
+                ? +this.formXxsz.zkMoney
+                : +this.formXxsz.zkNumber,
+            coupon_num: this.formXxsz.coupon_num === '不限' ? 9999 : +this.formXxsz.coupon_limit,
+            goods_list: (this.activeGoods || []).map(item => item.goods_id),
+            label_id: +this.formYhsz.user_label_id || 2,
+            user_list: this.checkList
           }
           console.log('TCL: handleSave -> params', params)
-          this.$post('/marketing/add_coupon', params)
-          .then(res => {
+          this.$post('/marketing/add_coupon', params).then(res => {
             if (res.data === 'true' && res.message === 'ok') {
-              this.hideSetting({state: 'success', type: this.type})
+              this.hideSetting({ state: 'success', type: this.type })
               this.$message({
                 message: '添加成功',
                 type: 'success'
@@ -570,8 +640,8 @@ export default {
         }
       })
     },
-    getLabelData () {
-      return this.$get('/user/get_label').then((res) => {
+    getLabelData() {
+      return this.$get('/user/get_label').then(res => {
         if (res && res.length) {
           this.options = res
         } else {
@@ -584,37 +654,44 @@ export default {
     },
     getDetail() {
       return this.$get(`/marketing/get_coupon_detail?coupon_id=${4}`)
-      .then(res => {
-        this.formXxsz = res.data
-        if (res.data.threshold_type === '元') {
-          this.formXxsz.ddNumber = ''
-          this.formXxsz.ddMoney = res.data.threshold_num
-        } else {
-          this.formXxsz.ddNumber = res.data.threshold_num
-          this.formXxsz.ddMoney = ''
-        }
-        if (res.data.discount_type === '折扣') {
-          this.formXxsz.zkMoney = ''
-          this.formXxsz.zkNumber = res.data.discount_num
-        } else {
-          this.formXxsz.zkMoney = res.data.discount_num
-          this.formXxsz.zkNumber = ''
-        }
-        this.formYhsz.user_label_id = res.data.user_label_id
-        return res.data.goods_list
-      })
-      .then(goods_list => {
-        let params = {goods_id: ['000005', '000009'].join(',')}
-        // let params = {goods_id: goods_list.join(',')}
-        this.getGoodsList(params)
         .then(res => {
-          this.activeGoods = res
+          this.formXxsz = res.data
+          if (res.data.threshold_type === '元') {
+            this.formXxsz.ddNumber = ''
+            this.formXxsz.ddMoney = res.data.threshold_num
+          } else {
+            this.formXxsz.ddNumber = res.data.threshold_num
+            this.formXxsz.ddMoney = ''
+          }
+          if (res.data.discount_type === '折扣') {
+            this.formXxsz.zkMoney = ''
+            this.formXxsz.zkNumber = res.data.discount_num
+          } else {
+            this.formXxsz.zkMoney = res.data.discount_num
+            this.formXxsz.zkNumber = ''
+          }
+          if (res.data.coupon_num < 9999) {
+            this.formXxsz.coupon_num = '张'
+            this.formXxsz.coupon_limit = res.data.coupon_num
+            console.log('TCL: getDetail -> res.data.coupon_num', res.data)
+          } else {
+            this.formXxsz.coupon_num = '不限'
+            this.formXxsz.coupon_limit = ''
+          }
+          this.formYhsz.user_label_id = res.data.user_label_id
+          return res.data.goods_list
         })
-      })
+        .then(goods_list => {
+          let params = { goods_id: ['000005', '000009'].join(',') }
+          // let params = {goods_id: goods_list.join(',')}
+          this.getGoodsList(params).then(res => {
+            this.activeGoods = res
+          })
+        })
     },
     // 获取标签数据
-    getLabelData () {
-      return this.$get('/user/get_label').then((res) => {
+    getLabelData() {
+      return this.$get('/user/get_label').then(res => {
         if (res && res.length) {
           this.options = res
         } else {
@@ -626,23 +703,32 @@ export default {
       })
     },
     getGoodsList(params) {
-      return this.$get('/marketing/goods_list', {...params})
-      .then(res => {
+      return this.$get('/marketing/goods_list', { ...params }).then(res => {
         return res.data.data_list
       })
     },
+    loadData () {
+      if (this.userPageOver) return
+      this.getUserList()
+    },
     getUserList() {
       let params = {
+        search: this.userKey,
         page_count: 10,
-        current_page: 1,
+        current_page: this.userPage,
         label_id: this.formYhsz.user_label_id
       }
-      return this.$get('/marketing/user_list', {...params})
-      .then(res => {
+      return this.$get('/marketing/user_list', { ...params }).then(res => {
+        this.checkLists = [...this.checkLists, ...res.data.data_list]
+        if (res.data.data_list < 10) {
+          this.userPageOver = true
+        } else {
+          this.userPage++
+        }
         return res.data.data_list
       })
     }
-	}	
+  }
 }
 </script>
 
