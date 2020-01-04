@@ -374,7 +374,8 @@ export default {
   },
   props: {
     action: String,
-    type: String
+    type: String,
+    coupon_id: [String, Number]
   },
   data() {
     let length10 = (rule, value, callback) => {
@@ -515,10 +516,6 @@ export default {
             this.scrollHeight - this.scrollTop - this.clientHeight
           if (scrollDistance <= sign) {
             binding.value()
-            // console.log('距离底部小于100了')
-            // console.log(vnode.context)
-            // // 指令中不能用this关键字
-            // vnode.context.getNewData()
           }
         })
       }
@@ -531,7 +528,7 @@ export default {
       await a
     } else {
       await this.getLabelData()
-      await this.getDetail()
+      await this.getDetail(this.coupon_id)
     }
   },
   mounted() {
@@ -627,16 +624,30 @@ export default {
             label_id: +this.formYhsz.user_label_id || 2,
             user_list: this.checkList
           }
-          console.log('TCL: handleSave -> params', params)
-          this.$post('/marketing/add_coupon', params).then(res => {
-            if (res.data === true && res.message === 'ok') {
-              this.hideSetting({ state: 'success', type: this.type })
-              this.$message({
-                message: '添加成功',
-                type: 'success'
-              })
-            }
-          })
+          console.log('TCL: handleSave -> this.action', this.action)
+          if (this.action === 'add') {
+            this.$post('/marketing/add_coupon', params).then(res => {
+              if (res.data === true && res.message === 'ok') {
+                this.hideSetting({ state: 'success', type: this.type })
+                this.$message({
+                  message: '添加成功',
+                  type: 'success'
+                })
+              }
+            })
+          } else {
+            params.coupon_id = this.coupon_id
+            this.$post('/marketing/update_coupon', params).then(res => {
+              if (res.data === true && res.message === 'ok') {
+                this.hideSetting({ state: 'success', type: this.type })
+                this.$message({
+                  message: '更新成功',
+                  type: 'success'
+                })
+              }
+            })
+            console.log('TCL: handleSave -> params', params)
+          }
         }
       })
     },
@@ -652,9 +663,10 @@ export default {
         }
       })
     },
-    getDetail() {
-      return this.$get(`/marketing/get_coupon_detail?coupon_id=${4}`)
+    getDetail(coupon_id) {
+      return this.$get(`/marketing/get_coupon_detail?coupon_id=${coupon_id}`)
         .then(res => {
+          console.log('TCL: getDetail -> res.data', res.data)
           this.formXxsz = res.data
           if (res.data.threshold_type === '元') {
             this.formXxsz.ddNumber = ''
@@ -671,21 +683,26 @@ export default {
             this.formXxsz.zkNumber = ''
           }
           if (res.data.coupon_num < 9999) {
-            this.formXxsz.coupon_num = '张'
             this.formXxsz.coupon_limit = res.data.coupon_num
-            console.log('TCL: getDetail -> res.data.coupon_num', res.data)
+            this.formXxsz.coupon_num = '张'
           } else {
-            this.formXxsz.coupon_num = '不限'
             this.formXxsz.coupon_limit = ''
+            this.formXxsz.coupon_num = '不限'
           }
+          // this.formXxsz.start_time = new Date(res.data.start_time)
+          this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
           this.formYhsz.user_label_id = res.data.user_label_id
-          return res.data.goods_list
+          return {goods_list: res.data.goods_list, user_list: res.data.user_list}
         })
-        .then(goods_list => {
-          let params = { goods_id: ['000005', '000009'].join(',') }
-          // let params = {goods_id: goods_list.join(',')}
+        .then(({goods_list, user_list}) => {
+          let params = { goods_id: goods_list.join(',') }
           this.getGoodsList(params).then(res => {
             this.activeGoods = res
+          })
+          let paramsUser = { user_id: user_list.join(',') }
+          this.getUsersList(paramsUser).then(res => {
+            this.checkLists = res
+            this.checkList = res.map(item => item.user_id)
           })
         })
     },
@@ -704,6 +721,11 @@ export default {
     },
     getGoodsList(params) {
       return this.$get('/marketing/goods_list', { ...params }).then(res => {
+        return res.data.data_list
+      })
+    },
+    getUsersList(params) {
+      return this.$get('/marketing/user_list', { ...params }).then(res => {
         return res.data.data_list
       })
     },

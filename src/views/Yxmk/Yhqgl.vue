@@ -189,7 +189,7 @@
       </div>
     </div>
     <div class="yxmk-setting" v-if='isShowSetting'>
-      <yhq-setting @hide-setting="hideSetting" :action='action' :type='type'></yhq-setting>
+      <yhq-setting @hide-setting="hideSetting" :action='action' :type='type' ref="yhqSetting" :coupon_id="coupon_id"></yhq-setting>
     </div>
   </div>
 </template>
@@ -214,7 +214,8 @@ export default {
       total: 0,
       isShowSetting: false,
       action: 'add',
-      type: '普通'
+      type: '普通',
+      coupon_id: ''
     }
   },
   created() {
@@ -233,9 +234,11 @@ export default {
         this.getData(val.type)
       }
     },
-    editHandle() {
+    editHandle(row) {
+      console.log('TCL: editHandle -> row', row)
       this.isShowSetting = true
       this.action = 'edit'
+      this.coupon_id = row.coupon_id
     },
     handleSizeChange(v) {
       this.page_count = v
