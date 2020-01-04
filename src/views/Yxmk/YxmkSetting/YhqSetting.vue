@@ -629,7 +629,7 @@ export default {
           }
           console.log('TCL: handleSave -> params', params)
           this.$post('/marketing/add_coupon', params).then(res => {
-            if (res.data === 'true' && res.message === 'ok') {
+            if (res.data === true && res.message === 'ok') {
               this.hideSetting({ state: 'success', type: this.type })
               this.$message({
                 message: '添加成功',
