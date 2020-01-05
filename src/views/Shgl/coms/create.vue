@@ -50,7 +50,6 @@
         <span class="header-title">退款金额:</span>
         <el-input
         placeholder="请输入金额..."
-        disabled
         v-model="data.refund_money">
         </el-input>
         （单位：元）
@@ -97,6 +96,7 @@
           this.data.refund_goods.forEach(element => {
             this.data.refund_money += element.pay_price
           });
+          this.data.refund_money_copy = this.data.refund_money
         }
     }
   }
