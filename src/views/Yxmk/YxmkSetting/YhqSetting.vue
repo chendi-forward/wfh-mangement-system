@@ -92,7 +92,7 @@
             prop="coupon_limit"
             :rules="rules.coupon_limit"
           >
-            <el-radio-group v-model="formXxsz.coupon_limit">
+            <el-radio-group v-model="formXxsz.coupon_limit" @change='inputChange($event)'>
               <div class="form--radio__ff">
                 <el-radio label="张">每人限发</el-radio>
                 <el-input
