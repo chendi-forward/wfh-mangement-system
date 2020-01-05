@@ -12,16 +12,17 @@
           prefix-icon="el-icon-search"
           v-model="searchVal">
         </el-input>
-        <el-button size="mini" class="success-btn" @click="search">搜索</el-button>
+        <el-button size="small" plain @click="search">搜索</el-button>
       </div>
       <div>
-        <el-button size="mini" class="success-btn" @click="newGoods">新建</el-button>
+        <el-button size="small" type="success" @click="newGoods">新建</el-button>
       </div>
     </div>
     <el-table
       ref="spglList"
       :data="tableData"
       @selection-change="handleSelectionChange"
+      row-key="id"
       style="width: 100%">
       <el-table-column
         type="selection"
@@ -30,7 +31,9 @@
       <el-table-column
         label="预览"
         width="80">
-				<template slot-scope="scope"><img class="spgl-list--img" :src="base_url + scope.row.avatar" alt=""></template>
+				<template slot-scope="scope">
+          <img class="spgl-list--img" :src="base_url + scope.row.avatar" alt="">
+        </template>
       </el-table-column>
       <el-table-column
         label="商品标编号"
@@ -42,7 +45,7 @@
         label="商品标题"
         prop="title"
         align="center"
-        min-width="140">
+        min-width="200">
       </el-table-column>
       <el-table-column
         label="排序"
@@ -66,7 +69,7 @@
         label="产地"
         prop="origin"
         align="center"
-        min-width="200">
+        min-width="140">
       </el-table-column>
       <el-table-column
         label="生产日期"
@@ -91,8 +94,8 @@
         align="center"
         width="130">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" icon="el-icon-edit" size="small"></el-button>
-          <el-button @click="deleteClick(scope.row)" icon="el-icon-delete" size="small"></el-button>
+          <el-button @click="handleClick(scope.row, scope.$index)" icon="el-icon-edit" size="small"></el-button>
+          <el-button @click="deleteClick(scope.row, scope.$index)" icon="el-icon-delete" size="small"></el-button>
         </template>
       </el-table-column>
       <!-- 表格扩展 -->
@@ -125,7 +128,7 @@
     </el-table>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini">删除</el-button>
+        <el-button size="small" type="danger" @click="deleteClickMulti">删除</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
@@ -158,27 +161,10 @@ export default {
       base_url: base_url,
       activeName: 'spgl',
       searchVal: '',
-      tableData: [
-        /* {
-          avatar: '',
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          order: 1,
-          hotRecommend: 1,
-          carRecommend: 1,
-          origin: '上海市普陀区真北路',
-          data: '2019-08-18',
-          format: '500g',
-          goodStauts: '上架',
-          taste_stock: [
-            {taste: '榴莲味', stock: 1000, sales: 1000},
-            {taste: '牛奶味', stock: 1000, sales: 1000},
-            {taste: '巧克力味', stock: 1000, sales: 1000}
-          ],
-          typeEffect: ['减脂', '塑形']
-        } */
-      ],
+      tableData: [],
       total: 1,
+      page_count: 10,
+      current_page: 1,
       multipleSelection: []
     }
   },
@@ -187,16 +173,17 @@ export default {
   },
   methods: {
     search () {
-      // ..
+      this.current_page = 1
+      this.getData()
     },
     newGoods () {
-      this.$emit('toggle-component', 'newGoods')
+      this.$emit('toggle-component', {action: 'newGoods', current: {}})
     },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.spglList.toggleRowSelection(row)
-        });
+        })
       } else {
         this.$refs.spglList.clearSelection()
       }
@@ -206,18 +193,63 @@ export default {
     },
     handleClick (row) {
       console.log('TCL: handleClick -> row', row)
+      this.$emit('toggle-component', {action: 'newGoods', current: row})
     },
-    deleteClick (row) {
-      console.log(row)
+    deleteClickMulti () {
+      if (!this.multipleSelection.length) return
+      let ids = this.multipleSelection.map(item => item.id)
+      let names = this.multipleSelection.map(item => item.title)
+      this.handleDelete(ids, names)
     },
-    handleSizeChange () {
-      // ..
+    deleteClick (row, index) {
+      let current = this.tableData[index]
+      let ids = [current.id]
+      let names = [current.title]
+      this.handleDelete(ids, names)
     },
-    handleCurrentChange () {
-      // ..
+    handleDelete (_ids, _names) {
+      let names = _names.join(',')
+      let ids = _ids.join(',')
+      this.$confirm(`确定要删除“${names}”吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.deleteData(ids)
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      })
+    },
+    handleSizeChange (v) {
+      this.page_count = v
+      this.current_page = 1
+      this.getData()
+    },
+    handleCurrentChange (v) {
+      this.current_page = v
+      this.getData()
+    },
+    deleteData (ids) {
+      this.$get('/content/goods/del_goods', {goods_id: ids})
+      .then(res => {
+        this.getData()
+      }).catch(err => {
+        this.$message({
+          type: 'warning',
+          message: '请求出错!'
+        })
+      })
     },
     getData () {
-      this.$get('/content/goods/get_goods')
+      let params = {
+        page_count: this.page_count,
+        current_page: this.current_page,
+      }
+      if (!!this.searchVal) params.search = this.searchVal
+      this.$get('/content/goods/get_goods', params)
       .then(res => {
         if (res.message === 'ok') {
           this.total = res.data.count

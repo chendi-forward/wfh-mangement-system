@@ -32,23 +32,25 @@ export default {
     height: 80px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 35px;
+    grid-column-gap: 25px;
     margin-bottom: 15px;
     .yxmk-head__item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       background-color: #fff;
-      padding: 10px 57px 10px 10px;
+      padding: 10px;
     }
     .head__item--num {
-      font-size: 36px;
+      flex: 1;
+      text-align: center;
+      font-size: 28px;
       color: #ff4b57;
     }
     .head__item--text {
       line-height: 60px;
       background-color: #f7f8f9;
-      padding: 0 20px;
+      // padding: 0 20px;
+      margin-right: 20px;
     }
   }
 </style>

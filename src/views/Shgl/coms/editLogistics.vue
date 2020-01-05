@@ -35,6 +35,10 @@ import {logisticsManage} from 'API/Shgl'
                 
             }
         }
+      },
+      goodsid: {
+         type: String,
+         default: '1'
       }
     },
     data () {
@@ -61,6 +65,9 @@ import {logisticsManage} from 'API/Shgl'
         })
       },
       selectChange () {}
+    },
+    mounted () {
+      console.log(this.goodsid, '===goidawdwifda')
     }
   }
 </script>

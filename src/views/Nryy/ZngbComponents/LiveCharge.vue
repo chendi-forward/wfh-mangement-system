@@ -40,8 +40,8 @@
             placeholder='输入内容...'>
           </el-input>
           <div class="ssxd-form--btn">
-            <el-button size="mini" class="success-btn" @click="edit">编辑</el-button>
-            <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
+            <el-button size="small" type="success" @click="edit">编辑</el-button>
+            <el-button size="small" @click="cancel">取消</el-button>
           </div>
         </div>
       </form>
@@ -61,19 +61,20 @@
         <el-table-column
           label="发布时间"
           align='center'
+          prop="date"
           width="150">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
         <el-table-column
           align='center'
-          width="250"
+          width="200"
+          prop="nickname"
           label="昵称">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.nickname }}</span></template>
         </el-table-column>
         <el-table-column
           align='center'
+          prop="name"
+          mini-width="250"
           label="商品名称">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.name }}</span></template>
         </el-table-column>
         <el-table-column
           prop="number"
@@ -95,10 +96,10 @@
         <el-table-column
           label="操作"
           align='center'
-          width="160">
+          width="150">
           <template slot-scope="scope">
-            <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
-            <el-button type="primary" class="definition-btn" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
+            <el-button size="mini" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+            <el-button size="mini" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -134,7 +135,7 @@ export default {
         count: 10
       },
       tableData: [
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
+        {date: '2019-03-22 09:20', nickname: 'WFH0aaaaaaaaaaaaaaaaaaaaaaaaaaa', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
         {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
         {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
         {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1}

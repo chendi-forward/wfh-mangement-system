@@ -39,7 +39,7 @@
           label="操作"
           align='center'
           width="150">
-          <el-button size="mini" class="success-btn" @click="submit">确认</el-button>
+          <el-button size="mini" type="success" @click="submit">确认</el-button>
         </el-table-column>
         <el-table-column
           type="expand"
@@ -53,8 +53,8 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini">批量删除</el-button>
-        <el-button size="mini" class="success-btn" @click="createFn">导出</el-button>
+        <el-button size="small" type="danger">批量删除</el-button>
+        <el-button size="small" @click="createFn">导出</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination

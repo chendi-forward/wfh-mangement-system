@@ -9,16 +9,16 @@
     :on-error='uploadError'
     :before-upload="beforeAvatarUpload">
     <span class="avater-tip" v-if="tip">{{tip}}</span>
-    <span class="avater-delete" @click.stop="deleteImg" v-show="!!imageUrl">
+    <span class="avater-delete" @click.stop="deleteImg" v-if="isShowImg" v-show="!!imageUrl">
       ×
     </span>
-    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-    <i v-if="!imageUrl" class="el-icon-plus avatar-uploader-icon"></i>
+    <img v-if="imageUrl && isShowImg" :src="base_url + imageUrl" class="avatar">
+    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
 
 <script>
-  import * as commonsConfig from 'COMMONS/commonsConfig.js'
+  import { BASE_URL } from 'COMMONS/commonsConfig.js'
   export default {
     name: 'img-upload-component',
     props: {
@@ -33,12 +33,19 @@
       },
       keyName: {
         type: String
-      }
+      },
+      imgurl: String
     },
     data () {
       return {
+        base_url: BASE_URL,
         imageUrl: '',
-        action_url: commonsConfig.BASE_URL + '/pic/push_goods_pic'
+        action_url: BASE_URL + '/pic/push_goods_pic'
+      }
+    },
+    watch: {
+      imgurl (v) {
+        this.imageUrl = v
       }
     },
     methods: {

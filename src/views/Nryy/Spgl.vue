@@ -1,7 +1,7 @@
 <template>
   <div class="spgl">
-    <spgl-list ref="spglList" v-if="component === 'SpglList'" @toggle-component='toggleComponent'></spgl-list>
-    <spgl-detail ref="spglDetail" v-else @toggle-component='toggleComponent'></spgl-detail>
+    <spgl-list ref="spglList" v-if="component === 'SpglList'" @toggle-component='toggleComponent' :current='current'></spgl-list>
+    <spgl-detail ref="spglDetail" v-else @toggle-component='toggleComponent' :current='current'></spgl-detail>
   </div>
 </template>
 
@@ -16,17 +16,20 @@ export default {
   },
   data () {
     return {
-      component: 'SpglList'
+      component: 'SpglList',
+      current: {}
     }
   },
   methods: {
     toggleComponent (val) {
-      console.log(val)
-      if (val === 'newGoods') {
+      if (val.action === 'newGoods') {
+        this.current = val.current
         this.component = 'SpglDetail'
-      } else if (val === 'cancel') {
-        this.component = 'SpglList'
-      }
+        } else if (val.action === 'cancel') {
+          this.component = 'SpglList'
+        } else if (val.action === 'edit') {
+          this.component = 'SpglDetail'
+        }
     }
   }
 }

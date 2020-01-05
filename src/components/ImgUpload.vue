@@ -2,7 +2,7 @@
   <div>
     <div class="upload-img__btn">
       <el-upload
-        action="pic/push_goods_pic"
+        :action="action_url"
         accept="image/jpeg, image/png"
         :name="key"
         :on-success='uploadSuccess'
@@ -17,7 +17,8 @@
 </template>
 
 <script>
-  import * as commonsConfig from 'COMMONS/commonsConfig.js'
+  import { BASE_URL } from 'COMMONS/commonsConfig.js'
+
   export default {
     name: 'img-upload-component',
     props: {
@@ -25,6 +26,7 @@
     },
     data () {
       return {
+        action_url: BASE_URL + '/pic/push_goods_pic'
       }
     },
     watch: {

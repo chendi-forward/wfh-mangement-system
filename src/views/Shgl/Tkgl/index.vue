@@ -22,31 +22,31 @@
           width="55">
         </el-table-column>
         <el-table-column
-          prop="user_id"
+          prop="order_id"
           align='center'
           label="订单编号"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="nickname"
+          prop="user_id"
           label="用户ID"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='add_time'
+          prop='nickname'
           label="昵称"
           align='center'
           min-width="100">
         </el-table-column>
         <el-table-column
-          prop='gender'
+          prop='wechat_id'
           align='center'
           label="微信交易号"
           width="100">
         </el-table-column>
         <el-table-column
-          align='center'
+          align='refund_money'
           label="状态"
           width="100">
           <template slot-scope="scope">
@@ -54,53 +54,53 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop='province'
+          prop='refund_type'
           align='center'
           label="售后类型">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop='progress'
           align='center'
           label="退款进度">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
-          prop='level'
+          prop='end_time'
           align='center'
-          label="最新操作时间"
+          label="最后操作时间"
           width="150">
         </el-table-column>
         <el-table-column
-          prop='ydh'
+          prop='express_number'
           align='center'
           label="退运单号"
           width="150">
         </el-table-column>
         <el-table-column
-          prop='balance'
+          prop='goods_names'
           label="商品名称"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='invite_code'
+          prop='goods_count'
           label="数量"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='order'
+          prop='pay_money'
           label="实付总额"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='deal_money'
+          prop='rebate_money'
           label="返利总额"
           align='center'
           width="100">
         </el-table-column>
         <el-table-column
-          prop='label'
+          prop='refund_money'
           label="退款"
           align='center'
           width="100">
@@ -125,7 +125,7 @@
         <el-table-column
           type="expand"
           align='center'>
-          <template>
+          <template slot-scope="scope">
             <div class="expend-wrap">
               <el-timeline v-if="currentTab == '0'">
                 <el-timeline-item
@@ -144,7 +144,7 @@
                   :type="activity.type">
                   {{activity.content }}
                   <span class="my-timestamp">{{activity.timestamp}}</span>
-                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex)"></i>
+                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex, scope.row)"></i>
                 </el-timeline-item>
               </el-timeline>
             </div>
@@ -154,19 +154,19 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini" v-show="currentTab == '0'">取消退款</el-button>
+        <el-button size="mini" v-show="currentTab == '0'" @click="cancleTuik">取消退款</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :currentPage="currentPage"
-          :total="400">
+          :total="total">
         </my-pagination>
       </div>
     </div>
-    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
-      <component :is="currentCom.com"></component>
+    <dialog-Com :isShowFooter='false' v-model='dialogFlag' :title='currentCom.name'>
+      <component :data='suredata' :is="currentCom.com" :goodsid='goodsid' @sure-save='sureSave' @cancle-save='cancleSave'></component>
     </dialog-Com>
   </div>
 </template>

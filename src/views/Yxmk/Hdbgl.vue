@@ -4,7 +4,9 @@
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
         <div class="body__head--title">活动表</div>
-        <div class="body__head--btn"><el-button type="success" @click="showCreateItem">创建</el-button></div>
+        <div >
+          <el-button size="small" @click="showCreateItem">创建</el-button>
+        </div>
       </div>
       <div class="yhqgl-body__content">
         <el-table
@@ -21,74 +23,77 @@
           <el-table-column
             label="活动编号"
             align='center'
-            width="150">
-            <template slot-scope="scope">{{ scope.row.id }}</template>
+            prop="active_no"
+            width="120">
           </el-table-column>
           <el-table-column
             align='center'
-            width="150"
+            min-width="150"
+            prop="active_name"
             label="活动名称">
-            <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align='center'
             label="数量"
+            prop="number"
             width="90">
-            <template slot-scope="scope">{{ scope.row.number }}</template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             align='center'
             label="折扣比例（%）"
-            width="140">
-            <template slot-scope="scope">{{ scope.row.percent }}</template>
+            prop="discount_num"
+            width="120">
           </el-table-column>
           <el-table-column
             align='center'
             label="扣减金额（元）"
+            prop="discount_type"
             width="140">
-            <template slot-scope="scope">{{ scope.row.money }}</template>
           </el-table-column>
           <el-table-column
             align='center'
-            label="起始时间">
-            <template slot-scope="scope">{{ scope.row.s_time }}</template>
+            width="170"
+            prop="start_time"
+            label="开始时间">
           </el-table-column>
           <el-table-column
             align='center'
+            width="170"
+            prop="end_time"
             label="结束时间">
-            <template slot-scope="scope">{{ scope.row.e_time }}</template>
           </el-table-column>
           <el-table-column
             align='center'
             label="状态"
+            prop="state"
             width="80">
-            <template slot-scope="scope">{{ scope.row.state }}</template>
           </el-table-column>
           <el-table-column
             label="操作"
             align='center'
-            width="160">
+            width="120">
             <template slot-scope="scope">
-              <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
+              <el-button plain size='small' icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="ssxd-footer">
           <div class="selectAll-wrap">
-            <el-button size="mini" @click="offOnline">删除</el-button>
+            <el-button size="small" @click="offOnline">删除</el-button>
           </div>
           <div class="page-wrap">
             <my-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :total="400">
+              :currentPage="currentPage"
+              :total="total">
             </my-pagination>
           </div>
         </div>
       </div>
     </div>
     <div class="yxmk-setting" v-if='isShowSetting'>
-      <hdb-setting @hide-setting="hideSetting"></hdb-setting>
+      <hdb-setting @hide-setting="hideSetting" :activeId='active_id'></hdb-setting>
     </div>
 	</div>
 </template>
@@ -97,6 +102,7 @@
 	import Pagination from 'COMPONENTS/Pagination'
   import YxmkHead from './CommonComponents/YxmkHead'
   import HdbSetting from './YxmkSetting/HdbSetting'
+  import { addActive, getActiveList, getActiveDetail, updateActive, deleteActive } from 'API/Yxmk'
 
 	export default {
 		name: 'yxmk-hdb',
@@ -107,48 +113,72 @@
   	},
 		data () {
 			return {
-				tableData: [
-					{
-						id: 123123123,
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-						s_time: '2019-09-20 12:21:00',
-						e_time: '2019-09-20 12:12:00',
-						state: '已停用'
-					},
-					{
-						id: 123123123,
-						name: '撒旦法see发涩费',
-						number: 12123,
-						percent: 10,
-						money: 1000,
-						s_time: '2019-09-20 12:21:00',
-						e_time: '2019-09-20 12:12:00',
-						state: '已停用'
-					}
-        ],
-        isShowSetting: false
+        active_id: '',
+        total: 100,
+        currentPage: 1,
+        pageSize: 10,
+				tableData: [],
+        isShowSetting: false,
+        active_id_data: [],
 			}
 		},
 		methods: {
+      getActiveData () {
+        let data = {
+          page_count: this.pageSize,
+          current_page: this.currentPage
+        }
+        getActiveList(data).then(res => {
+          if (res.message === 'ok') {
+            this.tableData = res.data.data_list
+            this.total = res.data.count
+          }
+          console.log(res, '======')
+        })
+      },
       showCreateItem () {
         this.isShowSetting = true
       },
-			handleSelectionChange () {
-				// ..
+			handleSelectionChange (n) {
+        n.forEach(item => {
+          this.active_id_data.push(item.active_id)
+        })
       },
       hideSetting () {
         this.isShowSetting = false
       },
-			handleSizeChange () {},
-			handleCurrentChange () {},
-			offOnline () {},
+			handleSizeChange (n) {
+        this.pageSize = n
+        this.getActiveData()
+      },
+			handleCurrentChange (n) {
+        this.currentPage = n
+        this.getActiveData()
+      },
+			offOnline () {
+        if (!this.active_id_data.length) {
+          this.$message({
+            message: '请选择活动',
+            type: 'error'
+          });
+        } else {
+          console.log(this.active_id_data)
+          let obj = {
+            active_id: this.active_id_data.join(',')
+          }
+          deleteActive(obj).then(res => {
+            console.log(res, '=====')
+          })
+        }
+      },
 			editHandle (row) {
         this.showCreateItem()
+        this.active_id = row.active_id
 			}
-		}
+    },
+    created () {
+      this.getActiveData()
+    }
 	}
 </script>
 
@@ -167,6 +197,10 @@
       .body__head--title {
         flex: 1;
       }
+      button {
+        color: #fff;
+        background: #FF4B57;
+      }
     }
   }
   .yhqgl-body {
@@ -180,6 +214,28 @@
     min-height: 100%;
     background-color: #f1f3f5;
     // z-index: 3;
+  }
+  .yhqgl-body__content {
+    .ssxd-footer {
+      button {
+        width:70px;
+        height:30px;
+        border:1px solid rgba(150,161,182,1);
+        background: #fff;
+      }
+    }
+    .el-table__row {
+      button {
+        border: 0px solid #000;
+        color: #FF4B57;
+        font-size: 18px;
+      }
+    }
+    .el-table__row:hover {
+      button {
+        background: #f1f1f1;
+      }
+    }
   }
 }
 </style>

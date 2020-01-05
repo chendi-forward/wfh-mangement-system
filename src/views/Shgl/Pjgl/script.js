@@ -1,58 +1,172 @@
 import Pagination from 'COMPONENTS/Pagination'
 import Ddpj from './coms/ddpj'
 import Sppj from './coms/sppj'
+import { goodsEvaluationList, orderEvaluationList, delGoodsEvaluation, delOrderEvaluation } from 'API/Shgl'
+import moment from 'moment'
 
 export default {
-  name: 'shgl-tkgl',
-  components: {
-    'my-pagination': Pagination,
-    'ddpj-com': Ddpj,
-    'sppj-com': Sppj
-  },
-  data () {
-    return {
-      currentPage: 1,
-      tableData: [{
-        user_id: 'WFH001',
-        nickname: 'WFH001',
-        gender: 'WFH001',
-        label: '新品推广',
-        add_time: '王小虎',
-        province: '退款',
-        progress: '通过申请',
-        level: '2019-05-03 17:33:33',
-        ydh: '/',
-        balance: 1444,
-        invite_code: '23131',
-        order: 12313,
-        deal_money: 321341,
-        expend: '111'
-      }],
-      tabs: [
-        {label: '商品评价', name: '0', com: 'sppj-com'}, {label: '订单评价', name: '1', com: 'ddpj-com'}
-      ],
-      currentTab: '0',
-      // 退款时间线
-      activities: [{
-        content: '退货清单',
-        timestamp: '2018-04-12 20:46',
-        type: 'danger',
-        class: 'theme-color'
-      }, {
-        content: '仓库收货',
-        timestamp: '2018-04-03 20:46'
-      }, {
-        content: '确认退款',
-        timestamp: '2018-04-03 20:46'
-      }]
-    }
-  },
-  methods: {
-    tabChage (v) {
-      this.currentTab = v.name
+    name: 'shgl-tkgl',
+    components: {
+        'my-pagination': Pagination,
+        'ddpj-com': Ddpj,
+        'sppj-com': Sppj
     },
-    handleSelectionChange () {},
-    handleSizeChange () {},
-    handleCurrentChange () {}
-  }
+    data() {
+        return {
+            order_Params: [],
+            goodsParams: [],
+            orderParams: {
+                order_id: null,
+                user_info: null,
+                start_time: moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
+                end_time: moment().week(moment().week()).endOf('week').format('YYYY-MM-DD')
+            },
+            params: {
+                searchOrder: '',
+                selectKey: null,
+                time: [moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'), moment().week(moment().week()).endOf('week').format('YYYY-MM-DD')]
+            }, // 携带参数
+            total: 0,
+            pageSize: 10,
+            currentPage: 1,
+            tableData: [{}],
+            tabs: [
+                { label: '商品评价', name: '0', com: 'sppj-com' }, { label: '订单评价', name: '1', com: 'ddpj-com' }
+            ],
+            currentTab: '0',
+            // 退款时间线
+            activities: [{
+                content: '退货清单',
+                timestamp: '2018-04-12 20:46',
+                type: 'danger',
+                class: 'theme-color'
+            }, {
+                content: '仓库收货',
+                timestamp: '2018-04-03 20:46'
+            }, {
+                content: '确认退款',
+                timestamp: '2018-04-03 20:46'
+            }]
+        }
+    },
+    methods: {
+        deleteitem(n) {
+            if (this.currentTab == '0') {
+                console.log(n, '=dw=d=wa=dwa')
+                this.goodsParams = n
+            } else {
+                this.order_Params = n
+                console.log(n, '=dw=d=dwadawda----------------wa=dwa')
+            }
+        },
+        deletePingjia() {
+            console.log(this.currentTab, '=====')
+            if (this.currentTab == '0') {
+                // this.getData()
+                console.log(this.goodsParams, '=====')
+                let arr = []
+                this.goodsParams.forEach((item) => {
+                    arr.push(item.id)
+                })
+                let data = {
+                    id_list: arr
+                }
+                console.log(data, '===id_list===')
+                delGoodsEvaluation(data).then(res => {
+                    console.log(res)
+                    this.getData()
+                })
+            } else {
+                let arr = []
+                this.order_Params.forEach((item) => {
+                    arr.push(item.id)
+                })
+                let data = {
+                    order_id: arr
+                }
+                delOrderEvaluation(data).then(res => {
+                    console.log(res)
+                    this.getOrderData()
+                })
+            }
+        },
+        searchParams(data) {
+            this.orderParams = data
+            this.getOrderData()
+        },
+        updateData() {
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
+        },
+        getSearchData(data) {
+            this.params = data
+            console.log(this.params, '====')
+            this.getData()
+        },
+        getData() {
+            let data = {
+                page_count: this.pageSize,
+                current_page: this.currentPage,
+                start_time: moment(this.params.time[0]).format('YYYY-MM-DD'),
+                end_time: moment(this.params.time[1]).format('YYYY-MM-DD'),
+                evaluation_score: this.params.selectKey,
+                goods_info: this.params.searchOrder
+            }
+            goodsEvaluationList(data).then(data => {
+                this.tableData = data.data.data_list
+                this.tableData.forEach((item) => {
+                    item.evaluation_score = item.evaluation_score == 1 ? 'icon-chaping' : item.evaluation_score == 2 ? 'icon-zhongping' : 'icon-haoping';
+                })
+                let count = data.data.count
+                this.total = count
+                console.log(count, data, '========')
+            })
+        },
+        getOrderData() {
+            let data = {
+                page_count: this.pageSize,
+                current_page: this.currentPage,
+                ...this.orderParams
+            }
+            console.log(data, '====')
+            orderEvaluationList(data).then((res) => {
+                console.log(res)
+                this.tableData = res.data.data_list
+                this.total = res.data.count
+            })
+        },
+        tabChage(v) {
+            this.currentTab = v.name
+            this.currentPage = 1
+            if (v.name == '商品评价') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
+        },
+        handleSelectionChange(n) {
+            console.log(n, '=========')
+            this.currentPage = n
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
+        },
+        handleSizeChange(n) {
+            this.pageSize = n
+            if (this.currentTab == '0') {
+                this.getData()
+            } else {
+                this.getOrderData()
+            }
+        },
+        handleCurrentChange() {}
+    },
+    mounted() {
+        this.getData()
+    }
 }

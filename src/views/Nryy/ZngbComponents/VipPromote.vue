@@ -39,8 +39,8 @@
           </label>
           <el-input class="ssxd-form--input" v-model="formSsxd.count" placeholder="输入内容..."></el-input>
           <div class="ssxd-form--btn">
-            <el-button size="mini" class="success-btn" @click="edit">编辑</el-button>
-            <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
+            <el-button size="small" class="success-btn" @click="edit">编辑</el-button>
+            <el-button size="small" class="cancel-btn" @click="cancel">取消</el-button>
           </div>
         </div>
       </form>
