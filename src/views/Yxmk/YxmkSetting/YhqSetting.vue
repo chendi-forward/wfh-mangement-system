@@ -89,16 +89,17 @@
           <el-form-item
             class="content-content__item"
             label="发放数量："
-            prop="coupon_num"
-            :rules="rules.coupon_num"
+            prop="coupon_limit"
+            :rules="rules.coupon_limit"
           >
-            <el-radio-group v-model="formXxsz.coupon_num">
+            <el-radio-group v-model="formXxsz.coupon_limit">
               <div class="form--radio__ff">
                 <el-radio label="张">每人限发</el-radio>
                 <el-input
                   placeholder="输入数字..."
                   type="number"
-                  v-model="formXxsz.coupon_limit"
+                  @input="inputChange($event)"
+                  v-model="formXxsz.coupon_num"
                 ></el-input>
                 <span>张</span>
               </div>
@@ -119,6 +120,7 @@
                 <el-input
                   placeholder="输入数字..."
                   type="number"
+                  @input="inputChange($event)"
                   v-model="formXxsz.ddMoney"
                 ></el-input>
                 <span>元</span>
@@ -128,6 +130,7 @@
                 <el-input
                   placeholder="输入数字..."
                   type="number"
+                  @input="inputChange($event)"
                   v-model="formXxsz.ddNumber"
                 ></el-input>
                 <span>罐</span>
@@ -146,6 +149,7 @@
                 <el-input
                   placeholder="输入数字..."
                   type="number"
+                  @input="inputChange($event)"
                   v-model="formXxsz.zkMoney"
                 ></el-input>
                 <span>元</span>
@@ -155,6 +159,7 @@
                 <el-input
                   placeholder="输入数字..."
                   type="number"
+                  @input="inputChange($event)"
                   v-model="formXxsz.zkNumber"
                 ></el-input>
                 <span>%</span>
@@ -306,6 +311,8 @@
               :data="goodList"
               tooltip-effect="dark"
               style="width: 100%"
+              height='300'
+              v-infinite-scroll="loadGoods"
               @selection-change="handleSelectionChange"
             >
               <el-table-column
@@ -340,6 +347,7 @@
                 <template slot-scope="scope">{{ scope.row.title }}</template>
               </el-table-column>
             </el-table>
+            <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="goodsPageOver">没有更多了~~</div>
           </div>
         </div>
       </div>
@@ -472,7 +480,7 @@ export default {
         end_time: '',
         dateRange: [],
         coupon_num: '',
-        coupon_limit: '',
+        coupon_limit: '张',
         threshold_type: '',
         discount_type: ''
       },
@@ -489,12 +497,14 @@ export default {
         length10: [{ validator: length10, trigger: 'blur' }],
         length5: [{ validator: length5, trigger: 'blur' }],
         dateRange: [{ validator: dateRange, trigger: 'blur' }],
-        coupon_num: [{ validator: coupon_num, trigger: 'blur' }],
+        coupon_limit: [{ validator: coupon_num, trigger: 'blur' }],
         threshold_type: [{ validator: threshold_type, trigger: 'blur' }],
         discount_type: [{ validator: discount_type, trigger: 'blur' }]
       },
       userPage: 1,
       userPageOver: false, // 无限加载完毕
+      goodsPage: 1,
+      goodsPageOver: false,
       userKey: '',
       checkList: [],
       checkLists: [],
@@ -545,6 +555,9 @@ export default {
     $('.item__sale--wrap .el-form-item__content').width(wrapW)
   },
   methods: {
+    inputChange(e) {
+      this.$forceUpdate()
+    },
     changeDate(type) {
       if (type === 'start_time') {
         this.formXxsz.dateRange[0] = this.formXxsz.start_time
@@ -556,10 +569,20 @@ export default {
       this.isShowTag = true
       let params = {
         page_count: 10,
-        current_page: 1
+        current_page: this.goodsPage
       }
-      this.getGoodsList(params).then(res => {
-        this.goodList = res
+      this.goodsPending = true
+      return this.getGoodsList(params)
+      .then(res => {
+        this.goodsPending = false
+        if (res.length < 10) {
+          this.goodsPageOver = true
+        } else {
+          this.goodsPage++
+          this.goodsPageOver = false
+        }
+        this.goodList = [...this.goodList, ...res]
+        return res
       })
     },
     hideTag() {
@@ -619,12 +642,11 @@ export default {
               this.formXxsz.discount_type === '金额'
                 ? +this.formXxsz.zkMoney
                 : +this.formXxsz.zkNumber,
-            coupon_num: this.formXxsz.coupon_num === '不限' ? 9999 : +this.formXxsz.coupon_limit,
+            coupon_num: this.formXxsz.coupon_limit === '不限' ? 9999 : +this.formXxsz.coupon_num,
             goods_list: (this.activeGoods || []).map(item => item.goods_id),
             label_id: +this.formYhsz.user_label_id || 2,
             user_list: this.checkList
           }
-          console.log('TCL: handleSave -> this.action', this.action)
           if (this.action === 'add') {
             this.$post('/marketing/add_coupon', params).then(res => {
               if (res.data === true && res.message === 'ok') {
@@ -646,7 +668,6 @@ export default {
                 })
               }
             })
-            console.log('TCL: handleSave -> params', params)
           }
         }
       })
@@ -666,30 +687,33 @@ export default {
     getDetail(coupon_id) {
       return this.$get(`/marketing/get_coupon_detail?coupon_id=${coupon_id}`)
         .then(res => {
-          console.log('TCL: getDetail -> res.data', res.data)
-          this.formXxsz = res.data
+          this.formXxsz = Object.assign({}, res.data)
           if (res.data.threshold_type === '元') {
+            this.formXxsz.threshold_type = '元'
             this.formXxsz.ddNumber = ''
             this.formXxsz.ddMoney = res.data.threshold_num
           } else {
+            this.formXxsz.threshold_type = '罐'
             this.formXxsz.ddNumber = res.data.threshold_num
             this.formXxsz.ddMoney = ''
           }
           if (res.data.discount_type === '折扣') {
+            this.formXxsz.discount_type = '折扣'
             this.formXxsz.zkMoney = ''
             this.formXxsz.zkNumber = res.data.discount_num
           } else {
+            this.formXxsz.discount_type = '金额'
             this.formXxsz.zkMoney = res.data.discount_num
             this.formXxsz.zkNumber = ''
           }
           if (res.data.coupon_num < 9999) {
-            this.formXxsz.coupon_limit = res.data.coupon_num
-            this.formXxsz.coupon_num = '张'
+            this.formXxsz.coupon_num = res.data.coupon_num
+            this.formXxsz.coupon_limit = '张'
           } else {
-            this.formXxsz.coupon_limit = ''
-            this.formXxsz.coupon_num = '不限'
+            this.formXxsz.coupon_num = ''
+            this.formXxsz.coupon_limit = '不限'
           }
-          // this.formXxsz.start_time = new Date(res.data.start_time)
+          this.formXxsz.start_time = new Date(res.data.start_time)
           this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
           this.formYhsz.user_label_id = res.data.user_label_id
           return {goods_list: res.data.goods_list, user_list: res.data.user_list}
@@ -720,7 +744,8 @@ export default {
       })
     },
     getGoodsList(params) {
-      return this.$get('/marketing/goods_list', { ...params }).then(res => {
+      return this.$get('/marketing/goods_list', { ...params })
+      .then(res => {
         return res.data.data_list
       })
     },
@@ -733,6 +758,11 @@ export default {
       if (this.userPageOver) return
       this.getUserList()
     },
+    loadGoods() {
+      if (this.goodsPageOver) return
+      if (this.goodsPending) return
+      this.showTag()
+    },
     getUserList() {
       let params = {
         search: this.userKey,
@@ -742,10 +772,11 @@ export default {
       }
       return this.$get('/marketing/user_list', { ...params }).then(res => {
         this.checkLists = [...this.checkLists, ...res.data.data_list]
-        if (res.data.data_list < 10) {
+        if (res.data.data_list.length < 10) {
           this.userPageOver = true
         } else {
           this.userPage++
+          this.userPageOver = false
         }
         return res.data.data_list
       })

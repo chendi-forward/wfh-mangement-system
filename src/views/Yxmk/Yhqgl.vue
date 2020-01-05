@@ -1,6 +1,6 @@
 <template>
   <div class="yxmk-yhqgl">
-    <yxmk-head></yxmk-head>
+    <yxmk-head :info='info'></yxmk-head>
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
         <div class="body__head--title">优惠券表</div>
@@ -101,7 +101,7 @@
             <el-button
               size="small"
               type="danger"
-              @click="offOnline"
+              @click="deleteClickMulti"
             >下线</el-button>
           </div>
           <div class="page-wrap">
@@ -175,14 +175,14 @@
             min-width="160"
           >
             <template slot-scope="scope">
-              <el-radio
-                v-model="scope.row.is_close"
-                :label="0"
-              >开启</el-radio>
-              <el-radio
-                v-model="scope.row.is_close"
-                :label="1"
-              >关闭</el-radio>
+              <el-radio-group v-model="scope.row.is_close" @change="val => changeClose(val, scope.row)">
+                <el-radio
+                  :label="0"
+                >开启</el-radio>
+                <el-radio
+                  :label="1"
+                >关闭</el-radio>
+              </el-radio-group>
             </template>
           </el-table-column>
         </el-table>
@@ -215,12 +215,18 @@ export default {
       isShowSetting: false,
       action: 'add',
       type: '普通',
-      coupon_id: ''
+      coupon_id: '',
+      multipleSelection: [],
+      info: {
+        active: 0,
+        coupon: 0
+      }
     }
   },
   created() {
     this.getData('普通')
     this.getData('新手')
+    this.getCount()
   },
   methods: {
     showCreateItem(type) {
@@ -252,7 +258,46 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    offOnline() {},
+    deleteClickMulti () {
+      if (!this.multipleSelection.length) return
+      console.log('TCL: deleteClickMulti -> this.multipleSelection', this.multipleSelection)
+      let ids = this.multipleSelection.map(item => item.coupon_id)
+      let names = this.multipleSelection.map(item => item.coupon_name)
+      this.handleDelete(ids, names)
+    },
+    handleDelete (_ids, _names) {
+      let names = _names.join(',')
+      let ids = _ids.join(',')
+      this.$confirm(`确定要下线“${names}”吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.deleteData(ids)
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '下线成功!'
+        })
+      })
+    },
+    changeClose(val, row) {
+      this.$post('/marketing/close_coupon', {coupon_id: '' + row.coupon_id, is_close: '' + val})
+      .then(res => {
+        console.log(res)
+      })
+    },
+    deleteData (ids) {
+      this.$post('/marketing/delete_coupon', {coupon_id: ids})
+      .then(res => {
+        this.getData()
+      }).catch(err => {
+        this.$message({
+          type: 'warning',
+          message: '请求出错!'
+        })
+      })
+    },
 
     getData(coupon_type) {
       let params = {
@@ -288,6 +333,12 @@ export default {
             this.total = res.data.count
           }
         }
+      })
+    },
+    getCount() {
+      this.$get('/marketing/discounts_info')
+      .then(res => {
+        this.info = res.data
       })
     }
   }
