@@ -192,7 +192,6 @@ export default {
       this.multipleSelection = val
     },
     handleClick (row) {
-      console.log('TCL: handleClick -> row', row)
       this.$emit('toggle-component', {action: 'newGoods', current: row})
     },
     deleteClickMulti () {

@@ -3,134 +3,297 @@
     <div class="cjyhq-box">
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">优惠券信息设置</div>
-        <el-form class="cjyhq-content" name="formXxsz" label-width="130px" label-position="left">
-          <el-form-item class="content-content__item" label="优惠券编号：">
-            <el-input v-model="formXxsz.number" placeholder="输入优惠券编号..."></el-input>
+        <el-form
+          class="cjyhq-content"
+          name="formXxsz"
+          label-width="130px"
+          label-position="left"
+          :model="formXxsz"
+          ref="formXxsz"
+        >
+          <el-form-item
+            class="content-content__item"
+            label="优惠券编号："
+            prop="coupon_no"
+            :rules='rules.length10'
+          >
+            <el-input
+              v-model="formXxsz.coupon_no"
+              placeholder="输入优惠券编号..."
+            ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="优惠券名称：">
-            <el-input v-model="formXxsz.yhqName" placeholder="输入优惠券名称..."></el-input>
+          <el-form-item
+            class="content-content__item"
+            label="优惠券名称："
+            prop="coupon_name"
+            :rules='rules.length10'
+          >
+            <el-input
+              v-model="formXxsz.coupon_name"
+              placeholder="输入优惠券名称..."
+            ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="已参加显示名称：">
-            <el-input v-model="formXxsz.ycjName" placeholder="输入已参加显示名称..."></el-input>
+          <el-form-item
+            class="content-content__item"
+            label="已参加显示名称："
+            prop="trolley_show_name"
+            :rules='rules.length10'
+          >
+            <el-input
+              v-model="formXxsz.trolley_show_name"
+              placeholder="输入已参加显示名称..."
+            ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="下单页显示名称：">
-            <el-input v-model="formXxsz.xdyName" placeholder="输入下单页显示名称..."></el-input>
+          <el-form-item
+            class="content-content__item"
+            label="下单页显示名称："
+            prop="order_show_name"
+            :rules='rules.length5'
+          >
+            <el-input
+              v-model="formXxsz.order_show_name"
+              placeholder="输入下单页显示名称..."
+            ></el-input>
             <div class="content__item--rule">*5个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="生效时间：">
+          <el-form-item
+            class="content-content__item"
+            label="生效时间："
+            prop="dateRange"
+            :rules="rules.dateRange"
+          >
             <div class="form--dateSelect">
               <el-date-picker
                 class="data-input"
-                v-model="effectiveDate_s"
+                v-model="formXxsz.start_time"
+                @change='changeDate("start_time")'
                 type="datetime"
                 placeholder="选择时间..."
               ></el-date-picker>
-              <div style="width: 20px; display: flex; align-items: center;">
+              <div style="width: 20px; display: flex; align-items: center; padding: 3px;">
                 <div class="date-throught"></div>
               </div>
               <el-date-picker
                 class="data-input"
-                v-model="effectiveDate_e"
+                v-model="formXxsz.end_time"
                 type="datetime"
+                @change='changeDate("end_time")'
                 placeholder="选择时间..."
               ></el-date-picker>
             </div>
+            <div class="content__item--rule">*必填项</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="订单条件：">
-            <div class="form--radio__ff">
-              <el-radio v-model="formXxsz.ddType" label="1">金额达到</el-radio>
-              <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddMoney"></el-input>
-              <span>元</span>
-            </div>
-            <div class="form--radio__ff">
-              <el-radio v-model="formXxsz.ddType" label="2">数量达到</el-radio>
-              <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddNumber"></el-input>
-              <span>罐</span>
-            </div>
-          </el-form-item>
-          <el-form-item class="content-content__item" label="折扣设置：">
+          <el-form-item
+            class="content-content__item"
+            label="发放数量："
+            prop="coupon_num"
+            :rules="rules.coupon_num"
+          >
+            <el-radio-group v-model="formXxsz.coupon_num">
               <div class="form--radio__ff">
-                <el-radio v-model="formXxsz.zkType" label="1">金额减扣</el-radio>
-                <el-input placeholder="输入数字..." type="number" v-model="formXxsz.zkMoney"></el-input>
+                <el-radio label="张">每人限发</el-radio>
+                <el-input
+                  placeholder="输入数字..."
+                  type="number"
+                  v-model="formXxsz.coupon_limit"
+                ></el-input>
+                <span>张</span>
+              </div>
+              <div class="form--radio__ff">
+                <el-radio label="不限">不限数量</el-radio>
+              </div>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            class="content-content__item"
+            label="订单条件："
+            prop="threshold_type"
+            :rules="rules.threshold_type"
+          >
+            <el-radio-group v-model="formXxsz.threshold_type">
+              <div class="form--radio__ff">
+                <el-radio label="元">金额达到</el-radio>
+                <el-input
+                  placeholder="输入数字..."
+                  type="number"
+                  v-model="formXxsz.ddMoney"
+                ></el-input>
                 <span>元</span>
               </div>
               <div class="form--radio__ff">
-                <el-radio v-model="formXxsz.zkType" label="2">比例减扣</el-radio>
-                <el-input placeholder="输入数字..." type="number" v-model="formXxsz.zkNumber"></el-input>
+                <el-radio label="罐">数量达到</el-radio>
+                <el-input
+                  placeholder="输入数字..."
+                  type="number"
+                  v-model="formXxsz.ddNumber"
+                ></el-input>
+                <span>罐</span>
+              </div>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            class="content-content__item"
+            label="折扣设置："
+            prop="discount_type"
+            :rules="rules.discount_type"
+          >
+            <el-radio-group v-model="formXxsz.discount_type">
+              <div class="form--radio__ff">
+                <el-radio label="金额">金额减扣</el-radio>
+                <el-input
+                  placeholder="输入数字..."
+                  type="number"
+                  v-model="formXxsz.zkMoney"
+                ></el-input>
+                <span>元</span>
+              </div>
+              <div class="form--radio__ff">
+                <el-radio label="折扣">比例减扣</el-radio>
+                <el-input
+                  placeholder="输入数字..."
+                  type="number"
+                  v-model="formXxsz.zkNumber"
+                ></el-input>
                 <span>%</span>
-            </div>
+              </div>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </div>
       <div class="cjyhq-spsz">
         <div class="cjyhq-title">优惠商品设置</div>
-        <el-form class="cjyhq-content form-spsz" name="formSpsz" label-width="130px" label-position="left">
-          <el-form-item label="参与优惠商品：">
-            <div class="item__sale" v-for="item in 7">
-              <img class="item__sale--img" src />
-              <div class="item__sale--text text-overflow-mult">dafasefasdfasefadasdsdasfsad</div>
+        <el-form
+          class="cjyhq-content form-spsz"
+          name="formSpsz"
+          label-width="130px"
+          label-position="left"
+        >
+          <el-form-item
+            label="参与优惠商品："
+            class="item__sale--wrap"
+            prop="activeGoods"
+          >
+            <div
+              class="item__sale"
+              v-for="item in activeGoods"
+              :key="item.goods_id"
+            >
+              <img
+                class="item__sale--img"
+                :src='base_url + item.pic_link'
+              />
+              <div class="item__sale--text text-overflow-mult">{{item.title}}</div>
             </div>
           </el-form-item>
         </el-form>
-        <!-- <div class="content-content__item">
-          <div class="content__item--tag">参与优惠商品：</div>
-          <div class="content__item--input content__item--input--img">
-            <div class="item__sale" v-for="item in 7">
-              <img class="item__sale--img" src />
-              <div class="item__sale--text text-overflow-mult">dafasefasdfasefadasdsdasfsad</div>
-            </div>
-          </div>
-        </div> -->
         <div class="content-edit">
-          <span class="content-edit--total">共 7 件</span>
-          <el-button type="success" size="small" @click="showTag">更改</el-button>
+          <span class="content-edit--total">共 {{activeGoods.length}} 条</span>
+          <el-button
+            type="success"
+            size="small"
+            @click="showTag"
+          >更改</el-button>
         </div>
       </div>
     </div>
     <div class="cjyhq-box__setting">
       <div class="cjyhq-title">优惠用户设置</div>
-      <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
-        <el-form-item label="标签筛选：" class="content-content__item" :show-message='false'>
-          <el-select v-model="formYhsz.bqsx" placeholder="请选择...">
-            <el-option v-for="item in options" :key="item" :label="item" :value="item"></el-option>
+      <el-form
+        name="formYhsz"
+        class="yhsz-content"
+        label-width="90px"
+        label-position="left"
+      >
+        <el-form-item
+          label="标签筛选："
+          class="content-content__item"
+          :show-message='false'
+        >
+          <el-select
+            v-model="formYhsz.user_label_id"
+            clearable
+            @change="changeUserLabel"
+            placeholder="请选择..."
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
           </el-select>
-          <el-button size="small" type="warning">更改</el-button>
         </el-form-item>
       </el-form>
       <div class="yhsz-search">
-        <el-form name="formYhsz" class="yhsz-content yhsz-content--search" label-width="90px" label-position="left">
-          <el-form-item label="用户搜索：" class="content-content__item">
-            <el-input type="text" placeholder="输入用户ID..."></el-input>
-            <el-button size="small">搜索</el-button>
+        <el-form
+          name="formYhsz"
+          class="yhsz-content yhsz-content--search"
+          label-width="90px"
+          label-position="left"
+        >
+          <el-form-item
+            label="用户搜索："
+            class="content-content__item"
+          >
+            <el-input
+              type="text"
+              v-model="userKey"
+              placeholder="输入用户ID..."
+            ></el-input>
+            <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
         <div class="content__search--options">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox v-for="(item, i) in checkLists" :key="i" :label="item.label"></el-checkbox>
+          <el-checkbox-group v-model="checkList" v-infinite-scroll="loadData">
+            <el-checkbox
+              v-for="item in checkLists"
+              :key="item.user_id"
+              :label="item.user_id"
+            >{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
+          <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="userPageOver">没有更多了~~</div>
         </div>
         <div class="content__group--btn">
-          <el-button type="success" size="small">编辑</el-button>
+          <el-button
+            type="success"
+            size="small"
+          >编辑</el-button>
           <el-button size="small">取消</el-button>
         </div>
       </div>
     </div>
     <div class="cjyhq-box__footer">
-      <el-button type="success" size="small">保存</el-button>
-      <el-button @click="hideSetting" size="small">取消</el-button>
+      <el-button
+        type="success"
+        size="small"
+        @click="handleSave"
+      >保存</el-button>
+      <el-button
+        @click="hideSetting"
+        size="small"
+      >取消</el-button>
     </div>
 
-    <dialog-com v-model="isShowTag" title="参加活动商品" :is-show-footer='false' class="tag-dialog">
+    <dialog-com
+      v-model="isShowTag"
+      title="参加活动商品"
+      :is-show-footer='false'
+      class="tag-dialog"
+    >
       <div class="dialog-search">
         <div class="search-title">商品搜索：</div>
         <div class="search-input">
-          <el-input type="text" v-model="activeSearch" placeholder="输入商品编号/商品名称..."></el-input>
+          <el-input
+            type="text"
+            v-model="activeSearch"
+            placeholder="输入商品编号/商品名称..."
+          ></el-input>
         </div>
         <div class="search-button">
-          <el-button>搜索</el-button>
+          <el-button size="small">搜索</el-button>
         </div>
       </div>
       <div class="dialog-list">
@@ -140,38 +303,56 @@
             <el-table
               class="ssxd-table"
               ref="multipleTable"
-              :data="activeGoods"
+              :data="goodList"
               tooltip-effect="dark"
               style="width: 100%"
-              @selection-change="handleSelectionChange">
+              @selection-change="handleSelectionChange"
+            >
               <el-table-column
                 type="selection"
-                width="55">
+                width="55"
+              >
               </el-table-column>
               <el-table-column
                 align='center'
                 label="商品图片"
-                width="100">
-                <template slot-scope="scope">{{ scope.row.pic }}</template>
+                width="100"
+              >
+                <template slot-scope="scope">
+                  <img
+                    class="dialog-img"
+                    :src="base_url + scope.row.pic_link"
+                    alt=""
+                  >
+                </template>
               </el-table-column>
               <el-table-column
                 align='center'
                 label="商品编号"
-                width="130">
-                <template slot-scope="scope">{{ scope.row.id }}</template>
+                width="130"
+              >
+                <template slot-scope="scope">{{ scope.row.goods_id }}</template>
               </el-table-column>
               <el-table-column
                 align='center'
-                label="商品名称">
-                <template slot-scope="scope">{{ scope.row.name }}</template>
+                label="商品名称"
+              >
+                <template slot-scope="scope">{{ scope.row.title }}</template>
               </el-table-column>
             </el-table>
           </div>
         </div>
       </div>
       <div class="dialog-btns">
-        <el-button type="success">确定</el-button>
-        <el-button @click="hideTag">取消</el-button>
+        <el-button
+          size="small"
+          type="success"
+          @click="handleAddGoods"
+        >确定</el-button>
+        <el-button
+          size="small"
+          @click="hideTag"
+        >取消</el-button>
       </div>
     </dialog-com>
   </div>
@@ -180,104 +361,396 @@
 <script>
 import DialogCom from 'COMPONENTS/DialogCom'
 import $ from 'jquery'
+import { BASE_URL } from 'COMMONS/commonsConfig.js'
+import _ from 'lodash'
+import moment from 'moment'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
-	name: "yxmk-cjyhq",
-	components: {
-		'dialog-com': DialogCom
-	},
-  data () {
-    return {
-      formXxsz: {
-        number: "",
-        yhqName: "",
-        ycjName: "",
-        jxsse: "",
-        ffType: "1", // 发放类型
-        ffNumber: "", // 发放数量
-        ddType: "1", // 订单类型
-        ddMoney: "", // 订单金额
-				ddNumber: "" // 订单数量
-			},
-			isShowTag: false,
-      effectiveDate_s: "",
-      effectiveDate_e: "",
-      options: ["九月大客户", "新用户"],
-      formYhsz: {
-        bqsx: "九月大客户"
-      },
-      checkList: [],
-      checkLists: [
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
-        },
-        {
-          label: 'xxx萨达色粉'
+  name: 'yxmk-cjyhq',
+  components: {
+    'dialog-com': DialogCom,
+    InfiniteLoading
+  },
+  props: {
+    action: String,
+    type: String,
+    coupon_id: [String, Number]
+  },
+  data() {
+    let length10 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项不能为空'))
+      } else if (value.length > 10) {
+        callback(new Error('10个字符以内'))
+      } else {
+        callback()
+      }
+    }
+    let length5 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项不能为空'))
+      } else if (value.length > 5) {
+        callback(new Error('5个字符以内'))
+      } else {
+        callback()
+      }
+    }
+    let dateRange = (rule, value, callback) => {
+      if (!(value && value.length && value.length > 1)) {
+        callback(new Error('活动开始时间和结束时间不能为空'))
+      } else {
+        callback()
+      }
+    }
+    let required = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项为必填项'))
+      } else {
+        callback()
+      }
+    }
+    let coupon_num = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择发放数量'))
+      } else if (value === '不限') {
+        callback()
+      } else {
+        if (!this.formXxsz.coupon_limit) {
+          callback(new Error('发放数量不能为空'))
+        } else {
+          callback()
         }
-      ],
-			activeSearch: '',
-			activeGoods: [
-				{
-					pic: '',
-					id: 123123123,
-					name: '卢青蛋白粉500g'
-				},
-				{
-					pic: '',
-					id: 123123123,
-					name: '卢青蛋白粉500g'
-				},
-				{
-					pic: '',
-					id: 123123123,
-					name: '卢青蛋白粉500g'
-				}
-			]
+      }
+    }
+    let threshold_type = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择订单条件'))
+      } else if (value === '元') {
+        if (!this.formXxsz.ddMoney) {
+          callback(new Error('订单金额不能为空'))
+        } else {
+          callback()
+        }
+      } else if (value === '罐') {
+        if (!this.formXxsz.ddNumber) {
+          callback(new Error('订单数量不能为空'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
+    let discount_type = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择折扣设置'))
+      } else if (value === '金额') {
+        if (!this.formXxsz.zkMoney) {
+          callback(new Error('折扣金额不能为空'))
+        } else {
+          callback()
+        }
+      } else if (value === '折扣') {
+        if (!this.formXxsz.zkNumber) {
+          callback(new Error('折扣比例不能为空'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
+    return {
+      base_url: BASE_URL,
+      formXxsz: {
+        coupon_no: '',
+        coupon_name: '',
+        trolley_show_name: '',
+        order_show_name: '',
+        start_time: '',
+        end_time: '',
+        dateRange: [],
+        coupon_num: '',
+        coupon_limit: '',
+        threshold_type: '',
+        discount_type: ''
+      },
+      isShowTag: false,
+      effectiveDate_s: '',
+      effectiveDate_e: '',
+      options: [],
+      formYhsz: {},
+      rules: {
+        number: [{ type: 'number', required: true, message: '必须是数字' }],
+        required: [
+          { validator: required, message: '该项不能不空', trigger: 'blur' }
+        ],
+        length10: [{ validator: length10, trigger: 'blur' }],
+        length5: [{ validator: length5, trigger: 'blur' }],
+        dateRange: [{ validator: dateRange, trigger: 'blur' }],
+        coupon_num: [{ validator: coupon_num, trigger: 'blur' }],
+        threshold_type: [{ validator: threshold_type, trigger: 'blur' }],
+        discount_type: [{ validator: discount_type, trigger: 'blur' }]
+      },
+      userPage: 1,
+      userPageOver: false, // 无限加载完毕
+      userKey: '',
+      checkList: [],
+      checkLists: [],
+      activeSearch: '',
+      activeGoods: [],
+      goodList: [],
+
+      multipleSelection: []
     }
   },
-  mounted () {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
-    $('.content__search--options').height(wrapH)
+  directives: {
+    loadmore: {
+      // 指令的定义
+      bind(el, binding, vnode) {
+        const selectWrap = el.querySelector('.el-table__body-wrapper')
+        selectWrap.addEventListener('scroll', function() {
+          const sign = 10
+          const scrollDistance =
+            this.scrollHeight - this.scrollTop - this.clientHeight
+          if (scrollDistance <= sign) {
+            binding.value()
+          }
+        })
+      }
+    }
   },
-	methods: {
-		showTag () {
-			this.isShowTag = true
-		},
-		hideTag () {
-			this.isShowTag = false
+  async created() {
+    if (this.action === 'add') {
+      let a = this.getLabelData()
+      // let b = this.getUserList()
+      await a
+    } else {
+      await this.getLabelData()
+      await this.getDetail(this.coupon_id)
+    }
+  },
+  mounted() {
+    let wrapH =
+      $('.cjyhq-xxsz').height() +
+      $('.cjyhq-spsz').height() -
+      63 -
+      70 -
+      70 -
+      62 -
+      3
+    $('.content__search--options').height(wrapH)
+    let wrapW = $('.item__sale--wrap').width() - 130
+    $('.item__sale--wrap .el-form-item__content').width(wrapW)
+  },
+  methods: {
+    changeDate(type) {
+      if (type === 'start_time') {
+        this.formXxsz.dateRange[0] = this.formXxsz.start_time
+      } else {
+        this.formXxsz.dateRange[1] = this.formXxsz.end_time
+      }
     },
-    hideSetting () {
-      this.$emit('hide-setting')
+    showTag() {
+      this.isShowTag = true
+      let params = {
+        page_count: 10,
+        current_page: 1
+      }
+      this.getGoodsList(params).then(res => {
+        this.goodList = res
+      })
     },
-		handleSelectionChange () {}
-	}	
+    hideTag() {
+      this.isShowTag = false
+    },
+    hideSetting(v = {}) {
+      this.$emit('hide-setting', v)
+    },
+    handleSelectionChange(val) {
+      this.userPageOver = false
+      this.multipleSelection = val
+    },
+    handleAddGoods() {
+      this.hideTag()
+      this.activeGoods = _.cloneDeep(this.multipleSelection)
+    },
+
+    changeUserLabel() {
+      this.userPage = 1
+      this.checkLists = []
+      this.getUserList()
+    },
+    handleSearch() {
+      this.userPage = 1
+      this.checkLists = []
+      this.getUserList()
+    },
+
+    handleSave() {
+      if (!this.activeGoods.length) {
+        return this.$alert('活动商品不能为空！')
+      }
+      if (!this.checkList.length) {
+        return this.$alert('用户列表不能为空！')
+      }
+      this.$refs.formXxsz.validate(valid => {
+        if (valid) {
+          let params = {
+            coupon_type: this.type,
+            coupon_no: this.formXxsz.coupon_no,
+            coupon_name: this.formXxsz.coupon_name,
+            order_show_name: this.formXxsz.order_show_name,
+            trolley_show_name: this.formXxsz.trolley_show_name,
+            start_time: moment(this.formXxsz.start_time).format(
+              'YYYY-MM-DD HH:mm:ss'
+            ),
+            end_time: moment(this.formXxsz.end_time).format(
+              'YYYY-MM-DD HH:mm:ss'
+            ),
+            threshold_type: this.formXxsz.threshold_type,
+            threshold_num:
+              this.formXxsz.threshold_type === '元'
+                ? +this.formXxsz.ddMoney
+                : +this.formXxsz.ddNumber,
+            discount_type: this.formXxsz.discount_type,
+            discount_num:
+              this.formXxsz.discount_type === '金额'
+                ? +this.formXxsz.zkMoney
+                : +this.formXxsz.zkNumber,
+            coupon_num: this.formXxsz.coupon_num === '不限' ? 9999 : +this.formXxsz.coupon_limit,
+            goods_list: (this.activeGoods || []).map(item => item.goods_id),
+            label_id: +this.formYhsz.user_label_id || 2,
+            user_list: this.checkList
+          }
+          console.log('TCL: handleSave -> this.action', this.action)
+          if (this.action === 'add') {
+            this.$post('/marketing/add_coupon', params).then(res => {
+              if (res.data === true && res.message === 'ok') {
+                this.hideSetting({ state: 'success', type: this.type })
+                this.$message({
+                  message: '添加成功',
+                  type: 'success'
+                })
+              }
+            })
+          } else {
+            params.coupon_id = this.coupon_id
+            this.$post('/marketing/update_coupon', params).then(res => {
+              if (res.data === true && res.message === 'ok') {
+                this.hideSetting({ state: 'success', type: this.type })
+                this.$message({
+                  message: '更新成功',
+                  type: 'success'
+                })
+              }
+            })
+            console.log('TCL: handleSave -> params', params)
+          }
+        }
+      })
+    },
+    getLabelData() {
+      return this.$get('/user/get_label').then(res => {
+        if (res && res.length) {
+          this.options = res
+        } else {
+          this.$message({
+            type: 'info',
+            message: '暂无标签数据'
+          })
+        }
+      })
+    },
+    getDetail(coupon_id) {
+      return this.$get(`/marketing/get_coupon_detail?coupon_id=${coupon_id}`)
+        .then(res => {
+          console.log('TCL: getDetail -> res.data', res.data)
+          this.formXxsz = res.data
+          if (res.data.threshold_type === '元') {
+            this.formXxsz.ddNumber = ''
+            this.formXxsz.ddMoney = res.data.threshold_num
+          } else {
+            this.formXxsz.ddNumber = res.data.threshold_num
+            this.formXxsz.ddMoney = ''
+          }
+          if (res.data.discount_type === '折扣') {
+            this.formXxsz.zkMoney = ''
+            this.formXxsz.zkNumber = res.data.discount_num
+          } else {
+            this.formXxsz.zkMoney = res.data.discount_num
+            this.formXxsz.zkNumber = ''
+          }
+          if (res.data.coupon_num < 9999) {
+            this.formXxsz.coupon_limit = res.data.coupon_num
+            this.formXxsz.coupon_num = '张'
+          } else {
+            this.formXxsz.coupon_limit = ''
+            this.formXxsz.coupon_num = '不限'
+          }
+          // this.formXxsz.start_time = new Date(res.data.start_time)
+          this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
+          this.formYhsz.user_label_id = res.data.user_label_id
+          return {goods_list: res.data.goods_list, user_list: res.data.user_list}
+        })
+        .then(({goods_list, user_list}) => {
+          let params = { goods_id: goods_list.join(',') }
+          this.getGoodsList(params).then(res => {
+            this.activeGoods = res
+          })
+          let paramsUser = { user_id: user_list.join(',') }
+          this.getUsersList(paramsUser).then(res => {
+            this.checkLists = res
+            this.checkList = res.map(item => item.user_id)
+          })
+        })
+    },
+    // 获取标签数据
+    getLabelData() {
+      return this.$get('/user/get_label').then(res => {
+        if (res && res.length) {
+          this.options = res
+        } else {
+          this.$message({
+            type: 'info',
+            message: '暂无标签数据'
+          })
+        }
+      })
+    },
+    getGoodsList(params) {
+      return this.$get('/marketing/goods_list', { ...params }).then(res => {
+        return res.data.data_list
+      })
+    },
+    getUsersList(params) {
+      return this.$get('/marketing/user_list', { ...params }).then(res => {
+        return res.data.data_list
+      })
+    },
+    loadData () {
+      if (this.userPageOver) return
+      this.getUserList()
+    },
+    getUserList() {
+      let params = {
+        search: this.userKey,
+        page_count: 10,
+        current_page: this.userPage,
+        label_id: this.formYhsz.user_label_id
+      }
+      return this.$get('/marketing/user_list', { ...params }).then(res => {
+        this.checkLists = [...this.checkLists, ...res.data.data_list]
+        if (res.data.data_list < 10) {
+          this.userPageOver = true
+        } else {
+          this.userPage++
+        }
+        return res.data.data_list
+      })
+    }
+  }
 }
 </script>
 
@@ -286,9 +759,9 @@ export default {
   display: grid;
   grid-template-columns: 7fr 4fr;
   grid-column-gap: 20px;
-  grid-template-areas: 
-    "headerLeft headerRight"
-    "footer footer";
+  grid-template-areas:
+    'headerLeft headerRight'
+    'footer footer';
   .cjyhq-box {
     grid-area: headerLeft;
   }
@@ -340,14 +813,17 @@ export default {
     }
     .form--dateSelect {
       width: 70%;
-      display: flex;
+      display: inline-flex;
       justify-content: space-between;
     }
     .form--radio__ff {
       display: inline-block;
       margin-right: 30px;
-      .el-radio {
+      &:last-of-type {
         margin-right: unset;
+      }
+      & /deep/ .el-radio {
+        margin-right: 10px;
       }
       .el-input {
         width: 110px;
@@ -433,15 +909,17 @@ export default {
       // margin-right: 100px;
       padding: 10px 0;
     }
+    .item__sale--wrap /deep/ .el-form-item__content {
+      height: 132px;
+    }
     .item__sale {
       display: inline-flex;
       flex-direction: column;
       align-items: center;
       width: 100px;
       height: 100px;
-      margin: 0 25px;
+      margin: 0 15px;
       .item__sale--img {
-        display: inline-block;
         width: 50px;
         height: 50px;
       }
@@ -461,36 +939,39 @@ export default {
     .content-edit--total {
       margin-right: 20px;
     }
-	}
-	.tag-dialog {
-		.dialog-search {
-			display: flex;
-			align-items: center;
-		}
-		.dialog-list {
-			display: flex;
-			margin-top: 15px;
+  }
+  .tag-dialog {
+    .dialog-search {
+      display: flex;
+      align-items: center;
+    }
+    .dialog-list {
+      display: flex;
+      margin-top: 15px;
     }
     .dialog-btns {
       margin-top: 20px;
       text-align: center;
     }
-		.search-list {
-			flex: 1;
-			border: 1px solid #d5d8db;
-			border-radius: 4px;
-			padding: 1px;
-		}
-		.search-title {
-			width: 100px;
-		}
-		.search-input {
-			flex: 1;
-		}
-		.search-button {
-			padding-left: 20px;
-		}
-	}
+    .search-list {
+      flex: 1;
+      border: 1px solid #d5d8db;
+      border-radius: 4px;
+      padding: 1px;
+    }
+    .search-title {
+      width: 100px;
+    }
+    .search-input {
+      flex: 1;
+    }
+    .search-button {
+      padding-left: 20px;
+    }
+    .dialog-img {
+      width: 100px;
+    }
+  }
 }
 
 .cjyhq-box__footer {
