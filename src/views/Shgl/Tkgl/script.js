@@ -43,13 +43,31 @@ export default {
         content: '退货清单',
         timestamp: '2018-04-12 20:46',
         type: 'danger',
-        class: 'theme-color'
+        class: 'theme-color',
+        comIndex: 0
       }, {
         content: '仓库收货',
-        timestamp: '2018-04-03 20:46'
+        type: 'danger',
+        class: 'theme-color',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 1
       }, {
         content: '确认退款',
-        timestamp: '2018-04-03 20:46'
+        timestamp: '2018-04-03 20:46',
+        comIndex: 2
+      }],
+      activities2: [{
+        content: '退货清单',
+        timestamp: '2018-04-12 20:46',
+        type: 'danger',
+        class: 'theme-color',
+        comIndex: 0
+      },{
+        content: '确认退款',
+        type: 'danger',
+        class: 'theme-color',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 2
       }],
       // 弹框部分
       dialogFlag: false,

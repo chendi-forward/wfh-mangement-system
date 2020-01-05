@@ -127,14 +127,24 @@
           align='center'>
           <template>
             <div class="expend-wrap">
-              <el-timeline>
+              <el-timeline v-if="currentTab == '0'">
                 <el-timeline-item
                   v-for="(activity, index) in activities"
                   :key="index"
                   :type="activity.type">
                   {{activity.content }}
                   <span class="my-timestamp">{{activity.timestamp}}</span>
-                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(index)"></i>
+                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex)"></i>
+                </el-timeline-item>
+              </el-timeline>
+              <el-timeline v-else>
+                <el-timeline-item
+                  v-for="(activity, index) in activities2"
+                  :key="index"
+                  :type="activity.type">
+                  {{activity.content }}
+                  <span class="my-timestamp">{{activity.timestamp}}</span>
+                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex)"></i>
                 </el-timeline-item>
               </el-timeline>
             </div>
@@ -144,7 +154,7 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini">取消退款</el-button>
+        <el-button size="mini" v-show="currentTab == '0'">取消退款</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
