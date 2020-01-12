@@ -6,13 +6,95 @@ import Receiving from '../coms/receiving'
 import { refundList, refundDeliver, cancelRefund } from 'API/Shgl'
 
 export default {
-    name: 'shgl-tkgl',
-    components: {
-        'my-pagination': Pagination,
-        'dialog-Com': DialogCom,
-        'add-dialog': addRefund,
-        'refund-dialog': Refund,
-        'receiving-dialog': Receiving
+  name: 'shgl-tkgl',
+  components: {
+    'my-pagination': Pagination,
+    'dialog-Com': DialogCom,
+    'add-dialog': addRefund,
+    'refund-dialog': Refund,
+    'receiving-dialog': Receiving
+  },
+  data () {
+    return {
+      currentPage: 1,
+      tableData: [{
+        user_id: 'WFH001',
+        nickname: 'WFH001',
+        gender: 'WFH001',
+        label: '新品推广',
+        add_time: '王小虎',
+        province: '退款',
+        progress: '通过申请',
+        level: '2019-05-03 17:33:33',
+        ydh: '/',
+        balance: 1444,
+        invite_code: '23131',
+        order: 12313,
+        deal_money: 321341,
+        expend: '111',
+        status: 0
+      }],
+      status: ['已付款', '已发货', '已完成'],
+      tabs: [
+        {label: '退款中', name: '0'}, {label: '退款完成', name: '1'}
+      ],
+      currentTab: '0',
+      // 退款时间线
+      activities: [{
+        content: '退货清单',
+        timestamp: '2018-04-12 20:46',
+        type: 'danger',
+        class: 'theme-color',
+        comIndex: 0
+      }, {
+        content: '仓库收货',
+        type: 'danger',
+        class: 'theme-color',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 1
+      }, {
+        content: '确认退款',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 2
+      }],
+      activities2: [{
+        content: '退货清单',
+        timestamp: '2018-04-12 20:46',
+        type: 'danger',
+        class: 'theme-color',
+        comIndex: 0
+      },{
+        content: '确认退款',
+        type: 'danger',
+        class: 'theme-color',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 2
+      }],
+      // 弹框部分
+      dialogFlag: false,
+      currentCom: {},
+      coms: [
+        {name: '退款信息', com: 'add-dialog', data: null},
+        {name: '确认退款', com: 'refund-dialog', data: null},
+        {name: '确认收货', com: 'receiving-dialog', data: null}
+      ]
+    }
+  },
+  methods: {
+    tabChage (v) {
+      this.currentTab = v.name
+    },
+    openDialog (index) {
+      this.dialogFlag = true
+      this.currentCom = this.coms[index]
+    },
+    receivingHandle () {
+      this.dialogFlag = true
+      this.currentCom = this.coms[0]
+    },
+    refundHandle (row) {
+      this.dialogFlag = true
+      this.currentCom = this.coms[1]
     },
     data() {
         return {
@@ -166,4 +248,5 @@ export default {
     created() {
         this.getData()
     }
+  }
 }

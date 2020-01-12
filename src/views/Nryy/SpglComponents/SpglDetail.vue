@@ -41,7 +41,6 @@
             </label>
             <div class="spgl-form--input">
               <select-input
-                :preset="preset_typeEffect"
                 v-model="formSpxx.typeEffects"
               ></select-input>
             </div>
@@ -534,19 +533,27 @@
       </div>
       <div class="add-tag">
         <div class="tag--title">添加标签</div>
-        <div class="add-tag--content">
-          <input
-            class="el-input__inner"
-            type='text'
-            placeholder="输入标签..."
-            v-model="newTag"
-          />
-          <el-button
-            size="mini"
-            class="success-btn"
-            @click="saveTag"
-          >确定</el-button>
-        </div>
+        <el-form
+          :model='formTag'
+          ref='formTag'
+          class="add-tag--content"
+        >
+          <el-form-item
+            prop="newTag"
+            :rules="rules.length10"
+          >
+            <el-input
+              type="text"
+              placeholder="输入标签..."
+              v-model="formTag.newTag"
+            ></el-input>
+            <el-button
+              size="small"
+              type="success"
+              @click="saveTag"
+            >确定</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </dialog-com>
   </div>
@@ -597,17 +604,18 @@ export default {
       isShowImgPreview: false,
       isShowImgDetail: false,
       isShowTag: false,
-      preset_typeEffect: [
-        { name: '代餐', isSelect: false },
-        { name: '塑形', isSelect: false },
-        { name: '增肌', isSelect: false }
-      ],
       rules: {
         required: [{ required: true, message: '该项为必填项' }],
-        title: [{ validator: validateTitle, trigger: 'blur' }]
+        title: [{ validator: validateTitle, trigger: 'blur' }],
+        length10: [{ max: 10, message: '长度不超过10个字符', trigger: 'blur' }]
       },
       formSpxx: {
         goodsTitle: '',
+        typeEffects: [
+          { name: '代餐', isSelect: false },
+          { name: '塑形', isSelect: false },
+          { name: '增肌', isSelect: false }
+        ],
         price: '',
         v1: '',
         v2: '',
@@ -635,7 +643,9 @@ export default {
       ],
       selectTag: '',
       currentTag: [],
-      newTag: '',
+      formTag: {
+        newTag: ''
+      },
       // date
       pickerOptions: {
         disabledDate(time) {
@@ -644,31 +654,14 @@ export default {
       }
     }
   },
-  watch: {
-    preset_typeEffect: {
-      handler(v) {
-        let res = []
-        v.forEach(item => {
-          if (item.isSelect) {
-            res.push(item.name)
-          }
-        })
-        this.formSpxx.typeEffects = res
-      },
-      deep: true
-    }
-  },
   async mounted() {
     await this.getLabel()
-    console.log('==========>', this.current)
-    console.log('==========>', this.currentTag)
     if (Object.keys(this.current).length) {
       await this.$get(
         `/content/goods/goods_detail?goods_id=${this.current.id}`
       ).then(res => {
-        console.log(res)
         let data = res.data
-        this.preset_typeEffect = data.efficacy.split(',').map(item => {
+        this.formSpxx.typeEffects = data.efficacy.split(',').map(item => {
           return {
             name: item,
             isSelect: true
@@ -750,33 +743,32 @@ export default {
       )
     },
     saveTag() {
-      let currentTag = this.currentTag.map(item => item.name)
-      if (currentTag.includes(this.newTag)) {
-        this.$message({
-          type: 'error',
-          message: '标签已存在!'
-        })
-        return
-      }
-      if (this.newTag === '') {
-        this.$message({
-          type: 'error',
-          message: '标签不能为空!'
-        })
-        return
-      }
-      this.$get(
-        `/content/active/setting_label?behavior=add&label=${this.newTag}`
-      ).then(res => {
-        if (res.message === 'ok') {
-          this.$message({
-            type: 'success',
-            message: '添加成功'
+      this.$refs.formTag.validate(valid => {
+        if (valid) {
+          let currentTag = this.currentTag.map(item => item.name)
+          if (currentTag.includes(this.formTag.newTag)) {
+            this.$message({
+              type: 'error',
+              message: '标签已存在!'
+            })
+            return
+          }
+          this.$get(
+            `/content/active/setting_label?behavior=add&label=${this.formTag.newTag}`
+          ).then(res => {
+            if (res.message === 'ok') {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              })
+              this.getLabel()
+              this.$nextTick(() => {
+                this.formTag.newTag = ''
+              })
+            }
           })
-          this.getLabel()
-          this.$nextTick(() => {
-            this.newTag = ''
-          })
+        } else {
+          return false
         }
       })
     },
@@ -813,6 +805,7 @@ export default {
     },
 
     save() {
+      console.log(this.formSpxx.typeEffects);
       try {
         let valides = []
         this.$refs.spxxForm.validate(valid => {
@@ -830,6 +823,7 @@ export default {
           }
         })
         if (!valides.every(item => item)) return this.$alert('请按照规则填写！')
+        
         let params = {
           title: this.formSpxx.goodsTitle,
           price: +this.formSpxx.price,
@@ -862,7 +856,7 @@ export default {
             ? +this.recommends[1].value
             : '', // --> 购物车推荐顺序(不传默认不推荐)
           efficacy: this.formSpxx.typeEffects.length
-            ? this.formSpxx.typeEffects.join(',')
+            ? this.formSpxx.typeEffects.filter(item => item.isSelect).map(item => item.name).join(',')
             : '', // --> 功效(可以不传)
           state: this.formXssz.goodStauts, // --> 上架下架状态（1：上架，0：下架）(默认是1)
           label_id: this.formXssz.activeLabel, // --> 标签id
@@ -1159,6 +1153,13 @@ export default {
       position: relative;
       text-align: center;
       border: 1px solid;
+    }
+  }
+  .add-tag {
+    .add-tag--content {
+      .el-form-item {
+        width: 100%;
+      }
     }
   }
 }

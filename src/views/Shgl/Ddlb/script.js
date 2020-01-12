@@ -159,7 +159,11 @@ export default {
       this.getOrderList()
     },
     sureSave () {
+      if (this.tlxx.refund_money > this.tlxx.refund_money_copy) {
+        return this.$message.error('保存失败，退款金额不得大于订单总金额')
+      }
       delete this.tlxx.goods
+      delete this.tlxx.refund_money_copy
       applyRefund(this.tlxx)
       this.dialogFlag = false
     },

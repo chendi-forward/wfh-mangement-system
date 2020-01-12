@@ -1,6 +1,6 @@
 <template>
   <div class="yxmk-hdbgl">
-    <yxmk-head></yxmk-head>
+    <yxmk-head :info='info'></yxmk-head>
     <div class="yhqgl-body">
       <div class="yhqgl-body__head">
         <div class="body__head--title">活动表</div>
@@ -120,6 +120,10 @@
 				tableData: [],
         isShowSetting: false,
         active_id_data: [],
+        info: {
+          active: 0,
+          coupon: 0
+        }
 			}
 		},
 		methods: {

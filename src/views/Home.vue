@@ -66,135 +66,135 @@
 
 <script>
   import moment from 'moment'
-  let menus = [
-    {
-      name: '主页',
-      children: [
-        {
-          id: '1',
-          name: '业绩查看',
-          path: 'yjck',
-          icon: 'el-icon-setting'
-        },
-        {
-          id: '2',
-          name: '内容运营',
-          path: 'nryy',
-          icon: 'el-icon-location',
-          children: [
-            {
-              name: '商品管理',
-              path: 'nryy-spgl'
-            },
-            {
-              name: '站内广播',
-              path: 'nryy-zngb'
-            },
-            {
-              name: '发现页',
-              path: 'nryy-fxy'
-            },
-            {
-              name: '规则说明',
-              path: 'nryy-gzsm'
-            }
-          ]
-        },
-        {
-          id: '3',
-          name: '用户管理',
-          path: 'yhgl',
-          icon: 'el-icon-menu'
-        },
-        {
-          id: '4',
-          name: '权限管理',
-          path: 'qxgl',
-          icon: 'el-icon-menu'
-        },
-        {
-          id: '5',
-          name: '售后管理',
-          path: 'shgl',
-          icon: 'el-icon-menu',
-          children: [
-            {
-              name: '订单列表',
-              path: 'shgl-ddlb'
-            },
-            {
-              name: '退款管理',
-              path: 'shgl-tkgl'
-            },
-            {
-              name: '评价管理',
-              path: 'shgl-pjgl'
-            }
-          ],
-          childrenNoMenu: [ //无菜单路由
-            {
-              name: '订单详情',
-              path: 'shgl-ddxq'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: '设置',
-      children: [
-        {
-          id: '6',
-          name: '会员积分',
-          path: 'hyjf',
-          icon: 'el-icon-setting',
-          children: [
-            {
-              name: '时间设置',
-              path: 'hyjf-sjsz'
-            },
-            {
-              name: '会员返利',
-              path: 'hyjf-hyfl'
-            },
-            {
-              name: '积分设置',
-              path: 'hyjf-jfsz'
-            }
-          ]
-        },
-        {
-          id: '7',
-          name: '营销模块',
-          path: 'yxmk',
-          icon: 'el-icon-menu',
-          children: [
-            {
-              name: '活动表管理',
-              path: 'yxmk-hdbgl'
-            },
-            {
-              name: '优惠券管理',
-              path: 'yxmk-yhqgl'
-            },
-            {
-              name: '消息中心',
-              path: 'yxmk-xxzx'
-            }
-          ]
-        },
-        {
-          id: '8',
-          name: '会计模块',
-          path: 'kjmk',
-          icon: 'el-icon-menu'
-        }
-      ]
-    }
-  ]
   export default {
     name: 'App',
     data () {
+      let menus = [
+        {
+          name: '主页',
+          children: [
+            {
+              id: '1',
+              name: '业绩查看',
+              path: 'yjck',
+              icon: 'el-icon-setting'
+            },
+            {
+              id: '2',
+              name: '内容运营',
+              path: 'nryy',
+              icon: 'el-icon-location',
+              children: [
+                {
+                  name: '商品管理',
+                  path: 'nryy-spgl'
+                },
+                {
+                  name: '站内广播',
+                  path: 'nryy-zngb'
+                },
+                {
+                  name: '发现页',
+                  path: 'nryy-fxy'
+                },
+                {
+                  name: '规则说明',
+                  path: 'nryy-gzsm'
+                }
+              ]
+            },
+            {
+              id: '3',
+              name: '用户管理',
+              path: 'yhgl',
+              icon: 'el-icon-menu'
+            },
+            {
+              id: '4',
+              name: '权限管理',
+              path: 'qxgl',
+              icon: 'el-icon-menu'
+            },
+            {
+              id: '5',
+              name: '售后管理',
+              path: 'shgl',
+              icon: 'el-icon-menu',
+              children: [
+                {
+                  name: '订单列表',
+                  path: 'shgl-ddlb'
+                },
+                {
+                  name: '退款管理',
+                  path: 'shgl-tkgl'
+                },
+                {
+                  name: '评价管理',
+                  path: 'shgl-pjgl'
+                }
+              ],
+              childrenNoMenu: [ //无菜单路由
+                {
+                  name: '订单详情',
+                  path: 'shgl-ddxq'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: '设置',
+          children: [
+            {
+              id: '6',
+              name: '会员积分',
+              path: 'hyjf',
+              icon: 'el-icon-setting',
+              children: [
+                {
+                  name: '时间设置',
+                  path: 'hyjf-sjsz'
+                },
+                {
+                  name: '会员返利',
+                  path: 'hyjf-hyfl'
+                },
+                {
+                  name: '积分设置',
+                  path: 'hyjf-jfsz'
+                }
+              ]
+            },
+            {
+              id: '7',
+              name: '营销模块',
+              path: 'yxmk',
+              icon: 'el-icon-menu',
+              children: [
+                {
+                  name: '活动表管理',
+                  path: 'yxmk-hdbgl'
+                },
+                {
+                  name: '优惠券管理',
+                  path: 'yxmk-yhqgl'
+                },
+                {
+                  name: '消息中心',
+                  path: 'yxmk-xxzx'
+                }
+              ]
+            },
+            {
+              id: '8',
+              name: '会计模块',
+              path: 'kjmk',
+              icon: 'el-icon-menu'
+            }
+          ]
+        }
+      ]
       return {
         user: sessionStorage.getItem('user'),
         searchVal: '',

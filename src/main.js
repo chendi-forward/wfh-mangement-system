@@ -16,6 +16,8 @@ Vue.prototype.$get = get
 Vue.prototype.$patch = patch
 Vue.prototype.$put = put
 
+
+
 Vue.use(ElementUI)
 
 window.vm = new Vue({

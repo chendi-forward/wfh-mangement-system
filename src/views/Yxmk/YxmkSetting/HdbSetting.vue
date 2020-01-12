@@ -4,31 +4,32 @@
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">活动信息设置</div>
         <el-form :model="formXxsz" class="cjyhq-content" ref="formXxsz" name="formXxsz" label-width="130px" label-position="left">
-          <el-form-item class="content-content__item" label="活动编号：">
-            <el-input v-model="formXxsz.active_no" placeholder="输入活动编号..."></el-input>
+          <!-- <el-form-item class="content-content__item" label="活动编号：" prop="active_no" :rules='rules.length10'>
+            <el-input v-model="formXxsz.active_no" placeholder="输入活动编号..." ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
-          </el-form-item>
-          <el-form-item class="content-content__item" label="活动名称：">
+          </el-form-item> -->
+          <el-form-item class="content-content__item" label="活动名称：" prop="active_name" :rules='rules.length10'>
             <el-input v-model="formXxsz.active_name" placeholder="输入活动名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="已参加显示名称：">
+          <el-form-item class="content-content__item" label="已参加显示名称：" prop="order_show_name" :rules='rules.length10'>
             <el-input v-model="formXxsz.order_show_name" placeholder="输入已参加显示名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="下单页显示名称：">
+          <el-form-item class="content-content__item" label="下单页显示名称：" prop="trolley_show_name" :rules='rules.length5'>
             <el-input v-model="formXxsz.trolley_show_name" placeholder="输入下单页显示名称..."></el-input>
             <div class="content__item--rule">*5个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="极限销售额：">
+          <el-form-item class="content-content__item" label="极限销售额：" prop="jxsse" :rules="rules.jxsse">
             <el-input v-model="formXxsz.jxsse" placeholder="输入极限销售额..."></el-input>
             <div class="content__item--unit">（单位：元）</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="活动时间：">
+          <el-form-item class="content-content__item" label="活动时间：" prop="dateRange" :rules='rules.dateRange'>
             <div class="form--dateSelect">
               <el-date-picker
                 class="data-input"
                 v-model="effectiveDate_s"
+                @change='changeDate("start_time")'
                 type="datetime"
                 placeholder="选择时间..."
               ></el-date-picker>
@@ -38,34 +39,39 @@
               <el-date-picker
                 class="data-input"
                 v-model="effectiveDate_e"
+                @change='changeDate("end_time")'
                 type="datetime"
                 placeholder="选择时间..."
               ></el-date-picker>
             </div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="订单条件：">
-            <div class="form--radio__ff">
-              <el-radio v-model="formXxsz.ddType" label="1">金额达到</el-radio>
-              <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddMoney"></el-input>
-              <span>元</span>
-            </div>
-            <div class="form--radio__ff">
-              <el-radio v-model="formXxsz.ddType" label="2">数量达到</el-radio>
-              <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddNumber"></el-input>
-              <span>罐</span>
-            </div>
-          </el-form-item>
-          <el-form-item class="content-content__item" label="折扣设置：">
+          <el-form-item class="content-content__item" label="订单条件：" prop="ddType" :rules='rules.threshold_type'>
+            <el-radio-group v-model="formXxsz.ddType">
               <div class="form--radio__ff">
-                <el-radio v-model="formXxsz.zkType" label="1">金额减扣</el-radio>
+                <el-radio label="元">金额达到</el-radio>
+                <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddMoney"></el-input>
+                <span>元</span>
+              </div>
+              <div class="form--radio__ff">
+                <el-radio label="罐">数量达到</el-radio>
+                <el-input placeholder="输入数字..." type="number" v-model="formXxsz.ddNumber"></el-input>
+                <span>罐</span>
+              </div>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item class="content-content__item" label="折扣设置：" prop="zkType" :rules='rules.discount_type'>
+            <el-radio-group v-model="formXxsz.zkType">
+              <div class="form--radio__ff">
+                <el-radio label="金额">金额减扣</el-radio>
                 <el-input placeholder="输入数字..." type="number" v-model="formXxsz.zkMoney"></el-input>
                 <span>元</span>
               </div>
               <div class="form--radio__ff">
-                <el-radio v-model="formXxsz.zkType" label="2">比例减扣</el-radio>
+                <el-radio label="折扣">比例减扣</el-radio>
                 <el-input placeholder="输入数字..." type="number" v-model="formXxsz.zkNumber"></el-input>
                 <span>%</span>
-            </div>
+              </div>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </div>
@@ -82,15 +88,6 @@
             </div>
           </el-form-item>
         </el-form>
-        <!-- <div class="content-content__item">
-          <div class="content__item--tag">参与优惠商品：</div>
-          <div class="content__item--input content__item--input--img">
-            <div class="item__sale" v-for="item in 7">
-              <img class="item__sale--img" src />
-              <div class="item__sale--text text-overflow-mult">dafasefasdfasefadasdsdasfsad</div>
-            </div>
-          </div>
-        </div> -->
         <div class="content-edit">
           <span class="content-edit--total">共 {{goodsData.length}} 件</span>
           <el-button class="saveBtn" size="small" @click="showTag">{{updateFlag ? '更改' : '添加'}}</el-button>
@@ -196,6 +193,9 @@ import moment from 'moment'
 import { addActive, getActiveList, getActiveDetail, updateActive, getLableData, getGoodsList, getUserList } from 'API/Yxmk'
 import CONFIG from '@/config/baseURL'
 
+const regPositvie = /^(1\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$/
+const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
+
 export default {
 	name: "yxmk-cjyhq",
 	components: {
@@ -203,6 +203,93 @@ export default {
   },
   props: ['activeId'],
   data () {
+    let length10 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项不能为空'))
+      } else if (value.length > 10) {
+        callback(new Error('10个字符以内'))
+      } else {
+        callback()
+      }
+    }
+    let length5 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项不能为空'))
+      } else if (value.length > 5) {
+        callback(new Error('5个字符以内'))
+      } else {
+        callback()
+      }
+    }
+    let dateRange = (rule, value, callback) => {
+      if (!(value && value.length && value.length > 1)) {
+        callback(new Error('活动开始时间和结束时间不能为空'))
+      } else {
+        callback()
+      }
+    }
+    let required = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项为必填项'))
+      } else {
+        callback()
+      }
+    }
+    let jxsse = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项为必填项'))
+      } else if (!regPositvie.test(value)) {
+        callback(new Error('请输入正数'))
+      } else {
+        callback()
+      }
+    }
+    let threshold_type = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择订单条件'))
+      } else if (value === '元') {
+        if (!this.formXxsz.ddMoney) {
+          callback(new Error('订单金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddMoney)) {
+          callback(new Error('请输入非负数'))
+        } else {
+          callback()
+        }
+      } else if (value === '罐') {
+        if (!this.formXxsz.ddNumber) {
+          callback(new Error('订单数量不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddNumber)) {
+          callback(new Error('请输入非负数'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
+    let discount_type = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择折扣设置'))
+      } else if (value === '金额') {
+        if (!this.formXxsz.zkMoney) {
+          callback(new Error('折扣金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.zkMoney)) {
+          callback(new Error('请输入非负数'))
+        } else {
+          callback()
+        }
+      } else if (value === '折扣') {
+        if (!this.formXxsz.zkNumber) {
+          callback(new Error('折扣比例不能为空'))
+        } else if (!regPositvie100.test(this.formXxsz.zkNumber)) {
+          callback(new Error('请输入非负数'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
     return {
       updateFlag: false,
       userKey: '',
@@ -211,20 +298,33 @@ export default {
       goodsPage: 1, // 商品页数
       total: 10, // 总件数
       formXxsz: {
-        active_no: "",
+        // active_no: "",
         active_name: "",
         order_show_name: "",
         trolley_show_name: '',
         jxsse: "",
         ffType: "1", // 发放类型
         ffNumber: "", // 发放数量
-        ddType: "1", // 订单类型
+        ddType: "元", // 订单类型
         ddMoney: "", // 订单金额
         ddNumber: "", // 订单数量
         zkType: '1', // 折扣设置
         zkMoney: '', // 减扣金额
-        zkNumber: '' // 比例
-			},
+        zkNumber: '', // 比例
+        dateRange: []
+      },
+      rules: {
+        number: [{ type: 'number', required: true, message: '必须是数字' }],
+        required: [
+          { validator: required, message: '该项不能不空', trigger: 'blur' }
+        ],
+        length10: [{ validator: length10, trigger: 'blur' }],
+        length5: [{ validator: length5, trigger: 'blur' }],
+        dateRange: [{ validator: dateRange, trigger: 'blur' }],
+        threshold_type: [{ validator: threshold_type, trigger: 'blur' }],
+        jxsse: [{ validator: jxsse, trigger: 'blur' }],
+        discount_type: [{ validator: discount_type, trigger: 'blur' }]
+      },
 			isShowTag: false,
       effectiveDate_s: "",
       effectiveDate_e: "",
@@ -272,6 +372,13 @@ export default {
     this.getUserData()
   },
 	methods: {
+    changeDate(type) {
+      if (type === 'start_time') {
+        this.formXxsz.dateRange[0] = this.effectiveDate_s
+      } else {
+        this.formXxsz.dateRange[1] = this.effectiveDate_e
+      }
+    },
     updateActivity () {
       // this.vaildFormData()
       let goods_id = []
@@ -280,7 +387,7 @@ export default {
       })
       let obj = {
         active_id: this.activeId,
-        active_no: this.formXxsz.active_no,          // -- 活动编号
+        // active_no: this.formXxsz.active_no,          // -- 活动编号
         active_name: this.formXxsz.active_name,     //  -- 活动标题
         order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
         trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
@@ -295,9 +402,7 @@ export default {
         label_id: 1,      //   -- 用户标签的id
         user_list: this.checkList // -- user_id
       }
-      console.log(obj, '=====')
       updateActive(obj).then(res => {
-        console.log(res, '=====dwadaw====')
         this.$emit('hide-setting')
       })
     },
@@ -357,7 +462,7 @@ export default {
         getActiveDetail(obj).then(res => {
           console.log(res, '===edit===')
           let result = res.data;
-          this.formXxsz.active_no = result.active_no;
+          // this.formXxsz.active_no = result.active_no;
           this.formXxsz.active_name = result.active_name;
           this.formXxsz.order_show_name = result.order_show_name;
           this.formXxsz.trolley_show_name = result.trolley_show_name;
@@ -449,30 +554,39 @@ export default {
     },
     saveActivity () {
       // this.vaildFormData()
-      let goods_id = []
-      this.goodsData.forEach(item => {
-        goods_id.push(item.goods_id)
-      })
-      let obj = {
-        active_no: this.formXxsz.active_no,          // -- 活动编号
-        active_name: this.formXxsz.active_name,     //  -- 活动标题
-        order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
-        trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
-        max_money: Number(this.formXxsz.jxsse), // 极限销售额
-        start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
-        end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'),    // -- 结束时间
-        threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐',          //  -- 满减的单位（元/罐）
-        threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney): Number(this.formXxsz.ddNumber),             // -- 满减的阈值
-        discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣',          // -- 折扣的方式（折扣/金额）
-        discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber),               // -- 折扣的金额或百分比
-        goods_list: goods_id,  // -- 商品id 的列表
-        label_id: 1,      //   -- 用户标签的id
-        user_list: this.checkList // -- user_id
+      if (!this.goodsData.length) {
+        return this.$alert('活动商品不能为空！')
       }
-      console.log(obj, '=====')
-      addActive(obj).then(res => {
-        console.log(res, '=====dwadaw====')
-        this.$emit('hide-setting')
+      if (!this.checkList.length) {
+        return this.$alert('用户列表不能为空！')
+      }
+      this.$refs.formXxsz.validate(valid => {
+        if (valid) {
+          let goods_id = []
+          this.goodsData.forEach(item => {
+            goods_id.push(item.goods_id)
+          })
+          let obj = {
+            // active_no: this.formXxsz.active_no,          // -- 活动编号
+            active_name: this.formXxsz.active_name,     //  -- 活动标题
+            order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
+            trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
+            max_money: Number(this.formXxsz.jxsse), // 极限销售额
+            start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
+            end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'),    // -- 结束时间
+            threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐',          //  -- 满减的单位（元/罐）
+            threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney): Number(this.formXxsz.ddNumber),             // -- 满减的阈值
+            discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣',          // -- 折扣的方式（折扣/金额）
+            discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber),               // -- 折扣的金额或百分比
+            goods_list: goods_id,  // -- 商品id 的列表
+            label_id: 1,      //   -- 用户标签的id
+            user_list: this.checkList // -- user_id
+          }
+          addActive(obj)
+          .then(res => {
+            this.$emit('hide-setting')
+          })
+        }
       })
     },
     sureAddGoods () {
@@ -624,7 +738,7 @@ export default {
       display: inline-block;
       margin-right: 30px;
       .el-radio {
-        margin-right: unset;
+        margin-right: 5px;
       }
       .el-input {
         width: 110px;
