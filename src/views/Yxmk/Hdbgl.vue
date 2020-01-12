@@ -150,6 +150,7 @@
       },
       hideSetting () {
         this.isShowSetting = false
+        this.getActiveData()
       },
 			handleSizeChange (n) {
         this.pageSize = n

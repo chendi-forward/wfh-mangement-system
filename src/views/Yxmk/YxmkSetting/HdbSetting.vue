@@ -380,7 +380,6 @@ export default {
       }
     },
     updateActivity () {
-      // this.vaildFormData()
       let goods_id = []
       this.goodsData.forEach(item => {
         goods_id.push(item.goods_id)
@@ -522,38 +521,7 @@ export default {
       this.userPage++
       this.getUserData()
     },
-    vaildFormData () {
-      if (this.formXxsz.number || this.formXxsz.number.length < 1 || this.formXxsz.number.length > 10) {
-        this.$message({
-          message: '请正确填写活动编号',
-          type: 'error'
-        });
-        return
-      }
-      if (this.formXxsz.yhqName || this.formXxsz.yhqName.length < 1 || this.formXxsz.yhqName.length > 10) {
-        this.$message({
-          message: '请正确填写活动名称',
-          type: 'error'
-        });
-        return
-      }
-      if (this.formXxsz.ycjName || this.formXxsz.ycjName.length < 1 || this.formXxsz.ycjName.length > 10) {
-        this.$message({
-          message: '请正确填写已参加显示名称',
-          type: 'error'
-        });
-        return
-      }
-      if (this.formXxsz.jxsse || this.formXxsz.jxsse.length < 1 || this.formXxsz.jxsse.length > 5) {
-        this.$message({
-          message: '请正确填写下单页名称',
-          type: 'error'
-        });
-        return
-      }
-    },
     saveActivity () {
-      // this.vaildFormData()
       if (!this.goodsData.length) {
         return this.$alert('活动商品不能为空！')
       }
