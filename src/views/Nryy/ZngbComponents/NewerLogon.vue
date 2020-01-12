@@ -65,33 +65,14 @@
           label="注册时间"
           align='center'
           prop="date"
-          width="150">
+         >
         </el-table-column>
         <el-table-column
           align='center'
-          width="250"
           prop="nickname"
           label="昵称">
         </el-table-column>
-        <el-table-column
-          align='center'
-          label="状态">
-          <template slot-scope="scope">
-            <el-radio-group v-model="scope.row.status">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
-            </el-radio-group>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          align='center'
-          width="160">
-           <template slot-scope="scope">
-            <el-button size="small" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
-            <el-button size="small" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
-          </template>
-        </el-table-column>
+
       </el-table>
     </div>
     <div class="ssxd-footer">

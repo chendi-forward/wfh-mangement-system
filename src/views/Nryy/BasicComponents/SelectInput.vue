@@ -7,8 +7,7 @@
       @change="change"
       :key="index"
       :label="item.name"
-    >
-    </el-checkbox>
+    />
     <input
       ref="input"
       placeholder="输入关健字并回车"
@@ -16,7 +15,7 @@
       type="text"
       @keyup.enter='addTypeEffect'
       v-model="typeEffectAdd"
-    >
+    />
   </div>
 </template>
 
@@ -24,7 +23,6 @@
 export default {
   name: 'select-input-component',
   props: {
-    preset: Array,
     name: String,
     value: {
       type: Array,
@@ -34,54 +32,43 @@ export default {
   data() {
     return {
       typeEffectAdd: '',
-      typeEffectList: []
-    }
-  },
-  watch: {
-    preset: {
-      handler(v) {
-        this.typeEffectList = this.value.length
-          ? this.value.map(item => {
-              return {
-                name: item,
-                isSelect: true
-              }
-            })
-          : v
-      }
+      // typeEffectList: []
     }
   },
   created() {
-    this.typeEffectList = this.value.length
-      ? this.value.map(item => {
-          return {
-            name: item,
-            isSelect: true
-          }
-        })
-      : this.preset
+    // this.typeEffectList = this.value.length
+    //   ? this.value.map(item => {
+    //       return {
+    //         name: item,
+    //         isSelect: true
+    //       }
+    //     })
+    //   : []
+  },
+  computed: {
+    typeEffectList: {
+      get() {
+        return this.value
+      },
+      set(v) {
+        console.log(v);
+      }
+    }
   },
   methods: {
     addTypeEffect() {
-      if (
-        this.typeEffectList
-          .map(item => item.name)
-          .includes(this.typeEffectAdd) ||
-        !this.typeEffectAdd
-      ) {
+      if (this.typeEffectList.map(item => item.name).includes(this.typeEffectAdd) || !this.typeEffectAdd) {
         return
       }
       this.typeEffectList.push({ name: this.typeEffectAdd, isSelect: true })
+      this.change()
       this.$nextTick(() => {
         this.typeEffectAdd = ''
       })
-      this.change()
     },
     change() {
-      let typeEffects = this.typeEffectList
-        .map(item => item.isSelect && item.name)
-        .filter(item => item)
-      this.$emit('input', typeEffects)
+      let typeEffectList = this.typeEffectList.filter(item => item.name)
+      this.$emit('input', typeEffectList)
     }
   }
 }

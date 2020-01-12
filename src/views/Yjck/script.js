@@ -2,6 +2,7 @@ import GoodsList from './BasicComponents/GoodsList'
 import NumberStatistics from './BasicComponents/NumberStatistics'
 import TotalNumber from './BasicComponents/TotalNumber'
 import PieChart from './BasicComponents/PieChart'
+import ActivePeople from './BasicComponents/ActivePeople'
 import echarts from 'echarts'
 import { get } from 'http'
 import moment from 'moment'
@@ -15,7 +16,8 @@ export default {
     'number-statistics': NumberStatistics,
     'total-number': TotalNumber,
     'pie-chart': PieChart,
-    MapLegend
+    MapLegend,
+    ActivePeople
   },
   mixins: [methods],
   data() {
@@ -253,6 +255,9 @@ export default {
           name: '南海诸岛',
           value: 0
         }
+      ],
+      activePeople: [
+        {name: '活跃人数', number: 3000}
       ]
     }
   },

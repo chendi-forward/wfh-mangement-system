@@ -108,8 +108,7 @@
             <my-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :total="total"
-            >
+              :total="total">
             </my-pagination>
           </div>
         </div>
@@ -381,5 +380,19 @@ export default {
 <style lang='less'>
 .el-tabs--border-card {
   box-shadow: none;
+}
+.yhqgl-body__content {
+  .el-table__row {
+    button {
+      border: 0px solid #000;
+      color: #FF4B57;
+      font-size: 18px;
+    }
+  }
+  .el-table__row:hover {
+    button {
+      background: #f1f1f1;
+    }
+  }
 }
 </style>

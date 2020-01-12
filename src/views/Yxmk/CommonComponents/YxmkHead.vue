@@ -2,7 +2,7 @@
   <div class="yxmk-head">
     <div class="yxmk-head__item">
       <span class="head__item--text">优惠券返利金额（元）</span>
-      <span class="head__item--num">{{info.coupon}}</span>
+      <span class="head__item--num">{{info.active}}</span>
     </div>
     <div class="yxmk-head__item">
       <span class="head__item--text">活动返利金额（元）</span>

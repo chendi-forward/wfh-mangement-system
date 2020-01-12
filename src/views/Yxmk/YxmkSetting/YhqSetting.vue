@@ -11,7 +11,7 @@
           :model="formXxsz"
           ref="formXxsz"
         >
-          <el-form-item
+          <!-- <el-form-item
             class="content-content__item"
             label="优惠券编号："
             prop="coupon_no"
@@ -22,7 +22,7 @@
               placeholder="输入优惠券编号..."
             ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             class="content-content__item"
             label="优惠券名称："
@@ -261,13 +261,6 @@
           </el-checkbox-group>
           <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="userPageOver">没有更多了~~</div>
         </div>
-        <div class="content__group--btn">
-          <el-button
-            type="success"
-            size="small"
-          >编辑</el-button>
-          <el-button size="small">取消</el-button>
-        </div>
       </div>
     </div>
     <div class="cjyhq-box__footer">
@@ -374,6 +367,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import InfiniteLoading from 'vue-infinite-loading'
 
+const regPositvie = /^(0\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$/
+const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
+
 export default {
   name: 'yxmk-cjyhq',
   components: {
@@ -423,8 +419,10 @@ export default {
         callback(new Error('请选择发放数量'))
       } else if (value === '不限') {
         callback()
+      } else if (!regPositvie.test(this.formXxsz.coupon_num)) {
+        callback(new Error('请输入非负数'))
       } else {
-        if (!this.formXxsz.coupon_limit) {
+        if (!this.formXxsz.coupon_num) {
           callback(new Error('发放数量不能为空'))
         } else {
           callback()
@@ -437,12 +435,16 @@ export default {
       } else if (value === '元') {
         if (!this.formXxsz.ddMoney) {
           callback(new Error('订单金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddMoney)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
       } else if (value === '罐') {
         if (!this.formXxsz.ddNumber) {
           callback(new Error('订单数量不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddNumber)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
@@ -456,12 +458,16 @@ export default {
       } else if (value === '金额') {
         if (!this.formXxsz.zkMoney) {
           callback(new Error('折扣金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.zkMoney)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
       } else if (value === '折扣') {
         if (!this.formXxsz.zkNumber) {
           callback(new Error('折扣比例不能为空'))
+        } else if (!regPositvie100.test(this.formXxsz.zkNumber)) {
+          callback(new Error('输入范围1-100'))
         } else {
           callback()
         }
@@ -472,7 +478,7 @@ export default {
     return {
       base_url: BASE_URL,
       formXxsz: {
-        coupon_no: '',
+        // coupon_no: '',
         coupon_name: '',
         trolley_show_name: '',
         order_show_name: '',
@@ -622,7 +628,7 @@ export default {
         if (valid) {
           let params = {
             coupon_type: this.type,
-            coupon_no: this.formXxsz.coupon_no,
+            // coupon_no: this.formXxsz.coupon_no,
             coupon_name: this.formXxsz.coupon_name,
             order_show_name: this.formXxsz.order_show_name,
             trolley_show_name: this.formXxsz.trolley_show_name,
@@ -665,6 +671,11 @@ export default {
                 this.$message({
                   message: '更新成功',
                   type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: res.message,
+                  type: 'error'
                 })
               }
             })
@@ -892,6 +903,7 @@ export default {
   }
   .yhsz-search {
     background-color: #fff;
+    height: calc(100% - 154px);
     .content__item--tag {
       width: 110px;
     }

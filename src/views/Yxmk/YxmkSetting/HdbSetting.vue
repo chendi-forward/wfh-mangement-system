@@ -4,10 +4,10 @@
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">活动信息设置</div>
         <el-form :model="formXxsz" class="cjyhq-content" ref="formXxsz" name="formXxsz" label-width="130px" label-position="left">
-          <el-form-item class="content-content__item" label="活动编号：" prop="active_no" :rules='rules.length10'>
+          <!-- <el-form-item class="content-content__item" label="活动编号：" prop="active_no" :rules='rules.length10'>
             <el-input v-model="formXxsz.active_no" placeholder="输入活动编号..." ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item class="content-content__item" label="活动名称：" prop="active_name" :rules='rules.length10'>
             <el-input v-model="formXxsz.active_name" placeholder="输入活动名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
@@ -20,7 +20,7 @@
             <el-input v-model="formXxsz.trolley_show_name" placeholder="输入下单页显示名称..."></el-input>
             <div class="content__item--rule">*5个字符以内</div>
           </el-form-item>
-          <el-form-item class="content-content__item" label="极限销售额：" prop="jxsse">
+          <el-form-item class="content-content__item" label="极限销售额：" prop="jxsse" :rules="rules.jxsse">
             <el-input v-model="formXxsz.jxsse" placeholder="输入极限销售额..."></el-input>
             <div class="content__item--unit">（单位：元）</div>
           </el-form-item>
@@ -193,6 +193,9 @@ import moment from 'moment'
 import { addActive, getActiveList, getActiveDetail, updateActive, getLableData, getGoodsList, getUserList } from 'API/Yxmk'
 import CONFIG from '@/config/baseURL'
 
+const regPositvie = /^(1\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$/
+const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
+
 export default {
 	name: "yxmk-cjyhq",
 	components: {
@@ -232,18 +235,31 @@ export default {
         callback()
       }
     }
+    let jxsse = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('该项为必填项'))
+      } else if (!regPositvie.test(value)) {
+        callback(new Error('请输入正数'))
+      } else {
+        callback()
+      }
+    }
     let threshold_type = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请选择订单条件'))
       } else if (value === '元') {
         if (!this.formXxsz.ddMoney) {
           callback(new Error('订单金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddMoney)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
       } else if (value === '罐') {
         if (!this.formXxsz.ddNumber) {
           callback(new Error('订单数量不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.ddNumber)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
@@ -257,12 +273,16 @@ export default {
       } else if (value === '金额') {
         if (!this.formXxsz.zkMoney) {
           callback(new Error('折扣金额不能为空'))
+        } else if (!regPositvie.test(this.formXxsz.zkMoney)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
       } else if (value === '折扣') {
         if (!this.formXxsz.zkNumber) {
           callback(new Error('折扣比例不能为空'))
+        } else if (!regPositvie100.test(this.formXxsz.zkNumber)) {
+          callback(new Error('请输入非负数'))
         } else {
           callback()
         }
@@ -278,7 +298,7 @@ export default {
       goodsPage: 1, // 商品页数
       total: 10, // 总件数
       formXxsz: {
-        active_no: "",
+        // active_no: "",
         active_name: "",
         order_show_name: "",
         trolley_show_name: '',
@@ -302,6 +322,7 @@ export default {
         length5: [{ validator: length5, trigger: 'blur' }],
         dateRange: [{ validator: dateRange, trigger: 'blur' }],
         threshold_type: [{ validator: threshold_type, trigger: 'blur' }],
+        jxsse: [{ validator: jxsse, trigger: 'blur' }],
         discount_type: [{ validator: discount_type, trigger: 'blur' }]
       },
 			isShowTag: false,
@@ -366,7 +387,7 @@ export default {
       })
       let obj = {
         active_id: this.activeId,
-        active_no: this.formXxsz.active_no,          // -- 活动编号
+        // active_no: this.formXxsz.active_no,          // -- 活动编号
         active_name: this.formXxsz.active_name,     //  -- 活动标题
         order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
         trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
@@ -381,9 +402,7 @@ export default {
         label_id: 1,      //   -- 用户标签的id
         user_list: this.checkList // -- user_id
       }
-      console.log(obj, '=====')
       updateActive(obj).then(res => {
-        console.log(res, '=====dwadaw====')
         this.$emit('hide-setting')
       })
     },
@@ -443,7 +462,7 @@ export default {
         getActiveDetail(obj).then(res => {
           console.log(res, '===edit===')
           let result = res.data;
-          this.formXxsz.active_no = result.active_no;
+          // this.formXxsz.active_no = result.active_no;
           this.formXxsz.active_name = result.active_name;
           this.formXxsz.order_show_name = result.order_show_name;
           this.formXxsz.trolley_show_name = result.trolley_show_name;
@@ -548,7 +567,7 @@ export default {
             goods_id.push(item.goods_id)
           })
           let obj = {
-            active_no: this.formXxsz.active_no,          // -- 活动编号
+            // active_no: this.formXxsz.active_no,          // -- 活动编号
             active_name: this.formXxsz.active_name,     //  -- 活动标题
             order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
             trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
@@ -563,9 +582,8 @@ export default {
             label_id: 1,      //   -- 用户标签的id
             user_list: this.checkList // -- user_id
           }
-          console.log(obj, '=====')
-          addActive(obj).then(res => {
-            console.log(res, '=====dwadaw====')
+          addActive(obj)
+          .then(res => {
             this.$emit('hide-setting')
           })
         }
@@ -720,7 +738,7 @@ export default {
       display: inline-block;
       margin-right: 30px;
       .el-radio {
-        margin-right: unset;
+        margin-right: 5px;
       }
       .el-input {
         width: 110px;

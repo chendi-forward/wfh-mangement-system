@@ -97,10 +97,7 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="活跃人数" name="hyrs">
-              <div class="footer--list">
-                <total-number class="footer--list__left footer--list__inner" :item-list='userInfo'></total-number>
-                <total-number class="footer--list__left footer--list__inner" :item-list='vipClass'></total-number>
-              </div>
+              <active-people class="footer--list__left footer--list__inner" :item-list='activePeople'></active-people>
             </el-tab-pane>
           </el-tabs>
         </div>
