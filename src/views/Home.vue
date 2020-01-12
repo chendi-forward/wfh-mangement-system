@@ -212,6 +212,9 @@
       '$route' () {
         this.initBreadcrumbs()
         this.menuChange()
+      },
+      user () {
+        this.menuChange()
       }
     },
     methods: {
@@ -242,9 +245,20 @@
         })
       },
       logout () {
-        localStorage.clear()
-        sessionStorage.clear()
-        this.$router.push({path: '/login'})
+         this.$confirm('确定退出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          localStorage.clear()
+          sessionStorage.clear()
+          this.$router.push({path: '/login'})
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });          
+        });
       },
       // 菜单
       menuChange () {
@@ -263,6 +277,9 @@
     },
     created () {
       this.initBreadcrumbs()
+      setTimeout(() => {
+        this.menuChange()
+      })
     },
     mounted () {
       setTimeout(() => {

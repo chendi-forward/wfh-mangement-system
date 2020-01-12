@@ -142,12 +142,21 @@ export default {
         },
         addUser() {
             this.dialogFlag = true
-            setTimeout(() => {
-                this.reset()
-            })
+            this.addtitle = '添加用户'
+            this.reset()
         },
         reset() {
-            this.$refs['form'].resetFields()
+            // eslint-disable-next-line no-undef
+            setTimeout(() => {
+                this.$refs['form'].resetFields()
+                this.form = {
+                    name: '',
+                    account: '',
+                    password: '',
+                    role: []
+                }
+                console.log(this.form, '=====')
+            })
         },
         sureSave() {
             this.$refs['form'].validate((valid) => {
