@@ -416,7 +416,6 @@ export default {
         current_page: 1
       }
       getUserList(obj).then(res => {
-        console.log(res, '=====user====')
         let result = res.data.data_list
         result.forEach((item) => {
           item.flag = false
