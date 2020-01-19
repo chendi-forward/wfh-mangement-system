@@ -50,7 +50,7 @@
           <template slot-scope="scope">
             <div class="con-box">
               <div class="con-img">
-                <img :src="scope.row.img" alt="">
+                <img :src="scope.row.avatar" alt="">
               </div>
             </div>
         </template>
@@ -100,13 +100,13 @@
           align='center'
           width="100">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop='invite_code'
           label="推荐码"
           :show-overflow-tooltip='true'
           align='center'
           min-width="130">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop='order'
           label="订单数"
