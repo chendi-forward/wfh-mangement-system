@@ -544,6 +544,7 @@
           >
             <el-input
               type="text"
+              size="small"
               placeholder="输入标签..."
               v-model="formTag.newTag"
             ></el-input>
@@ -1159,6 +1160,12 @@ export default {
     .add-tag--content {
       .el-form-item {
         width: 100%;
+      }
+      .el-form-item__content {
+        display: block;
+      }
+      .el-input {
+        width: calc(100% - 60px);
       }
     }
   }

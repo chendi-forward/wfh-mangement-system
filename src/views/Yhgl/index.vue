@@ -151,10 +151,11 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button class="delete" :disabled="btnFlag" @click='changeUserBach("4")'>删除</el-button>
-      <my-pagination @sizeChange='handleSizeChange' @currentChange='handleCurrentChange' :total="total"></my-pagination>
+      <my-pagination @size-change='handleSizeChange' @current-change='handleCurrentChange' :total="total"></my-pagination>
     </div>
-    <dialog-Com v-model='dialogFlag' :title='title' @sure-save='sureSave' @cancle-save='cancleSave'>
+
+    <dialog-Com v-model='dialogFlag' :title='title' :is-show-footer='false' @sure-save='sureSave' @cancle-save='cancleSave'>
+      <!-- 编辑用户 -->
       <div class="form-box" v-if="editOrSet == 'edit'">
         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
           <el-form-item label="添加标签:">
@@ -207,6 +208,8 @@
           </el-form-item>
         </el-form>
       </div>
+
+      <!-- 添加新标签 -->
       <div class="tags-box" v-if="editOrSet == 'set'">
         <div class="tag-box">
           <p class="header-title">当前标签</p>
@@ -220,12 +223,30 @@
             </div>
           </div>
         </div>
-        <div class="add-tag-box">
+        <div class="add-tag">
           <p class="header-title">添加标签</p>
-          <el-input
-            placeholder="请输入关键字..."
-            v-model="newlabel">
-          </el-input>
+          <el-form
+            :model='formTag'
+            ref='formTag'
+            class="add-tag--content"
+          >
+            <el-form-item
+              prop="newTag"
+              :rules="rules.length10"
+            >
+              <el-input
+                type="text"
+                size="small"
+                placeholder="输入标签..."
+                v-model="formTag.newTag"
+              ></el-input>
+              <el-button
+                size="small"
+                type="success"
+                @click="addLabel"
+              >确定</el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </dialog-Com>
@@ -233,4 +254,16 @@
 </template>
 <script src='./script.js'></script>
 <style src="./style.less" lang="less">
+</style>
+<style lang="less">
+.add-tag {
+    .add-tag--content {
+      .el-form-item {
+        width: 100%;
+      }
+      .el-input {
+        width: calc(100% - 60px);
+      }
+    }
+  }
 </style>
