@@ -1,4 +1,3 @@
-import befautify from 'ASSETS/image/timg.jpg'
 import DialogCom from '../../components/DialogCom'
 import Pagination from '../../components/Pagination'
 import baseUrl from '../../config/baseURL'
@@ -57,20 +56,7 @@ export default {
             }],
             moveKey: null, // 移动到
             // ..
-            tableData: [{
-                img: befautify,
-                user_id: 'WFH001',
-                nickname: '王小虎',
-                gender: '男',
-                label: '新品推广',
-                add_time: '2019-05-03 17:33:33',
-                province: '广东',
-                level: 'v1',
-                balance: 1444,
-                invite_code: '23131',
-                order: 12313,
-                deal_money: 321341
-            }],
+            tableData: [],
             total: 0,
             pageSize: 10,
             currentPage4: 1,
@@ -78,14 +64,78 @@ export default {
             idNameNum: '', // 搜索关键字
             selectKey: '', // 选择关键字
             newlabel: null, // 设置新的关键字
-            options: []
+            options: [],
+
+            // 设置标签的弹窗
+            formTag: {
+                newTag: ''
+            },
+            rules: {
+                length10: [
+                    { required: true, message: '该项为必填项', trigger: 'blur' },
+                    { max: 10, message: '长度范围为10个字符', trigger: 'blur' }
+                ]
+            }
         }
     },
     methods: {
+        inputChange() {},
         // 获取邀请码
         getInviteCode(id) {
             this.$get('/user/create_invite_code?user_id=' + id).then((res) => {
                 console.log(res, '==========')
+            })
+        },
+        // 添加标签
+        addLabel() {
+            this.refs.formTag.validate(valid => {
+                if (valid) {
+                    this.$get('/user/label_setting', {
+                        behavior: 'add',
+                        label: this.formTag.newTag
+                    }).then((res) => {
+                        if (res) {
+                            this.getLabelData()
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功!'
+                            })
+                            this.$nextTick(() => {
+                                this.formTag.newTag = ''
+                            })
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '添加失败!'
+                            })
+                        }
+                    })
+                } else {
+                    return false
+                }
+            })
+        },
+        // 删除标签
+        delBabel(item) {
+            this.$confirm(`此操作将删除“${item.label}”标签, 是否继续?`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$get('/user/label_setting?behavior=del&id=' + item.value).then((res) => {
+                    if (res) {
+                        this.getLabelData()
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        })
+                    }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
             })
         },
         // 添加标签
@@ -106,34 +156,6 @@ export default {
                         message: '添加失败!'
                     })
                 }
-            })
-        },
-        // 删除标签
-        delBabel(item) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.$get('/user/label_setting?behavior=del&id=' + item.value).then((res) => {
-                    if (res) {
-                        this.getLabelData()
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        })
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: '删除失败!'
-                        })
-                    }
-                })
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                })
             })
         },
         // 获取标签数据
@@ -200,7 +222,6 @@ export default {
             this.editOrSet = 'edit'
             this.title = '编辑'
             this.formLabelAlign.update = row.invite_code
-            console.log(row, '========')
         },
         setTags() {
             this.dialogFlag = true
@@ -209,32 +230,30 @@ export default {
         },
         // 移动用户到---企业or普通
         moveUser(val) {
-            console.log(val, '===========')
             this.changeUserBach(val)
         },
         // 批量修改用户的属性
         changeUserBach(val) {
             let url = `/user/change_user_bach?user_id=${this.user_id}&behavior=${val}`
             this.$get(url).then((res) => {
-                console.log(res, '000000000')
-                if (res) {
+                if (res.data && res.message === 'ok') {
                     this.$message({
                         type: 'success',
                         message: '移入成功！！'
                     })
+                    this.getUserData()
+                    this.btnFlag = true
                 } else {
                     this.$message({
                         type: 'error',
                         message: '移入失败！！'
                     })
+                    this.btnFlag = true
                 }
-                this.getUserData()
             })
         },
         handleSelectionChange(val) {
-            // eslint-disable-next-line no-undef
-            console.log(val, '=============')
-            if (val.length >= 1) {
+            if (val.length) {
                 this.btnFlag = false
                 var arr = []
                 val.forEach((item) => {
@@ -242,9 +261,6 @@ export default {
                 })
                 this.user_id = arr.join(',')
             } else {
-                if (val.length) {
-                    this.user_id = val[0].user_id
-                }
                 this.btnFlag = true
             }
         },
@@ -252,13 +268,12 @@ export default {
             this.getUserData()
         },
         handleCurrentChange(val) {
-            // eslint-disable-next-line no-undef
-            console.log(val, '----9999----')
-            this.currentPage = val
+            this.currentPage4 = val
+            console.log(val);
+
             this.getUserData()
         },
         handleSizeChange(val) {
-            console.log(val, '====###')
             this.pageSize = val
             this.getUserData()
         },
@@ -268,9 +283,6 @@ export default {
             if (this.activeName === 'super') {}
             if (this.activeName === 'black') {}
         },
-        inputChange() {
-            this.getUserData()
-        }
     },
     mounted() {
         this.getUserData()

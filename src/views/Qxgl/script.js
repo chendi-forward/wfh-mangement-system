@@ -24,7 +24,7 @@ export default {
                 ],
                 account: [
                     { required: true, message: '请输入账号', trigger: 'blur' },
-                    { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
+                    { min: 5, max: 16, message: '长度在 5 到 16 个字符', trigger: 'blur' }
                 ],
                 role: [
                     { type: 'array', required: true, message: '请至少选择一个角色权限', trigger: 'change' }
