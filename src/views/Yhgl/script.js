@@ -1,6 +1,7 @@
 import DialogCom from '../../components/DialogCom'
 import Pagination from '../../components/Pagination'
-import baseUrl from '../../config/baseURL'
+import config from '../../config/baseURL'
+import {get } from '../../api/http'
 
 export default {
     name: 'yhgl',
@@ -10,6 +11,7 @@ export default {
     },
     data() {
         return {
+            id: '', // 用户id
             user_id: '',
             btnFlag: true, // 按钮禁用标志
             title: '',
@@ -30,10 +32,28 @@ export default {
                 option: '',
                 update: '',
                 pushmoney: '',
-                radio: '1',
-                radio1: '2',
-                radio2: '2'
+                is_black: '1',
+                level_protect: '1',
+                advance: '1',
+                level: '1',
+                remark: ''
             },
+            levelOptions: [{
+                value: '1',
+                label: 'V1'
+            }, {
+                value: '2',
+                label: 'V2'
+            }, {
+                value: '3',
+                label: 'V3'
+            }, {
+                value: '4',
+                label: 'V4'
+            }, {
+                value: '5',
+                label: 'V5'
+            }],
             dialogFlag: false,
             moveOptions: [{
                 value: '3',
@@ -79,16 +99,19 @@ export default {
         }
     },
     methods: {
-        inputChange() {},
         // 获取邀请码
-        getInviteCode(id) {
-            this.$get('/user/create_invite_code?user_id=' + id).then((res) => {
+        getInviteCode() {
+            if (!this.id) {
+                return
+            }
+            this.$get('/user/create_invite_code?user_id=' + this.id).then((res) => {
                 console.log(res, '==========')
+                this.formLabelAlign.update = res.invite_code
             })
         },
         // 添加标签
         addLabel() {
-            this.refs.formTag.validate(valid => {
+            this.$refs.formTag.validate(valid => {
                 if (valid) {
                     this.$get('/user/label_setting', {
                         behavior: 'add',
@@ -129,6 +152,11 @@ export default {
                             type: 'success',
                             message: '删除成功!'
                         })
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '删除失败!'
+                        })
                     }
                 })
             }).catch(() => {
@@ -136,26 +164,6 @@ export default {
                     type: 'info',
                     message: '已取消删除'
                 })
-            })
-        },
-        // 添加标签
-        addLabel() {
-            this.$get('/user/label_setting', {
-                behavior: 'add',
-                label: this.newlabel
-            }).then((res) => {
-                if (res) {
-                    this.getLabelData()
-                    this.$message({
-                        type: 'success',
-                        message: '添加成功!'
-                    })
-                } else {
-                    this.$message({
-                        type: 'error',
-                        message: '添加失败!'
-                    })
-                }
             })
         },
         // 获取标签数据
@@ -176,14 +184,14 @@ export default {
         getUserData() {
             let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}`
             this.$get(url).then(res => {
-                console.log(res, '=====')
+                console.log(res, '========')
                 if (res.content && res.content.length) {
                     res.content.forEach((item) => {
-                        item.avatar = baseUrl.baseUrl + item.avatar
+                        item.avatar = config.baseUrl + item.avatar
                         item.add_time = item.add_time.substr(0, 19)
                         item.label = item.label || '--'
                         item.province = item.province || '--'
-                        item.gender = item.gender || '--'
+                        item.gender = item.gender === '1' ? '男' : '女'
                         item.deal_money = item.deal_money || '0'
                     })
                     this.tableData = res.content
@@ -197,7 +205,20 @@ export default {
         sureSave(flag) {
             this.dialogFlag = flag
             if (this.editOrSet === 'edit') {
-                console.log('编辑')
+                let params = {
+                    user_id: this.id,
+                    label_id: this.formLabelAlign.option,
+                    invite_code: this.formLabelAlign.update,
+                    is_black: this.formLabelAlign.is_black,
+                    advance: this.formLabelAlign.advance,
+                    level_protect: this.formLabelAlign.level_protect,
+                    push_money: this.formLabelAlign.pushmoney || '0',
+                    level: this.formLabelAlign.level
+                }
+                console.log(params, '===')
+                get('/user/change_user_one', params).then(res => {
+                    console.log(res, '=========')
+                })
             } else {
                 if (this.newlabel) {
                     this.addLabel()
@@ -218,10 +239,21 @@ export default {
             }
         },
         editHandle(row) {
+            console.log(row, '====')
+            this.id = row.user_id
             this.dialogFlag = true
             this.editOrSet = 'edit'
             this.title = '编辑'
             this.formLabelAlign.update = row.invite_code
+            this.formLabelAlign = {
+                option: row.laber_id,
+                update: row.invite_code,
+                pushmoney: row.push_money,
+                is_black: '0',
+                level_protect: '1',
+                advance: '1',
+                level: row.level
+            }
         },
         setTags() {
             this.dialogFlag = true
@@ -283,6 +315,31 @@ export default {
             if (this.activeName === 'super') {}
             if (this.activeName === 'black') {}
         },
+        inputChange() {
+            this.getUserData()
+        },
+        // 强制提现
+        confirmWithDraw() {
+            this.$confirm('确定强制提现该用户嘛?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                // localStorage.clear()
+                // sessionStorage.clear()
+                // this.$router.push({path: '/login'})
+                this.dialogFlag = false
+                this.$message({
+                    type: 'success',
+                    message: '已提现'
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消'
+                })
+            })
+        }
     },
     mounted() {
         this.getUserData()
