@@ -40,7 +40,7 @@ export default {
       this.editTimeShow = true
     },
     saveTimeFn () {
-      if (this.verify()) return this.$message.error('请输入大于零的数字')
+      if (this.verify()) return this.$message.error('请输入大于零的整数')
       this.time = JSON.parse(JSON.stringify(this.editTime))
       this.changeTimeSetting(this.time)
       this.editTimeShow = false
@@ -53,6 +53,10 @@ export default {
       for (const key in this.editTime) {
         if (this.editTime.hasOwnProperty(key)) {
           const element = this.editTime[key].time_days - 0
+          let str = element + ''
+          if (str.indexOf('.') > -1) {
+            return true
+          }
           if (!(element > 0)) {
             this.editTime[key].time_days = 0
             return true

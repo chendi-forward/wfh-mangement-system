@@ -72,6 +72,7 @@ export default {
       this.$post('/integral/change_integral_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
+          this.editTaskShow = false
         } else {
           this.$message.error('编辑失败')
         }
@@ -102,6 +103,7 @@ export default {
       this.$post('/integral/change_integral_setting', this.SillForm).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
+          this.editSillShow = false
         } else {
           this.$message.error('编辑失败')
         }
@@ -136,7 +138,6 @@ export default {
     saveTaskFn () {
       let res = this.changeIntegralTask(this.tableData)
       if (res) return this.$message.error('请输入大于等于零的数字')
-      this.editTaskShow = false
     },
     cancelTaskFn () {
       this.tableData = JSON.parse(JSON.stringify(this.tableDataOrigin))
@@ -150,7 +151,6 @@ export default {
       Object.assign(this.SillForm, this.editSillForm)
       let res = this.changeIntegralAdvance()
       if (res) return this.$message.error('请输入大于等于零的数字')
-      this.editSillShow = false
     },
     cancelSill () {
       this.editSillShow = false
