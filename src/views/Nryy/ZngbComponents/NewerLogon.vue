@@ -7,29 +7,17 @@
             <span>触发状态</span>
             <span>：</span>
           </label>
-          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.touchStauts">
+          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.touchStatus" :disabled='!canEdit'>
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
-          <!-- <label class="ssxd-form--label">
-            <span>触发等级</span>
-            <span>：</span>
-          </label>
-          <el-select class="ssxd-form--input" v-model="formSsxd.touchLevel" placeholder="输入内容...">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select> -->
         </div>
         <div class="ssxd-form-item">
           <label class="ssxd-form--label">
             <span>脚本运行</span>
             <span>：</span>
           </label>
-          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.scriptStauts">
+          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.scriptStatus" :disabled='!canEdit'>
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
@@ -38,13 +26,14 @@
             <span>：</span>
           </label>
           <el-input
+            :disabled='!canEdit'
             class="ssxd-form--input"
             v-model="formSsxd.count"
             placeholder='输入内容...'>
           </el-input>
           <div class="ssxd-form--btn">
-            <el-button size="small" class="success-btn" @click="edit">编辑</el-button>
-            <el-button size="small" @click="cancel">取消</el-button>
+            <el-button size="small" type="success" @click="edit" v-show="!canEdit">编辑</el-button>
+            <el-button size="small" type="success" @click="submit" v-show="canEdit">确定</el-button>
           </div>
         </div>
       </form>
@@ -64,7 +53,7 @@
         <el-table-column
           label="注册时间"
           align='center'
-          prop="date"
+          prop="add_time"
          >
         </el-table-column>
         <el-table-column
@@ -77,6 +66,7 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
+        <el-button size="small" type="danger" @click="deleteClickMulti">删除</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
@@ -100,29 +90,140 @@ export default {
   data () {
     return {
       formSsxd: {
-        touchStauts: 1,
-        scriptStauts: 1,
+        touchStatus: 1,
+        scriptStatus: 1,
         count: 10
       },
       tableData: [
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1}
       ],
-      isAllSelect: false
+      page_count: 10,
+      current_page: 1,
+      total: 0,
+      canEdit: false
     }
   },
+  created() {
+    this.getSettings()
+    this.getData()
+  },
   methods: {
-    edit () {},
-    cancel () {},
-    handleSelectionChange () {},
-    editHandle () {},
-    deleteHandle () {},
-    handleSizeChange () {},
-    handleCurrentChange () {},
-    currentPage () {},
-    submit () {}
+    edit () {
+      this.canEdit = true
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    deleteClickMulti() {
+      if (!this.multipleSelection.length) return
+      let ids = this.multipleSelection.map(item => item.id)
+      this.deleteHandle(ids)
+    },
+    deleteHandle (_ids) {
+      let ids = _ids.join(',')
+      this.$confirm(`确定要删除吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.deleteData(ids)
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      })
+    },
+    submit () {
+      let scriptParams = {
+        method: 'script',
+        count: +this.formSsxd.count,
+        state: this.formSsxd.scriptStatus
+      }
+      let triggerParams = {
+        method: 'trigger',
+        state: this.formSsxd.touchStatus
+      }
+      this.editSettings(scriptParams)
+      this.editSettings(triggerParams)
+    },
+    handleSizeChange (v) {
+      this.page_count = v
+      this.current_page = 1
+      this.getData()
+    },
+    handleCurrentChange (v) {
+      this.current_page = v
+      this.getData()
+    },
+    deleteData(ids) {
+      let params = {
+        id: ids
+      }
+      this.$get('/broadcast/delete_content', params)
+      .then(res => {
+        this.getData()
+      })
+      .catch(err => {
+        this.$message({
+          type: 'warning',
+          message: '请求出错!'
+        })
+      })
+    },
+    // 修改设置信息 
+    editSettings(data) {
+      let params = {
+        type: 'register',
+        method: data.method,
+        count: data.count,
+        state: data.state
+      }
+      this.$get('/broadcast/update_setting', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.$message({
+            type: 'success',
+            message: '设置成功'
+          })
+          this.canEdit = false
+        } else {
+          this.$message({
+            type: 'warning',
+            message: res.message
+          })
+        }
+      })
+    },
+    // 获取数据
+    getData () {
+      let params = {
+        type: 'register',
+        page_count: this.page_count,
+        current_page: this.current_page
+      }
+      this.$get('/broadcast/get_content', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.total = res.data.count
+          let result = res.data.data_list
+          this.tableData = result
+        }
+      })
+    },
+    // 获取设置信息
+    getSettings() {
+      let params = {
+        type: 'register'
+      }
+      this.$get('/broadcast/get_setting', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.formSsxd.touchStatus = res.data.trigger.state
+          this.formSsxd.scriptStatus = res.data.script.state
+          this.formSsxd.count = res.data.script.count
+        }
+      })
+    }
   }
 }
 </script>
