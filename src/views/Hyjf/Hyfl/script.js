@@ -141,6 +141,7 @@ export default {
       this.$post('/integral/change_sell_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
+          this.editTaskShow = false
         } else {
           this.$message.error('编辑失败')
         }
@@ -182,6 +183,7 @@ export default {
       this.$post('/integral/change_common_recommend_rebate_setting', this.editAgencyForm).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
+          this.editAgencyShow = false
         } else {
           this.$message.error('编辑失败')
         }
@@ -213,6 +215,7 @@ export default {
       this.$post('/integral/change_super_recommend_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
+          this.editCommonShow = false
         } else {
           this.$message.error('编辑失败')
         }
@@ -250,7 +253,6 @@ export default {
     saveTaskFn () {
       let res = this.changeIntegralTask()
       if (res) return this.$message.error('请输入大于等于零的数字')
-      this.editTaskShow = false
     },
     cancelTaskFn () {
       this.tableData = JSON.parse(JSON.stringify(this.tableDataOrigin))
@@ -264,7 +266,6 @@ export default {
       Object.assign(this.commonForm, this.editCommonForm)
       let res = this.changeSuperRecommendRebateSetting()
       if (res) return this.$message.error('请输入大于等于零的数字')
-      this.editCommonShow = false
     },
     cancelCommon () {
       this.editCommonShow = false
@@ -277,7 +278,6 @@ export default {
       Object.assign(this.agencyForm, this.editAgencyForm)
       let res = this.changeCommonRecommendRebateSetting()
       if (res) return this.$message.error('请输入大于等于零的数字')
-      this.editAgencyShow = false
     },
     cancelAgency () {
       this.editAgencyShow = false
