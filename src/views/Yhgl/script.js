@@ -325,9 +325,6 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                // localStorage.clear()
-                // sessionStorage.clear()
-                // this.$router.push({path: '/login'})
                 this.dialogFlag = false
                 this.$message({
                     type: 'success',
