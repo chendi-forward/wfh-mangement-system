@@ -113,8 +113,7 @@
                   <el-input
                     class="spgl-form--num__input"
                     v-model="formSpxx.v4"
-                    name="num"
-                  >
+                    name="num">
                   </el-input>
                 </el-form-item>
               </div>
@@ -124,8 +123,7 @@
                   <el-input
                     class="spgl-form--num__input"
                     v-model="formSpxx.v5"
-                    name="num"
-                  >
+                    name="num">
                   </el-input>
                 </el-form-item>
               </div>
@@ -171,22 +169,20 @@
             </el-input>
           </el-form-item>
           <el-form-item
-            prop="description"
-            :rules="rules.required"
+            class="spgl-form-item"
+            prop="typeEffects"
           >
             <label
               for="typeEffect"
-              class="spgl-form--label required"
+              class="spgl-form--label"
             >
               <span>说明</span>
               <span>：</span>
             </label>
             <div class="spgl-form--input">
-              <el-checkbox-group v-model="formSpxx.description">
-                <el-checkbox label="药监认证"></el-checkbox>
-                <el-checkbox label="假一赔十"></el-checkbox>
-                <el-checkbox label="极速退款"></el-checkbox>
-              </el-checkbox-group>
+              <select-input
+                v-model="formSpxx.description"
+              ></select-input>
             </div>
           </el-form-item>
         </el-form>
@@ -625,13 +621,17 @@ export default {
         v5: '',
         date: '', // 生产日期
         origin: '', // 产地
-        description: [] // 说明
+        description: [
+          { name: '药监认证', isSelect: false },
+          { name: '假一赔十', isSelect: false },
+          { name: '极速退款', isSelect: false }
+        ] // 说明
       },
       formXssz: {
         goodStauts: '',
         activeLabel: '',
         formatAdd: '',
-        taste: [{ taste: '牛奶味', stock: '' }, { taste: '草莓味', stock: '' }]
+        taste: []
       },
       taste: '', // 添加的口味
       imgListExhibit: [], // 展示图片

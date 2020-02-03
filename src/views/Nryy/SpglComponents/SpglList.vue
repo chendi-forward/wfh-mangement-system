@@ -235,7 +235,8 @@ export default {
       this.$get('/content/goods/del_goods', {goods_id: ids})
       .then(res => {
         this.getData()
-      }).catch(err => {
+      })
+      .catch(err => {
         this.$message({
           type: 'warning',
           message: '请求出错!'
