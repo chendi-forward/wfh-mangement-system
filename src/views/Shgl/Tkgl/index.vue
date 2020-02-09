@@ -127,7 +127,7 @@
           align='center'>
           <template slot-scope="scope">
             <div class="expend-wrap">
-              <el-timeline v-if="currentTab == '0'">
+              <el-timeline v-if="scope.row.refund_type == '退货退款'">
                 <el-timeline-item
                   v-for="(activity, index) in activities"
                   :key="index"
