@@ -3,73 +3,35 @@
     <div class="spgl-item">
       <div class="spgl-item--title">商品信息</div>
       <div class="spgl-item--content">
-        <el-form
-          name="spxx"
-          ref="spxxForm"
-          :model='formSpxx'
-          class="spgl-form"
-        >
-          <el-form-item
-            prop="goodsTitle"
-            :rules="rules.title"
-          >
-            <label
-              for="typeEffect"
-              class="spgl-form--label required"
-            >
+        <el-form name="spxx" ref="spxxForm" :model='formSpxx' class="spgl-form">
+          <el-form-item prop="goodsTitle" :rules="rules.title">
+            <label for="typeEffect" class="spgl-form--label required">
               <span>商品标题</span>
               <span>：</span>
             </label>
-            <el-input
-              class="spgl-form--input"
-              v-model="formSpxx.goodsTitle"
-              placeholder='输入标题...'
-              name="goodsTitle"
-            >
+            <el-input class="spgl-form--input" v-model="formSpxx.goodsTitle" placeholder='输入标题...' name="goodsTitle">
             </el-input>
           </el-form-item>
-          <el-form-item
-            class="spgl-form-item"
-            prop="typeEffects"
-          >
-            <label
-              for="typeEffect"
-              class="spgl-form--label"
-            >
+          <el-form-item class="spgl-form-item" prop="typeEffects">
+            <label for="typeEffect" class="spgl-form--label">
               <span>类型功效</span>
               <span>：</span>
             </label>
             <div class="spgl-form--input">
-              <select-input
-                v-model="formSpxx.typeEffects"
-              ></select-input>
+              <select-input v-model="formSpxx.typeEffects"></select-input>
             </div>
           </el-form-item>
-          <el-form-item
-            prop="price"
-            :rules="rules.required"
-          >
-            <label
-              for="price"
-              class="spgl-form--label required"
-            >
+          <el-form-item prop="price" :rules="rules.required">
+            <label for="price" class="spgl-form--label required">
               <span>价格</span>
               <span>：</span>
             </label>
-            <el-input
-              class="spgl-form--input"
-              v-model="formSpxx.price"
-              placeholder='输入金额...'
-              name="price"
-            >
+            <el-input class="spgl-form--input" v-model="formSpxx.price" placeholder='输入金额...' name="price">
             </el-input>
             <div class="spgl-form--unit">（单位：元）</div>
           </el-form-item>
           <el-form-item class="spgl-form-item">
-            <label
-              for="num"
-              class="spgl-form--label"
-            >
+            <label for="num" class="spgl-form--label">
               <span>返利比例</span>
               <span>：</span>
             </label>
@@ -77,112 +39,64 @@
               <div class="spgl-form--num">
                 <span>V1</span>
                 <el-form-item>
-                  <el-input
-                    class="spgl-form--num__input"
-                    v-model="formSpxx.v1"
-                    name="num"
-                  >
+                  <el-input class="spgl-form--num__input" v-model="formSpxx.v1" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V2</span>
                 <el-form-item>
-                  <el-input
-                    class="spgl-form--num__input"
-                    v-model="formSpxx.v2"
-                    name="num"
-                  >
+                  <el-input class="spgl-form--num__input" v-model="formSpxx.v2" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V3</span>
                 <el-form-item>
-                  <el-input
-                    class="spgl-form--num__input"
-                    v-model="formSpxx.v3"
-                    name="num"
-                  >
+                  <el-input class="spgl-form--num__input" v-model="formSpxx.v3" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V4</span>
                 <el-form-item>
-                  <el-input
-                    class="spgl-form--num__input"
-                    v-model="formSpxx.v4"
-                    name="num">
+                  <el-input class="spgl-form--num__input" v-model="formSpxx.v4" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V5</span>
                 <el-form-item>
-                  <el-input
-                    class="spgl-form--num__input"
-                    v-model="formSpxx.v5"
-                    name="num">
+                  <el-input class="spgl-form--num__input" v-model="formSpxx.v5" name="num">
                   </el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="spgl-form--unit">（单位：%）</div>
           </el-form-item>
-          <el-form-item
-            prop="date"
-            :rules="rules.required"
-          >
-            <label
-              for="date"
-              class="spgl-form--label required"
-            >
+          <el-form-item prop="date" :rules="rules.required">
+            <label for="date" class="spgl-form--label required">
               <span>生产日期</span>
               <span>：</span>
             </label>
-            <el-date-picker
-              class="spgl-form--input data-input"
-              v-model="formSpxx.date"
-              type="date"
-              placeholder="选择日期"
-            >
+            <el-date-picker class="spgl-form--input data-input" v-model="formSpxx.date" type="date" placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item
-            prop="origin"
-            :rules="rules.required"
-          >
-            <label
-              for="origin"
-              class="spgl-form--label required"
-            >
+          <el-form-item prop="origin" :rules="rules.required">
+            <label for="origin" class="spgl-form--label required">
               <span>产地</span>
               <span>：</span>
             </label>
-            <el-input
-              class="spgl-form--input"
-              v-model="formSpxx.origin"
-              placeholder='输入产地...'
-              name="origin"
-            >
+            <el-input class="spgl-form--input" v-model="formSpxx.origin" placeholder='输入产地...' name="origin">
             </el-input>
           </el-form-item>
-          <el-form-item
-            class="spgl-form-item"
-            prop="typeEffects"
-          >
-            <label
-              for="typeEffect"
-              class="spgl-form--label"
-            >
+          <el-form-item class="spgl-form-item" prop="typeEffects">
+            <label for="typeEffect" class="spgl-form--label">
               <span>说明</span>
               <span>：</span>
             </label>
             <div class="spgl-form--input">
-              <select-input
-                v-model="formSpxx.description"
-              ></select-input>
+              <select-input v-model="formSpxx.description"></select-input>
             </div>
           </el-form-item>
         </el-form>
@@ -191,78 +105,35 @@
     <div class="spgl-item">
       <div class="spgl-item--title">显示设置</div>
       <div class="spgl-item--content">
-        <el-form
-          name="xssz"
-          ref="xsszForm"
-          :model="formXssz"
-          class="spgl-form"
-        >
-          <el-form-item
-            prop="goodStauts"
-            :rules="rules.required"
-          >
-            <label
-              for="goodStauts"
-              class="spgl-form--label required"
-            >
+        <el-form name="xssz" ref="xsszForm" :model="formXssz" class="spgl-form">
+          <el-form-item prop="goodStauts" :rules="rules.required">
+            <label for="goodStauts" class="spgl-form--label required">
               <span>商品状态</span>
               <span>：</span>
             </label>
-            <el-radio-group
-              class="spgl-form--content"
-              v-model="formXssz.goodStauts"
-            >
+            <el-radio-group class="spgl-form--content" v-model="formXssz.goodStauts">
               <el-radio :label="1">上架</el-radio>
               <el-radio :label="0">下架</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item
-            prop="activeLabel"
-            :rules="rules.required"
-            class="spgl-form-item spgl-form__state"
-          >
-            <label
-              for="activeLabel"
-              class="spgl-form--label required"
-            >
+          <el-form-item prop="activeLabel" :rules="rules.required" class="spgl-form-item spgl-form__state">
+            <label for="activeLabel" class="spgl-form--label required">
               <span>活动标签</span>
               <span>：</span>
             </label>
-            <el-select
-              class="spgl-form--content"
-              v-model="formXssz.activeLabel"
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(item, index) in currentTag"
-                :key="index"
-                :label="item.name"
-                :value="item.value"
-              >
+            <el-select class="spgl-form--content" v-model="formXssz.activeLabel" filterable placeholder="请选择">
+              <el-option v-for="(item, index) in currentTag" :key="index" :label="item.name" :value="item.value">
               </el-option>
             </el-select>
-            <el-button
-              class="spgl-form--setLabel"
-              size="small"
-              @click="setLabel"
-            >设置标签</el-button>
+            <el-button class="spgl-form--setLabel" size="small" @click="setLabel">设置标签</el-button>
           </el-form-item>
-          <el-form-item
-            prop="formatAdd"
-            :rules="rules.required"
-          >
+          <el-form-item prop="formatAdd" :rules="rules.required">
             <label class="spgl-form--label required">
               <span>规格设置</span>
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--format">
-              <el-input
-                class="spgl-form--format__input"
-                type="text"
-                placeholder="输入关键字..."
-                v-model="formXssz.formatAdd"
-              >
+              <el-input class="spgl-form--format__input" type="text" placeholder="输入关键字..." v-model="formXssz.formatAdd">
               </el-input>
             </div>
             <div class="spgl-form--unit">（单位：g）</div>
@@ -273,40 +144,18 @@
               <span>：</span>
             </label>
             <div class="spgl-form--content">
-              <div
-                class="spgl-form__taste"
-                v-for="(item, i) in formXssz.taste"
-                :key="item.taste"
-              >
+              <div class="spgl-form__taste" v-for="(item, i) in formXssz.taste" :key="item.taste">
                 <div class="taste-box">
                   <div class="taste-box__text text-overflow"><span class="taste-box__text--span">{{item.taste}}</span></div>
-                  <span
-                    class="avater-delete"
-                    @click="deleteTaste(i)"
-                  >×</span>
+                  <span class="avater-delete" @click="deleteTaste(i)">×</span>
                 </div>
                 <label class="taste__label">库存（件）：</label>
-                <el-form-item
-                  :prop="'taste.' + i + '.stock'"
-                  :rules="rules.required"
-                >
-                  <el-input
-                    class="spgl-form--format__input taste__input"
-                    type="number"
-                    placeholder="输入数量..."
-                    v-model="item.stock"
-                  >
+                <el-form-item :prop="'taste.' + i + '.stock'" :rules="rules.required">
+                  <el-input class="spgl-form--format__input taste__input" type="number" placeholder="输入数量..." v-model="item.stock">
                   </el-input>
                 </el-form-item>
               </div>
-              <input
-                class="el-input__inner"
-                style="font-size: 14px;"
-                type='text'
-                placeholder="输入口味并回车..."
-                v-model="taste"
-                @keyup.enter="addTaste"
-              />
+              <input class="el-input__inner" style="font-size: 14px;" type='text' placeholder="输入口味并回车..." v-model="taste" @keyup.enter="addTaste" />
             </div>
           </div>
         </el-form>
@@ -319,38 +168,16 @@
           展示图片：
           <span>
             <span>*支持jpg/png格式，不超过10M</span>
-            <el-button
-              class="upload-img__tool--preview"
-              size="small"
-              @click="preview_exhibit"
-            >预览</el-button>
+            <el-button class="upload-img__tool--preview" size="small" @click="preview_exhibit">预览</el-button>
           </span>
         </p>
         <div class="upload-img__tool">
           <div class="img__list">
-            <div
-              class="img__list--wrap"
-              v-for="(imgUrl, i) in imgListExhibit"
-              :key="i"
-            >
-              <img
-                class="img__list--item"
-                :src="base_url + imgUrl"
-              >
-              <span
-                class="avater-delete"
-                @click.stop="deleteExhibitImg(i)"
-              >×</span>
+            <div class="img__list--wrap" v-for="(imgUrl, i) in imgListExhibit" :key="i">
+              <img class="img__list--item" :src="base_url + imgUrl">
+              <span class="avater-delete" @click.stop="deleteExhibitImg(i)">×</span>
             </div>
-            <img-upload
-              size='10'
-              class="spgl-item--content__img"
-              v-show="imgListExhibit.length < 6"
-              :is-show-img='false'
-              key-name="goods"
-              @upload-success='exhibitUploadSuccess'
-              @upload-error='exhibitUploadError'
-            >
+            <img-upload size='10' class="spgl-item--content__img" v-show="imgListExhibit.length < 6" :is-show-img='false' key-name="goods" @upload-success='exhibitUploadSuccess' @upload-error='exhibitUploadError'>
             </img-upload>
           </div>
         </div>
@@ -360,38 +187,16 @@
           商品详情长图：
           <span>
             <span>*支持jpg/png格式，不超过10M</span>
-            <el-button
-              class="upload-img__tool--preview"
-              size="small"
-              @click="preview_detail"
-            >预览</el-button>
+            <el-button class="upload-img__tool--preview" size="small" @click="preview_detail">预览</el-button>
           </span>
         </p>
         <div class="upload-img__tool">
           <div class="img__list">
-            <div
-              class="img__list--wrap"
-              v-for="(imgUrl, i) in imgListDetail"
-              :key="i"
-            >
-              <img
-                class="img__list--item"
-                :src="base_url + imgUrl"
-              >
-              <span
-                class="avater-delete"
-                @click.stop="deleteDetailImg(i)"
-              >×</span>
+            <div class="img__list--wrap" v-for="(imgUrl, i) in imgListDetail" :key="i">
+              <img class="img__list--item" :src="base_url + imgUrl">
+              <span class="avater-delete" @click.stop="deleteDetailImg(i)">×</span>
             </div>
-            <img-upload
-              size='10'
-              class="spgl-item--content__img"
-              v-show="imgListDetail.length < 6"
-              :is-show-img='false'
-              key-name="goods"
-              @upload-success='detailUploadSuccess'
-              @upload-error='detailUploadError'
-            >
+            <img-upload size='10' class="spgl-item--content__img" v-show="imgListDetail.length < 6" :is-show-img='false' key-name="goods" @upload-success='detailUploadSuccess' @upload-error='detailUploadError'>
             </img-upload>
           </div>
         </div>
@@ -400,23 +205,10 @@
     <div class="spgl-item">
       <div class="spgl-item--title">发布设置</div>
       <div class="spgl-item--content spgl-item__padding spgl-item--content__fusz">
-        <form
-          name="fbsz"
-          class="spgl-form spgl-form__fusz"
-        >
-          <el-checkbox
-            class="spgl-item--content__setTime"
-            v-model="isDefinitTime"
-          >定时发布：</el-checkbox>
+        <form name="fbsz" class="spgl-form spgl-form__fusz">
+          <el-checkbox class="spgl-item--content__setTime" v-model="isDefinitTime">定时发布：</el-checkbox>
           <div class="spgl-form--dateSelect">
-            <el-date-picker
-              :disabled="!isDefinitTime"
-              class="spgl-form--input data-input"
-              v-model="definitData"
-              type="datetime"
-              :picker-options="pickerOptions"
-              placeholder="选择发布时间"
-            >
+            <el-date-picker :disabled="!isDefinitTime" class="spgl-form--input data-input" v-model="definitData" type="datetime" :picker-options="pickerOptions" placeholder="选择发布时间">
             </el-date-picker>
           </div>
           <div class="spgl-form-item">
@@ -425,21 +217,9 @@
               <span>：</span>
             </label>
             <div class="spgl-form--content spgl-form--recommend">
-              <div
-                class="spgl-form--recommend__group"
-                v-for="(item, index) in recommends"
-                :key="index"
-              >
-                <el-checkbox
-                  :label="item.label"
-                  v-model="item.isSelect"
-                ></el-checkbox>
-                <el-input
-                  class="spgl-form--recommend__input"
-                  type="number"
-                  :disabled="!item.isSelect"
-                  v-model="item.value"
-                >
+              <div class="spgl-form--recommend__group" v-for="(item, index) in recommends" :key="index">
+                <el-checkbox :label="item.label" v-model="item.isSelect"></el-checkbox>
+                <el-input class="spgl-form--recommend__input" type="number" :disabled="!item.isSelect" v-model="item.value">
                 </el-input>
               </div>
             </div>
@@ -448,107 +228,41 @@
       </div>
       <div class="spgl-item--space"></div>
       <div class="spgl-item--footer spgl-item__padding">
-        <el-button
-          size="small"
-          type="success"
-          @click="save"
-        >保存并发布</el-button>
-        <el-button
-          size="small"
-          class="cancel-btn"
-          @click="cancel"
-        >返回</el-button>
+        <el-button size="small" type="success" @click="save">保存并发布</el-button>
+        <el-button size="small" class="cancel-btn" @click="cancel">返回</el-button>
       </div>
     </div>
 
-    <el-dialog
-      title="展示图片预览"
-      :visible.sync="isShowImgPreview"
-      width="600px"
-    >
-      <el-carousel
-        trigger="click"
-        :autoplay='false'
-        :arrow='imgListExhibit.length > 1 ? "always" : "never"'
-        height="400px"
-      >
-        <el-carousel-item
-          v-for="(item, i) in imgListExhibit"
-          :key="i"
-        >
-          <img
-            :src="base_url + item"
-            style="width: 560px;"
-          >
+    <el-dialog title="展示图片预览" :visible.sync="isShowImgPreview" width="600px">
+      <el-carousel trigger="click" :autoplay='false' :arrow='imgListExhibit.length > 1 ? "always" : "never"' height="400px">
+        <el-carousel-item v-for="(item, i) in imgListExhibit" :key="i">
+          <img :src="base_url + item" style="width: 560px;">
         </el-carousel-item>
       </el-carousel>
     </el-dialog>
-    <el-dialog
-      title="详情图片预览"
-      :visible.sync="isShowImgDetail"
-      width="600px"
-    >
-      <el-carousel
-        trigger="click"
-        :autoplay='false'
-        :arrow='imgListDetail.length > 1 ? "always" : "never"'
-        height="700px"
-      >
-        <el-carousel-item
-          v-for="(item, i) in imgListDetail"
-          :key="i"
-        >
-          <img
-            :src="base_url + item"
-            style="width: 560px;"
-          >
+    <el-dialog title="详情图片预览" :visible.sync="isShowImgDetail" width="600px">
+      <el-carousel trigger="click" :autoplay='false' :arrow='imgListDetail.length > 1 ? "always" : "never"' height="700px">
+        <el-carousel-item v-for="(item, i) in imgListDetail" :key="i">
+          <img :src="base_url + item" style="width: 560px;">
         </el-carousel-item>
       </el-carousel>
     </el-dialog>
-    <dialog-com
-      v-model="isShowTag"
-      title="设置标签"
-      :is-show-footer='false'
-      class="tag-dialog"
-    >
+    <dialog-com v-model="isShowTag" title="设置标签" :is-show-footer='false' class="tag-dialog">
       <div class="current-tag">
         <div class="tag--title">当前标签</div>
         <div class="current-tag--content">
-          <div
-            class="current-tag__item"
-            v-for="(item, i) in currentTag"
-            :key="item.value"
-          >
+          <div class="current-tag__item" v-for="(item, i) in currentTag" :key="item.value">
             <span>{{item.name}}</span>
-            <span
-              class="avater-delete"
-              @click="deleteTag(i)"
-            >×</span>
+            <span class="avater-delete" @click="deleteTag(i)">×</span>
           </div>
         </div>
       </div>
       <div class="add-tag">
         <div class="tag--title">添加标签</div>
-        <el-form
-          :model='formTag'
-          ref='formTag'
-          class="add-tag--content"
-        >
-          <el-form-item
-            prop="newTag"
-            :rules="rules.length10"
-          >
-            <el-input
-              type="text"
-              size="small"
-              placeholder="输入标签..."
-              v-model="formTag.newTag"
-            ></el-input>
-            <el-button
-              size="small"
-              type="success"
-              @click="saveTag"
-            >确定</el-button>
+        <el-form :model='formTag' ref='formTag' class="add-tag--content">
+          <el-form-item prop="newTag" :rules="rules.length10">
+            <el-input type="text" size="small" placeholder="输入标签..." v-model="formTag.newTag"></el-input>
+            <el-button size="small" type="success" @click="saveTag">确定</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -658,9 +372,7 @@ export default {
   async mounted() {
     await this.getLabel()
     if (Object.keys(this.current).length) {
-      await this.$get(
-        `/content/goods/goods_detail?goods_id=${this.current.id}`
-      ).then(res => {
+      await this.$get(`/content/goods/goods_detail?goods_id=${this.current.id}`).then(res => {
         let data = res.data
         this.formSpxx.typeEffects = data.efficacy.split(',').map(item => {
           return {
@@ -731,17 +443,15 @@ export default {
     },
     deleteTag(i) {
       let id = this.currentTag[i].value
-      this.$get(`/content/active/setting_label?behavior=del&id=${id}`).then(
-        res => {
-          if (res.message === 'ok') {
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-            this.getLabel()
-          }
+      this.$get(`/content/active/setting_label?behavior=del&id=${id}`).then(res => {
+        if (res.message === 'ok') {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getLabel()
         }
-      )
+      })
     },
     saveTag() {
       this.$refs.formTag.validate(valid => {
@@ -754,9 +464,7 @@ export default {
             })
             return
           }
-          this.$get(
-            `/content/active/setting_label?behavior=add&label=${this.formTag.newTag}`
-          ).then(res => {
+          this.$get(`/content/active/setting_label?behavior=add&label=${this.formTag.newTag}`).then(res => {
             if (res.message === 'ok') {
               this.$message({
                 type: 'success',
@@ -806,7 +514,7 @@ export default {
     },
 
     save() {
-      console.log(this.formSpxx.typeEffects);
+      console.log(this.formSpxx.typeEffects)
       try {
         let valides = []
         this.$refs.spxxForm.validate(valid => {
@@ -824,7 +532,7 @@ export default {
           }
         })
         if (!valides.every(item => item)) return this.$alert('请按照规则填写！')
-        
+
         let params = {
           title: this.formSpxx.goodsTitle,
           price: +this.formSpxx.price,
@@ -832,7 +540,10 @@ export default {
           origin: this.formSpxx.origin,
           content: '11111',
           description: this.formSpxx.description.length
-            ? this.formSpxx.description.join(',')
+            ? this.formSpxx.description
+                .filter(item => item.isSelect)
+                .map(item => item.name)
+                .join(',')
             : '', // 说明
           rebate: {
             // 返利设置(key:会员等级，value:返利金额)
@@ -842,29 +553,21 @@ export default {
             '4': this.formSpxx.v4,
             '5': this.formSpxx.v5
           },
-          show_pic: this.imgListExhibit.length
-            ? this.imgListExhibit.join(',')
-            : '',
-          detail_pic: this.imgListDetail.length
-            ? this.imgListDetail.join(',')
-            : '',
+          show_pic: this.imgListExhibit.length ? this.imgListExhibit.join(',') : '',
+          detail_pic: this.imgListDetail.length ? this.imgListDetail.join(',') : '',
           weight: this.formXssz.formatAdd + 'g', // --> 规格（重量）
           specification: this.formXssz.taste,
-          mind_order: this.recommends[0].isSelect
-            ? +this.recommends[0].value
-            : '', // --> 主页推荐顺序(不传默认不推荐)
-          cart_order: this.recommends[1].isSelect
-            ? +this.recommends[1].value
-            : '', // --> 购物车推荐顺序(不传默认不推荐)
+          mind_order: this.recommends[0].isSelect ? +this.recommends[0].value : '', // --> 主页推荐顺序(不传默认不推荐)
+          cart_order: this.recommends[1].isSelect ? +this.recommends[1].value : '', // --> 购物车推荐顺序(不传默认不推荐)
           efficacy: this.formSpxx.typeEffects.length
-            ? this.formSpxx.typeEffects.filter(item => item.isSelect).map(item => item.name).join(',')
+            ? this.formSpxx.typeEffects
+                .filter(item => item.isSelect)
+                .map(item => item.name)
+                .join(',')
             : '', // --> 功效(可以不传)
           state: this.formXssz.goodStauts, // --> 上架下架状态（1：上架，0：下架）(默认是1)
           label_id: this.formXssz.activeLabel, // --> 标签id
-          publish_time:
-            this.isDefinitTime && this.definitData
-              ? moment(this.definitData).format('YYYY-MM-DD HH:mm:ss')
-              : '' // --> 定时上架时间(不传，默认立即上架)
+          publish_time: this.isDefinitTime && this.definitData ? moment(this.definitData).format('YYYY-MM-DD HH:mm:ss') : '' // --> 定时上架时间(不传，默认立即上架)
         }
         let url, message
         if (Object.keys(this.current).length) {

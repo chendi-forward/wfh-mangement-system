@@ -143,11 +143,6 @@
     <div class="content-save">
       <el-button
         size="small"
-        class="cancel-btn"
-        @click="saveToDraft"
-      >存为草稿</el-button>
-      <el-button
-        size="small"
         class="success-btn"
         @click="save"
       >保存</el-button>
@@ -235,9 +230,6 @@ export default {
     previewCover() {
       this.isShowImgPreview = true
       this.image_preview = base_url + this.imageUrl_cover
-    },
-    saveToDraft() {
-      // ..
     },
     longDelete() {
       this.imageUrl_long = ''

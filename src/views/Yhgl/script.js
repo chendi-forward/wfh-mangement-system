@@ -301,49 +301,6 @@ export default {
 		},
 		handleCurrentChange(val) {
 			this.currentPage4 = val
-			console.log(val);
-
-<<<<<<< HEAD
-            this.getUserData()
-        },
-        handleSizeChange(val) {
-            this.pageSize = val
-            this.getUserData()
-        },
-        handleClick(val) {
-            this.getUserData()
-            if (this.activeName === 'ordinary') {}
-            if (this.activeName === 'super') {}
-            if (this.activeName === 'black') {}
-        },
-        inputChange() {
-            this.getUserData()
-        },
-        // 强制提现
-        confirmWithDraw() {
-            this.$confirm('确定强制提现该用户嘛?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.dialogFlag = false
-                this.$message({
-                    type: 'success',
-                    message: '已提现'
-                })
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消'
-                })
-            })
-        }
-    },
-    mounted() {
-        this.getUserData()
-        this.getLabelData()
-    }
-=======
 			this.getUserData()
 		},
 		handleSizeChange(val) {
@@ -386,5 +343,4 @@ export default {
 		this.getUserData()
 		this.getLabelData()
 	}
->>>>>>> 1b98ff8d1db1c59f6dd98805ab07c5f2511aa2b9
 }
