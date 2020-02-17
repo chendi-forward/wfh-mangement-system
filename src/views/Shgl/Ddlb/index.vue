@@ -11,7 +11,7 @@
             <img :src="carIcon" alt="">
           </div>
         </div>
-        <div class="bottom-card">
+        <div class="bottom-card" v-if="saleHead.delivered.length">
           <div class="gross-num">
             <span class="num-value">{{saleHead.delivered[saleHeadIndex.delivered].count}}</span>
             <span class="num-name">{{saleHead.delivered[saleHeadIndex.delivered].goods_title}}</span>
@@ -32,7 +32,7 @@
             <img :src="boxIcon" alt="">
           </div>
         </div>
-        <div class="bottom-card">
+        <div class="bottom-card" v-if="saleHead.undelivered.length">
           <div class="gross-num">
             <span class="num-value">{{saleHead.undelivered[saleHeadIndex.undelivered].count}}</span>
             <span class="num-name">{{saleHead.undelivered[saleHeadIndex.undelivered].goods_title}}</span>
@@ -53,7 +53,7 @@
             <img :src="homeIcon" alt="">
           </div>
         </div>
-        <div class="bottom-card">
+        <div class="bottom-card" v-if="saleHead.inventory.length">
           <div class="gross-num">
             <span class="num-value">{{saleHead.inventory[saleHeadIndex.inventory].count}}</span>
             <span class="num-name">{{saleHead.inventory[saleHeadIndex.inventory].goods_title}}</span>

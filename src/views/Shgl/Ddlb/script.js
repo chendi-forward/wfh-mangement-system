@@ -100,6 +100,7 @@ export default {
       // > page_count     -- 每页的数量
       // > current_page  -- 当前也
       orderList(Object.assign(this.orderParams, data)).then(res => {
+        console.log('1111', res)
         this.total = res.data.count // data_list
         this.tableData = res.data.data_list
       })
