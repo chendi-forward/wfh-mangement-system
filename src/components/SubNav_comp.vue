@@ -21,7 +21,7 @@
     methods: {
       selectItem (item, index) {
         this.selectedItem = index
-        this.$emit('input', item.component)
+        this.$emit('input', item.component, index)
       }
     }
   }
