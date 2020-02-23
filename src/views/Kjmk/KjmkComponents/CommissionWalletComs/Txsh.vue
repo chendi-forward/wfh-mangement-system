@@ -156,6 +156,10 @@
         auditCashWithdrawal({
           cash_id,
           state  // 1: 通过  2: 驳回
+        }).then(res => {
+          if (!res.data) {
+            this.$message.error('操作失败！')
+          }
         })
       },
       tableToExcel(){
