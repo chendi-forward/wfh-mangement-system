@@ -49,8 +49,8 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="small" type="danger">批量删除</el-button>
-        <el-button size="small" @click="createFn">导出</el-button>
+        <!-- <el-button size="small" type="danger">批量删除</el-button> -->
+        <el-button size="small" @click="tableToExcel">导出</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
@@ -66,6 +66,7 @@
 <script>
   import Pagination from 'COMPONENTS/Pagination'
   import {brokerageTurnoverList} from 'API/Kjmk'
+  import {tableToExcel} from 'COMMONS/util.js'
   export default {
     name: 'fltq',
     components: {
@@ -94,14 +95,28 @@
       },
       handleSelectionChange () {},
       editHandle () {},
-      createFn () {},
       handleSizeChange (v) {
         this.page_count = v
       },
       handleCurrentChange (v) {
         this.current_page = v
       },
-      submit () {}
+      submit () {},
+      tableToExcel(){
+        let map = [
+          {name: 'date', value: '下单时间'},
+          {name: 'turnover_id', value: '提现流水号'},
+          {name: 'user_id', value: '用户ID'},
+          {name: 'nickname', value: '昵称'},
+          {name: 'amount', value: '订单金额'},
+          {name: 'type', value: '支出类别'}
+        ]
+        tableToExcel({
+          name: "返利提取流水.xlsx",
+          data: this.tableData,
+          map
+        })
+      }
     }
   }
 </script>

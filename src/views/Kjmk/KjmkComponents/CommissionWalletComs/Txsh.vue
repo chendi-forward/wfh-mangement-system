@@ -39,7 +39,7 @@
         <el-table-column
           align='center'
           label="状态">
-          <template slot-scope="scope"><span class='text-overflow'>{{ ['未审核', '通过', '驳回'][scope.row.state] }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ map[scope.row.state] }}</span></template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -62,8 +62,8 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="small" type="danger">批量删除</el-button>
-        <el-button size="small" @click="createFn">导出</el-button>
+        <!-- <el-button size="small" type="danger">批量删除</el-button> -->
+        <el-button size="small" @click="tableToExcel">导出</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
@@ -83,6 +83,7 @@
   import tjls from './TxshComs/Tjls'
   import hyls from './TxshComs/Hyls'
   import {cashWithdrawalList,cashWithdrawalDetail, auditCashWithdrawal} from 'API/Kjmk'
+  import {tableToExcel} from 'COMMONS/util.js'
   export default {
     name: 'txsh',
     components: {
@@ -93,6 +94,7 @@
       return {
         page_count: 10,
         current_page: 1,
+        map: ['未审核', '通过', '驳回'],
         total: 1,
         tableData: [{
         "add_time": "2020-02-21 23:36:24",
@@ -120,7 +122,9 @@
           current_page: this.current_page
         }).then(res => {
           this.total = res.data.count
-          this.tableData = res.data.data_list
+          this.tableData = res.data.data_list.map(item => {
+            return Object.assign(item, {state: this.map[item.state]})
+          })
         })
       },
       expandChange (row, v) {
@@ -142,7 +146,6 @@
       },
       handleSelectionChange () {},
       editHandle () {},
-      createFn () {},
       handleSizeChange (v) {
         this.page_count = v
       },
@@ -153,6 +156,20 @@
         auditCashWithdrawal({
           cash_id,
           state  // 1: 通过  2: 驳回
+        })
+      },
+      tableToExcel(){
+        let map = [
+          {name: 'add_time', value: '申请时间'},
+          {name: 'user_id', value: '用户ID'},
+          {name: 'nickname', value: '昵称'},
+          {name: 'amount', value: '提现金额'},
+          {name: 'state', value: '状态'}
+        ]
+        tableToExcel({
+          name: "提现审核列表.xlsx",
+          data: this.tableData,
+          map
         })
       }
     }
