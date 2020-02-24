@@ -45,6 +45,7 @@
 
 <script>
 import Pagination from 'COMPONENTS/Pagination'
+import { tableToExcel } from 'COMMONS/util.js'
 
 export default {
   name: 'account-list-zcls',
@@ -54,13 +55,12 @@ export default {
   data() {
     return {
       searchVal: '',
-      tableData: [
-      ],
+      tableData: [],
       isAllSelect: false,
       currentPage: 1,
       pageCount: 10,
       total: 0,
-      multipleSelection: [], // 勾选的项
+      multipleSelection: [] // 勾选的项
     }
   },
   created() {
@@ -75,7 +75,28 @@ export default {
       this.multipleSelection = val
     },
     exportFn() {
-      // ..
+      let map = [
+        { name: 'order_time', value: '下单时间' },
+        { name: 'turnover_id', value: '收入流水号' },
+        { name: 'order_id', value: '订单编号' },
+        { name: 'user_id', value: '用户ID' },
+        { name: 'nickname', value: '昵称' },
+        { name: 'pay_money', value: '订单金额' },
+        { name: 'rebate_money', value: '订单返利' },
+        { name: 'real_money', value: '实际收入' }
+      ]
+      this.$get('/accountant/turnover', {
+        search: this.searchVal,
+        type_info: 'in',
+        page_count: 10000,
+        current_page: 1
+      }).then(res => {
+        tableToExcel({
+          name: '收入流水账.xlsx',
+          data: res.data.data_list,
+          map
+        })
+      })
     },
     deleteMany() {
       if (!this.multipleSelection.length) return
@@ -88,29 +109,31 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        return this.deleteData(ids)
-      }).then(res => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
       })
+        .then(() => {
+          return this.deleteData(ids)
+        })
+        .then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
     },
     deleteData(ids) {
       let params = {
         turnover_id: ids
       }
-      this.$get('/accountant/delete_turnover', params)
-      .then(res => {
-        this.getData()
-      })
-      .catch(err => {
-        this.$message({
-          type: 'warning',
-          message: '请求出错!'
+      this.$post('/accountant/delete_turnover', params)
+        .then(res => {
+          this.getData()
         })
-      })
+        .catch(err => {
+          this.$message({
+            type: 'warning',
+            message: '请求出错!'
+          })
+        })
     },
     handleSizeChange(val) {
       this.current_page = 1
@@ -122,7 +145,7 @@ export default {
       this.getData()
     },
     getData() {
-      this.$get('/accountant/turnover', {
+      return this.$get('/accountant/turnover', {
         search: this.searchVal,
         type_info: 'in',
         page_count: this.pageCount,
@@ -130,6 +153,7 @@ export default {
       }).then(res => {
         this.tableData = res.data.data_list
         this.total = res.data.count
+        return this.tableData
       })
     }
   }

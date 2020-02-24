@@ -26,7 +26,7 @@
     </el-table-column>
     <el-table-column label="操作" align='center' width="160">
       <template slot-scope="scope">
-        <el-button plain size='small' icon="el-icon-edit" @click='handleEdit(scope.row)'></el-button>
+        <!-- <el-button plain size='small' icon="el-icon-edit" @click='handleEdit(scope.row)'></el-button> -->
         <el-button plain size='small' icon="el-icon-delete" @click='handleDelete(scope.row)'></el-button>
       </template>
     </el-table-column>
@@ -52,7 +52,7 @@ export default {
       console.log(row)
     },
     handleDelete(row) {
-      console.log(row);
+      this.$emit('handle-delete', [row.invoice_id])
     }
   }
 }
