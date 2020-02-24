@@ -233,7 +233,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="备注(选填):">
-              <el-input size="small" width='200' class="level" type='number' placeholder="输入备注信息..." v-model="formLabelAlign.remark">
+              <el-input size="small" width='200' class="level" type='text' placeholder="输入备注信息..." v-model="formLabelAlign.remark">
               </el-input>
             </el-form-item>
           </div>
