@@ -23,12 +23,12 @@
         <el-table-column
           align='center'
           label="提现流水号">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.txlsh }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.turnover_id }}</span></template>
         </el-table-column>
         <el-table-column
           align='center'
           label="用户ID">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.userid }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.user_id }}</span></template>
         </el-table-column>
         <el-table-column
           align='center'
@@ -38,25 +38,25 @@
         <el-table-column
           label="订单金额"
           align='center'>
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.money }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.amount }}</span></template>
         </el-table-column>
         <el-table-column
           label="支出类别"
           align='center'>
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.expensetype }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.type }}</span></template>
         </el-table-column>
       </el-table>
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="small" type="danger">批量删除</el-button>
-        <el-button size="small" @click="createFn">导出</el-button>
+        <!-- <el-button size="small" type="danger">批量删除</el-button> -->
+        <el-button size="small" @click="tableToExcel">导出</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :total="400">
+          :total="total">
         </my-pagination>
       </div>
     </div>
@@ -65,6 +65,8 @@
 
 <script>
   import Pagination from 'COMPONENTS/Pagination'
+  import {brokerageTurnoverList} from 'API/Kjmk'
+  import {tableToExcel} from 'COMMONS/util.js'
   export default {
     name: 'fltq',
     components: {
@@ -72,21 +74,49 @@
     },
     data () {
       return {
-        tableData: [
-          {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'},
-          {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'},
-          {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'},
-          {date: '2019-03-22 09:20', txlsh: '18855862290', userid: 'WFH0...', nickname: 'WFH0...', money: 2000, expensetype: '提现'}
-        ]
+        page_count: 10,
+        current_page: 1,
+        total: 0,
+        tableData: []
       }
     },
+    created () {
+      this.getData()
+    },
     methods: {
+      getData () {
+        brokerageTurnoverList({
+          page_count: this.page_count,
+          current_page: this.current_page
+        }).then(res => {
+          this.total = res.data.count
+          this.tableData = res.data.data_list
+        })
+      },
       handleSelectionChange () {},
       editHandle () {},
-      createFn () {},
-      handleSizeChange () {},
-      handleCurrentChange () {},
-      submit () {}
+      handleSizeChange (v) {
+        this.page_count = v
+      },
+      handleCurrentChange (v) {
+        this.current_page = v
+      },
+      submit () {},
+      tableToExcel(){
+        let map = [
+          {name: 'date', value: '下单时间'},
+          {name: 'turnover_id', value: '提现流水号'},
+          {name: 'user_id', value: '用户ID'},
+          {name: 'nickname', value: '昵称'},
+          {name: 'amount', value: '订单金额'},
+          {name: 'type', value: '支出类别'}
+        ]
+        tableToExcel({
+          name: "返利提取流水.xlsx",
+          data: this.tableData,
+          map
+        })
+      }
     }
   }
 </script>

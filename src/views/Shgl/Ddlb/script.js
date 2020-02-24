@@ -6,6 +6,7 @@ import {saleHead, orderList, orderGoods, applyRefund} from 'API/Shgl'
 import moment from 'moment'
 import createCom from '../coms/create'
 import DialogCom from 'COMPONENTS/DialogCom'
+import {tableToExcel} from 'COMMONS/util.js'
 
 export default {
   name: 'shgl-ddlb',
@@ -172,11 +173,6 @@ export default {
       this.dialogFlag = false
     },
     tableToExcel(){
-      //要导出的json数据
-      const jsonData = this.tableData
-      //列标题，逗号隔开，每一个逗号就是隔开一个单元格
-      // let str = `收货地址,物流单号,昵称,订单号,订单状态,实付金额,返利金额,更新时间,用户ID,微信交易号\n`;
-      let str = '';
       let map = [
         {name: 'nickname', value: '昵称'},
         {name: 'order_id', value: '订单号'},
@@ -189,32 +185,11 @@ export default {
         {name: 'address', value: '收货地址'},
         {name: 'express_number', value: '物流单号'},
       ]
-      //增加\t为了不让表格显示科学计数法或者其他格式
-      for (let i = 0; i < map.length; i++) {
-        const item = map[i]
-        if (i == map.length - 1) {
-          str += `${item.value}\n`
-        } else {
-          str += `${item.value},`
-        }
-      }
-      for(let i = 0 ; i < jsonData.length ; i++ ){
-        for (let index = 0; index < map.length; index++) {
-          const item = map[index].name;
-          str+=`${jsonData[i][item] + '\t'},`;
-        }
-        str+='\n';
-      }
-      //encodeURIComponent解决中文乱码
-      let uri = 'data:text/xlsx;charset=utf-8,\ufeff' + encodeURIComponent(str);
-      //通过创建a标签实现
-      let link = document.createElement("a");
-      link.href = uri;
-      //对下载的文件命名
-      link.download =  "订单列表.xlsx";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      tableToExcel({
+        name: "订单列表.xlsx",
+        data: this.tableData,
+        map
+      })
     }
   }
 }
