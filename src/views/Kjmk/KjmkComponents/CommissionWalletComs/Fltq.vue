@@ -18,7 +18,7 @@
           label="下单时间"
           align='center'
           width="150">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+          <template slot-scope="scope">{{ scope.row.add_time }}</template>
         </el-table-column>
         <el-table-column
           align='center'
@@ -77,7 +77,8 @@
         page_count: 10,
         current_page: 1,
         total: 0,
-        tableData: []
+        tableData: [],
+        selectList: []
       }
     },
     created () {
@@ -93,7 +94,9 @@
           this.tableData = res.data.data_list
         })
       },
-      handleSelectionChange () {},
+      handleSelectionChange (v) {
+        this.selectList = v
+      },
       editHandle () {},
       handleSizeChange (v) {
         this.page_count = v
@@ -103,8 +106,12 @@
       },
       submit () {},
       tableToExcel(){
+        let data = this.tableData
+        if (this.selectList.length) {
+          data = this.selectList
+        }
         let map = [
-          {name: 'date', value: '下单时间'},
+          {name: 'add_time', value: '下单时间'},
           {name: 'turnover_id', value: '提现流水号'},
           {name: 'user_id', value: '用户ID'},
           {name: 'nickname', value: '昵称'},
@@ -113,7 +120,7 @@
         ]
         tableToExcel({
           name: "返利提取流水.xlsx",
-          data: this.tableData,
+          data,
           map
         })
       }

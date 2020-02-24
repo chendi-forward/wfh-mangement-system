@@ -105,6 +105,7 @@
       }],
         selected: dxls,
         current_expand: null,
+        selectList: [],
         subList: [
           {name: '代销流水', component: dxls, type: '代销'},
           {name: '推荐流水', component: tjls, type: '推荐'},
@@ -144,7 +145,9 @@
           this.current_expand.expand = res.data
         })
       },
-      handleSelectionChange () {},
+      handleSelectionChange (v) {
+        this.selectList = v
+      },
       editHandle () {},
       handleSizeChange (v) {
         this.page_count = v
@@ -163,6 +166,10 @@
         })
       },
       tableToExcel(){
+        let data = this.tableData
+        if (this.selectList.length) {
+          data = this.selectList
+        }
         let map = [
           {name: 'add_time', value: '申请时间'},
           {name: 'user_id', value: '用户ID'},
@@ -172,7 +179,7 @@
         ]
         tableToExcel({
           name: "提现审核列表.xlsx",
-          data: this.tableData,
+          data,
           map
         })
       }
