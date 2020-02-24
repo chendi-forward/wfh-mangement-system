@@ -103,8 +103,7 @@ export default {
       let ids = this.multipleSelection.map(item => item.turnover_id)
       this.handleDelete(ids)
     },
-    handleDelete(_ids) {
-      let ids = _ids.join(',')
+    handleDelete(ids) {
       this.$confirm(`确定要删除吗？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

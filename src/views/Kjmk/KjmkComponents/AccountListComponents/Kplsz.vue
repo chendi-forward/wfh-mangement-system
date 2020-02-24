@@ -209,7 +209,7 @@ export default {
       let params = {
         invoice_id: ids
       }
-      this.$get('/accountant/delete_invoice', params)
+      this.$post('/accountant/delete_invoice', params)
         .then(res => {
           this.getData()
         })
