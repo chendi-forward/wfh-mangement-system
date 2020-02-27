@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import { BASE_URL } from 'COMMONS/commonsConfig.js'
+  import { updateImgUrl } from 'COMMONS/commonsConfig.js'
 
   export default {
     name: 'img-upload-component',
@@ -26,7 +26,7 @@
     },
     data () {
       return {
-        action_url: BASE_URL + '/pic/push_goods_pic'
+        action_url: updateImgUrl + '/pic/push_goods_pic'
       }
     },
     watch: {

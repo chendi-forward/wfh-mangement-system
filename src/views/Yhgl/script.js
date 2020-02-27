@@ -204,10 +204,9 @@ export default {
         getUserData() {
             let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}`
             this.$get(url).then(res => {
-                console.log(res, '========')
                 if (res.content && res.content.length) {
                     res.content.forEach((item) => {
-                        item.avatar = config.baseUrl + item.avatar
+                        item.avatar = item.avatar
                         item.add_time = item.add_time.substr(0, 19)
                         item.label = item.label || '--'
                         item.province = item.province || '--'
