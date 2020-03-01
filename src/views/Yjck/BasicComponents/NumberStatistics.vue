@@ -1,8 +1,8 @@
 <template>
   <div class="number-statistics">
     <div class="number-statistics--info">
-      <div class="number-statistics__item--number">{{item.number | thousand_tranf}}</div>
-      <div class="number-statistics__item--name">{{item.name}}</div>
+      <div class="number-statistics__item--number">{{number | thousand_tranf}}</div>
+      <div class="number-statistics__item--name">{{name}}</div>
     </div>
     <div class="number-statistics--icon">
       <i class="el-icon-document"></i>
@@ -13,6 +13,7 @@
 <script>
 export default {
   name: 'number-statistics',
+  props: ['name', 'number'],
   data () {
     return {
       item: {

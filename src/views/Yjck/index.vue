@@ -53,10 +53,10 @@
         </div>
         <div class="body-rightBottom">
           <div class="body-rightBottom__left body-rightBottom--item">
-            <number-statistics></number-statistics>
+            <number-statistics name='总订单数' :number= 'all_count'></number-statistics>
           </div>
           <div class="body-rightBottom__rigth body-rightBottom--item">
-            <number-statistics></number-statistics>
+            <number-statistics name='总销售额' :number= 'all_money'></number-statistics>
           </div>
         </div>
       </div>

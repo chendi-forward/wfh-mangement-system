@@ -1,11 +1,11 @@
 <template>
   <div class="goods--list">
-    <div class="goods--item" v-for="goods in goodsList" :key="goods.id">
-      <img class="goods--item__img" :src="goods.img" />
+    <div class="goods--item" v-for="(goods, index) in goodsList" :key="index">
+      <img class="goods--item__img" :src="goods.avatar" />
       <div class="goods--item__info">
-        <div class="goods--item__id goods--item__inner">{{goods.id}}</div>
-        <div class="goods--item__name goods--item__inner">{{goods.name}}</div>
-        <div class="goods--item__number goods--item__inner">{{goods.number | thousand_tranf}}</div>
+        <div class="goods--item__id goods--item__inner">{{goods.user_id}}</div>
+        <div class="goods--item__name goods--item__inner">{{goods.goods_title}}</div>
+        <div class="goods--item__number goods--item__inner">{{goods.real_price | thousand_tranf}}</div>
       </div>
     </div>
   </div>
@@ -54,6 +54,18 @@ export default {
         return value
       }
     }
+  },
+  mounted () {
+    this.getSaleData()
+  },
+  methods: {
+    //  获取销售列表
+    getSaleData() {
+        this.$get('/home/order_list_show').then(res => {
+            console.log(res, '==sale===')
+            this.goodsList = res.data
+        })
+    },
   }
 }
 </script>
