@@ -102,7 +102,6 @@ export default {
         // 获取用户详细信息
         getUserDetailData(id) {
             this.$get('/user/user_detail?user_id=' + this.id).then(res => {
-                console.log(res, '=====detail=====')
                 let result = res.data
                 this.formLabelAlign.update = result.invite_code
                 this.formLabelAlign = {
@@ -115,7 +114,6 @@ export default {
                     level: result.level + '',
                     remark: result.remark + ''
                 }
-                console.log(this.formLabelAlign, '=====detail=====')
                 this.dialogFlag = true
             })
         },
@@ -125,7 +123,6 @@ export default {
                 return
             }
             this.$get('/user/create_invite_code?user_id=' + this.id).then((res) => {
-                console.log(res, '==========')
                 this.formLabelAlign.update = res.invite_code
             })
         },
