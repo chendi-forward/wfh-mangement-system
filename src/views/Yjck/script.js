@@ -94,6 +94,7 @@ export default {
 				divide: 1200
 			}
 			],
+			effectiveDate: [moment().subtract(7, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")],
 			effectiveDate_e: moment().format("YYYY-MM-DD"),
 			effectiveDate_s: moment().subtract(7, "days").format("YYYY-MM-DD"),
 			activeName1: 'yhdt',
@@ -114,7 +115,7 @@ export default {
 			],
 
 			newPeople: [
-				{name: '新增人数', number: 3000 }
+				{ name: '新增人数', number: 3000 }
 			],
 			activePeople: [
 				{ name: '活跃人数', number: 3000 }
@@ -127,6 +128,39 @@ export default {
 		},
 		activeName2(val) {
 			this.getUserInfo(val)
+		},
+		effectiveDate: {
+			handler(val) {
+				if (val) {
+					this.effectiveDate_s = val[0]
+					this.effectiveDate_e = val[1]
+				} else {
+					this.effectiveDate_s = ''
+					this.effectiveDate_e = ''
+				}
+			},
+			deep: true
+		},
+		selectDay(val) {
+			switch (val) {
+				case 'zuotian':
+					this.effectiveDate = [moment().subtract(1, "d").format("YYYY-MM-DD"), moment().subtract(1, "d").format("YYYY-MM-DD")]
+					break;
+				case 'shangzhou':
+					this.effectiveDate = [moment().subtract(7, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
+					break;
+				case 'shanggeyue':
+					this.effectiveDate = [moment().subtract(1, "months").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
+					break;
+				case 'jinbannian':
+					this.effectiveDate = [moment().subtract(6, "months").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
+					break;
+				case 'jinyinian':
+					this.effectiveDate = [moment().subtract(1, "years").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
+					break;
+				default:
+					break;
+			}
 		}
 	},
 	filters: {

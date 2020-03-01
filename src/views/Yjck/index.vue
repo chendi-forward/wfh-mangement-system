@@ -11,33 +11,14 @@
         <div class="body-leftTop">
           <div class="body-leftTop--select">
             <el-select v-model="selectDay" placeholder="请选择...">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
             <div class="form--dateSelect">
-              <el-date-picker
-                style="width: 180px"
-                popper-class="data-input"
-                v-model="effectiveDate_s"
-                type="date"
-                placeholder="选择时间..."
-              ></el-date-picker>
-              <div style="width: 20px; display: flex; align-items: center; justify-content: center">
-                <div class="date-throught"></div>
-              </div>
-              <el-date-picker
-                style="width: 180px"
-                popper-class="data-input"
-                v-model="effectiveDate_e"
-                type="date"
-                placeholder="选择时间..."
-              ></el-date-picker>
+              <el-date-picker v-model="effectiveDate" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
               <div class="select-btn">
-                <el-button type="success" size='small'>查找</el-button>
+                <el-button type="success" size='small' @click="getLineData">查找</el-button>
               </div>
             </div>
           </div>
@@ -55,10 +36,10 @@
         </div>
         <div class="body-rightBottom">
           <div class="body-rightBottom__left body-rightBottom--item">
-            <number-statistics name='总订单数' :number= 'all_count'></number-statistics>
+            <number-statistics name='总订单数' :number='all_count'></number-statistics>
           </div>
           <div class="body-rightBottom__rigth body-rightBottom--item">
-            <number-statistics name='总销售额' :number= 'all_money'></number-statistics>
+            <number-statistics name='总销售额' :number='all_money'></number-statistics>
           </div>
         </div>
       </div>
@@ -109,126 +90,126 @@
 </script>
 
 <style lang="less" scoped>
-  .header {
-    .header-item__number {
-      font-size: 30px;
-      color: #363F51;
-    }
-    .header-item__name {
-      font-size: 16px;
-    }
+.header {
+  .header-item__number {
+    font-size: 30px;
+    color: #363f51;
   }
-  .body {
-    margin-top: 15px;
-    display: grid;
-    grid-column-gap: 15px;
-    grid-template-columns: 7fr 5fr;
-    .body-leftTop,
-    .body-leftBottom,
-    .body-rightTop {
-      background-color: #fff;
-      margin-bottom: 15px;
-    }
-    .body-leftTop {
-      padding: 20px 30px;
-      .el-select {
-        width: 120px;
-        & /deep/ .el-input__inner {
-          text-align: start;
-        }
+  .header-item__name {
+    font-size: 16px;
+  }
+}
+.body {
+  margin-top: 15px;
+  display: grid;
+  grid-column-gap: 15px;
+  grid-template-columns: 7fr 5fr;
+  .body-leftTop,
+  .body-leftBottom,
+  .body-rightTop {
+    background-color: #fff;
+    margin-bottom: 15px;
+  }
+  .body-leftTop {
+    padding: 20px 30px;
+    .el-select {
+      width: 120px;
+      & /deep/ .el-input__inner {
+        text-align: start;
       }
-      .body-leftTop--select {
+    }
+    .body-leftTop--select {
+      display: flex;
+      justify-content: space-between;
+      .form--dateSelect {
+        width: 400px;
         display: flex;
         justify-content: space-between;
-        .form--dateSelect {
-          width: 400px;
-          display: flex;
-          justify-content: space-between;
-          /deep/ .el-input__inner {
-            padding-right: 15px;
-          }
-        }
-        .select-btn {
-          margin: 0 20px;
-          line-height: 40px;
+        /deep/ .el-input__inner {
+          padding-right: 15px;
         }
       }
-      .date-throught {
-        height: 2px;
-        background-color: #363f51;
-        width: 70%;
+      .select-btn {
+        margin: 0 20px;
+        line-height: 40px;
       }
     }
-    .body-leftBottom {
-      .body-leftBottom--content {
-        height: 273px;
-      }
-      #xlqsChart {
-        height: 100%;
-      }
-    }
-    .body-rightTop {
-      height: 285px;
-      padding: 30px;
-    }
-    .body-rightBottom {
-      display: grid;
-      grid-column-gap: 15px;
-      grid-template-columns: 1fr 1fr;
-      height: 130px;
-      margin-bottom: 15px;
-      .body-rightBottom--item {
-        background-color: #fff;
-        padding: 30px 20px;
-      }
+    .date-throught {
+      height: 2px;
+      background-color: #363f51;
+      width: 70%;
     }
   }
-  .center {
-    height: 150px;
-  }
-  .space-divide {
-    display: flex;
-    background-color: #fff;
-    padding: 40px;
-    justify-content: space-around;
-    .divide-item {
-      width: 20%;
-      border-right: 1px solid #96a1b6;
-      &:last-of-type {
-        border-right: unset;
-      }
+  .body-leftBottom {
+    .body-leftBottom--content {
+      height: 273px;
+    }
+    #xlqsChart {
+      height: 100%;
     }
   }
-  .footer {
-    margin-top: 15px;
+  .body-rightTop {
+    height: 285px;
+    padding: 30px;
+  }
+  .body-rightBottom {
     display: grid;
     grid-column-gap: 15px;
-    grid-template-columns: 7fr 5fr;
-    .footer__header--tabs {
-      box-shadow: unset;
-      & /deep/ .el-tabs__item {
-        width: auto;
-      }
-    }
-    .footer--map,
-    .footer--list {
-      height: 410px;
-    }
-    .footer--list {
-      display: grid;
-      grid-column-gap: 20px;
-      grid-template-columns: 1fr 1fr;
-      padding: 30px;
-    }
-    .el-tab-pane {
-      position: relative;
+    grid-template-columns: 1fr 1fr;
+    height: 130px;
+    margin-bottom: 15px;
+    .body-rightBottom--item {
+      background-color: #fff;
+      padding: 30px 20px;
     }
   }
+}
+.center {
+  height: 150px;
+}
+.space-divide {
+  display: flex;
+  background-color: #fff;
+  padding: 40px;
+  justify-content: space-around;
+  .divide-item {
+    width: 20%;
+    border-right: 1px solid #96a1b6;
+    &:last-of-type {
+      border-right: unset;
+    }
+  }
+}
+.footer {
+  margin-top: 15px;
+  display: grid;
+  grid-column-gap: 15px;
+  grid-template-columns: 7fr 5fr;
+  .footer__header--tabs {
+    box-shadow: unset;
+    & /deep/ .el-tabs__item {
+      width: auto;
+    }
+  }
+  .footer--map,
+  .footer--list {
+    height: 410px;
+  }
+  .footer--list {
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    padding: 30px;
+  }
+  .el-tab-pane {
+    position: relative;
+  }
+}
 </style>
 <style lang="less">
-  .data-input {
-    .el-button--text {
-      display: none;
-    }
+.data-input {
+  .el-button--text {
+    display: none;
   }
+}
 </style>
