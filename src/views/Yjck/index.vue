@@ -20,18 +20,20 @@
             </el-select>
             <div class="form--dateSelect">
               <el-date-picker
+                style="width: 180px"
                 popper-class="data-input"
                 v-model="effectiveDate_s"
-                type="datetime"
+                type="date"
                 placeholder="选择时间..."
               ></el-date-picker>
               <div style="width: 20px; display: flex; align-items: center; justify-content: center">
                 <div class="date-throught"></div>
               </div>
               <el-date-picker
+                style="width: 180px"
                 popper-class="data-input"
                 v-model="effectiveDate_e"
-                type="datetime"
+                type="date"
                 placeholder="选择时间..."
               ></el-date-picker>
               <div class="select-btn">
@@ -72,11 +74,11 @@
           <el-tabs class="footer__header--tabs" type="border-card" v-model="activeName1">
             <el-tab-pane label="用户地图" name="yhdt">
               <div id='yhdtMap' class="footer--map"></div>
-              <map-legend class="footer__top"></map-legend>
+              <map-legend class="footer__top" :china-data='sortChinaData' :data-total='dataTotal'></map-legend>
             </el-tab-pane>
             <el-tab-pane label="销售地图" name="xsdt">
               <div id='xsdtMap' class="footer--map"></div>
-              <map-legend class="footer__top"></map-legend>
+              <map-legend class="footer__top" :china-data='sortChinaData' :data-total='dataTotal'></map-legend>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -84,19 +86,16 @@
       <div class="footer-right">
         <div class="footer__head">
           <el-tabs class="footer__header--tabs" type="border-card" v-model="activeName2">
-            <el-tab-pane label="用户数" name="yhs">
+            <el-tab-pane label="用户数" name="all">
               <div class="footer--list">
                 <total-number class="footer--list__left footer--list__inner" :item-list='userInfo'></total-number>
                 <total-number class="footer--list__left footer--list__inner" :item-list='vipClass'></total-number>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="新增人数" name="xzrs">
-              <div class="footer--list">
-                <total-number class="footer--list__left footer--list__inner" :item-list='userInfo'></total-number>
-                <total-number class="footer--list__left footer--list__inner" :item-list='vipClass'></total-number>
-              </div>
+            <el-tab-pane label="新增人数" name="new">
+              <active-people class="footer--list__left footer--list__inner" :item-list='newPeople'></active-people>
             </el-tab-pane>
-            <el-tab-pane label="活跃人数" name="hyrs">
+            <el-tab-pane label="活跃人数" name="active">
               <active-people class="footer--list__left footer--list__inner" :item-list='activePeople'></active-people>
             </el-tab-pane>
           </el-tabs>
@@ -145,6 +144,9 @@
           width: 400px;
           display: flex;
           justify-content: space-between;
+          /deep/ .el-input__inner {
+            padding-right: 15px;
+          }
         }
         .select-btn {
           margin: 0 20px;

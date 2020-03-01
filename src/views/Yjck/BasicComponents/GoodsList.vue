@@ -62,7 +62,6 @@ export default {
     //  获取销售列表
     getSaleData() {
         this.$get('/home/order_list_show').then(res => {
-            console.log(res, '==sale===')
             this.goodsList = res.data
         })
     },
@@ -86,8 +85,8 @@ export default {
       } 
       .goods--item__img {
         display: inline-block;
-        height: 55px;
         width: 55px;
+        height: 47px;
         margin-right: 35px;
         background-color: #f7f8f9;
       }
@@ -97,7 +96,8 @@ export default {
         background-color: #f7f8f9;
         padding: 0 20px;
         .goods--item__inner {
-          line-height: 55px;
+          overflow-wrap: break-word;
+          padding: 5px;
         }
         .goods--item__id {
           width: 25%;

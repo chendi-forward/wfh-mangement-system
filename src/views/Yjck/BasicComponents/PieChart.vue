@@ -21,23 +21,29 @@ export default {
   data() {
     return {}
   },
-  mounted () {
-    let pieChart = document.getElementById(`pieChart_${this.item.id}`)
-    let ctx = pieChart.getContext('2d')
-
-    ctx.beginPath()
-    ctx.strokeStyle = '#96a1b6'
-    ctx.arc(50, 50, 35, 0, 2 * Math.PI, false)
-    ctx.stroke()
-
-    ctx.beginPath()
-    ctx.strokeStyle = '#363f51'
-    ctx.lineWidth = 6
-    ctx.arc(50, 50, 38, -0.5 * Math.PI, 0.3 * Math.PI, false)
-    ctx.stroke()
-
-    ctx.font = '20px sans-serif'
-    ctx.fillText('25%', 35, 57)
+  watch: {
+    item(val) {
+      let precent = (val.divide / val.total * 100).toFixed(1) + '%'
+      let PIRadio = (val.divide / val.total).toFixed(3) * 2 - 0.5
+      this.chartRadio(precent, PIRadio)
+    }
+  },
+  methods: {
+    chartRadio(precent, PIRadio) {
+      let pieChart = document.getElementById(`pieChart_${this.item.id}`)
+      let ctx = pieChart.getContext('2d')
+      ctx.beginPath()
+      ctx.strokeStyle = '#96a1b6'
+      ctx.arc(50, 50, 35, 0, 2 * Math.PI, false)
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.strokeStyle = '#363f51'
+      ctx.lineWidth = 6
+      ctx.arc(50, 50, 38, -0.5 * Math.PI, PIRadio * Math.PI, false)
+      ctx.stroke()
+      ctx.font = '14px sans-serif'
+      ctx.fillText(precent, 33, 57)
+    }
   }
 }
 </script>
