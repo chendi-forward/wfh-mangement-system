@@ -107,19 +107,19 @@
               id: '3',
               name: '用户管理',
               path: 'yhgl',
-              icon: 'el-icon-menu'
+              icon: 'el-icon-user-solid'
             },
             {
               id: '4',
               name: '权限管理',
               path: 'qxgl',
-              icon: 'el-icon-menu'
+              icon: 'el-icon-s-custom'
             },
             {
               id: '5',
               name: '售后管理',
               path: 'shgl',
-              icon: 'el-icon-menu',
+              icon: 'el-icon-sold-out',
               children: [
                 {
                   name: '订单列表',
@@ -150,7 +150,7 @@
               id: '6',
               name: '会员积分',
               path: 'hyjf',
-              icon: 'el-icon-setting',
+              icon: 'el-icon-present',
               children: [
                 {
                   name: '时间设置',
@@ -170,7 +170,7 @@
               id: '7',
               name: '营销模块',
               path: 'yxmk',
-              icon: 'el-icon-menu',
+              icon: 'el-icon-shopping-cart-full',
               children: [
                 {
                   name: '活动表管理',
@@ -190,7 +190,7 @@
               id: '8',
               name: '会计模块',
               path: 'kjmk',
-              icon: 'el-icon-menu'
+              icon: 'el-icon-notebook-2'
             }
           ]
         }
