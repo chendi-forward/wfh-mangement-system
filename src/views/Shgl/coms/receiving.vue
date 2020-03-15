@@ -34,10 +34,9 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="footer">
+        <div class="footer" v-if="!data.status">
         <el-button class="saveBtn" @click.stop="sureSave">确 认</el-button>
         <el-button class="cancleBtn" @click.stop="cancleSave">取 消</el-button></div>
-        </div>
     </div>
 </template>
 
@@ -51,6 +50,7 @@ import { refundDetail, confirmReceipt } from 'API/Shgl'
             return {
                 ddbh: '1654966632',
                 tydh: '5621654623',
+                status: true
             }
         }
       },
@@ -66,7 +66,6 @@ import { refundDetail, confirmReceipt } from 'API/Shgl'
     },
     watch: {
         goodsid (n) {
-            console.log(n, '===')
             this.getDetailData()
         }
     },
@@ -76,8 +75,7 @@ import { refundDetail, confirmReceipt } from 'API/Shgl'
                 id: this.goodsid
             }
             refundDetail(data).then(res => {
-                console.log(res, '===detail')
-                if (res.message == 'ok') {
+                if (res.message == 'ok' && res.data) {
                     this.goods_detail = res.data.goods_detail
                 }
             })
@@ -86,16 +84,18 @@ import { refundDetail, confirmReceipt } from 'API/Shgl'
             let obj ={
                 flag: 2
             }
-            this.$emit('sure-save', obj)
+            // this.$emit('sure-save', obj)
             let data = {
                 id: this.goodsid
             }
             confirmReceipt(data).then(res => {
-                this.$message({
-                    message: '确认收货成功!',
-                    type: 'success'
-                });
-                console.log(res, 'confirmreceipt====')
+                if (res.data) {
+                    this.$message.success('确认收货成功')
+                    this.$emit('sure-save', obj)
+                } else {
+                    this.$message.error('确认收货失败')
+                    this.$emit('cancle-save')
+                }
             })
         },
         cancleSave() {

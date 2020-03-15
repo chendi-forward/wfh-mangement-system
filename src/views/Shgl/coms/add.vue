@@ -3,19 +3,20 @@
   <div class="tags-box">
     <div class="tag-box">
         <span class="header-title">物流公司:</span>
-        <el-select v-model="selectKey" @change='selectChange' placeholder="请选择">
-        <el-option
-            v-for="(item, index) in logisticsData"
-            :key="index"
-            :label="item.name"
-            :value="item.logistics_id">
-        </el-option>
+        <el-select v-model="selectKey" @change='selectChange' :disabled="data.status" placeholder="请选择">
+          <el-option
+              v-for="(item, index) in logisticsData"
+              :key="index"
+              :label="item.name"
+              :value="item.logistics_id">
+          </el-option>
         </el-select>
     </div>
     <div class="tag-box">
         <span class="header-title">退运单号:</span>
         <el-input
         placeholder="请输入单号..."
+        :disabled="data.status"
         v-model="tydh">
         </el-input>
     </div>
@@ -35,34 +36,31 @@
         </el-input>
         （单位：元）
     </div> -->
-    <div class="footer">
+    <el-timeline>
+        <el-timeline-item
+            v-for="(activity, index) in logistics.data"
+            :key="index"
+            :type="activity.type">
+            <p class="my-timestamp">{{activity.time}}</p>
+            {{activity.context }}
+        </el-timeline-item>
+    </el-timeline>
+    <div class="footer" v-if="!data.status">
       <el-button class="saveBtn" type="primary" @click.stop="sureSave">保 存</el-button>
       <el-button class="cancleBtn" @click.stop="cancleSave">取 消</el-button></div>
     </div>
 </template>
 
 <script>
-import { logisticsManage } from 'API/Shgl'
+import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
   export default {
     props: {
       data: {
         type: Object,
         default: () => {
             return {
-                tydh: '',
-                wxid: '',
-                money: '',
-                selectKey: '1',
-                options: [{
-                    value: '1',
-                    label: '顺丰速运'
-                }, {
-                    value: '2',
-                    label: '圆通快递'
-                }, {
-                    value: '3',
-                    label: '申通快递'
-                }]
+                id: '',
+                status: true
             }
         }
       },
@@ -72,6 +70,17 @@ import { logisticsManage } from 'API/Shgl'
         selectKey: '',
         tydh: '',
         logisticsData: [],
+        logistics: {
+          com: "huitongkuaidi",
+          condition: "D01",
+          ischeck: "1",
+          message: "ok",
+          name: "百世快递",
+          nu: "73502713736236",
+          state: "签收",
+          status: "200",
+          data: []
+        }
       }
     },
     methods: {
@@ -88,27 +97,39 @@ import { logisticsManage } from 'API/Shgl'
               tydh: this.tydh,
               flag: 1
             }
-            console.log('sureSave')
             this.$emit('sure-save', obj)
           }
         },
         cancleSave () {
-          console.log('cancleSave')
           this.$emit('cancle-save')
         },
         getLogisticsData () {
           logisticsManage().then(res => {
-            console.log(res, '==logisticsManage==')
             if (res.message == 'ok') {
               this.logisticsData = res.data
             }
           })
         },
+        cancelOrderLogistics () {
+          cancelOrderLogistics({id: this.data.id}).then(res => {
+            if (res.data && res.data.data && res.data.data.length) {
+              this.logistics = res.data
+              this.tydh = this.logistics.nu
+              this.selectKey = this.logistics.name
+            } else {
+              this.tydh = "无单号信息"
+              this.selectKey = "无快递信息"
+              this.logistics.data = [{context: '暂无物流信息', time: ''}]
+            }
+            this.logistics.data[0].type = 'danger'
+            this.logistics.data[0].size = 'large'
+          })
+        },
         selectChange () {}
     },
     mounted () {
+      this.data.status && this.cancelOrderLogistics()
       this.getLogisticsData()
-      // console.log(this.goodsid, '=fooodwd==')
     }
   }
 </script>

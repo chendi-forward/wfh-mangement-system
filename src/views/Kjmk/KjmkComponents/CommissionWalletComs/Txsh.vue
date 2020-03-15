@@ -39,23 +39,23 @@
         <el-table-column
           align='center'
           label="状态">
-          <template slot-scope="scope"><span class='text-overflow'>{{ map[scope.row.state] }}</span></template>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.state }}</span></template>
         </el-table-column>
         <el-table-column
           label="操作"
           align='center'
           width="150">
           <template slot-scope="scope">
-            <el-button size="mini" type="success" @click="submit(scope.row.cash_id, 1)">通过</el-button>
-            <el-button size="mini" @click="submit(scope.row.cash_id, 2)">驳回</el-button>
+            <el-button size="mini" type="success" @click="submit(scope.row.cash_id, 1)" :disabled="scope.row.state!='未审核'">通过</el-button>
+            <el-button size="mini" @click="submit(scope.row.cash_id, 2)" :disabled="scope.row.state!='未审核'">驳回</el-button>
           </template>
         </el-table-column>
         <el-table-column
           type="expand"
           align='center'>
           <template slot-scope="scope">
-            <sub-nav v-model="selected" :sub-list='subList' class="not-border" @input="tabChange"></sub-nav>
-            <component :is="selected" :data='scope.row.expand'></component>
+            <sub-nav v-model="scope.row.selected" :sub-list='subList' class="not-border" @input="tabChange($event,scope.row)"></sub-nav>
+            <component :is="scope.row.selected" :data='scope.row.expand' v-if="comshow"></component>
           </template>
         </el-table-column>
       </el-table>
@@ -92,6 +92,7 @@
     },
     data () {
       return {
+        comshow: false,
         page_count: 10,
         current_page: 1,
         map: ['未审核', '通过', '驳回'],
@@ -104,7 +105,6 @@
         "user_id": 'WFH70312768'
       }],
         selected: dxls,
-        current_expand: null,
         selectList: [],
         subList: [
           {name: '代销流水', component: dxls, type: '代销'},
@@ -124,12 +124,12 @@
         }).then(res => {
           this.total = res.data.count
           this.tableData = res.data.data_list.map(item => {
+            item.selected = dxls
             return Object.assign(item, {state: this.map[item.state]})
           })
         })
       },
       expandChange (row, v) {
-        this.current_expand = row
         cashWithdrawalDetail({
           type: '代销',
           cash_id: row.cash_id
@@ -137,12 +137,35 @@
           row.expand = res.data
         })
       },
-      tabChange (v, index) {
+      tabChange (v, listItem) {
+        this.comshow = false
         cashWithdrawalDetail({
-          cash_id: this.current_expand.cash_id,
-          type: this.subList[index].type
+          cash_id: listItem.cash_id,
+          type: this.subList[v.selectedItem].type
         }).then(res => {
-          this.current_expand.expand = res.data
+          // let obj = {
+          //   '代销': [
+          //     {r_time: '1', goods_title: '2', goods_count: '3', pay_price: '4', rebate_money: '5', base_rebate: '6', coupon_rebate: '7', active_rebate: '8'}
+          //   ],
+          //   '推荐': [
+          //     {r_time: 'a', child_id: 'b', task_rank: 'c', rebate_money: 'd'}
+          //   ],
+          //   '活跃': [
+          //     {'01': 'e', '02': 'f', '03': 'g', '04': 'h', '05': 'i', '06': '完成', '07': 'k', '08': 'l'},
+          //     {'01': 'e', '02': 'f', '03': 'g', '04': 'h', '05': 'i', '06': '完成', '07': 'k', '08': 'l'}
+          //   ]
+          // }
+          let status = false
+          listItem.expand = res.data.map(item => {
+            if (item['06'] == '完成' && v.selectedItem == 2) {
+              if (status) {
+                item['06'] = '/'
+              }
+              status = true
+            }
+            return item
+          })
+          this.comshow = true
         })
       },
       handleSelectionChange (v) {

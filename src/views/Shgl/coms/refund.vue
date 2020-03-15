@@ -4,10 +4,9 @@
         <p><span>订单编号:</span> {{data.ddbh}}</p>
         <p><span>退款账号:</span> {{data.tkzh}}</p>
         <p><span>退款金额:</span> {{data.tkje}}(元)</p>
-        <div class="footer">
+        <div class="footer" v-if="!data.status">
         <el-button class="saveBtn" @click.stop="sureSave">确 认</el-button>
         <el-button class="cancleBtn" @click.stop="cancleSave">取 消</el-button></div>
-        </div>
     </div>
 </template>
 
@@ -21,7 +20,8 @@ import { refund } from 'API/Shgl'
             return {
                 ddbh: '1654966632',
                 tkzh: '5621654623',
-                tkje: 400
+                tkje: 400,
+                status: true
             }
         }
       },
@@ -31,10 +31,6 @@ import { refund } from 'API/Shgl'
       }
     },
     watch: {
-        goodsid (n) {
-            console.log(n, '===')
-            // this.getDetailData()
-        }
     },
     data () {
       return {
@@ -45,16 +41,18 @@ import { refund } from 'API/Shgl'
         let obj = {
           flag: 3
         }
-        this.$emit('sure-save', obj)
+        // this.$emit('sure-save', obj)
         let data = {
           id: this.goodsid
         }
         refund(data).then(res => {
-          console.log(res, '======')
-          this.$message({
-              message: '确认退款成功!',
-              type: 'success'
-          });
+          if (res.data) {
+            this.$message.success('确认退款成功')
+            this.$emit('sure-save', obj)
+          } else {
+            this.$message.error('确认退款失败')
+            this.$emit('cancle-save')
+          }
         })
       },
       cancleSave() {

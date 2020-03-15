@@ -206,9 +206,9 @@
       </div>
     </div>
     <div class="ssxd-footer">
-      <div class="selectAll-wrap">
+      <!-- <div class="selectAll-wrap">
         <el-button size="mini">删除</el-button>
-      </div>
+      </div> -->
       <div class="page-wrap">
         <my-pagination
           @size-change="handleSizeChange"

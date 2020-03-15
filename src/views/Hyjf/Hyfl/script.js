@@ -211,6 +211,10 @@ export default {
         }
         obj[item.type_id] = item.num
       })
+      if (obj.rebate > 1) {
+        this.$message.error('返利比例不得大于1')
+        return false
+      }
       if (error) return error
       this.$post('/integral/change_super_recommend_rebate_setting', obj).then(res => {
         if (res.data) {

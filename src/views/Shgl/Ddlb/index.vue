@@ -166,13 +166,13 @@
         </el-table-column>
         <el-table-column align='center' label="操作" width="150">
           <template slot-scope="scope">
-          <div @click='lineItem(scope.row)' class="con-icon theme-color">
+          <div @click='lineItem(scope.row)' class="con-icon theme-color" title="订单详情">
             <i class="icon iconfont icon-sousuowenjian"></i>
           </div>
-          <!-- <div @click='xiazai(scope.row)' class="con-icon theme-color">
-            <i class="icon iconfont icon-xiazai"></i>
-          </div> -->
-          <div @click='tuikuan(scope.row)' class="con-icon">
+          <div @click='fahuo(scope.row)' class="con-icon theme-color" title="发货" v-if="orderParams.status==1">
+            <i class="icon iconfont el-icon-truck"></i>
+          </div>
+          <div @click='tuikuan(scope.row)' title="退货" class="con-icon" v-if="orderParams.status!==5 && orderParams.status!==6">
             <i class="icon iconfont icon-fanhui"></i>
           </div>
           <!-- <div @click='deleteOrder(scope.row)' class="con-icon">
@@ -221,8 +221,8 @@
         </div>
       </div>
     </div>
-    <dialog-com v-model='dialogFlag' title='新建退款' @sure-save='sureSave' @cancle-save='cancleSave'>
-      <create-com :data="tlxx"/>
+    <dialog-com v-model='dialogFlag' :title='currentCom.name' @sure-save='currentCom.handle' @cancle-save='cancleSave'>
+      <component :is="currentCom.com" :data="currentCom.data" :dialogFlag="dialogFlag"></component>
     </dialog-com>
   </div>
 </template>

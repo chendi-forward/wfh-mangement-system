@@ -100,7 +100,7 @@ export default {
           }
         }
       }
-      this.$post('/integral/change_integral_setting', this.SillForm).then(res => {
+      this.$post('/integral/change_integral_advance ', this.SillForm).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
           this.editSillShow = false

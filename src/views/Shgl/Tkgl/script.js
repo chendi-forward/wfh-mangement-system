@@ -25,12 +25,12 @@ export default {
       tableData: [],
       status: ['已付款', '已发货', '已完成'],
       tabs: [
-        {label: '退款中', name: '0'}, {label: '退款完成', name: '1'}
+        {label: '退款中', name: '1'}, {label: '退款完成', name: '3'}
       ],
-      currentTab: '0',
+      currentTab: '1',
       // 退款时间线
       activities: [{
-        content: '退货清单',
+        content: '退货物流',
         timestamp: '2018-04-12 20:46',
         type: 'danger',
         class: 'theme-color',
@@ -43,17 +43,6 @@ export default {
         comIndex: 1
       }, {
         content: '确认退款',
-        timestamp: '2018-04-03 20:46',
-        comIndex: 2
-      }],
-      activities2: [{
-        content: '退货清单',
-        timestamp: '2018-04-12 20:46',
-        type: 'danger',
-        class: 'theme-color',
-        comIndex: 0
-      },{
-        content: '确认退款',
         type: 'danger',
         class: 'theme-color',
         timestamp: '2018-04-03 20:46',
@@ -63,9 +52,9 @@ export default {
       dialogFlag: false,
       currentCom: {},
       coms: [
-        {name: '退款信息', com: 'add-dialog', data: null},
-        {name: '确认退款', com: 'refund-dialog', data: null},
-        {name: '确认收货', com: 'receiving-dialog', data: null}
+        {name: '物流信息', com: 'add-dialog', data: null},
+        {name: '确认收货', com: 'receiving-dialog', data: null},
+        {name: '确认退款', com: 'refund-dialog', data: null}
       ]
     }
   },
@@ -76,7 +65,11 @@ export default {
                 id: this.idArrtoStr
             }
             cancelRefund(data).then(res => {
-                console.log(res, '=====')
+                if (res.data) {
+                    this.$message.success('取消退款成功')
+                } else {
+                    this.$message.error('取消退款失败')
+                }
             })
         } else {
             this.$message({
@@ -93,7 +86,18 @@ export default {
         }
         refundList(data).then(res => {
             if (res.message == 'ok') {
-                this.tableData = res.data.data_list
+                this.tableData = res.data.data_list.map(item => {
+                    if (!item.express_number) {
+                        item.rstate = 0
+                    } else if (item.refund_state == '提交退款') {
+                        item.rstate = 1
+                    } else if (item.refund_state == '确认收货') {
+                        item.rstate = 2
+                    } else if (item.refund_state == '退款完成') {
+                        item.rstate = 3
+                    }
+                    return item
+                })
                 this.total = res.data.count
             }
         })
@@ -104,19 +108,28 @@ export default {
             // this.pageSize = 10
         this.getData()
     },
+    expandChange (value, values) {
+    },
     openDialog(index, item) {
         this.goodsid = item.id
         let data = {}
-        if (index == 1) {
+        if (index == 0) {
+            data = {
+                id: item.id,
+                status: item.rstate > index
+            }
+        } else if (index == 1) {
             data = {
                 ddbh: item.order_id,
-                tydh: item.express_number
+                tydh: item.express_number,
+                status: item.rstate > index
             }
         } else if (index == 2) {
             data = {
                 ddbh: item.order_id,
                 tkzh: item.wechat_id,
-                tkje: item.refund_money
+                tkje: item.refund_money,
+                status: item.rstate > index
             }
         }
         this.suredata = data
@@ -136,7 +149,6 @@ export default {
         this.currentCom = this.coms[2]
     },
     handleSelectionChange(item) {
-        console.log(item, '==item==')
         if (item.length) {
             let arr = []
             item.forEach((i) => {
@@ -157,7 +169,6 @@ export default {
         this.getData()
     },
     sureSave(item) {
-        // console.log(item, '===')
         switch (item.flag) {
             case 1:
                 // 物流信息的添加
@@ -167,10 +178,16 @@ export default {
                     express_number: item.tydh
                 }
                 refundDeliver(data).then(res => {
-                    console.log(res, '====')
+                    if (res.data) {
+                        this.$message.success('物流信息添加成功')
+                        this.getData()
+                    } else {
+                        this.$message.error('物流信息添加失败')
+                    }
                 })
                 break;
             default:
+                this.getData()
                 break;
         }
         this.dialogFlag = false

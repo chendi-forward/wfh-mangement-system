@@ -2,10 +2,11 @@ import Pagination from 'COMPONENTS/Pagination'
 import boxIcon from 'ASSETS/image/box_icon.png'
 import carIcon from 'ASSETS/image/car_icon.png'
 import homeIcon from 'ASSETS/image/home_icon.png'
-import {saleHead, orderList, orderGoods, applyRefund} from 'API/Shgl'
+import {saleHead, orderList, orderGoods, applyRefund, deliverGoods} from 'API/Shgl'
 import moment from 'moment'
 import createCom from '../coms/create'
 import DialogCom from 'COMPONENTS/DialogCom'
+import EditLogistics from '../coms/editLogistics'
 import {tableToExcel} from 'COMMONS/util.js'
 
 export default {
@@ -13,7 +14,8 @@ export default {
   components: {
     'my-pagination': Pagination,
     'dialog-com': DialogCom,
-    'create-com': createCom
+    'create-com': createCom,
+    'editLogistics-dialog': EditLogistics
   },
   data () {
     return {
@@ -68,7 +70,12 @@ export default {
         order_id: '',
         sale_state: '', // 订单状态
         remark: '' // 备注
-      }
+      },
+      currentCom: {name: '新建退款', com: 'create-com', data: this.tlxx, showBtn: true, handle: this.tuikuanHandle},
+      coms: [
+        {name: '发货', com: 'editLogistics-dialog', data: { name: '', express_number: '', order_id: '' }, showBtn: true, handle: this.fahuoHandle},
+        {name: '新建退款', com: 'create-com', data: this.tlxx, showBtn: true, handle: this.tuikuanHandle}
+      ]
     }
   },
   created () {
@@ -101,7 +108,6 @@ export default {
       // > page_count     -- 每页的数量
       // > current_page  -- 当前也
       orderList(Object.assign(this.orderParams, data)).then(res => {
-        console.log('1111', res)
         this.total = res.data.count // data_list
         this.tableData = res.data.data_list
       })
@@ -123,6 +129,7 @@ export default {
       }
     },
     tabChage () {
+      this.orderParams.current_page = 1
       this.orderParams.status = this.currentTab == '-1' ? '' : this.currentTab - 0
       this.getOrderList()
     },
@@ -141,7 +148,14 @@ export default {
     xiazai () {
       this.tableToExcel()
     },
+    fahuo (row) {
+      this.currentCom = this.coms[0]
+      this.currentCom.data.order_id = row.order_id
+      this.dialogFlag = true
+    },
     tuikuan (row) {
+      this.currentCom = this.coms[1]
+      this.dialogFlag = true
       orderGoods({
         order_id: row.order_id
       }).then(res => {
@@ -149,7 +163,6 @@ export default {
         this.tlxx.sale_state = row.order_state
         this.tlxx.goods = res.data
       })
-      this.dialogFlag = true
     },
     deleteOrder () {},
     handleSizeChange (value) { // 每页显示数量变化
@@ -160,13 +173,30 @@ export default {
       this.orderParams.current_page = value
       this.getOrderList()
     },
-    sureSave () {
+    fahuoHandle () {
+      deliverGoods(this.currentCom.data).then(res => {
+        if (res.data) {
+          this.$message.success('发货成功！')
+          this.getOrderList()
+        } else {
+          this.$message.error('发货失败！')
+        }
+      }) 
+    },
+    tuikuanHandle () {
       if (this.tlxx.refund_money > this.tlxx.refund_money_copy) {
         return this.$message.error('保存失败，退款金额不得大于订单总金额')
       }
       delete this.tlxx.goods
       delete this.tlxx.refund_money_copy
-      applyRefund(this.tlxx)
+      applyRefund(this.tlxx).then(res => {
+        if (res.data) {
+          this.$message.success('退款成功！')
+          this.getOrderList()
+        } else {
+          this.$message.error('退款失败！')
+        }
+      })
       this.dialogFlag = false
     },
     cancleSave () {

@@ -117,7 +117,7 @@
         <div class="spgl-item--title">开票详情</div>
         <div class="spgl-item--content">
           <p><span class="name">发票类型</span><span class="value">{{invoice_info.is_e_invoice?'电子发表':'公司发票'}}</span></p>
-          <p><span class="name">发票抬头</span><span class="value">{{invoice_info.invoice_title}} （{{invoice_info.tin_number}}）</span></p>
+          <p><span class="name">发票抬头</span><span class="value">{{invoice_info.invoice_title}} <span v-if="invoice_info.tin_number">（{{invoice_info.tin_number}}）</span> </span></p>
           <p><span class="name">邮箱/邮寄地址</span><span class="value">{{invoice_info.recipient_address}}</span></p>
           <p><span class="name">联系电话</span><span class="value">{{invoice_info.recipient_tel}}</span></p>
         </div>
@@ -138,12 +138,12 @@
     <div class="commom-card flex-item-center handle">
       <el-button size="small" @click="goBack">返回列表</el-button>
       <div>
-        <el-button type="danger" size="small" @click="editHandle">编辑</el-button>
-        <el-button size="small" @click='cancleItem'>取消订单</el-button>
+        <el-button type="danger" size="small" @click="editHandle" v-if="tableData1[0].order_state==='已付款'">发货</el-button>
+        <el-button size="small" @click='cancleItem' v-if="tableData1[0].order_state==='未付款'">取消订单</el-button>
       </div>
     </div>
-    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
-      <component :is="currentCom.com"></component>
+    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave' :isShowFooter="currentCom.showBtn">
+      <component :is="currentCom.com" :data="currentCom.data" :dialogFlag="dialogFlag"></component>
     </dialog-Com>
   </div>
 </template>
