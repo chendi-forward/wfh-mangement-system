@@ -198,6 +198,7 @@ export default {
       this.multipleSelection = val
     },
     showSetting() {
+      this.detail = {}
       this.isShowSetting = true
     },
     hideSetting(v) {

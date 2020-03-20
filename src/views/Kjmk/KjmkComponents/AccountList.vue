@@ -7,7 +7,6 @@
 
 <script>
   import subNav from 'COMPONENTS/SubNav_comp'
-  // import fhwu from './AccountListComponents/Fhwl'
   import srlsz from './AccountListComponents/Srlsz'
   import zclsz from './AccountListComponents/Zclsz'
   import kplsz from './AccountListComponents/Kplsz'
@@ -20,7 +19,6 @@
       return {
         selected: srlsz,
         subList: [
-          // {name: '发货物流', component: fhwu},
           {name: '收入流水账', component: srlsz},
           {name: '支出流水账', component: zclsz},
           {name: '开票流水账', component: kplsz}

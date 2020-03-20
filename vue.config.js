@@ -24,7 +24,7 @@ module.exports = {
     // hot: false,
     proxy: {
       '/api': {
-        target: 'http://47.94.133.35:5500',
+        target: 'http://background.wfh-seller.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

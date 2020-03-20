@@ -1,11 +1,11 @@
 <template>
   <div class="number-statistics">
     <div class="number-statistics--info">
-      <div class="number-statistics__item--number">{{item.number | thousand_tranf}}</div>
-      <div class="number-statistics__item--name">{{item.name}}</div>
+      <div class="number-statistics__item--number">{{number | thousand_tranf}}</div>
+      <div class="number-statistics__item--name">{{name}}</div>
     </div>
     <div class="number-statistics--icon">
-      <i class="el-icon-document"></i>
+      <svg-icon :icon-class="icon" />
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@
 <script>
 export default {
   name: 'number-statistics',
+  props: ['name', 'number', 'icon'],
   data () {
     return {
       item: {
@@ -56,8 +57,9 @@ export default {
       justify-content: center;
       border-radius: 50%;
       border: 1px solid #96a1b6;
-      .el-icon-document {
-        font-size: 40px;
+      .svg-icon {
+        width: 30px;
+        height: 30px;
       }
     }
   }
