@@ -18,7 +18,7 @@
               <el-date-picker v-model="effectiveDate" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
               <div class="select-btn">
-                <el-button type="success" size='small' @click="getLineData">查找</el-button>
+                <el-button type="success" size='small' @click="handleSeach">查找</el-button>
               </div>
             </div>
           </div>

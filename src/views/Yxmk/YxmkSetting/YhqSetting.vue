@@ -3,14 +3,7 @@
     <div class="cjyhq-box">
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">优惠券信息设置</div>
-        <el-form
-          class="cjyhq-content"
-          name="formXxsz"
-          label-width="130px"
-          label-position="left"
-          :model="formXxsz"
-          ref="formXxsz"
-        >
+        <el-form class="cjyhq-content" name="formXxsz" label-width="130px" label-position="left" :model="formXxsz" ref="formXxsz">
           <!-- <el-form-item
             class="content-content__item"
             label="优惠券编号："
@@ -23,84 +16,33 @@
             ></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item> -->
-          <el-form-item
-            class="content-content__item"
-            label="优惠券名称："
-            prop="coupon_name"
-            :rules='rules.length10'
-          >
-            <el-input
-              v-model="formXxsz.coupon_name"
-              placeholder="输入优惠券名称..."
-            ></el-input>
+          <el-form-item class="content-content__item" label="优惠券名称：" prop="coupon_name" :rules='rules.length10'>
+            <el-input v-model="formXxsz.coupon_name" placeholder="输入优惠券名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="已参加显示名称："
-            prop="trolley_show_name"
-            :rules='rules.length10'
-          >
-            <el-input
-              v-model="formXxsz.trolley_show_name"
-              placeholder="输入已参加显示名称..."
-            ></el-input>
+          <el-form-item class="content-content__item" label="已参加显示名称：" prop="trolley_show_name" :rules='rules.length10'>
+            <el-input v-model="formXxsz.trolley_show_name" placeholder="输入已参加显示名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="下单页显示名称："
-            prop="order_show_name"
-            :rules='rules.length5'
-          >
-            <el-input
-              v-model="formXxsz.order_show_name"
-              placeholder="输入下单页显示名称..."
-            ></el-input>
+          <el-form-item class="content-content__item" label="下单页显示名称：" prop="order_show_name" :rules='rules.length5'>
+            <el-input v-model="formXxsz.order_show_name" placeholder="输入下单页显示名称..."></el-input>
             <div class="content__item--rule">*5个字符以内</div>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="生效时间："
-            prop="dateRange"
-            :rules="rules.dateRange"
-          >
+          <el-form-item class="content-content__item" label="生效时间：" prop="dateRange" :rules="rules.dateRange">
             <div class="form--dateSelect">
-              <el-date-picker
-                class="data-input"
-                v-model="formXxsz.start_time"
-                @change='changeDate("start_time")'
-                type="datetime"
-                placeholder="选择时间..."
-              ></el-date-picker>
+              <el-date-picker class="data-input" v-model="formXxsz.start_time" @change='changeDate("start_time")' type="datetime" placeholder="选择时间..."></el-date-picker>
               <div style="width: 20px; display: flex; align-items: center; padding: 3px;">
                 <div class="date-throught"></div>
               </div>
-              <el-date-picker
-                class="data-input"
-                v-model="formXxsz.end_time"
-                type="datetime"
-                @change='changeDate("end_time")'
-                placeholder="选择时间..."
-              ></el-date-picker>
+              <el-date-picker class="data-input" v-model="formXxsz.end_time" type="datetime" @change='changeDate("end_time")' placeholder="选择时间..."></el-date-picker>
             </div>
             <div class="content__item--rule">*必填项</div>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="发放数量："
-            prop="coupon_limit"
-            :rules="rules.coupon_limit"
-          >
+          <el-form-item class="content-content__item" label="发放数量：" prop="coupon_limit" :rules="rules.coupon_limit">
             <el-radio-group v-model="formXxsz.coupon_limit" @change='inputChange($event)'>
               <div class="form--radio__ff">
                 <el-radio label="张">每人限发</el-radio>
-                <el-input
-                  placeholder="输入数字..."
-                  type="number"
-                  @input="inputChange($event)"
-                  v-model="formXxsz.coupon_num"
-                ></el-input>
+                <el-input placeholder="输入数字..." type="number" @input="inputChange($event)" v-model="formXxsz.coupon_num"></el-input>
                 <span>张</span>
               </div>
               <div class="form--radio__ff">
@@ -108,60 +50,30 @@
               </div>
             </el-radio-group>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="订单条件："
-            prop="threshold_type"
-            :rules="rules.threshold_type"
-          >
+          <el-form-item class="content-content__item" label="订单条件：" prop="threshold_type" :rules="rules.threshold_type">
             <el-radio-group v-model="formXxsz.threshold_type">
               <div class="form--radio__ff">
                 <el-radio label="元">金额达到</el-radio>
-                <el-input
-                  placeholder="输入数字..."
-                  type="number"
-                  @input="inputChange($event)"
-                  v-model="formXxsz.ddMoney"
-                ></el-input>
+                <el-input placeholder="输入数字..." type="number" @input="inputChange($event)" v-model="formXxsz.ddMoney"></el-input>
                 <span>元</span>
               </div>
               <div class="form--radio__ff">
                 <el-radio label="罐">数量达到</el-radio>
-                <el-input
-                  placeholder="输入数字..."
-                  type="number"
-                  @input="inputChange($event)"
-                  v-model="formXxsz.ddNumber"
-                ></el-input>
+                <el-input placeholder="输入数字..." type="number" @input="inputChange($event)" v-model="formXxsz.ddNumber"></el-input>
                 <span>罐</span>
               </div>
             </el-radio-group>
           </el-form-item>
-          <el-form-item
-            class="content-content__item"
-            label="折扣设置："
-            prop="discount_type"
-            :rules="rules.discount_type"
-          >
+          <el-form-item class="content-content__item" label="折扣设置：" prop="discount_type" :rules="rules.discount_type">
             <el-radio-group v-model="formXxsz.discount_type">
               <div class="form--radio__ff">
                 <el-radio label="金额">金额减扣</el-radio>
-                <el-input
-                  placeholder="输入数字..."
-                  type="number"
-                  @input="inputChange($event)"
-                  v-model="formXxsz.zkMoney"
-                ></el-input>
+                <el-input placeholder="输入数字..." type="number" @input="inputChange($event)" v-model="formXxsz.zkMoney"></el-input>
                 <span>元</span>
               </div>
               <div class="form--radio__ff">
                 <el-radio label="折扣">比例减扣</el-radio>
-                <el-input
-                  placeholder="输入数字..."
-                  type="number"
-                  @input="inputChange($event)"
-                  v-model="formXxsz.zkNumber"
-                ></el-input>
+                <el-input placeholder="输入数字..." type="number" @input="inputChange($event)" v-model="formXxsz.zkNumber"></el-input>
                 <span>%</span>
               </div>
             </el-radio-group>
@@ -170,125 +82,54 @@
       </div>
       <div class="cjyhq-spsz">
         <div class="cjyhq-title">优惠商品设置</div>
-        <el-form
-          class="cjyhq-content form-spsz"
-          name="formSpsz"
-          label-width="130px"
-          label-position="left"
-        >
-          <el-form-item
-            label="参与优惠商品："
-            class="item__sale--wrap"
-            prop="activeGoods"
-          >
-            <div
-              class="item__sale"
-              v-for="item in activeGoods"
-              :key="item.goods_id"
-            >
-              <img
-                class="item__sale--img"
-                :src='base_url + item.pic_link'
-              />
+        <el-form class="cjyhq-content form-spsz" name="formSpsz" label-width="130px" label-position="left">
+          <el-form-item label="参与优惠商品：" class="item__sale--wrap" prop="activeGoods">
+            <div class="item__sale" v-for="item in activeGoods" :key="item.goods_id">
+              <img class="item__sale--img" :src='base_url + item.pic_link' />
               <div class="item__sale--text text-overflow-mult">{{item.title}}</div>
             </div>
           </el-form-item>
         </el-form>
         <div class="content-edit">
           <span class="content-edit--total">共 {{activeGoods.length}} 条</span>
-          <el-button
-            type="success"
-            size="small"
-            @click="showTag"
-          >更改</el-button>
+          <el-button type="success" size="small" @click="showTag">更改</el-button>
         </div>
       </div>
     </div>
     <div class="cjyhq-box__setting">
       <div class="cjyhq-title">优惠用户设置</div>
-      <el-form
-        name="formYhsz"
-        class="yhsz-content"
-        label-width="90px"
-        label-position="left"
-      >
-        <el-form-item
-          label="标签筛选："
-          class="content-content__item"
-          :show-message='false'
-        >
-          <el-select
-            v-model="formYhsz.user_label_id"
-            clearable
-            @change="changeUserLabel"
-            placeholder="请选择..."
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+      <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
+        <el-form-item label="标签筛选：" class="content-content__item" :show-message='false'>
+          <el-select v-model="formYhsz.user_label_id" clearable multiple collapse-tags placeholder="请选择...">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div class="yhsz-search">
-        <el-form
-          name="formYhsz"
-          class="yhsz-content yhsz-content--search"
-          label-width="90px"
-          label-position="left"
-        >
-          <el-form-item
-            label="用户搜索："
-            class="content-content__item"
-          >
-            <el-input
-              type="text"
-              v-model="userKey"
-              placeholder="输入用户ID..."
-            ></el-input>
+        <el-form name="formYhsz" class="yhsz-content yhsz-content--search" label-width="90px" label-position="left">
+          <el-form-item label="用户搜索：" class="content-content__item">
+            <el-input type="text" v-model="userKey" placeholder="输入用户ID..."></el-input>
             <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
         <div class="content__search--options">
           <el-checkbox-group v-model="checkList" v-infinite-scroll="loadData">
-            <el-checkbox
-              v-for="item in checkLists"
-              :key="item.user_id"
-              :label="item.user_id"
-            >{{item.nickname}}</el-checkbox>
+            <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
           <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="userPageOver">没有更多了~~</div>
         </div>
       </div>
     </div>
     <div class="cjyhq-box__footer">
-      <el-button
-        type="success"
-        size="small"
-        @click="handleSave"
-      >保存</el-button>
-      <el-button
-        @click="hideSetting"
-        size="small"
-      >取消</el-button>
+      <el-button type="success" size="small" @click="handleSave">保存</el-button>
+      <el-button @click="hideSetting" size="small">取消</el-button>
     </div>
 
-    <dialog-com
-      v-model="isShowTag"
-      title="参加活动商品"
-      :is-show-footer='false'
-      class="tag-dialog"
-    >
+    <dialog-com v-model="isShowTag" title="参加活动商品" :is-show-footer='false' class="tag-dialog">
       <div class="dialog-search">
         <div class="search-title">商品搜索：</div>
         <div class="search-input">
-          <el-input
-            type="text"
-            v-model="activeSearch"
-            placeholder="输入商品编号/商品名称..."
-          ></el-input>
+          <el-input type="text" v-model="activeSearch" placeholder="输入商品编号/商品名称..."></el-input>
         </div>
         <div class="search-button">
           <el-button size="small">搜索</el-button>
@@ -298,45 +139,18 @@
         <div class="search-title">商品添加：</div>
         <div class="search-list">
           <div class="search-list--item">
-            <el-table
-              class="ssxd-table"
-              ref="multipleTable"
-              :data="goodList"
-              tooltip-effect="dark"
-              style="width: 100%"
-              height='300'
-              v-infinite-scroll="loadGoods"
-              @selection-change="handleSelectionChange"
-            >
-              <el-table-column
-                type="selection"
-                width="55"
-              >
+            <el-table class="ssxd-table" ref="multipleTable" :data="goodList" tooltip-effect="dark" style="width: 100%" height='300' v-infinite-scroll="loadGoods" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55">
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品图片"
-                width="100"
-              >
+              <el-table-column align='center' label="商品图片" width="100">
                 <template slot-scope="scope">
-                  <img
-                    class="dialog-img"
-                    :src="base_url + scope.row.pic_link"
-                    alt=""
-                  >
+                  <img class="dialog-img" :src="base_url + scope.row.pic_link" alt="">
                 </template>
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品编号"
-                width="130"
-              >
+              <el-table-column align='center' label="商品编号" width="130">
                 <template slot-scope="scope">{{ scope.row.goods_id }}</template>
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品名称"
-              >
+              <el-table-column align='center' label="商品名称">
                 <template slot-scope="scope">{{ scope.row.title }}</template>
               </el-table-column>
             </el-table>
@@ -345,15 +159,8 @@
         </div>
       </div>
       <div class="dialog-btns">
-        <el-button
-          size="small"
-          type="success"
-          @click="handleAddGoods"
-        >确定</el-button>
-        <el-button
-          size="small"
-          @click="hideTag"
-        >取消</el-button>
+        <el-button size="small" type="success" @click="handleAddGoods">确定</el-button>
+        <el-button size="small" @click="hideTag">取消</el-button>
       </div>
     </dialog-com>
   </div>
@@ -367,7 +174,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import InfiniteLoading from 'vue-infinite-loading'
 
-const regPositvie = /^(0\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$/
+const regPositvie = /^\d+(?=\.{0,1}\d+$|$)/
 const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
 
 export default {
@@ -497,9 +304,7 @@ export default {
       formYhsz: {},
       rules: {
         number: [{ type: 'number', required: true, message: '必须是数字' }],
-        required: [
-          { validator: required, message: '该项不能不空', trigger: 'blur' }
-        ],
+        required: [{ validator: required, message: '该项不能不空', trigger: 'blur' }],
         length10: [{ validator: length10, trigger: 'blur' }],
         length5: [{ validator: length5, trigger: 'blur' }],
         dateRange: [{ validator: dateRange, trigger: 'blur' }],
@@ -528,8 +333,7 @@ export default {
         const selectWrap = el.querySelector('.el-table__body-wrapper')
         selectWrap.addEventListener('scroll', function() {
           const sign = 10
-          const scrollDistance =
-            this.scrollHeight - this.scrollTop - this.clientHeight
+          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
           if (scrollDistance <= sign) {
             binding.value()
           }
@@ -548,14 +352,7 @@ export default {
     }
   },
   mounted() {
-    let wrapH =
-      $('.cjyhq-xxsz').height() +
-      $('.cjyhq-spsz').height() -
-      63 -
-      70 -
-      70 -
-      62 -
-      3
+    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
     $('.content__search--options').height(wrapH)
     let wrapW = $('.item__sale--wrap').width() - 130
     $('.item__sale--wrap .el-form-item__content').width(wrapW)
@@ -578,8 +375,7 @@ export default {
         current_page: this.goodsPage
       }
       this.goodsPending = true
-      return this.getGoodsList(params)
-      .then(res => {
+      return this.getGoodsList(params).then(res => {
         this.goodsPending = false
         if (res.length < 10) {
           this.goodsPageOver = true
@@ -628,29 +424,18 @@ export default {
         if (valid) {
           let params = {
             coupon_type: this.type,
-            // coupon_no: this.formXxsz.coupon_no,
             coupon_name: this.formXxsz.coupon_name,
             order_show_name: this.formXxsz.order_show_name,
             trolley_show_name: this.formXxsz.trolley_show_name,
-            start_time: moment(this.formXxsz.start_time).format(
-              'YYYY-MM-DD HH:mm:ss'
-            ),
-            end_time: moment(this.formXxsz.end_time).format(
-              'YYYY-MM-DD HH:mm:ss'
-            ),
+            start_time: moment(this.formXxsz.start_time).format('YYYY-MM-DD HH:mm:ss'),
+            end_time: moment(this.formXxsz.end_time).format('YYYY-MM-DD HH:mm:ss'),
             threshold_type: this.formXxsz.threshold_type,
-            threshold_num:
-              this.formXxsz.threshold_type === '元'
-                ? +this.formXxsz.ddMoney
-                : +this.formXxsz.ddNumber,
+            threshold_num: this.formXxsz.threshold_type === '元' ? +this.formXxsz.ddMoney : +this.formXxsz.ddNumber,
             discount_type: this.formXxsz.discount_type,
-            discount_num:
-              this.formXxsz.discount_type === '金额'
-                ? +this.formXxsz.zkMoney
-                : +this.formXxsz.zkNumber,
+            discount_num: this.formXxsz.discount_type === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
             coupon_num: this.formXxsz.coupon_limit === '不限' ? 9999 : +this.formXxsz.coupon_num,
             goods_list: (this.activeGoods || []).map(item => item.goods_id),
-            label_id: +this.formYhsz.user_label_id || 2,
+            label_id: this.formYhsz.user_label_id || [],
             user_list: this.checkList
           }
           if (this.action === 'add') {
@@ -727,9 +512,9 @@ export default {
           this.formXxsz.start_time = new Date(res.data.start_time)
           this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
           this.formYhsz.user_label_id = res.data.user_label_id
-          return {goods_list: res.data.goods_list, user_list: res.data.user_list}
+          return { goods_list: res.data.goods_list, user_list: res.data.user_list }
         })
-        .then(({goods_list, user_list}) => {
+        .then(({ goods_list, user_list }) => {
           let params = { goods_id: goods_list.join(',') }
           this.getGoodsList(params).then(res => {
             this.activeGoods = res
@@ -755,8 +540,7 @@ export default {
       })
     },
     getGoodsList(params) {
-      return this.$get('/marketing/goods_list', { ...params })
-      .then(res => {
+      return this.$get('/marketing/goods_list', { ...params }).then(res => {
         return res.data.data_list
       })
     },
@@ -765,7 +549,7 @@ export default {
         return res.data.data_list
       })
     },
-    loadData () {
+    loadData() {
       if (this.userPageOver) return
       this.getUserList()
     },
@@ -870,7 +654,8 @@ export default {
       .el-input {
         width: 110px;
       }
-      span {
+      & > span {
+        font-size: 14px;
         margin-left: 5px;
       }
     }

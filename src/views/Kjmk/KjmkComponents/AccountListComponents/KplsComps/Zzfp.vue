@@ -4,7 +4,10 @@
     </el-table-column>
     <el-table-column label="申请时间" align='center' width="180" prop="add_time">
     </el-table-column>
-    <el-table-column align='center' min-width="100" label="状态" prop="state">
+    <el-table-column align='center' min-width="100" label="状态">
+       <template slot-scope='scope'>
+        <span :class='{"bold": scope.row.state === "未开票"}'>{{scope.row.state}}</span>
+      </template>
     </el-table-column>
     <el-table-column align='center' min-width="120" label="用户ID" prop="user_id">
     </el-table-column>

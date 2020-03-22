@@ -56,7 +56,7 @@
             size='5'
             class="upload-img"
             key-name="goods"
-            tip='封面'
+            tip='推荐'
             :imgurl='imageUrl_flsm_fm'
             @delete-img='imgDelete("flsm_fm")'
             @upload-success='(res) => uploadSuccess(res, "flsm_fm")'
