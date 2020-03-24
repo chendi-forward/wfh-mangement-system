@@ -1,17 +1,17 @@
 <template>
   <div class="pie-chart">
     <div class="pie-chart--item">
-      <canvas :id="'pieChart_' + item.id" width="100" height="100"></canvas>
+      <canvas :id="'pieChart_' + item.id" width="100" height="100" v-if="showCanvas"></canvas>
     </div>
     <div class="text-center">{{ item.name }}</div>
   </div>
 </template>
 
 <script>
-import echarts from "echarts";
+import echarts from 'echarts'
 
 export default {
-  name: "pie-chart",
+  name: 'pie-chart',
   props: {
     item: {
       type: Object,
@@ -19,13 +19,21 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      showCanvas: true
+    }
   },
   watch: {
     item(val) {
-      let precent = (val.divide / val.total * 100).toFixed(1) + '%'
+      let precent = ((val.divide / val.total) * 100).toFixed(1) + '%'
       let PIRadio = (val.divide / val.total).toFixed(3) * 2 - 0.5
-      this.chartRadio(precent, PIRadio)
+      this.showCanvas = false
+      this.$nextTick(() => {
+        this.showCanvas = true
+        this.$nextTick(() => {
+          this.chartRadio(precent, PIRadio)
+        })
+      })
     }
   },
   methods: {
@@ -42,8 +50,8 @@ export default {
       ctx.arc(50, 50, 38, -0.5 * Math.PI, PIRadio * Math.PI, false)
       ctx.stroke()
       ctx.font = '14px sans-serif'
-      ctx.fillText(precent, 33, 57)
-    }
+      ctx.fillText(precent, 32, 57)
+    },
   }
 }
 </script>
