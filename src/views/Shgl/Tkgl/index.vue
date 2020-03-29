@@ -16,6 +16,7 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
+        @expand-change="expandChange"
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -127,24 +128,14 @@
           align='center'>
           <template slot-scope="scope">
             <div class="expend-wrap">
-              <el-timeline v-if="scope.row.refund_type == '退货退款'">
+              <el-timeline>
                 <el-timeline-item
                   v-for="(activity, index) in activities"
                   :key="index"
-                  :type="activity.type">
+                  :type="scope.row.rstate > index ? activity.type : ''">
                   {{activity.content }}
                   <span class="my-timestamp">{{activity.timestamp}}</span>
-                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex)"></i>
-                </el-timeline-item>
-              </el-timeline>
-              <el-timeline v-else>
-                <el-timeline-item
-                  v-for="(activity, index) in activities2"
-                  :key="index"
-                  :type="activity.type">
-                  {{activity.content }}
-                  <span class="my-timestamp">{{activity.timestamp}}</span>
-                  <i class="el-icon-circle-check icon" :class="activity.class" @click="openDialog(activity.comIndex, scope.row)"></i>
+                  <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
                 </el-timeline-item>
               </el-timeline>
             </div>
@@ -154,7 +145,7 @@
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini" v-show="currentTab == '0'" @click="cancleTuik">取消退款</el-button>
+        <el-button size="mini" v-show="currentTab == '1'" @click="cancleTuik">取消退款</el-button>
       </div>
       <div class="page-wrap">
         <my-pagination

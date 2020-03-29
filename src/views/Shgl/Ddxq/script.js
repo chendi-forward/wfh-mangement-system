@@ -1,7 +1,7 @@
 import DialogCom from 'COMPONENTS/DialogCom'
 import EditLogistics from '../coms/editLogistics'
 import Logistics from '../coms/logistics'
-import {orderDetail} from 'API/Shgl'
+import {orderDetail, cancelOrder, deliverGoods} from 'API/Shgl'
 
 export default {
   name: 'shgl-ddxq',
@@ -64,8 +64,8 @@ export default {
       dialogFlag: false,
       currentCom: {},
       coms: [
-        {name: '编辑', com: 'editLogistics-dialog', data: null},
-        {name: '物流追踪', com: 'logistics-dialog', data: null}
+        {name: '发货', com: 'editLogistics-dialog', data: { name: '', express_number: '', order_id: ''}, showBtn: true},
+        {name: '物流追踪', com: 'logistics-dialog', data: this.$route.query.order_id, showBtn: false}
       ]
     }
   },
@@ -74,10 +74,8 @@ export default {
   },
   methods: {
     getData () {
-      this.tableData1 = []
-      this.tableData2 = []
       orderDetail({order_id: this.$route.query.order_id}).then(res => {
-        this.tableData1.push(res.data.order_detail)
+        this.tableData1 = [res.data.order_detail]
         let obj = {
           count: res.data.goods_detail.all_count,
           goods_title: '',
@@ -103,10 +101,27 @@ export default {
       this.currentCom = this.coms[1]
       this.dialogFlag = true
     },
-    cancleItem () {},
+    cancleItem () {
+      cancelOrder ({order_id: this.$route.query.order_id}).then(res => {
+        if (res.data) {
+          this.$message.success('订单已取消！')
+        } else {
+          this.$message.error('取消失败！')
+        }
+      })
+    },
     selectChange () {},
     sureSave (flag) {
       this.dialogFlag = flag
+      this.currentCom.order_id = this.$route.query.order_id
+      deliverGoods(this.currentCom.data).then(res => {
+        if (res.data) {
+          this.$message.success('发货成功！')
+          this.getOrderList()
+        } else {
+          this.$message.error('发货失败！')
+        }
+      })
     },
     cancleSave (flag) {
       this.dialogFlag = flag

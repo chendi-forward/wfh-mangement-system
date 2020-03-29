@@ -8,6 +8,10 @@ export function logisticsManage() {
 export function postLogisticsManage (data) {
     return post('/after_sale/logistics_manage', data)
 }
+// 获取物流信息
+export function orderLogistics (data) {
+    return get('/after_sale/order_logistics', data)
+}
 // 售后模块上面的头部部分
 export function saleHead() {
     return get('/after_sale/sale_head')
@@ -48,6 +52,10 @@ export function refundDeliver(data) {
 export function cancelRefund(data) {
     return get('/after_sale/cancel_refund', data)
 }
+// 退款物流
+export function cancelOrderLogistics(data) {
+    return get('/after_sale/cancel_order_logistics', data)
+}
 // 获取退款订单详情（进行确认收货展示）
 export function refundDetail(data) {
     return get('/after_sale/refund_detail', data)
@@ -63,6 +71,10 @@ export function refund(data) {
 // 正常订单发货
 export function deliverGoods(data) {
     return post('/after_sale/deliver_goods', data)
+}
+// 取消订单
+export function cancelOrder(data) {
+    return post('/after_sale/cancel_order', data)
 }
 // 获取商品的评价列表
 export function goodsEvaluationList(data) {

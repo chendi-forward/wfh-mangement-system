@@ -3,12 +3,12 @@
     <div class="tags-box">
         <div class="tag-box">
           <span class="header-title">物流公司:</span>
-          <el-select v-model="data.selectKey" @change='selectChange' placeholder="请选择">
+          <el-select v-model="data.name" @change='selectChange' placeholder="请选择">
             <el-option
               v-for="(item, index) in options"
               :key="index"
               :label="item.name"
-              :value="item.logistics_id">
+              :value="item.name">
             </el-option>
           </el-select>
         </div>
@@ -16,7 +16,7 @@
           <span class="header-title">物流单号:</span>
           <el-input
             placeholder="请输入单号..."
-            v-model="data.logisticsId">
+            v-model="data.express_number">
           </el-input>
         </div>
     </div>
@@ -30,9 +30,8 @@ import {logisticsManage} from 'API/Shgl'
         type: Object,
         default: () => {
             return {
-                selectKey: 1,
-                logisticsId: '',
-                
+              name: '',
+              express_number: ''
             }
         }
       },
@@ -65,9 +64,6 @@ import {logisticsManage} from 'API/Shgl'
         })
       },
       selectChange () {}
-    },
-    mounted () {
-      console.log(this.goodsid, '===goidawdwifda')
     }
   }
 </script>

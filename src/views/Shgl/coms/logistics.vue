@@ -1,46 +1,52 @@
 <template>
-    <!-- 确认退款 -->
+    <!-- 物流信息 -->
     <div class="tags-box">
         <el-timeline>
             <el-timeline-item
-                v-for="(activity, index) in data"
+                v-for="(activity, index) in logistics"
                 :key="index"
                 :type="activity.type">
-                <span class="my-timestamp">{{activity.timestamp}}</span>
-                {{activity.content }}
+                <p class="my-timestamp">{{activity.time}}</p>
+                {{activity.context }}
             </el-timeline-item>
         </el-timeline>
     </div>
 </template>
 
 <script>
+import {orderLogistics} from 'API/Shgl'
   export default {
     props: {
-      data: {
-        type: Array,
-        default: () => [{
-            content: '【杭州市】本人已签收',
-            timestamp: '2018-04-12 20:46:30',
-            type: 'danger',
-            size: 'large',
-            class: 'theme-color'
-        }, {
-            content: '【北京市】已发往杭州',
-            timestamp: '2018-04-03 20:46:30'
-        }, {
-            content: '【北京市】已到达-北京运转中心',
-            timestamp: '2018-04-03 20:46:30'
-        }, {
-            content: '【北京市】圆通快递已揽件',
-            timestamp: '2018-04-03 20:46:30'
-        }]
-      }
+      data: String,
+      dialogFlag: Boolean
     },
     data () {
       return {
+        logistics: []
       }
     },
+    watch: {
+      dialogFlag () {
+        if (this.dialogFlag) {
+          this.getData()
+        }
+      }
+    },
+    created () {
+      this.getData()
+    },
     methods: {
+      getData () {
+        orderLogistics({order_id: this.data}).then(res => {
+          if (res.data.data && res.data.data.length) {
+            this.logistics = res.data.data
+          } else {
+            this.logistics = [{context: '暂无物流信息', time: ''}]
+          }
+          this.logistics[0].type = 'danger'
+          this.logistics[0].size = 'large'
+        })
+      }
     }
   }
 </script>
@@ -48,5 +54,8 @@
 <style lang="less" scoped>
     .tags-box {
         padding-left: 100px !important;
+        p {
+          margin: 0;
+        }
     }
 </style>
