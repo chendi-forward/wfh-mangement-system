@@ -25,8 +25,8 @@ export default {
   },
   watch: {
     item(val) {
-      let precent = ((val.divide / val.total) * 100).toFixed(1) + '%'
-      let PIRadio = (val.divide / val.total).toFixed(3) * 2 - 0.5
+      let precent = val.divide ? ((val.divide / val.total) * 100).toFixed(1) + '%' : '0.0%'
+      let PIRadio = val.divide ? (val.divide / val.total).toFixed(3) * 2 - 0.5 : -0.5
       this.showCanvas = false
       this.$nextTick(() => {
         this.showCanvas = true

@@ -97,7 +97,7 @@
           <el-scrollbar style="height: 100%;">
             <ul class="row" v-for="(item, i) in userList" :key="i" :class="{'selected': item.checked}">
               <li class="checkbox"><el-checkbox v-model="item.checked"></el-checkbox></li>
-              <li class="name">{{item.user + i}}</li>
+              <li class="name">{{item.user}}</li>
               <li></li>
             </ul>
           </el-scrollbar>

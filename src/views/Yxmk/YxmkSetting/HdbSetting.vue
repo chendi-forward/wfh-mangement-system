@@ -112,7 +112,7 @@
         </el-form>
         <div class="content__search--options">
           <el-checkbox-group @change='userDataChange' v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
-            <el-checkbox v-for="(item, i) in checkLists" :key="i" :label="item.user_id" v-model='item.nickname' :checked='item.flag'></el-checkbox>
+            <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="content__group--btn" v-if="updateFlag">
@@ -353,8 +353,10 @@ export default {
     }
   },
   mounted() {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
-    $('.content__search--options').height(wrapH)
+    this.$nextTick(() => {
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3 - 62
+      $('.content__search--options').height(wrapH)
+    })
     this.editOrcreate()
     this.getUserData()
   },
@@ -398,7 +400,9 @@ export default {
       } else {
         obj.user_type = this.formYhsz.bqsx || []
       }
-      updateActive(obj).then(res => {
+      console.log('============>: updateActivity -> obj', obj)
+      updateActive(obj)
+      .then(res => {
         this.$emit('hide-setting')
       })
     },
