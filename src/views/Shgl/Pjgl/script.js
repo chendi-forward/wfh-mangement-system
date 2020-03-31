@@ -122,7 +122,6 @@ export default {
                 })
                 let count = data.data.count
                 this.total = count
-                console.log(count, data, '========')
             })
         },
         getOrderData() {
@@ -131,9 +130,7 @@ export default {
                 current_page: this.currentPage,
                 ...this.orderParams
             }
-            console.log(data, '====')
             orderEvaluationList(data).then((res) => {
-                console.log(res)
                 this.tableData = res.data.data_list
                 this.total = res.data.count
             })
@@ -148,7 +145,6 @@ export default {
             }
         },
         handleSelectionChange(n) {
-            console.log(n, '=========')
             this.currentPage = n
             if (this.currentTab == '0') {
                 this.getData()

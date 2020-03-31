@@ -62,7 +62,7 @@ export default {
         e_time: ''
       },
       total: 40,
-      tlxx: {
+      currentCom: {name: '新建退款', com: 'create-com', data: {
         refund_money: 0,
         after_sale_type: '退货退款',
         goods: [],
@@ -70,11 +70,18 @@ export default {
         order_id: '',
         sale_state: '', // 订单状态
         remark: '' // 备注
-      },
-      currentCom: {name: '新建退款', com: 'create-com', data: this.tlxx, showBtn: true, handle: this.tuikuanHandle},
+      }, showBtn: true, handle: this.tuikuanHandle},
       coms: [
         {name: '发货', com: 'editLogistics-dialog', data: { name: '', express_number: '', order_id: '' }, showBtn: true, handle: this.fahuoHandle},
-        {name: '新建退款', com: 'create-com', data: this.tlxx, showBtn: true, handle: this.tuikuanHandle}
+        {name: '新建退款', com: 'create-com', data: {
+          refund_money: 0,
+          after_sale_type: '退货退款',
+          goods: [],
+          refund_goods: [],
+          order_id: '',
+          sale_state: '', // 订单状态
+          remark: '' // 备注
+        }, showBtn: true, handle: this.tuikuanHandle}
       ]
     }
   },
@@ -159,9 +166,9 @@ export default {
       orderGoods({
         order_id: row.order_id
       }).then(res => {
-        this.tlxx.order_id = row.order_id
-        this.tlxx.sale_state = row.order_state
-        this.tlxx.goods = res.data
+        this.currentCom.data.order_id = row.order_id
+        this.currentCom.data.sale_state = row.order_state
+        this.$set(this.currentCom.data, 'goods', res.data)
       })
     },
     deleteOrder () {},
@@ -177,6 +184,7 @@ export default {
       deliverGoods(this.currentCom.data).then(res => {
         if (res.data) {
           this.$message.success('发货成功！')
+          this.cancleSave()
           this.getOrderList()
         } else {
           this.$message.error('发货失败！')
@@ -184,14 +192,15 @@ export default {
       }) 
     },
     tuikuanHandle () {
-      if (this.tlxx.refund_money > this.tlxx.refund_money_copy) {
+      if (this.currentCom.data.refund_money > this.currentCom.data.refund_money_copy) {
         return this.$message.error('保存失败，退款金额不得大于订单总金额')
       }
-      delete this.tlxx.goods
-      delete this.tlxx.refund_money_copy
-      applyRefund(this.tlxx).then(res => {
+      delete this.currentCom.data.goods
+      delete this.currentCom.data.refund_money_copy
+      applyRefund(this.currentCom.data).then(res => {
         if (res.data) {
           this.$message.success('退款成功！')
+          this.cancleSave()
           this.getOrderList()
         } else {
           this.$message.error('退款失败！')
