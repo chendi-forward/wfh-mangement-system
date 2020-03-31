@@ -73,7 +73,8 @@
             width="150">
                 <template slot-scope="scope">
                     <div class="img-list">
-                        <img :src="scope.row.images">
+                        <img :src="scope.row.images" v-if="scope.row.images">
+                        <span v-else>无</span>
                         <!-- <img :src="homeIcon"> -->
                     </div>
                 </template>

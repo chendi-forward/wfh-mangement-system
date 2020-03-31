@@ -177,6 +177,7 @@ export default {
           this.userList = res.data.content.map(item => {
             return {
               user: item.user_id,
+              nickname: item.nickname,
               checked: false
             }
           })

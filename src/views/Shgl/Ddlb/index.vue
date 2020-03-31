@@ -169,10 +169,11 @@
           <div @click='lineItem(scope.row)' class="con-icon theme-color" title="订单详情">
             <i class="icon iconfont icon-sousuowenjian"></i>
           </div>
-          <div @click='fahuo(scope.row)' class="con-icon theme-color" title="发货" v-if="orderParams.status==1">
-            <i class="icon iconfont el-icon-truck"></i>
+          <div @click='fahuo(scope.row)' class="con-icon theme-color" title="发货" v-if="scope.row.order_state=='已付款'">
+            <i class="el-icon-truck" style="font-size: 20px"></i>
           </div>
-          <div @click='tuikuan(scope.row)' title="退货" class="con-icon" v-if="orderParams.status!==5 && orderParams.status!==6">
+          <div @click='tuikuan(scope.row)' title="退款" class="con-icon" 
+          v-if="scope.row.order_state=='已付款' || scope.row.order_state =='已发货'">
             <i class="icon iconfont icon-fanhui"></i>
           </div>
           <!-- <div @click='deleteOrder(scope.row)' class="con-icon">
