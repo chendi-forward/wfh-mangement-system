@@ -225,10 +225,12 @@ export default {
         end_time: moment().add(this.newerSetting[0].days, 'days').format('YYYY-MM-DD 00:00:00'),
         is_close: Number(this.newerSetting[0].is_close)
       }
-      console.log('============>: handleSaveNew -> params', params)
       this.$post('/marketing/update_coupon', params).then(res => {
-        this.$message.success('修改成功！')
-        console.log('============>: handleSaveNew -> res', res)
+        if (res.message === 'ok') {
+          this.$message.success('修改成功！')
+        } else {
+          this.$message.error('修改异常！')
+        }
       })
       // this.$post
     },
