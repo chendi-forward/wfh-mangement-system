@@ -92,8 +92,9 @@ import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
             });
             return;
           } else {
+            let item = this.logisticsData.find(item => item.logistics_id == this.selectKey)
             let obj = {
-              selectKey: this.selectKey,
+              selectKey: item.name,
               tydh: this.tydh,
               flag: 1
             }

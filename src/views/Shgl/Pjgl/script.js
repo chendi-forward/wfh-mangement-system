@@ -117,6 +117,7 @@ export default {
             }
             goodsEvaluationList(data).then(data => {
                 this.tableData = data.data.data_list
+                console.log(this.tableData)
                 this.tableData.forEach((item) => {
                     item.evaluation_score = item.evaluation_score == 1 ? 'icon-chaping' : item.evaluation_score == 2 ? 'icon-zhongping' : 'icon-haoping';
                 })
@@ -138,7 +139,7 @@ export default {
         tabChage(v) {
             this.currentTab = v.name
             this.currentPage = 1
-            if (v.name == '商品评价') {
+            if (v.name == 0) {
                 this.getData()
             } else {
                 this.getOrderData()

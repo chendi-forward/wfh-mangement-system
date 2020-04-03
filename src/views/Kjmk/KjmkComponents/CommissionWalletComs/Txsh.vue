@@ -44,7 +44,7 @@
         <el-table-column
           label="操作"
           align='center'
-          width="150">
+          width="200">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="submit(scope.row.cash_id, 1)" :disabled="scope.row.state!='未审核'">通过</el-button>
             <el-button size="mini" @click="submit(scope.row.cash_id, 2)" :disabled="scope.row.state!='未审核'">驳回</el-button>
@@ -185,6 +185,8 @@
         }).then(res => {
           if (!res.data) {
             this.$message.error('操作失败！')
+          } else {
+            this.getData()
           }
         })
       },

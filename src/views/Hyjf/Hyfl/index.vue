@@ -17,14 +17,14 @@
               width="80">
               <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.level }}</span></template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               align='center'
               label="返利基准"
               width="80">
               <template slot-scope="scope">
                 <input-or-text :text-data="scope.row.rebate_proportion * 100" :input-data="scope.row.rebate_proportion * 100" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.rebate_proportion = v / 100}"></input-or-text>%
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               align='center'
               label="升级标准">
