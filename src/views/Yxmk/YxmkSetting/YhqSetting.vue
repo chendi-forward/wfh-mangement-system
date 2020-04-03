@@ -112,8 +112,8 @@
             <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
-        <div class="content__search--options">
-          <el-checkbox-group v-model="checkList" v-infinite-scroll="loadData">
+        <div class="content__search--options" v-loadmore_1="loadData">
+          <el-checkbox-group v-model="checkList" v-if='checkLists.length'>
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
           <div style="text-align: center; line-height: 40px; font-size: 12px;" v-show="userPageOver">没有更多了~~</div>
@@ -294,8 +294,8 @@ export default {
         dateRange: [],
         coupon_num: '',
         coupon_limit: '张',
-        threshold_type: '',
-        discount_type: ''
+        threshold_type: '元',
+        discount_type: '金额'
       },
       isShowTag: false,
       effectiveDate_s: '',
@@ -339,23 +339,34 @@ export default {
           }
         })
       }
+    },
+    loadmore_1: {
+      // 指令的定义
+      bind(el, binding, vnode) {
+        const selectWrap = el
+        selectWrap.addEventListener('scroll', function() {
+          const sign = 10
+          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
+          if (scrollDistance <= sign) {
+            binding.value()
+          }
+        })
+      }
     }
   },
-  async created() {
-    if (this.action === 'add') {
+  async mounted() {
+    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
+    $('.content__search--options').height(wrapH)
+    let wrapW = $('.item__sale--wrap').width() - 130
+    $('.item__sale--wrap .el-form-item__content').width(wrapW)
+     if (this.action === 'add') {
       let a = this.getLabelData()
-      // let b = this.getUserList()
       await a
     } else {
       await this.getLabelData()
       await this.getDetail(this.coupon_id)
     }
-  },
-  mounted() {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
-    $('.content__search--options').height(wrapH)
-    let wrapW = $('.item__sale--wrap').width() - 130
-    $('.item__sale--wrap .el-form-item__content').width(wrapW)
+    this.getUserList()
   },
   methods: {
     inputChange(e) {
@@ -416,9 +427,6 @@ export default {
     handleSave() {
       if (!this.activeGoods.length) {
         return this.$alert('活动商品不能为空！')
-      }
-      if (!this.checkList.length) {
-        return this.$alert('用户列表不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {

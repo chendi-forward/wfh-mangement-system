@@ -93,14 +93,14 @@
           <p>用户搜索:<el-input v-model="searchKey" placeholder="输入用户ID/昵称..." prefix-icon="el-icon-search"></el-input></p>
           <el-button size="mini" class="success-btn" @click="search">搜索</el-button>
         </div>
-        <div class="list-div sub-wrap">
-          <el-scrollbar style="height: 100%;">
+        <div class="list-div sub-wrap" >
+          <div class="overflow-wrap" v-loadmore="loadData">
             <ul class="row" v-for="(item, i) in userList" :key="i" :class="{'selected': item.checked}">
               <li class="checkbox"><el-checkbox v-model="item.checked"></el-checkbox></li>
               <li class="name">{{item.nickname}}</li>
               <li></li>
             </ul>
-          </el-scrollbar>
+          </div>
         </div>
         <div class="btn-div sub-wrap">
           <el-button size="mini" class="success-btn" @click="save">赠送</el-button>

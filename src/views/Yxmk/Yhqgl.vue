@@ -121,9 +121,7 @@ export default {
   data() {
     return {
       tableData: [],
-      newerSetting: [
-        {}
-      ],
+      newerSetting: [{}],
       total: 0,
       isShowSetting: false,
       action: 'add',
@@ -145,8 +143,8 @@ export default {
   },
   methods: {
     showCreateItem(type) {
-      this.isShowSetting = true
       this.action = 'add'
+      this.isShowSetting = true
       this.type = type
     },
     hideSetting(val) {
@@ -156,8 +154,8 @@ export default {
       }
     },
     editHandle(row) {
-      this.isShowSetting = true
       this.action = 'edit'
+      this.isShowSetting = true
       this.coupon_id = row.coupon_id
     },
     handleSizeChange(v) {
@@ -214,11 +212,12 @@ export default {
         })
     },
 
+    // 点击编辑新用户按钮
     handleEditNew() {
-      console.log(this.newerSetting)
       this.cloneNewerSetting = _.cloneDeep(this.newerSetting)
       this.isEdit = true
     },
+    // 编辑新用户
     handleSaveNew() {
       this.isEdit = false
       let params = {
@@ -226,15 +225,17 @@ export default {
         coupon_type: '新手',
         discount_num: this.newerSetting[0].discount_type === '金额' ? this.newerSetting[0].discount_money : this.newerSetting[0].discount_percent,
         start_time: moment().format('YYYY-MM-DD 00:00:00'),
-        end_time: moment().add(this.newerSetting[0].days, 'days').format('YYYY-MM-DD 00:00:00')
+        end_time: moment()
+          .add(this.newerSetting[0].days, 'days')
+          .format('YYYY-MM-DD 00:00:00')
       }
       console.log('============>: handleSaveNew -> params', params)
       this.$post('/marketing/update_coupon', params).then(res => {
-      console.log('============>: handleSaveNew -> res', res)
-        
+        console.log('============>: handleSaveNew -> res', res)
       })
       // this.$post
     },
+    // 取消编辑新用户
     handleCancelNew() {
       this.isEdit = false
       this.newerSetting = this.cloneNewerSetting
@@ -251,7 +252,6 @@ export default {
         params.page_count = 1000
       }
       this.$get('/marketing/get_coupon_list', params).then(res => {
-        console.log(res)
         if (res.message === 'ok') {
           if (coupon_type === '新手') {
             this.newerSetting = res.data.data_list.map(item => {

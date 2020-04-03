@@ -111,14 +111,14 @@
           </el-form-item>
         </el-form>
         <div class="content__search--options">
-          <el-checkbox-group @change='userDataChange' v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
+          <el-checkbox-group v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="content__group--btn" v-if="updateFlag">
-          <el-button class="editBtn" size="small" @click="getUserData">更改</el-button>
-          <!-- <el-button size="small">取消</el-button> -->
-        </div>
+        <!-- <div class="content__group--btn" v-if="updateFlag"> -->
+        <!-- <el-button class="editBtn" size="small" @click="getUserData">更改</el-button> -->
+        <!-- <el-button size="small">取消</el-button> -->
+        <!-- </div> -->
       </div>
     </div>
     <div class="cjyhq-box__footer">
@@ -183,7 +183,10 @@ export default {
   components: {
     'dialog-com': DialogCom
   },
-  props: ['activeId'],
+  props: {
+    activeId: [String, Number],
+    action: String
+  },
   data() {
     let length10 = (rule, value, callback) => {
       if (value === '') {
@@ -292,7 +295,7 @@ export default {
         ddType: '元', // 订单类型
         ddMoney: '', // 订单金额
         ddNumber: '', // 订单数量
-        zkType: '1', // 折扣设置
+        zkType: '金额', // 折扣设置
         zkMoney: '', // 减扣金额
         zkNumber: '', // 比例
         dateRange: []
@@ -354,11 +357,15 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3 - 62
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
       $('.content__search--options').height(wrapH)
     })
-    this.editOrcreate()
-    this.getUserData()
+    if (this.action === 'add') {
+      this.getUserData()
+    } else {
+      this.editOrcreate()
+      this.getUserData()
+    }
   },
   methods: {
     changeDate(type) {
@@ -380,19 +387,17 @@ export default {
       })
       let obj = {
         active_id: this.activeId,
-        // active_no: this.formXxsz.active_no,          // -- 活动编号
         active_name: this.formXxsz.active_name, //  -- 活动标题
         order_show_name: this.formXxsz.order_show_name, //-- 在订单显示的名称
         trolley_show_name: this.formXxsz.trolley_show_name, // -- 在购物车的名称
         max_money: Number(this.formXxsz.jxsse), // 极限销售额
         start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
         end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'), // -- 结束时间
-        threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐', //  -- 满减的单位（元/罐）
-        threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney) : Number(this.formXxsz.ddNumber), // -- 满减的阈值
-        discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣', // -- 折扣的方式（折扣/金额）
-        discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber), // -- 折扣的金额或百分比
+        threshold_type: this.formXxsz.ddType,
+        threshold_num: this.formXxsz.ddType === '元' ? +this.formXxsz.ddMoney : +this.formXxsz.ddNumber,
+        discount_type: this.formXxsz.discount_type,
+        discount_num: this.formXxsz.discount_type === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
         goods_list: goods_id, // -- 商品id 的列表
-        // label_id: this.formYhsz.selectType === 'tab' ? (this.formYhsz.user_label_id || []) : (), //   -- 用户标签的id
         user_list: this.checkList // -- user_id
       }
       if (this.formYhsz.selectType === 'tab') {
@@ -400,14 +405,9 @@ export default {
       } else {
         obj.user_type = this.formYhsz.bqsx || []
       }
-      console.log('============>: updateActivity -> obj', obj)
-      updateActive(obj)
-      .then(res => {
+      updateActive(obj).then(res => {
         this.$emit('hide-setting')
       })
-    },
-    userDataChange(n) {
-      // console.log(n, '====')
     },
     keyChangeUserData() {
       let obj = {
@@ -465,10 +465,10 @@ export default {
           this.formXxsz.order_show_name = result.order_show_name
           this.formXxsz.trolley_show_name = result.trolley_show_name
           this.formXxsz.jxsse = result.max_money
-          this.formXxsz.zkType = result.discount_type == '折扣' ? '1' : '2'
-          result.discount_type == '折扣' ? (this.formXxsz.ddMoney = result.discount_num) : (this.formXxsz.ddNumber = result.discount_num)
-          this.formXxsz.ddType = result.threshold_type == '罐' ? '1' : '2'
-          result.threshold_type == '罐' ? (this.formXxsz.zkMoney = result.threshold_num) : (this.formXxsz.zkNumber = result.threshold_num)
+          this.formXxsz.zkType = result.discount_type
+          result.discount_type === '折扣' ? (this.formXxsz.ddMoney = result.threshold_num) : (this.formXxsz.ddNumber = result.threshold_num)
+          this.formXxsz.ddType = result.threshold_type
+          result.threshold_type === '罐' ? (this.formXxsz.zkMoney = result.discount_num) : (this.formXxsz.zkNumber = result.discount_num)
           this.effectiveDate_s = result.start_time
           this.effectiveDate_e = result.end_time
           this.formYhsz.bqsx = result.user_label_id
@@ -522,9 +522,6 @@ export default {
       if (!this.goodsData.length) {
         return this.$alert('活动商品不能为空！')
       }
-      if (!this.checkList.length) {
-        return this.$alert('用户列表不能为空！')
-      }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
           let goods_id = []
@@ -539,10 +536,10 @@ export default {
             max_money: Number(this.formXxsz.jxsse), // 极限销售额
             start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
             end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'), // -- 结束时间
-            threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐', //  -- 满减的单位（元/罐）
-            threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney) : Number(this.formXxsz.ddNumber), // -- 满减的阈值
-            discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣', // -- 折扣的方式（折扣/金额）
-            discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber), // -- 折扣的金额或百分比
+            threshold_type: this.formXxsz.ddType, //  -- 满减的单位（元/罐）
+            threshold_num: this.formXxsz.ddType == '元' ? Number(this.formXxsz.ddMoney) : Number(this.formXxsz.ddNumber), // -- 满减的阈值
+            discount_type: this.formXxsz.zkType, // -- 折扣的方式（折扣/金额）
+            discount_num: this.formXxsz.zkType == '金额' ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber), // -- 折扣的金额或百分比
             goods_list: goods_id, // -- 商品id 的列表
             user_list: this.checkList // -- user_id
           }

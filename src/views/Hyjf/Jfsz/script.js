@@ -1,11 +1,12 @@
 import inputOrText from 'COMPONENTS/inputOrText'
+import $ from 'jquery'
 // import _ from 'lodash'
 export default {
   name: 'spgl',
   components: {
     'input-or-text': inputOrText
   },
-  data () {
+  data() {
     return {
       tableData: [],
       tableDataOrigin: [],
@@ -29,17 +30,38 @@ export default {
       editIntegral: false,
       present: 50,
       integral: 50,
-      searchKey: ''
+      searchKey: '',
+      userPage: 1,
+      userPageOver: false
     }
   },
-  created () {
-    this.search()
+  created() {
     this.getIntegralTask()
     this.getIntegralAdvance()
   },
+  mounted() {
+    let wrapH = $('.spgl-wrap1').height() - 63 - 70 - 70 - 62 - 3 - 62 - 50
+    $('.overflow-wrap').height(wrapH)
+    this.getUserList()
+  },
+  directives: {
+    loadmore: {
+      // 指令的定义
+      bind(el, binding, vnode) {
+        const selectWrap = el
+        selectWrap.addEventListener('scroll', function() {
+          const sign = 10
+          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
+          if (scrollDistance <= sign) {
+            binding.value()
+          }
+        })
+      }
+    }
+  },
   methods: {
     // 获取积分任务配置
-    getIntegralTask () {
+    getIntegralTask() {
       this.$get('/integral/get_integral_setting').then(res => {
         if (res.data) {
           this.tableDataOrigin = res.data
@@ -50,7 +72,7 @@ export default {
       })
     },
     //修改积分任务配置
-    changeIntegralTask (data) {
+    changeIntegralTask(data) {
       let obj = {}
       let error
       data.forEach(item => {
@@ -79,7 +101,7 @@ export default {
       })
     },
     // 获取积分兑换门槛
-    getIntegralAdvance () {
+    getIntegralAdvance() {
       this.$get('/integral/get_integral_advance').then(res => {
         if (res.data) {
           this.editSillForm = res.data
@@ -90,7 +112,7 @@ export default {
       })
     },
     // 修改积分兑换门槛
-    changeIntegralAdvance () {
+    changeIntegralAdvance() {
       for (const key in this.SillForm) {
         if (this.SillForm.hasOwnProperty(key)) {
           const element = this.SillForm[key];
@@ -110,7 +132,7 @@ export default {
       })
     },
     // 赠送积分
-    save () {
+    save() {
       let str = []
       this.userList.forEach(item => {
         if (item.checked) {
@@ -128,59 +150,76 @@ export default {
         }
       })
     },
-    cancel () {
+    loadData() {
+      console.log(111111111111);
+      
+      if (this.userPageOver) return
+      this.getUserList()
+    },
+    cancel() {
       // ..
     },
-    edit () {},
-    editTaskFn () {
+    edit() { },
+    editTaskFn() {
       this.editTaskShow = true
     },
-    saveTaskFn () {
+    saveTaskFn() {
       let res = this.changeIntegralTask(this.tableData)
       if (res) return this.$message.error('请输入大于等于零的数字')
     },
-    cancelTaskFn () {
+    cancelTaskFn() {
       this.tableData = JSON.parse(JSON.stringify(this.tableDataOrigin))
       this.editTaskShow = false
     },
-    editSill () {
+    editSill() {
       Object.assign(this.editSillForm, this.SillForm)
       this.editSillShow = true
     },
-    saveSill () {
+    saveSill() {
       Object.assign(this.SillForm, this.editSillForm)
       let res = this.changeIntegralAdvance()
       if (res) return this.$message.error('请输入大于等于零的数字')
     },
-    cancelSill () {
+    cancelSill() {
       this.editSillShow = false
     },
-    editIntegralFn () {
+    editIntegralFn() {
       this.integral = this.present
       this.editIntegral = true
     },
-    saveIntegralFn () {
+    saveIntegralFn() {
       if (!(this.integral - 0 >= 0)) return this.$message.error('请输入大于等于零的数字')
       this.present = this.integral
       this.editIntegral = false
     },
-    cancelIntegralFn () {
+    cancelIntegralFn() {
       this.editIntegral = false
     },
     // 搜索用户
-    search () {
+    search() {
+      this.userPage = 1
+      this.getUserList()
+    },
+    getUserList() {
       this.$get('/integral/show_user', {
         search: this.searchKey,
-        current_page: 1
+        current_page: this.userPage,
+        page_count: 15
       }).then(res => {
         if (res.data.content) {
-          this.userList = res.data.content.map(item => {
+          this.userList = [...this.userList, ...res.data.content.map(item => {
             return {
               user: item.user_id,
               nickname: item.nickname,
               checked: false
             }
-          })
+          })]
+          if (res.data.content.length < 15) {
+            this.userPageOver = true
+          } else {
+            this.userPage++
+            this.userPageOver = false
+          }
         } else {
           this.$message.error('搜索异常')
         }

@@ -38,35 +38,35 @@
             <div class="spgl-form--input">
               <div class="spgl-form--num">
                 <span>V1</span>
-                <el-form-item>
+                <el-form-item prop="v1" :rules="rules.vInput">
                   <el-input class="spgl-form--num__input" v-model="formSpxx.v1" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V2</span>
-                <el-form-item>
+                <el-form-item prop="v2" :rules="rules.vInput">
                   <el-input class="spgl-form--num__input" v-model="formSpxx.v2" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V3</span>
-                <el-form-item>
+                <el-form-item prop="v3" :rules="rules.vInput">
                   <el-input class="spgl-form--num__input" v-model="formSpxx.v3" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V4</span>
-                <el-form-item>
+                <el-form-item prop="v4" :rules="rules.vInput">
                   <el-input class="spgl-form--num__input" v-model="formSpxx.v4" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V5</span>
-                <el-form-item>
+                <el-form-item prop="v5" :rules="rules.vInput">
                   <el-input class="spgl-form--num__input" v-model="formSpxx.v5" name="num">
                   </el-input>
                 </el-form-item>
@@ -310,6 +310,14 @@ export default {
         callback()
       }
     }
+    let validateV = (rule, value, callback) => {
+      console.log(value)
+      if (value > 100) {
+        callback(new Error('范围1-100'))
+      } else {
+        callback()
+      }
+    }
     return {
       base_url: base_url,
       isShowImgPreview: false,
@@ -318,7 +326,8 @@ export default {
       rules: {
         required: [{ required: true, message: '该项为必填项' }],
         title: [{ validator: validateTitle, trigger: 'blur' }],
-        length10: [{ max: 10, message: '长度不超过10个字符', trigger: 'blur' }]
+        length10: [{ max: 10, message: '长度不超过10个字符', trigger: 'blur' }],
+        vInput: [{ validator: validateV, trigger: 'blur' }]
       },
       formSpxx: {
         goodsTitle: '',
@@ -514,8 +523,14 @@ export default {
     },
 
     save() {
-      console.log(this.formSpxx.typeEffects)
       try {
+        let vList = [+this.formSpxx.v1, +this.formSpxx.v2, +this.formSpxx.v3, +this.formSpxx.v4, +this.formSpxx.v5]
+        let jsonVList = JSON.stringify(vList)
+        let sortvList = vList.sort()
+        let jsonSortVList = JSON.stringify(sortvList)
+        if (jsonVList !== jsonSortVList) {
+            return this.$message.error('返利比例请按照 v5>v4>v3>v2>v1 填写')
+        }
         let valides = []
         this.$refs.spxxForm.validate(valid => {
           if (valid) {
@@ -531,7 +546,7 @@ export default {
             valides.push(false)
           }
         })
-        if (!valides.every(item => item)) return this.$alert('请按照规则填写！')
+        if (!valides.every(item => item)) return this.$message.error('请按照规则填写！')
 
         let params = {
           title: this.formSpxx.goodsTitle,
@@ -700,6 +715,10 @@ export default {
       display: flex;
       span {
         margin-right: 4px;
+      }
+      /deep/ .el-form-item__error {
+        margin-left: unset;
+        width: 59px;
       }
       .spgl-form--num__input {
         width: 35px;
