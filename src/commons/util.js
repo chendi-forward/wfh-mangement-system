@@ -64,7 +64,7 @@ export const tableToExcel = function (obj){
     str+='\n';
   }
   //encodeURIComponent解决中文乱码
-  let uri = 'data:text/xlsx;charset=utf-8,\ufeff' + encodeURIComponent(str);
+  let uri = 'data:text/xls;charset=utf-8,\ufeff' + encodeURIComponent(str);
   //通过创建a标签实现
   let link = document.createElement("a");
   link.href = uri;
