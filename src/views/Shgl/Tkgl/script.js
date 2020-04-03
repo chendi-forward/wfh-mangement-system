@@ -91,10 +91,13 @@ export default {
 							item.rstate = 0
 						} else if (item.refund_state == '提交退款') {
 							item.rstate = 1
+							item.time_1 = item.end_time
 						} else if (item.refund_state == '确认收货') {
 							item.rstate = 2
+							item.time_2 = item.end_time
 						} else if (item.refund_state == '退款完成') {
 							item.rstate = 3
+							item.time_3 = item.end_time
 						}
 						return item
 					})

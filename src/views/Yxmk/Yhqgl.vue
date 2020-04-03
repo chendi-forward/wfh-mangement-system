@@ -49,10 +49,6 @@
       <div class="yhqgl-body__head">
         <div class="body__head--title">新手优惠券设置</div>
         <div class="body__head--btn">
-          <el-radio-group v-model="newerSetting[0].discount_type" v-show="isEdit" class="body__head--btn--sale">
-            <el-radio label="折扣">按比例</el-radio>
-            <el-radio label="金额">按金额</el-radio>
-          </el-radio-group>
           <el-button v-show="isEdit" type="success" @click="handleSaveNew" size="small">保存</el-button>
           <el-button v-show="isEdit" @click="handleCancelNew" size="small">取消</el-button>
           <el-button v-show="!isEdit" type="success" @click="handleEditNew" size="small">编辑</el-button>
@@ -69,16 +65,10 @@
               <el-input type="number" v-show="isEdit" v-model.number="scope.row.coupon_num"></el-input>
             </template>
           </el-table-column>
-          <el-table-column align='center' label="折扣比例（%）" min-width="120">
+           <el-table-column align='center' label="折扣比例（%）" min-width="120">
             <template slot-scope="scope">
               <span v-show="!isEdit || newerSetting[0].discount_type !== '折扣'">{{ scope.row.discount_percent }}</span>
               <el-input type="number" v-show="isEdit && newerSetting[0].discount_type === '折扣'" v-model.number="scope.row.discount_percent"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column align='center' label="扣减金额（元）" min-width="120">
-            <template slot-scope="scope">
-              <span v-show="!isEdit || newerSetting[0].discount_type !== '金额' ">{{ scope.row.discount_money }}</span>
-              <el-input type="number" v-show="isEdit && newerSetting[0].discount_type === '金额'" v-model.number="scope.row.discount_money"></el-input>
             </template>
           </el-table-column>
           <el-table-column align='center' label="生效天数" min-width="120">
@@ -221,16 +211,23 @@ export default {
     handleSaveNew() {
       this.isEdit = false
       let params = {
-        ...this.newerSetting[0],
+        coupon_id: this.newerSetting[0].coupon_id,
         coupon_type: '新手',
-        discount_num: this.newerSetting[0].discount_type === '金额' ? this.newerSetting[0].discount_money : this.newerSetting[0].discount_percent,
+        coupon_name: '新手优惠券',
+        order_show_name: '新手优惠券',
+        trolley_show_name: '新手优惠券',
+        discount_type: '折扣',
+        discount_num: this.newerSetting[0].discount_percent,
+        coupon_num: this.newerSetting[0].coupon_num,
+        threshold_type: '元',
+        threshold_num: 0,
         start_time: moment().format('YYYY-MM-DD 00:00:00'),
-        end_time: moment()
-          .add(this.newerSetting[0].days, 'days')
-          .format('YYYY-MM-DD 00:00:00')
+        end_time: moment().add(this.newerSetting[0].days, 'days').format('YYYY-MM-DD 00:00:00'),
+        is_close: Number(this.newerSetting[0].is_close)
       }
       console.log('============>: handleSaveNew -> params', params)
       this.$post('/marketing/update_coupon', params).then(res => {
+        this.$message.success('修改成功！')
         console.log('============>: handleSaveNew -> res', res)
       })
       // this.$post

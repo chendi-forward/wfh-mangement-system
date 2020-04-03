@@ -133,9 +133,9 @@
                   v-for="(activity, index) in activities"
                   :key="index"
                   :type="scope.row.rstate > index ? activity.type : ''">
-                  {{activity.content }}
-                  <span class="my-timestamp">{{activity.timestamp}}</span>
+                  <span style="margin-right: 20px">{{activity.content }}</span>
                   <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
+                  <span class="my-timestamp">{{activity.timestamp}}</span>
                 </el-timeline-item>
               </el-timeline>
             </div>
