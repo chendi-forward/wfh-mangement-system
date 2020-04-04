@@ -48,6 +48,13 @@ export default {
         timestamp: '2018-04-03 20:46',
         comIndex: 2
       }],
+      activities2: [{
+        content: '确认退款',
+        type: 'danger',
+        class: 'theme-color',
+        timestamp: '2018-04-03 20:46',
+        comIndex: 2
+      }],
       // 弹框部分
       dialogFlag: false,
       currentCom: {},
