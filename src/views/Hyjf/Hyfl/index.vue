@@ -45,7 +45,7 @@
               align='center'
               label="等级回升标准">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text> 罐/
+                <input-or-text :text-data="scope.row.back_num" :input-data="scope.row.back_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_num = v}"></input-or-text> 罐/
                 <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text>元
               </template>
             </el-table-column>
