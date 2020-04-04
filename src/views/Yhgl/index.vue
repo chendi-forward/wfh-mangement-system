@@ -11,6 +11,17 @@
         <el-button type="danger" @click='inputChange'>确认</el-button>
       </div>
       <div class="header-select">
+        <span class="header-text">用户选择:</span>
+        <el-select v-model="userLabel" @change='selectChangeUser' placeholder="请选择">
+          <el-option
+            v-for="(item, index) in formOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="header-select">
         <span class="header-text">标签选择:</span>
         <el-select v-model="selectKey" @change='selectChange' placeholder="请选择">
           <el-option
@@ -143,8 +154,9 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop='label'
+          prop='remark'
           label="备注"
+          :show-overflow-tooltip='true'
           align='center'
           width="100">
         </el-table-column>
@@ -254,8 +266,8 @@
           <p class="header-title">当前标签</p>
           <div class="tag-con">
             <div class="tab-con_lable" v-for="(item, index) in options" :key="index">
-              <div class="tab_con_cur-lab disable-label" v-show="index < 2">{{item.label}}</div>
-              <div class="tab_con_cur-lab able-label" v-show="index >= 2">
+              <div class="tab_con_cur-lab disable-label" v-show="index < 1">{{item.label}}</div>
+              <div class="tab_con_cur-lab able-label" v-show="index >= 1">
                 {{item.label}}
                 <button class="tab-btn-close" @click='delBabel(item)'>X</button>
               </div>

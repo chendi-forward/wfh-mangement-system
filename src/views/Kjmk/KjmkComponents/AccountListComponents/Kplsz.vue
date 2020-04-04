@@ -68,10 +68,10 @@ export default {
     return {
       invoiceClassify: 'electronic',
       tableData: [],
-      selected: zzfp,
+      selected: dzfp,
       subList: [
-        { name: '纸质发票', component: zzfp },
-        { name: '电子发票', component: dzfp }
+        { name: '电子发票', component: dzfp },
+        // { name: '纸质发票', component: zzfp },
       ],
       searchVal: '',
       total: 0,

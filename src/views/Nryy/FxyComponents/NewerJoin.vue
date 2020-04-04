@@ -26,8 +26,8 @@
           </div>
         </div>
       </div>
-      <hr>
-      <div class="upload-img__box">
+      <!-- <hr> -->
+      <!-- <div class="upload-img__box">
         <div class="upload-img--upload">上传封面:</div>
         <div class="upload-img--img">
           <img-upload
@@ -51,7 +51,7 @@
             >预览</el-button>
           </div>
         </div>
-      </div>
+      </div> -->
     </main>
     <footer class="brand-introduction__footer">
       <el-button
@@ -121,7 +121,7 @@ export default {
     save() {
       let params = {
         source: 'new',
-        cover_pic: this.imageUrl_cover,
+        // cover_pic: this.imageUrl_cover,
         content_pic: this.imageUrl_long
       }
       this.$post('/content/active/add_other_pic', params).then(res => {

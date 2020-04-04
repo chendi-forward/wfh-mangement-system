@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column align='center' min-width="100" prop="nickname" label="昵称">
         </el-table-column>
-        <el-table-column align='center' min-width="120" prop="pay_money" label="订单金额">
+        <el-table-column align='center' min-width="120" prop="real_money" label="订单金额">
         </el-table-column>
         <el-table-column align='center' label="类别" prop="type" min-width="80">
         </el-table-column>

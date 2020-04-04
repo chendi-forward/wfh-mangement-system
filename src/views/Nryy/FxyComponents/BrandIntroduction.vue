@@ -27,11 +27,11 @@
           </div>
         </div>
       </div>
-      <hr>
-      <div class="upload-img__box">
+      <!-- <hr> -->
+      <!-- <div class="upload-img__box">
         <div class="upload-img--upload">上传封面:</div>
         <div class="upload-img--img">
-          <!-- <img-upload v-model="imageUrl_cover" class="upload-img--cover" tip='封面'></img-upload> -->
+          <img-upload v-model="imageUrl_cover" class="upload-img--cover" tip='封面'></img-upload>
           <img-upload
             size='5'
             class="upload-img--cover"
@@ -54,7 +54,7 @@
             >预览</el-button>
           </div>
         </div>
-      </div>
+      </div> -->
     </main>
     <footer class="brand-introduction__footer">
       <el-button
@@ -129,10 +129,10 @@ export default {
       this.imageUrl_cover = ''
     },
     save() {
-      if (!this.imageUrl_cover || !this.imageUrl_long) return this.$alert('请上传图片！')
+      if (!this.imageUrl_long) return this.$alert('请上传图片！')
       let params = {
         source: 'brand',
-        cover_pic: this.imageUrl_cover,
+        // cover_pic: this.imageUrl_cover,
         content_pic: this.imageUrl_long
       }
       this.$post('/content/active/add_other_pic', params).then(res => {
@@ -160,8 +160,9 @@ export default {
 .brand-introduction__main {
   padding-left: 47px;
   padding-right: 50px;
-  height: 620px;
+  // height: 620px;
   background-color: #fff;
+  padding-bottom: 67px;
   & > div {
     height: 50%;
   }

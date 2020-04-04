@@ -26,23 +26,11 @@
           </el-form-item>
           <el-form-item class="content-content__item" label="活动时间：" prop="dateRange" :rules='rules.dateRange'>
             <div class="form--dateSelect">
-              <el-date-picker
-                class="data-input"
-                v-model="effectiveDate_s"
-                @change='changeDate("start_time")'
-                type="datetime"
-                placeholder="选择时间..."
-              ></el-date-picker>
+              <el-date-picker class="data-input" v-model="effectiveDate_s" @change='changeDate("start_time")' type="datetime" placeholder="选择时间..."></el-date-picker>
               <div style="width: 20px; display: flex; align-items: center;">
                 <div class="date-throught"></div>
               </div>
-              <el-date-picker
-                class="data-input"
-                v-model="effectiveDate_e"
-                @change='changeDate("end_time")'
-                type="datetime"
-                placeholder="选择时间..."
-              ></el-date-picker>
+              <el-date-picker class="data-input" v-model="effectiveDate_e" @change='changeDate("end_time")' type="datetime" placeholder="选择时间..."></el-date-picker>
             </div>
           </el-form-item>
           <el-form-item class="content-content__item" label="订单条件：" prop="ddType" :rules='rules.threshold_type'>
@@ -79,11 +67,13 @@
         <div class="cjyhq-title">活动商品设置</div>
         <el-form class="cjyhq-content form-spsz" name="formSpsz" label-width="130px" label-position="left">
           <el-form-item label="参与优惠商品：">
-            <div class="item__sale" v-if='goodsData.length' v-for="(item, index) in goodsData" :key="index">
-              <img class="item__sale--img" :src='item.pic_link' />
-              <div class="item__sale--text text-overflow-mult">{{item.title}}</div>
-            </div>
-            <div class="noData" v-if='!goodsData.length'>
+            <template v-if='goodsData.length'>
+              <div class="item__sale" v-for="(item, index) in goodsData" :key="index">
+                <img class="item__sale--img" :src=' base_url + item.pic_link' />
+                <div class="item__sale--text text-overflow-mult">{{item.title}}</div>
+              </div>
+            </template>
+            <div class="noData" v-else>
               暂无数据
             </div>
           </el-form-item>
@@ -97,9 +87,18 @@
     <div class="cjyhq-box__setting">
       <div class="cjyhq-title">优惠用户设置</div>
       <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
-        <el-form-item label="标签筛选：" class="content-content__item" :show-message='false'>
-          <el-select @change='keyChangeUserData' v-model="formYhsz.bqsx" placeholder="请选择...">
+        <el-form-item label="筛选类型：">
+          <el-select v-model="selectType" @change="selectTypeChange" placeholder="请选择...">
+            <el-option label="按标签筛选" value="tab"></el-option>
+            <el-option label="按用户筛选" value="user"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="selectTypeName" class="content-content__item" :show-message='false'>
+          <el-select v-show="selectType==='tab'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-select v-show="selectType==='user'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
+            <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
           <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
         </el-form-item>
@@ -112,14 +111,14 @@
           </el-form-item>
         </el-form>
         <div class="content__search--options">
-          <el-checkbox-group @change='userDataChange' v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
-            <el-checkbox v-for="(item, i) in checkLists" :key="i" :label="item.user_id" v-model='item.nickname' :checked='item.flag'></el-checkbox>
+          <el-checkbox-group v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
+            <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="content__group--btn" v-if="updateFlag">
-          <el-button class="editBtn" size="small" @click="getUserData">更改</el-button>
-          <!-- <el-button size="small">取消</el-button> -->
-        </div>
+        <!-- <div class="content__group--btn" v-if="updateFlag"> -->
+        <!-- <el-button class="editBtn" size="small" @click="getUserData">更改</el-button> -->
+        <!-- <el-button size="small">取消</el-button> -->
+        <!-- </div> -->
       </div>
     </div>
     <div class="cjyhq-box__footer">
@@ -142,36 +141,18 @@
         <div class="search-title">商品添加：</div>
         <div class="search-list">
           <div class="search-list--item">
-            <el-table
-              class="ssxd-table"
-              ref="multipleTable"
-              :data="activeGoods"
-              tooltip-effect="dark"
-              style="width: 100%"
-              height='300'
-              v-loadmore="load"
-              @selection-change="handleSelectionChange">
-              <el-table-column
-                type="selection"
-                width="55">
+            <el-table class="ssxd-table" ref="multipleTable" :data="activeGoods" tooltip-effect="dark" style="width: 100%" height='300' v-loadmore="load" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55">
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品图片"
-                width="100">
+              <el-table-column align='center' label="商品图片" width="100">
                 <template slot-scope="scope">
-                  <img class="goodsImage" :src="scope.row.pic_link" alt="">
+                  <img class="goodsImage" :src=" base_url + scope.row.pic_link" alt="">
                 </template>
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品编号"
-                width="130">
+              <el-table-column align='center' label="商品编号" width="130">
                 <template slot-scope="scope">{{ scope.row.goods_id }}</template>
               </el-table-column>
-              <el-table-column
-                align='center'
-                label="商品名称">
+              <el-table-column align='center' label="商品名称">
                 <template slot-scope="scope">{{ scope.row.title }}</template>
               </el-table-column>
             </el-table>
@@ -192,17 +173,21 @@ import $ from 'jquery'
 import moment from 'moment'
 import { addActive, getActiveList, getActiveDetail, updateActive, getLableData, getGoodsList, getUserList } from 'API/Yxmk'
 import CONFIG from '@/config/baseURL'
+import { BASE_URL } from 'COMMONS/commonsConfig.js'
 
-const regPositvie = /^(1\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$/
+const regPositvie = /^\d+(?=\.{0,1}\d+$|$)/
 const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
 
 export default {
-	name: "yxmk-cjyhq",
-	components: {
-		'dialog-com': DialogCom
+  name: 'yxmk-cjyhq',
+  components: {
+    'dialog-com': DialogCom
   },
-  props: ['activeId'],
-  data () {
+  props: {
+    activeId: [String, Number],
+    action: String
+  },
+  data() {
     let length10 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('该项不能为空'))
@@ -291,6 +276,8 @@ export default {
       }
     }
     return {
+      base_url: BASE_URL,
+
       updateFlag: false,
       userKey: '',
       userPage: 1,
@@ -299,25 +286,23 @@ export default {
       total: 10, // 总件数
       formXxsz: {
         // active_no: "",
-        active_name: "",
-        order_show_name: "",
+        active_name: '',
+        order_show_name: '',
         trolley_show_name: '',
-        jxsse: "",
-        ffType: "1", // 发放类型
-        ffNumber: "", // 发放数量
-        ddType: "元", // 订单类型
-        ddMoney: "", // 订单金额
-        ddNumber: "", // 订单数量
-        zkType: '1', // 折扣设置
+        jxsse: '',
+        ffType: '1', // 发放类型
+        ffNumber: '', // 发放数量
+        ddType: '元', // 订单类型
+        ddMoney: '', // 订单金额
+        ddNumber: '', // 订单数量
+        zkType: '金额', // 折扣设置
         zkMoney: '', // 减扣金额
         zkNumber: '', // 比例
         dateRange: []
       },
       rules: {
         number: [{ type: 'number', required: true, message: '必须是数字' }],
-        required: [
-          { validator: required, message: '该项不能不空', trigger: 'blur' }
-        ],
+        required: [{ validator: required, message: '该项不能不空', trigger: 'blur' }],
         length10: [{ validator: length10, trigger: 'blur' }],
         length5: [{ validator: length5, trigger: 'blur' }],
         dateRange: [{ validator: dateRange, trigger: 'blur' }],
@@ -325,17 +310,29 @@ export default {
         jxsse: [{ validator: jxsse, trigger: 'blur' }],
         discount_type: [{ validator: discount_type, trigger: 'blur' }]
       },
-			isShowTag: false,
-      effectiveDate_s: "",
-      effectiveDate_e: "",
-      options: ["九月大客户", "新用户"],
+      isShowTag: false,
+      effectiveDate_s: '',
+      effectiveDate_e: '',
+      options: ['九月大客户', '新用户'],
       formYhsz: {
-        bqsx: ""
+        bqsx: ''
       },
+      selectType: 'tab',
+      selectTypeName: '标签筛选：',
+      userTypeOptions: [
+        { name: '所有用户', value: 'all' },
+        { name: '1级用户', value: '1级用户' },
+        { name: '2级用户', value: '2级用户' },
+        { name: '3级用户', value: '3级用户' },
+        { name: '4级用户', value: '4级用户' },
+        { name: '5级用户', value: '5级用户' },
+        { name: '普通用户', value: '普通用户' },
+        { name: '企业用户', value: '企业用户' }
+      ],
       checkList: [],
       checkLists: [],
-			activeSearch: '',
-			activeGoods: []
+      activeSearch: '',
+      activeGoods: []
     }
   },
   directives: {
@@ -348,30 +345,29 @@ export default {
           const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
           if (scrollDistance <= sign) {
             binding.value()
-            // console.log('距离底部小于100了')
-            // console.log(vnode.context)
-            // // 指令中不能用this关键字
-            // vnode.context.getNewData()
           }
         })
       }
     }
   },
   watch: {
-    activeId () {
+    activeId() {
       this.editOrcreate()
-    },
-    'formYhsz.bqsx' () {
-      this.checkLists = []
     }
   },
-  mounted () {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
-    $('.content__search--options').height(wrapH)
-    this.editOrcreate()
-    this.getUserData()
+  mounted() {
+    this.$nextTick(() => {
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
+      $('.content__search--options').height(wrapH)
+    })
+    if (this.action === 'add') {
+      this.getUserData()
+    } else {
+      this.editOrcreate()
+      this.getUserData()
+    }
   },
-	methods: {
+  methods: {
     changeDate(type) {
       if (type === 'start_time') {
         this.formXxsz.dateRange[0] = this.effectiveDate_s
@@ -379,36 +375,41 @@ export default {
         this.formXxsz.dateRange[1] = this.effectiveDate_e
       }
     },
-    updateActivity () {
+    selectTypeChange(val) {
+      if (val === 'tab') this.selectTypeName = '标签筛选：'
+      if (val === 'user') this.selectTypeName = '用户筛选：'
+      this.formYhsz.bqsx = ''
+    },
+    updateActivity() {
       let goods_id = []
       this.goodsData.forEach(item => {
         goods_id.push(item.goods_id)
       })
       let obj = {
         active_id: this.activeId,
-        // active_no: this.formXxsz.active_no,          // -- 活动编号
-        active_name: this.formXxsz.active_name,     //  -- 活动标题
-        order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
-        trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
+        active_name: this.formXxsz.active_name, //  -- 活动标题
+        order_show_name: this.formXxsz.order_show_name, //-- 在订单显示的名称
+        trolley_show_name: this.formXxsz.trolley_show_name, // -- 在购物车的名称
         max_money: Number(this.formXxsz.jxsse), // 极限销售额
         start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
-        end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'),    // -- 结束时间
-        threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐',          //  -- 满减的单位（元/罐）
-        threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney): Number(this.formXxsz.ddNumber),             // -- 满减的阈值
-        discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣',          // -- 折扣的方式（折扣/金额）
-        discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber),               // -- 折扣的金额或百分比
-        goods_list: goods_id,  // -- 商品id 的列表
-        label_id: 1,      //   -- 用户标签的id
+        end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'), // -- 结束时间
+        threshold_type: this.formXxsz.ddType,
+        threshold_num: this.formXxsz.ddType === '元' ? +this.formXxsz.ddMoney : +this.formXxsz.ddNumber,
+        discount_type: this.formXxsz.discount_type,
+        discount_num: this.formXxsz.discount_type === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
+        goods_list: goods_id, // -- 商品id 的列表
         user_list: this.checkList // -- user_id
+      }
+      if (this.formYhsz.selectType === 'tab') {
+        obj.label_id = this.formYhsz.bqsx || []
+      } else {
+        obj.user_type = this.formYhsz.bqsx || []
       }
       updateActive(obj).then(res => {
         this.$emit('hide-setting')
       })
     },
-    userDataChange (n) {
-      console.log(n, '====')
-    },
-    keyChangeUserData () {
+    keyChangeUserData() {
       let obj = {
         search: this.userKey,
         label_id: this.formYhsz.bqsx,
@@ -417,7 +418,7 @@ export default {
       }
       getUserList(obj).then(res => {
         let result = res.data.data_list
-        result.forEach((item) => {
+        result.forEach(item => {
           item.flag = false
         })
         if (this.updateFlag) {
@@ -427,7 +428,7 @@ export default {
         }
       })
     },
-    getUserData () {
+    getUserData() {
       let obj = {
         search: this.userKey,
         label_id: this.formYhsz.bqsx,
@@ -436,7 +437,7 @@ export default {
       }
       getUserList(obj).then(res => {
         let result = res.data.data_list
-        result.forEach((item) => {
+        result.forEach(item => {
           item.flag = false
         })
         if (!result.length) {
@@ -451,81 +452,75 @@ export default {
         this.options = res
       })
     },
-    editOrcreate () {
+    editOrcreate() {
       if (this.activeId) {
         this.updateFlag = true
         let obj = {
           active_id: this.activeId
         }
         getActiveDetail(obj).then(res => {
-          console.log(res, '===edit===')
-          let result = res.data;
+          let result = res.data
           // this.formXxsz.active_no = result.active_no;
-          this.formXxsz.active_name = result.active_name;
-          this.formXxsz.order_show_name = result.order_show_name;
-          this.formXxsz.trolley_show_name = result.trolley_show_name;
-          this.formXxsz.jxsse = result.max_money;
-          this.formXxsz.zkType = result.discount_type == '折扣' ? '1' : '2';
-          result.discount_type == '折扣' ? this.formXxsz.ddMoney = result.discount_num : this.formXxsz.ddNumber = result.discount_num;
-          this.formXxsz.ddType = result.threshold_type == '罐' ? '1' : '2';
-          result.threshold_type == '罐' ? this.formXxsz.zkMoney = result.threshold_num : this.formXxsz.zkNumber = result.threshold_num;
-          this.effectiveDate_s = result.start_time;
-          this.effectiveDate_e = result.end_time;
-          this.formYhsz.bqsx = result.user_label_id;
+          this.formXxsz.active_name = result.active_name
+          this.formXxsz.order_show_name = result.order_show_name
+          this.formXxsz.trolley_show_name = result.trolley_show_name
+          this.formXxsz.jxsse = result.max_money
+          this.formXxsz.zkType = result.discount_type
+          result.discount_type === '折扣' ? (this.formXxsz.ddMoney = result.threshold_num) : (this.formXxsz.ddNumber = result.threshold_num)
+          this.formXxsz.ddType = result.threshold_type
+          result.threshold_type === '罐' ? (this.formXxsz.zkMoney = result.discount_num) : (this.formXxsz.zkNumber = result.discount_num)
+          this.effectiveDate_s = result.start_time
+          this.effectiveDate_e = result.end_time
+          this.formYhsz.bqsx = result.user_label_id
           let str = result.goods_list.join(',')
-          this.goodsFancha(str);
+          this.goodsFancha(str)
           let str2 = result.user_list.join(',')
           this.userFanCha(str2)
         })
       } else {
-        console.log('创建')
       }
     },
     // 用户反查
-    userFanCha (str) {
+    userFanCha(str) {
       let obj = {
         user_id: str,
         page_count: 1000,
-        current_page: 1,
+        current_page: 1
       }
       getUserList(obj).then(res => {
         let result = res.data.data_list
-        result.forEach((item) => {
+        result.forEach(item => {
           item.flag = true
         })
         this.checkLists = result
       })
     },
     // 货物反查
-    goodsFancha (str) {
+    goodsFancha(str) {
       let obj = {
         goods_id: str,
         page_count: 1000,
-        current_page: 1,
+        current_page: 1
       }
       getGoodsList(obj).then(res => {
         let result = res.data.data_list
         result.forEach(item => {
-          item.pic_link = CONFIG.api + item.pic_link
+          item.pic_link = item.pic_link
         })
         this.goodsData = result
-        console.log(this.activeGoods, '===002222200===')
       })
     },
-    load () {
+    load() {
       this.goodsPage++
       this.showTag()
     },
-    loadData () {
+    loadData() {
       this.userPage++
       this.getUserData()
     },
-    saveActivity () {
+    saveActivity() {
       if (!this.goodsData.length) {
         return this.$alert('活动商品不能为空！')
-      }
-      if (!this.checkList.length) {
-        return this.$alert('用户列表不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -535,31 +530,34 @@ export default {
           })
           let obj = {
             // active_no: this.formXxsz.active_no,          // -- 活动编号
-            active_name: this.formXxsz.active_name,     //  -- 活动标题
-            order_show_name: this.formXxsz.order_show_name,      //-- 在订单显示的名称
-            trolley_show_name: this.formXxsz.trolley_show_name,  // -- 在购物车的名称
+            active_name: this.formXxsz.active_name, //  -- 活动标题
+            order_show_name: this.formXxsz.order_show_name, //-- 在订单显示的名称
+            trolley_show_name: this.formXxsz.trolley_show_name, // -- 在购物车的名称
             max_money: Number(this.formXxsz.jxsse), // 极限销售额
             start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD hh:mm:ss'), // -- 开始时间
-            end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'),    // -- 结束时间
-            threshold_type: this.formXxsz.ddType == 1 ? '元' : '罐',          //  -- 满减的单位（元/罐）
-            threshold_num: this.formXxsz.ddType == 1 ? Number(this.formXxsz.ddMoney): Number(this.formXxsz.ddNumber),             // -- 满减的阈值
-            discount_type: this.formXxsz.zkType == 1 ? '金额' : '折扣',          // -- 折扣的方式（折扣/金额）
-            discount_num: this.formXxsz.zkType == 1 ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber),               // -- 折扣的金额或百分比
-            goods_list: goods_id,  // -- 商品id 的列表
-            label_id: 1,      //   -- 用户标签的id
+            end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'), // -- 结束时间
+            threshold_type: this.formXxsz.ddType, //  -- 满减的单位（元/罐）
+            threshold_num: this.formXxsz.ddType == '元' ? Number(this.formXxsz.ddMoney) : Number(this.formXxsz.ddNumber), // -- 满减的阈值
+            discount_type: this.formXxsz.zkType, // -- 折扣的方式（折扣/金额）
+            discount_num: this.formXxsz.zkType == '金额' ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber), // -- 折扣的金额或百分比
+            goods_list: goods_id, // -- 商品id 的列表
             user_list: this.checkList // -- user_id
           }
-          addActive(obj)
-          .then(res => {
+          if (this.formYhsz.selectType === 'tab') {
+            obj.label_id = this.formYhsz.bqsx || []
+          } else {
+            obj.user_type = this.formYhsz.bqsx || []
+          }
+          addActive(obj).then(res => {
             this.$emit('hide-setting')
           })
         }
       })
     },
-    sureAddGoods () {
+    sureAddGoods() {
       this.isShowTag = false
     },
-    serchGoods () {
+    serchGoods() {
       let obj = {
         search: this.activeSearch,
         page_count: 100,
@@ -568,12 +566,12 @@ export default {
       getGoodsList(obj).then(res => {
         let result = res.data.data_list
         result.forEach(item => {
-          item.pic_link = CONFIG.api + item.pic_link
+          item.pic_link = item.pic_link
         })
         this.activeGoods = result
       })
     },
-		showTag () {
+    showTag() {
       let obj = {
         page_count: 10,
         current_page: this.goodsPage
@@ -581,7 +579,7 @@ export default {
       getGoodsList(obj).then(res => {
         let result = res.data.data_list
         result.forEach(item => {
-          item.pic_link = CONFIG.api + item.pic_link
+          item.pic_link = item.pic_link
         })
         if (!result.length) {
           if (this.goodsPage > 1) {
@@ -592,18 +590,18 @@ export default {
         }
         this.isShowTag = true
       })
-		},
-		hideTag () {
+    },
+    hideTag() {
       this.isShowTag = false
       this.goodsData = []
     },
-    hideSetting () {
+    hideSetting() {
       this.$emit('hide-setting')
     },
-		handleSelectionChange (n) {
+    handleSelectionChange(n) {
       this.goodsData = n
     }
-	}	
+  }
 }
 </script>
 
@@ -612,9 +610,9 @@ export default {
   display: grid;
   grid-template-columns: 7fr 4fr;
   grid-column-gap: 20px;
-  grid-template-areas: 
-    "headerLeft headerRight"
-    "footer footer";
+  grid-template-areas:
+    'headerLeft headerRight'
+    'footer footer';
   .goodsImage {
     width: 100px;
     height: 50px;
@@ -624,8 +622,8 @@ export default {
     color: #fff;
   }
   .searchBtn {
-    background: #FFE0E2;
-    color: #FF4B57;
+    background: #ffe0e2;
+    color: #ff4b57;
     border: 0px solid #000;
   }
   .saveBtn {
@@ -669,8 +667,8 @@ export default {
       color: #fff;
     }
     .searchBtn {
-      background: #FFE0E2;
-      color: #FF4B57;
+      background: #ffe0e2;
+      color: #ff4b57;
       border: 0px solid #000;
     }
     .content__item--tag {
@@ -710,7 +708,8 @@ export default {
       .el-input {
         width: 110px;
       }
-      span {
+      & > span {
+        font-size: 14px;
         margin-left: 5px;
       }
     }
@@ -828,15 +827,15 @@ export default {
       color: #fff;
       background: #ff4b57;
     }
-	}
-	.tag-dialog {
-		.dialog-search {
-			display: flex;
-			align-items: center;
-		}
-		.dialog-list {
-			display: flex;
-			margin-top: 15px;
+  }
+  .tag-dialog {
+    .dialog-search {
+      display: flex;
+      align-items: center;
+    }
+    .dialog-list {
+      display: flex;
+      margin-top: 15px;
     }
     .dialog-btns {
       margin-top: 20px;
@@ -846,22 +845,22 @@ export default {
         color: #fff;
       }
     }
-		.search-list {
-			flex: 1;
-			border: 1px solid #d5d8db;
-			border-radius: 4px;
-			padding: 1px;
-		}
-		.search-title {
-			width: 100px;
-		}
-		.search-input {
-			flex: 1;
-		}
-		.search-button {
-			padding-left: 20px;
-		}
-	}
+    .search-list {
+      flex: 1;
+      border: 1px solid #d5d8db;
+      border-radius: 4px;
+      padding: 1px;
+    }
+    .search-title {
+      width: 100px;
+    }
+    .search-input {
+      flex: 1;
+    }
+    .search-button {
+      padding-left: 20px;
+    }
+  }
 }
 
 .cjyhq-box__footer {

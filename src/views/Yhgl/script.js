@@ -15,23 +15,36 @@ export default {
             user_id: '',
             btnFlag: true, // 按钮禁用标志
             title: '',
-            editOrSet: '',
+            editOrSet: '', 
             radio: '1',
             labelPosition: 'left',
+            userLabel: '',
             formOptions: [{
                 value: '1',
-                label: '无标签用户'
+                label: '1级用户'
             }, {
                 value: '2',
-                label: '本月新用户'
+                label: '2级用户'
             }, {
                 value: '3',
-                label: '五月优惠用户'
+                label: '3级用户'
+            }, {
+                value: '4',
+                label: '4级用户'
+            }, {
+                value: '5',
+                label: '5级用户'
+            }, {
+                value: '6',
+                label: '本月新用户'
+            }, {
+                value: '7',
+                label: '无标签用户'
             }],
             formLabelAlign: {
                 option: '',
                 update: '',
-                pushmoney: '',
+                pushmoney: '10',
                 is_black: '1',
                 level_protect: '1',
                 advance: '1',
@@ -198,17 +211,20 @@ export default {
             })
         },
         // 获取用户信息
-        getUserData() {
-            let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}`
+        getUserData () {
+            let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}&user_label=${this.userLabel}`
             this.$get(url).then(res => {
                 if (res.content && res.content.length) {
                     res.content.forEach((item) => {
-                        item.avatar = item.avatar
                         item.add_time = item.add_time.substr(0, 19)
-                        item.label = item.label || '--'
+                        item.remark = item.remark !== 'null' && item.remark !== '' ? item.remark : '--'
                         item.province = item.province || '--'
                         item.gender = item.gender === '1' ? '男' : '女'
                         item.deal_money = item.deal_money || '0'
+                        this.options.forEach((i) => {
+                            if (i.value === item.label_id) {}
+                            item.label = i.label || '--'
+                        })
                     })
                     this.tableData = res.content
                     this.total = res.count
@@ -218,7 +234,7 @@ export default {
                 }
             })
         },
-        sureSave(flag) {
+        sureSave (flag) {
             this.dialogFlag = flag
             if (this.editOrSet === 'edit') {
                 let params = {
@@ -234,6 +250,7 @@ export default {
                 }
                 get('/user/change_user_one', params).then(res => {
                     if (res) {
+                        this.getUserData()
                         this.$message({
                             type: 'success',
                             message: '编辑成功！！'
@@ -306,8 +323,10 @@ export default {
                 this.btnFlag = true
             }
         },
+        selectChangeUser() {
+            this.getUserData()
+        },
         selectChange() {
-            console.log(this.selectKey, '===selectKey===')
             this.getUserData()
         },
         handleCurrentChange(val) {

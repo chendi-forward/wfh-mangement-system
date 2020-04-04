@@ -31,7 +31,7 @@ export default {
                 ]
             },
             labelPosition: 'left',
-            addtitle: '新增用户',
+            addtitle: '添加用户',
             dialogFlag: false,
             title: '管理员设置',
             tableData: [],
@@ -82,14 +82,13 @@ export default {
                         })
                         item.role = arr2.join('、')
                     })
-                    this.tableData = res
+                    this.tableData = res.reverse()
                 } else {
                     this.$message('暂无数据')
                 }
             })
         },
         addUserData() {
-            console.log(this.form.role.join(','), '===')
             this.$get('/authority/add_user', {
                 username: this.form.name,
                 account: this.form.account,
@@ -143,6 +142,7 @@ export default {
         addUser() {
             this.dialogFlag = true
             this.addtitle = '添加用户'
+            this.id = ''
             this.reset()
         },
         reset() {
@@ -155,13 +155,12 @@ export default {
                     password: '',
                     role: []
                 }
-                console.log(this.form, '=====')
             })
         },
         sureSave() {
             this.$refs['form'].validate((valid) => {
                 if (valid) {
-                    if (this.addtitle === '新增用户') {
+                    if (this.addtitle === '添加用户') {
                         this.addUserData()
                     } else {
                         this.updateUserData()

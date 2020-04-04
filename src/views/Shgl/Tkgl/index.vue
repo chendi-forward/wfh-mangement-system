@@ -150,6 +150,7 @@
                   <span class="my-timestamp" v-if='scope.row.rstate > index && index == 1'>{{scope.row.confirm_time}}</span>
                   <span class="my-timestamp" v-if='scope.row.rstate > index && index == 2'>{{scope.row.refund_time}}</span>
                   <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
+                  <span class="my-timestamp">{{activity.timestamp}}</span>
                 </el-timeline-item>
               </el-timeline>
             </div>

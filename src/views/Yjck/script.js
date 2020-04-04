@@ -186,19 +186,17 @@ export default {
 		this.getUserInfo('all')
 	},
 	methods: {
+		handleSeach() {
+			this.getLineData()
+			this.getRebateRatio()
+			this.getUserMap()
+			this.getUserInfo()
+		},
 		// 获取订单的数量信息
 		getNumberNameInfo() {
 			this.$get('/home/order_num').then(res => {
 				this.all_count = res.data.all_count
 				this.all_money = res.data.all_money
-			})
-		},
-		// 获取折线图数据
-		getLineData() {
-			this.start_time = moment(this.effectiveDate_s).format('YYYY-MM-DD')
-			this.end_time = moment(this.effectiveDate_e).format('YYYY-MM-DD')
-			this.$get('/home/sell_trend?start_time=' + this.start_time + '&end_time=' + this.end_time).then(res => {
-				this.chartLine(res.data.time_list, res.data.data_list)
 			})
 		},
 		// 获取顶部title数据
@@ -225,9 +223,19 @@ export default {
 				})
 			})
 		},
+		// 获取折线图数据
+		getLineData() {
+			this.start_time = moment(this.effectiveDate_s).format('YYYY-MM-DD')
+			this.end_time = moment(this.effectiveDate_e).format('YYYY-MM-DD')
+			this.$get('/home/sell_trend?start_time=' + this.start_time + '&end_time=' + this.end_time).then(res => {
+				this.chartLine(res.data.time_list, res.data.data_list)
+			})
+		},
 		// 获取各个返利占比
 		getRebateRatio() {
-			this.$get('/home/rebate_ratio')
+			this.start_time = moment(this.effectiveDate_s).format('YYYY-MM-DD')
+			this.end_time = moment(this.effectiveDate_e).format('YYYY-MM-DD')
+			this.$get('/home/rebate_ratio?start_time=' + this.start_time + '&end_time=' + this.end_time)
 				.then(res => {
 					this.pieChartList = this.pieChartList.map(item => {
 						return {
@@ -241,7 +249,9 @@ export default {
 		// 获取地图数据
 		getUserMap() {
 			let params = {
-				type: 'user'
+				type: 'user',
+				start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+				end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
 			}
 			if (this.activeName1 === 'yhdt') {
 				params.type = 'user'
@@ -274,7 +284,9 @@ export default {
 		// 获取用户数据
 		getUserInfo(val) {
 			let params = {
-				type: val
+				type: val,
+				start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+				end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
 			}
 			this.$get('/home/user_info', params)
 				.then(res => {
