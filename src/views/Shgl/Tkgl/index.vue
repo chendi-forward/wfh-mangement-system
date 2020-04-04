@@ -146,11 +146,10 @@
                   :type="scope.row.rstate > index ? activity.type : ''">
                   {{activity.content }}
                   <!-- 发货/shipments_time   收货/confirm_time  确认退货/refund_time -->
-                  <span class="my-timestamp" v-if='scope.row.rstate > index && index == 0'>{{scope.row.shipments_time}}</span>
-                  <span class="my-timestamp" v-if='scope.row.rstate > index && index == 1'>{{scope.row.confirm_time}}</span>
-                  <span class="my-timestamp" v-if='scope.row.rstate > index && index == 2'>{{scope.row.refund_time}}</span>
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 0)'>{{scope.row.shipments_time}}</span>
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 1)'>{{scope.row.confirm_time}}</span>
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 2)'>{{scope.row.refund_time}}</span>
                   <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
-                  <span class="my-timestamp">{{activity.timestamp}}</span>
                 </el-timeline-item>
               </el-timeline>
             </div>
