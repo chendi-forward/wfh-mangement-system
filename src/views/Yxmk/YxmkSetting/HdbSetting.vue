@@ -115,10 +115,6 @@
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
         </div>
-        <!-- <div class="content__group--btn" v-if="updateFlag"> -->
-        <!-- <el-button class="editBtn" size="small" @click="getUserData">更改</el-button> -->
-        <!-- <el-button size="small">取消</el-button> -->
-        <!-- </div> -->
       </div>
     </div>
     <div class="cjyhq-box__footer">
@@ -352,6 +348,7 @@ export default {
       this.editOrcreate()
     }
     this.getLableData()
+    this.getUserData()
   },
   directives: {
     loadmore: {
@@ -406,7 +403,6 @@ export default {
       } else {
         obj.user_type = this.formYhsz.bqsx || []
       }
-      console.log(obj, this.formXxsz, '=======')
       updateActive(obj).then(res => {
         this.$emit('hide-setting')
       })

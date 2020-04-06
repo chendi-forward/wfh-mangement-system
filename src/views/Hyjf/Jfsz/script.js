@@ -1,6 +1,7 @@
 import inputOrText from 'COMPONENTS/inputOrText'
 import $ from 'jquery'
-// import _ from 'lodash'
+import { getLableData } from 'API/Yxmk'
+
 export default {
   name: 'spgl',
   components: {
@@ -8,6 +9,8 @@ export default {
   },
   data() {
     return {
+      selectType: 'tab',
+      selectTypeName: '标签筛选',
       tableData: [],
       tableDataOrigin: [],
       userList: [],
@@ -33,7 +36,22 @@ export default {
       searchKey: '',
       userPage: 1,
       userPageOver: false,
-      busy: false
+      busy: false,
+
+      formYhsz: {
+        bqsx: ''
+      },
+      options: [],
+      userTypeOptions: [
+        { label: '所有用户', value: 'all' },
+        { label: '1级用户', value: '1级用户' },
+        { label: '2级用户', value: '2级用户' },
+        { label: '3级用户', value: '3级用户' },
+        { label: '4级用户', value: '4级用户' },
+        { label: '5级用户', value: '5级用户' },
+        { label: '普通用户', value: '普通用户' },
+        { label: '企业用户', value: '企业用户' }
+      ],
     }
   },
   created() {
@@ -41,9 +59,10 @@ export default {
     this.getIntegralAdvance()
   },
   mounted() {
-    let wrapH = $('.spgl-wrap1').height() - 63 - 70 - 70 - 62 - 3 - 62 - 50
+    let wrapH = $('.spgl-wrap1').height() - 63 - 70 - 70 - 62 - 3 - 62 - 50 - 100 -73
     $('.overflow-wrap').height(wrapH)
     this.getUserList()
+    this.getLableData()
   },
   directives: {
     loadmore: {
@@ -140,10 +159,16 @@ export default {
           str.push(item.user)
         }
       })
-      this.$get('/integral/given_integral', {
+      let obj = {
         user_id: str.join(','),
         integral: this.integral
-      }).then(res => {
+      }
+      if (this.selectType === 'tab') {
+        obj.label_id = this.formYhsz.bqsx || []
+      } else {
+        obj.user_type = this.formYhsz.bqsx || []
+      }
+      this.$get('/integral/given_integral', obj).then(res => {
         if (res.data) {
           this.$message.success('积分赠送成功')
         } else {
@@ -194,6 +219,11 @@ export default {
     cancelIntegralFn() {
       this.editIntegral = false
     },
+    selectTypeChange(val) {
+      if (val === 'tab') this.selectTypeName = '标签筛选'
+      if (val === 'user') this.selectTypeName = '用户筛选'
+      this.formYhsz.bqsx = ''
+    },
     // 搜索用户
     search() {
       this.userPage = 1
@@ -224,6 +254,12 @@ export default {
           this.$message.error('搜索异常')
         }
         this.busy = false
+      })
+    },
+    // 获取标签
+    getLableData() {
+      getLableData().then(res => {
+        this.options = res
       })
     }
   }
