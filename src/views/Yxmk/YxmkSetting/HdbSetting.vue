@@ -298,7 +298,8 @@ export default {
         zkType: '金额', // 折扣设置
         zkMoney: '', // 减扣金额
         zkNumber: '', // 比例
-        dateRange: []
+        dateRange: [],
+        discount_type: '' // 折扣方式
       },
       rules: {
         number: [{ type: 'number', required: true, message: '必须是数字' }],
@@ -395,8 +396,8 @@ export default {
         end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD hh:mm:ss'), // -- 结束时间
         threshold_type: this.formXxsz.ddType,
         threshold_num: this.formXxsz.ddType === '元' ? +this.formXxsz.ddMoney : +this.formXxsz.ddNumber,
-        discount_type: this.formXxsz.discount_type,
-        discount_num: this.formXxsz.discount_type === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
+        discount_type: this.formXxsz.zkType,
+        discount_num: this.formXxsz.zkType === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
         goods_list: goods_id, // -- 商品id 的列表
         user_list: this.checkList // -- user_id
       }
@@ -405,6 +406,7 @@ export default {
       } else {
         obj.user_type = this.formYhsz.bqsx || []
       }
+      console.log(obj, this.formXxsz, '=======')
       updateActive(obj).then(res => {
         this.$emit('hide-setting')
       })

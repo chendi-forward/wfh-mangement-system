@@ -46,8 +46,8 @@ export default {
                 update: '',
                 pushmoney: '10',
                 is_black: '1',
-                level_protect: '1',
-                advance: '1',
+                level_protect: '0',
+                advance: '0',
                 level: '1',
                 remark: ''
             },
@@ -125,7 +125,7 @@ export default {
                     level_protect: result.level_protect + '',
                     advance: result.astrict_advance + '',
                     level: result.level + '',
-                    remark: result.remark + ''
+                    remark: result.remark === null ? '' : result.remark + ''
                 }
                 this.dialogFlag = true
             })
@@ -202,6 +202,7 @@ export default {
                 if (res && res.length) {
                     res.unshift({ label: '全部用户', value: '' })
                     this.options = res
+                    console.log(this.options, '=====')
                 } else {
                     this.$message({
                         type: 'info',
