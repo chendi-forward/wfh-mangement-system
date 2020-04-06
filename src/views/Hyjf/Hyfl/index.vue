@@ -68,7 +68,7 @@
               <p v-for="(item, i) in editCommonForm" :key='i'>
                 {{item.notes}}：<el-input v-model="item.num" placeholder="请输入分值"></el-input>
                 <span v-if="item.type_id=='rebate'">
-                  <!-- （%） -->
+                  （%）
                 </span>
                 <span v-else>
                   （天）
@@ -79,7 +79,7 @@
               <p v-for="(item, i) in commonForm" :key='i'>
                 {{item.notes}}：{{item.num}}
                 <span v-if="item.type_id=='rebate'">
-                  <!-- （%） -->
+                  （%）
                 </span>
                 <span v-else>
                   （天）

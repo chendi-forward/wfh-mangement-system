@@ -26,34 +26,14 @@ export default {
       editCommonForm: [
         {
           notes: '返利比例',
-          num: 0.1,
-          type_id: 'rebate'
-        },
-        {
-          notes: '返利比例',
-          num: 0.1,
-          type_id: 'rebate'
-        },
-        {
-          notes: '返利比例',
-          num: 0.1,
+          num: 10,
           type_id: 'rebate'
         }
       ],
       commonForm: [
         {
           notes: '返利比例',
-          num: 0.1,
-          type_id: 'rebate'
-        },
-        {
-          notes: '返利比例',
-          num: 0.1,
-          type_id: 'rebate'
-        },
-        {
-          notes: '返利比例',
-          num: 0.1,
+          num: 10,
           type_id: 'rebate'
         }
       ],
@@ -193,8 +173,13 @@ export default {
     getSuperRecommendRebateSetting () {
       this.$get('/integral/get_super_recommend_rebate_setting').then(res => {
         if (res.data) {
-          this.editCommonForm = res.data
-          this.commonForm = JSON.parse(JSON.stringify(res.data))
+          this.editCommonForm = res.data.map(item => {
+            if (item.type_id == 'rebate') {
+              item.num = item.num * 100
+            }
+            return item
+          })
+          this.commonForm = JSON.parse(JSON.stringify(this.editCommonForm))
         } else {
           this.$message.error('数据获取异常异常')
         }
@@ -211,11 +196,12 @@ export default {
         }
         obj[item.type_id] = item.num
       })
-      if (obj.rebate > 1) {
-        this.$message.error('返利比例不得大于1')
+      if (obj.rebate > 100) {
+        this.$message.error('返利比例不得大于100%')
         return false
       }
       if (error) return error
+      obj.rebate = obj.rebate / 100
       this.$post('/integral/change_super_recommend_rebate_setting', obj).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
@@ -263,7 +249,7 @@ export default {
       this.editTaskShow = false
     },
     editCommon () {
-      Object.assign(this.editCommonForm, this.commonForm)
+      this.editCommonForm = JSON.parse(JSON.stringify(this.commonForm))
       this.editCommonShow = true
     },
     saveCommon () {
@@ -272,6 +258,7 @@ export default {
       if (res) return this.$message.error('请输入大于等于零的数字')
     },
     cancelCommon () {
+      console.log(this.commonForm)
       this.editCommonShow = false
     },
     editAgency () {
