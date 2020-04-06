@@ -462,6 +462,8 @@ export default {
         }
         getActiveDetail(obj).then(res => {
           let result = res.data
+          // console.log(result, '======')
+          this.checkList = result.user_list
           // this.formXxsz.active_no = result.active_no;
           this.formXxsz.active_name = result.active_name
           this.formXxsz.order_show_name = result.order_show_name
