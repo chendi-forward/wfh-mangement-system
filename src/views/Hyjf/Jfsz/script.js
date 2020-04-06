@@ -32,7 +32,8 @@ export default {
       integral: 50,
       searchKey: '',
       userPage: 1,
-      userPageOver: false
+      userPageOver: false,
+      busy: false
     }
   },
   created() {
@@ -151,8 +152,6 @@ export default {
       })
     },
     loadData() {
-      console.log(111111111111);
-      
       if (this.userPageOver) return
       this.getUserList()
     },
@@ -201,6 +200,7 @@ export default {
       this.getUserList()
     },
     getUserList() {
+      this.busy = true
       this.$get('/integral/show_user', {
         search: this.searchKey,
         current_page: this.userPage,
@@ -223,6 +223,7 @@ export default {
         } else {
           this.$message.error('搜索异常')
         }
+        this.busy = false
       })
     }
   }

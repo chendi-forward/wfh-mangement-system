@@ -94,7 +94,7 @@
           <el-button size="mini" class="success-btn" @click="search">搜索</el-button>
         </div>
         <div class="list-div sub-wrap" >
-          <div class="overflow-wrap" v-loadmore="loadData">
+          <div class="overflow-wrap" v-infinite-scroll="loadData" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <ul class="row" v-for="(item, i) in userList" :key="i" :class="{'selected': item.checked}">
               <li class="checkbox"><el-checkbox v-model="item.checked"></el-checkbox></li>
               <li class="name">{{item.nickname}}</li>
