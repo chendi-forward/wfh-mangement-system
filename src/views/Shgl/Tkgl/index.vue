@@ -127,15 +127,29 @@
           type="expand"
           align='center'>
           <template slot-scope="scope">
+            <!-- refund_type -->
             <div class="expend-wrap">
-              <el-timeline>
+              <el-timeline v-if="scope.row.refund_type=='只退款'">
+                <el-timeline-item
+                  v-for="(activity, index) in activities2"
+                  :key="index"
+                  :type="scope.row.rstate > index ? activity.type : ''">
+                  {{activity.content }}
+                  <span class="my-timestamp" v-if='scope.row.rstate > index'>{{scope.row.end_time}}</span>
+                  <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
+                </el-timeline-item>
+              </el-timeline>
+              <el-timeline v-else>
                 <el-timeline-item
                   v-for="(activity, index) in activities"
                   :key="index"
                   :type="scope.row.rstate > index ? activity.type : ''">
-                  <span style="margin-right: 20px">{{activity.content }}</span>
+                  {{activity.content }}
+                  <!-- 发货/shipments_time   收货/confirm_time  确认退货/refund_time -->
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 0)'>{{scope.row.shipments_time}}</span>
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 1)'>{{scope.row.confirm_time}}</span>
+                  <span class="my-timestamp" v-if='(scope.row.rstate > index) && (index == 2)'>{{scope.row.refund_time}}</span>
                   <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
-                  <span class="my-timestamp">{{activity.timestamp}}</span>
                 </el-timeline-item>
               </el-timeline>
             </div>

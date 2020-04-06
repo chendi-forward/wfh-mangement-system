@@ -43,7 +43,7 @@ import { refund } from 'API/Shgl'
         }
         // this.$emit('sure-save', obj)
         let data = {
-          id: this.goodsid
+          id: this.goodsid - 0
         }
         refund(data).then(res => {
           if (res.data) {
