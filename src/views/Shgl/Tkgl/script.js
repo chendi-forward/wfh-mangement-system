@@ -94,7 +94,7 @@ export default {
         refundList(data).then(res => {
             if (res.message == 'ok') {
                 this.tableData = res.data.data_list.map(item => {
-                    if (!item.express_number) {
+                    if (!item.express_number && item.refund_state != '退款完成') {
                         item.rstate = 0
                     } else if (item.refund_state == '提交退款') {
                         item.rstate = 1

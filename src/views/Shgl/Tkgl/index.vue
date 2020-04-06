@@ -101,10 +101,12 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop='refund_money'
           label="退款"
           align='center'
           width="100">
+          <template slot-scope="scope">
+            <b>{{scope.row.refund_money}}</b>
+          </template>
         </el-table-column>
         <!-- <el-table-column align='center' label="操作" width="100">
           <template slot-scope="scope">
@@ -133,10 +135,10 @@
                 <el-timeline-item
                   v-for="(activity, index) in activities2"
                   :key="index"
-                  :type="scope.row.rstate > index ? activity.type : ''">
+                  :type="scope.row.rstate > activity.comIndex ? activity.type : ''">
                   {{activity.content }}
-                  <span class="my-timestamp" v-if='scope.row.rstate > index'>{{scope.row.end_time}}</span>
-                  <i class="el-icon-circle-check icon" :class="scope.row.rstate > index ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
+                  <span class="my-timestamp" v-if='scope.row.rstate > activity.comIndex'>{{scope.row.end_time}}</span>
+                  <i class="el-icon-circle-check icon" :class="scope.row.rstate > activity.comIndex ? activity.class : ''" @click="openDialog(activity.comIndex, scope.row)"></i>
                 </el-timeline-item>
               </el-timeline>
               <el-timeline v-else>
