@@ -19,7 +19,7 @@
             </el-table-column>
             <el-table-column
               align='center'
-              label="周内上限次数">
+              label="周期内上限次数">
               <template slot-scope="scope">
                 <input-or-text v-if="scope.row.integral_id!=='06' && scope.row.integral_id!=='07'" :text-data="scope.row.max_count" :input-data="scope.row.max_count" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.max_count = v}"></input-or-text>
                 <span v-if="scope.row.integral_id=='06'" class='text-overflow'>永久{{scope.row.max_count}}次</span>
