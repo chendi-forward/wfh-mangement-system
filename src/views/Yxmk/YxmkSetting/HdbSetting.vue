@@ -344,7 +344,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 40 - 70 - 62 - 3
       $('.content__search--options').height(wrapH)
     })
     if (this.action === 'add') {
@@ -734,7 +734,7 @@ export default {
     .content__item--tag {
       width: 110px;
     }
-    .content-content__item {
+    .content-content__item:last-of-type {
       margin-bottom: unset;
     }
     .el-select {
@@ -749,7 +749,7 @@ export default {
   }
   .yhsz-search {
     background-color: #fff;
-    padding-bottom: 60px;
+    padding-bottom: 30px;
     .content__item--tag {
       width: 110px;
     }
