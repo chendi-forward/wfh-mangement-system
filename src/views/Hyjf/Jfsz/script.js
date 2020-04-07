@@ -1,6 +1,7 @@
 import inputOrText from 'COMPONENTS/inputOrText'
 import $ from 'jquery'
 import { getLableData } from 'API/Yxmk'
+import _ from 'lodash'
 
 export default {
   name: 'spgl',
@@ -37,9 +38,9 @@ export default {
       userPage: 1,
       userPageOver: false,
       busy: false,
-
       formYhsz: {
-        bqsx: ''
+        bqsx: '',
+        yhsx: ''
       },
       options: [],
       userTypeOptions: [
@@ -80,6 +81,11 @@ export default {
     }
   },
   methods: {
+    // label切换
+    labelChange () {
+      this.userPage = 1
+      this.getUserList()
+    },
     // 获取积分任务配置
     getIntegralTask() {
       this.$get('/integral/get_integral_setting').then(res => {
@@ -231,20 +237,23 @@ export default {
     },
     getUserList() {
       this.busy = true
-      this.$get('/integral/show_user', {
+      this.$get('/marketing/user_list', {
         search: this.searchKey,
         current_page: this.userPage,
+        label_id: this.formYhsz.bqsx.join(',') || '',
+        user_type: this.formYhsz.yhsx.join(',') || '',
         page_count: 15
       }).then(res => {
-        if (res.data.content) {
-          this.userList = [...this.userList, ...res.data.content.map(item => {
+        if (res.data.data_list) {
+          this.userList = [...this.userList, ...res.data.data_list.map(item => {
             return {
               user: item.user_id,
               nickname: item.nickname,
               checked: false
             }
           })]
-          if (res.data.content.length < 15) {
+          this.userList = _.uniqBy(this.userList, 'user').reverse()
+          if (res.data.data_list.length <= 10) {
             this.userPageOver = true
           } else {
             this.userPage++

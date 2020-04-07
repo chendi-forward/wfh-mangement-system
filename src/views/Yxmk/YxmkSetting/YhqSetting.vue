@@ -100,8 +100,13 @@
       <div class="cjyhq-title">优惠用户设置</div>
       <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
         <el-form-item label="标签筛选：" class="content-content__item" :show-message='false'>
-          <el-select v-model="formYhsz.user_label_id" clearable multiple collapse-tags placeholder="请选择...">
+          <el-select @change="labelChange" v-model="formYhsz.user_label_id" clearable multiple collapse-tags placeholder="请选择...">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户筛选" class="content-content__item" :show-message='false'>
+          <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
+            <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -283,6 +288,16 @@ export default {
       }
     }
     return {
+      userTypeOptions: [
+        { label: '所有用户', value: 'all' },
+        { label: '1级用户', value: '1级用户' },
+        { label: '2级用户', value: '2级用户' },
+        { label: '3级用户', value: '3级用户' },
+        { label: '4级用户', value: '4级用户' },
+        { label: '5级用户', value: '5级用户' },
+        { label: '普通用户', value: '普通用户' },
+        { label: '企业用户', value: '企业用户' }
+      ],
       base_url: BASE_URL,
       formXxsz: {
         // coupon_no: '',
@@ -301,7 +316,9 @@ export default {
       effectiveDate_s: '',
       effectiveDate_e: '',
       options: [],
-      formYhsz: {},
+      formYhsz: {
+        yhsx: ''
+      },
       rules: {
         number: [{ type: 'number', required: true, message: '必须是数字' }],
         required: [{ validator: required, message: '该项不能不空', trigger: 'blur' }],
@@ -341,6 +358,10 @@ export default {
     }
   },
   methods: {
+    labelChange () {
+      this.userPage = 1
+      this.getUserList()
+    },
     inputChange(e) {
       this.$forceUpdate()
     },
@@ -416,6 +437,7 @@ export default {
             coupon_num: this.formXxsz.coupon_limit === '不限' ? 9999 : +this.formXxsz.coupon_num,
             goods_list: (this.activeGoods || []).map(item => item.goods_id),
             label_id: this.formYhsz.user_label_id || [],
+            user_type: this.formYhsz.yhsx || [],
             user_list: this.checkList
           }
           if (this.action === 'add') {
@@ -491,7 +513,7 @@ export default {
           }
           this.formXxsz.start_time = new Date(res.data.start_time)
           this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
-          this.formYhsz.user_label_id = res.data.user_label_id
+          // this.formYhsz.user_label_id = res.data.user_label_id
           return { goods_list: res.data.goods_list, user_list: res.data.user_list }
         })
         .then(({ goods_list, user_list }) => {
@@ -544,11 +566,13 @@ export default {
         search: this.userKey,
         page_count: 10,
         current_page: this.userPage,
-        label_id: this.formYhsz.user_label_id
+        label_id: this.formYhsz.user_label_id.join(',') || '',
+        user_type: this.formYhsz.yhsx.join(',') || ''
       }
       return this.$get('/marketing/user_list', { ...params }).then(res => {
         this.checkLists = [...this.checkLists, ...res.data.data_list]
-        if (res.data.data_list.length < 10) {
+        this.checkLists = _.uniqBy(this.checkLists, 'user_id').reverse()
+        if (res.data.data_list.length <= 10) {
           this.userPageOver = true
         } else {
           this.userPage++

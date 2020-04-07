@@ -8,13 +8,9 @@
             <el-table-column label="任务" align='center' width="150">
               <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.intro }}</span></template>
             </el-table-column>
-<<<<<<< HEAD
             <el-table-column
               align='center'
               label="周期内上限次数">
-=======
-            <el-table-column align='center' label="周内上限次数">
->>>>>>> a8668c90c5c27b7eff5e8035356a88813fef7bc4
               <template slot-scope="scope">
                 <input-or-text v-if="scope.row.integral_id!=='06' && scope.row.integral_id!=='07'" :text-data="scope.row.max_count" :input-data="scope.row.max_count" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.max_count = v}"></input-or-text>
                 <span v-if="scope.row.integral_id=='06'" class='text-overflow'>永久{{scope.row.max_count}}次</span>
@@ -81,24 +77,28 @@
             </div>
         </div>
         <div class="spgl-item--content content3">
-          <p>
+          <!-- <p>
             筛选类型:
             <el-select v-model="selectType" @change="selectTypeChange" placeholder="请选择...">
               <el-option label="按标签筛选" value="tab"></el-option>
               <el-option label="按用户筛选" value="user"></el-option>
             </el-select>
-          </p>
+          </p> -->
         </div>
         <div class="spgl-item--content content3">
-          <p>
-            {{selectTypeName}}:
-            <el-select v-show="selectType==='tab'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          <el-select v-show="selectType==='user'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
-            <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          </p>
+          <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
+            <el-form-item label="标签筛选:" class="content-content__item" :show-message='false'>
+            <el-select @change="labelChange" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
+          </el-form-item>
+          <el-form-item label="用户筛选:" class="content-content__item" :show-message='false'>
+            <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
+              <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
         </div>
       </div>
       <div class="spgl-item--footer">
