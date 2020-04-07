@@ -87,20 +87,22 @@
     <div class="cjyhq-box__setting">
       <div class="cjyhq-title">优惠用户设置</div>
       <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
-        <el-form-item label="筛选类型：">
+        <!-- <el-form-item label="筛选类型：">
           <el-select v-model="selectType" @change="selectTypeChange" placeholder="请选择...">
             <el-option label="按标签筛选" value="tab"></el-option>
             <el-option label="按用户筛选" value="user"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="selectTypeName" class="content-content__item" :show-message='false'>
-          <el-select v-show="selectType==='tab'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
+          <el-select @change="labelChange" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <el-select v-show="selectType==='user'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
+          <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
+        </el-form-item>
+        <el-form-item label="用户筛选" class="content-content__item" :show-message='false'>
+          <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
             <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
         </el-form-item>
       </el-form>
       <div class="yhsz-search">
@@ -170,6 +172,7 @@ import moment from 'moment'
 import { addActive, getActiveList, getActiveDetail, updateActive, getLableData, getGoodsList, getUserList } from 'API/Yxmk'
 import CONFIG from '@/config/baseURL'
 import { BASE_URL } from 'COMMONS/commonsConfig.js'
+import _ from 'lodash'
 
 const regPositvie = /^\d+(?=\.{0,1}\d+$|$)/
 const regPositvie100 = /^100$|^(\d|[1-9]\d)(\.\d{1,4})*$/
@@ -313,7 +316,8 @@ export default {
       effectiveDate_e: '',
       options: [],
       formYhsz: {
-        bqsx: ''
+        bqsx: '',
+        yhsx: ''
       },
       selectType: 'tab',
       selectTypeName: '标签筛选：',
@@ -366,6 +370,10 @@ export default {
     }
   },
   methods: {
+    labelChange () {
+      this.userPage = 1
+      this.getUserData()
+    },
     changeDate(type) {
       if (type === 'start_time') {
         this.formXxsz.dateRange[0] = this.effectiveDate_s
@@ -396,12 +404,9 @@ export default {
         discount_type: this.formXxsz.zkType,
         discount_num: this.formXxsz.zkType === '金额' ? +this.formXxsz.zkMoney : +this.formXxsz.zkNumber,
         goods_list: goods_id, // -- 商品id 的列表
-        user_list: this.checkList // -- user_id
-      }
-      if (this.formYhsz.selectType === 'tab') {
-        obj.label_id = this.formYhsz.bqsx || []
-      } else {
-        obj.user_type = this.formYhsz.bqsx || []
+        user_list: this.checkList, // -- user_id
+        label_id: this.formYhsz.bqsx || [],
+        user_type: this.formYhsz.yhsx || []
       }
       updateActive(obj).then(res => {
         this.$emit('hide-setting')
@@ -410,7 +415,8 @@ export default {
     keyChangeUserData() {
       let obj = {
         search: this.userKey,
-        label_id: this.formYhsz.bqsx,
+        label_id: this.formYhsz.bqsx.join(',') || '',
+        user_type: this.formYhsz.yhsx.join(',') || '',
         page_count: 1000,
         current_page: 1
       }
@@ -420,9 +426,9 @@ export default {
           item.flag = false
         })
         if (this.updateFlag) {
-          this.checkLists = this.checkLists.concat(result)
+          this.checkLists = _.uniqBy(this.checkLists.concat(result).reverse(), 'user_id')
         } else {
-          this.checkLists = result
+          this.checkLists = _.uniqBy(result.reverse(), 'user_id')
         }
       })
     },
@@ -430,7 +436,8 @@ export default {
       this.busy = true
       let obj = {
         search: this.userKey,
-        label_id: this.formYhsz.bqsx,
+        label_id: this.formYhsz.bqsx.join(',') || '',
+        user_type: this.formYhsz.yhsx.join(',') || '',
         page_count: 20,
         current_page: this.userPage
       }
@@ -444,7 +451,7 @@ export default {
             this.userPage--
           }
         } else {
-          this.checkLists = this.checkLists.concat(result)
+          this.checkLists = _.uniqBy(this.checkLists.concat(result).reverse(), "user_id")
         }
         this.busy = false
       })
@@ -475,7 +482,6 @@ export default {
           result.threshold_type === '罐' ? (this.formXxsz.zkMoney = result.discount_num) : (this.formXxsz.zkNumber = result.discount_num)
           this.effectiveDate_s = result.start_time
           this.effectiveDate_e = result.end_time
-          this.formYhsz.bqsx = result.user_label_id
           let str = result.goods_list.join(',')
           this.goodsFancha(str)
           let str2 = result.user_list.join(',')
@@ -545,12 +551,9 @@ export default {
             discount_type: this.formXxsz.zkType, // -- 折扣的方式（折扣/金额）
             discount_num: this.formXxsz.zkType == '金额' ? Number(this.formXxsz.zkMoney) : Number(this.formXxsz.zkNumber), // -- 折扣的金额或百分比
             goods_list: goods_id, // -- 商品id 的列表
-            user_list: this.checkList // -- user_id
-          }
-          if (this.formYhsz.selectType === 'tab') {
-            obj.label_id = this.formYhsz.bqsx || []
-          } else {
-            obj.user_type = this.formYhsz.bqsx || []
+            user_list: this.checkList, // -- user_id
+            label_id: this.formYhsz.bqsx || [],
+            user_type: this.formYhsz.yhsx || []
           }
           addActive(obj).then(res => {
             this.$emit('hide-setting')

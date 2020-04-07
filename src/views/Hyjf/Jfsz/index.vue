@@ -77,24 +77,28 @@
             </div>
         </div>
         <div class="spgl-item--content content3">
-          <p>
+          <!-- <p>
             筛选类型:
             <el-select v-model="selectType" @change="selectTypeChange" placeholder="请选择...">
               <el-option label="按标签筛选" value="tab"></el-option>
               <el-option label="按用户筛选" value="user"></el-option>
             </el-select>
-          </p>
+          </p> -->
         </div>
         <div class="spgl-item--content content3">
-          <p>
-            {{selectTypeName}}:
-            <el-select v-show="selectType==='tab'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          <el-select v-show="selectType==='user'" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
-            <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          </p>
+          <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
+            <el-form-item label="标签筛选:" class="content-content__item" :show-message='false'>
+            <el-select @change="labelChange" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
+          </el-form-item>
+          <el-form-item label="用户筛选:" class="content-content__item" :show-message='false'>
+            <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
+              <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
         </div>
       </div>
       <div class="spgl-item--footer">
