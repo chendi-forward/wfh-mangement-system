@@ -130,11 +130,13 @@
         })
       },
       expandChange (row, v) {
+        this.comshow = false
         cashWithdrawalDetail({
           type: '代销',
           cash_id: row.cash_id
         }).then(res => {
           row.expand = res.data
+          this.comshow = true
         })
       },
       tabChange (v, listItem) {

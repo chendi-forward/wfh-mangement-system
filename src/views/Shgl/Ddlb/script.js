@@ -192,6 +192,9 @@ export default {
       }) 
     },
     tuikuanHandle () {
+      if (this.currentCom.data.refund_goods.lenght <= 0) {
+        return this.$message.error('请选择退款商品')
+      }
       if (this.currentCom.data.refund_money > this.currentCom.data.refund_money_copy) {
         return this.$message.error('保存失败，退款金额不得大于订单总金额')
       }

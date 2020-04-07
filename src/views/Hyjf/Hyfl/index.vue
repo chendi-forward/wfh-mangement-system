@@ -45,7 +45,7 @@
               align='center'
               label="等级回升标准">
               <template slot-scope="scope">
-                <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text> 罐/
+                <input-or-text :text-data="scope.row.back_num" :input-data="scope.row.back_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_num = v}"></input-or-text> 罐/
                 <input-or-text :text-data="scope.row.back_money" :input-data="scope.row.back_money" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.back_money = v}"></input-or-text>元
               </template>
             </el-table-column>
@@ -68,7 +68,7 @@
               <p v-for="(item, i) in editCommonForm" :key='i'>
                 {{item.notes}}：<el-input v-model="item.num" placeholder="请输入分值"></el-input>
                 <span v-if="item.type_id=='rebate'">
-                  <!-- （%） -->
+                  （%）
                 </span>
                 <span v-else>
                   （天）
@@ -79,7 +79,7 @@
               <p v-for="(item, i) in commonForm" :key='i'>
                 {{item.notes}}：{{item.num}}
                 <span v-if="item.type_id=='rebate'">
-                  <!-- （%） -->
+                  （%）
                 </span>
                 <span v-else>
                   （天）
