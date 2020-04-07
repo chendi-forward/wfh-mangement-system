@@ -112,7 +112,7 @@
             <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
-        <div class="content__search--options" v-loadmore_1="loadData">
+        <div class="content__search--options" v-infinite-scroll="loadData" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
           <el-checkbox-group v-model="checkList" v-if='checkLists.length'>
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
@@ -314,6 +314,7 @@ export default {
       },
       userPage: 1,
       userPageOver: false, // 无限加载完毕
+      busy: false,
       goodsPage: 1,
       goodsPageOver: false,
       userKey: '',
@@ -324,34 +325,6 @@ export default {
       goodList: [],
 
       multipleSelection: []
-    }
-  },
-  directives: {
-    loadmore: {
-      // 指令的定义
-      bind(el, binding, vnode) {
-        const selectWrap = el.querySelector('.el-table__body-wrapper')
-        selectWrap.addEventListener('scroll', function() {
-          const sign = 10
-          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
-          if (scrollDistance <= sign) {
-            binding.value()
-          }
-        })
-      }
-    },
-    loadmore_1: {
-      // 指令的定义
-      bind(el, binding, vnode) {
-        const selectWrap = el
-        selectWrap.addEventListener('scroll', function() {
-          const sign = 10
-          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
-          if (scrollDistance <= sign) {
-            binding.value()
-          }
-        })
-      }
     }
   },
   async mounted() {
@@ -366,7 +339,6 @@ export default {
       await this.getLabelData()
       await this.getDetail(this.coupon_id)
     }
-    this.getUserList()
   },
   methods: {
     inputChange(e) {
@@ -567,6 +539,7 @@ export default {
       this.showTag()
     },
     getUserList() {
+      this.busy = true
       let params = {
         search: this.userKey,
         page_count: 10,
@@ -581,6 +554,7 @@ export default {
           this.userPage++
           this.userPageOver = false
         }
+        this.busy = false
         return res.data.data_list
       })
     }

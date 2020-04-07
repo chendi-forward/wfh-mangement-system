@@ -111,14 +111,10 @@
           </el-form-item>
         </el-form>
         <div class="content__search--options">
-          <el-checkbox-group v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData">
+          <el-checkbox-group v-if='checkLists.length' v-model="checkList" v-infinite-scroll="loadData" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
         </div>
-        <!-- <div class="content__group--btn" v-if="updateFlag"> -->
-        <!-- <el-button class="editBtn" size="small" @click="getUserData">更改</el-button> -->
-        <!-- <el-button size="small">取消</el-button> -->
-        <!-- </div> -->
       </div>
     </div>
     <div class="cjyhq-box__footer">
@@ -279,6 +275,7 @@ export default {
       base_url: BASE_URL,
 
       updateFlag: false,
+      busy: false,
       userKey: '',
       userPage: 1,
       goodsData: [],
@@ -314,27 +311,44 @@ export default {
       isShowTag: false,
       effectiveDate_s: '',
       effectiveDate_e: '',
-      options: ['九月大客户', '新用户'],
+      options: [],
       formYhsz: {
         bqsx: ''
       },
       selectType: 'tab',
       selectTypeName: '标签筛选：',
       userTypeOptions: [
-        { name: '所有用户', value: 'all' },
-        { name: '1级用户', value: '1级用户' },
-        { name: '2级用户', value: '2级用户' },
-        { name: '3级用户', value: '3级用户' },
-        { name: '4级用户', value: '4级用户' },
-        { name: '5级用户', value: '5级用户' },
-        { name: '普通用户', value: '普通用户' },
-        { name: '企业用户', value: '企业用户' }
+        { label: '所有用户', value: 'all' },
+        { label: '1级用户', value: '1级用户' },
+        { label: '2级用户', value: '2级用户' },
+        { label: '3级用户', value: '3级用户' },
+        { label: '4级用户', value: '4级用户' },
+        { label: '5级用户', value: '5级用户' },
+        { label: '普通用户', value: '普通用户' },
+        { label: '企业用户', value: '企业用户' }
       ],
       checkList: [],
       checkLists: [],
       activeSearch: '',
       activeGoods: []
     }
+  },
+  watch: {
+    activeId() {
+      this.editOrcreate()
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
+      $('.content__search--options').height(wrapH)
+    })
+    if (this.action === 'add') {
+    } else {
+      this.editOrcreate()
+    }
+    this.getLableData()
+    this.getUserData()
   },
   directives: {
     loadmore: {
@@ -349,23 +363,6 @@ export default {
           }
         })
       }
-    }
-  },
-  watch: {
-    activeId() {
-      this.editOrcreate()
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
-      $('.content__search--options').height(wrapH)
-    })
-    if (this.action === 'add') {
-      this.getUserData()
-    } else {
-      this.editOrcreate()
-      this.getUserData()
     }
   },
   methods: {
@@ -406,7 +403,6 @@ export default {
       } else {
         obj.user_type = this.formYhsz.bqsx || []
       }
-      console.log(obj, this.formXxsz, '=======')
       updateActive(obj).then(res => {
         this.$emit('hide-setting')
       })
@@ -431,6 +427,7 @@ export default {
       })
     },
     getUserData() {
+      this.busy = true
       let obj = {
         search: this.userKey,
         label_id: this.formYhsz.bqsx,
@@ -449,8 +446,11 @@ export default {
         } else {
           this.checkLists = this.checkLists.concat(result)
         }
+        this.busy = false
       })
-      getLableData().then(res => {
+    },
+    getLableData() {
+       getLableData().then(res => {
         this.options = res
       })
     },

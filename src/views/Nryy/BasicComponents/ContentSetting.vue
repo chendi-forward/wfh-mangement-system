@@ -133,7 +133,7 @@
             class="spgl-form--input data-input"
             v-model="definitData"
             type="datetime"
-            picker-options="pickerOptions"
+            :picker-options="pickerOptions"
             placeholder="选择发布时间"
           >
           </el-date-picker>
@@ -197,7 +197,7 @@ export default {
       labelList: [],
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() <= Date.now()
+          return time.getTime() <= Date.now() - 24 * 60 * 60 * 1000
         }
       },
 
