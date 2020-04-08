@@ -417,7 +417,7 @@ export default {
 
     handleSave() {
       if (!this.activeGoods.length) {
-        return this.$alert('活动商品不能为空！')
+        return this.$message.error('活动商品不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -570,7 +570,7 @@ export default {
       return this.$get('/marketing/user_list', { ...params }).then(res => {
         this.checkLists = [...this.checkLists, ...res.data.data_list]
         this.checkLists = _.uniqBy(this.checkLists, 'user_id').reverse()
-        if (res.data.data_list.length <= 10) {
+        if (res.data.data_list.length < 10) {
           this.userPageOver = true
         } else {
           this.userPage++

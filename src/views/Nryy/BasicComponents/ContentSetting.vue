@@ -239,7 +239,7 @@ export default {
     },
     save() {
       if (!this.imageUrl_cover || !this.imageUrl_long)
-        return this.$alert('请上传图片！')
+        return this.$message.error('请上传图片！')
       this.$refs.formContentSetting.validate(valid => {
         let params = {
           title: this.formContentSetting.title,

@@ -31,19 +31,10 @@ export default {
   },
   data() {
     return {
-      typeEffectAdd: '',
-      // typeEffectList: []
+      typeEffectAdd: ''
     }
   },
   created() {
-    // this.typeEffectList = this.value.length
-    //   ? this.value.map(item => {
-    //       return {
-    //         name: item,
-    //         isSelect: true
-    //       }
-    //     })
-    //   : []
   },
   computed: {
     typeEffectList: {

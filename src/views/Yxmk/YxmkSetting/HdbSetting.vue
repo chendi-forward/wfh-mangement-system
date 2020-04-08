@@ -144,7 +144,7 @@
               </el-table-column>
               <el-table-column align='center' label="商品图片" width="100">
                 <template slot-scope="scope">
-                  <img class="goodsImage" :src=" base_url + scope.row.pic_link" alt="">
+                  <img class="dialog-img" :src=" base_url + scope.row.pic_link" alt="">
                 </template>
               </el-table-column>
               <el-table-column align='center' label="商品编号" width="130">
@@ -530,7 +530,7 @@ export default {
     },
     saveActivity() {
       if (!this.goodsData.length) {
-        return this.$alert('活动商品不能为空！')
+        return this.$message.error('活动商品不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -866,6 +866,9 @@ export default {
     }
     .search-button {
       padding-left: 20px;
+    }
+    .dialog-img {
+      width: 100px;
     }
   }
 }

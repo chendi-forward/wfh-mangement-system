@@ -39,35 +39,35 @@
               <div class="spgl-form--num">
                 <span>V1</span>
                 <el-form-item prop="v1" :rules="rules.vInput">
-                  <el-input class="spgl-form--num__input" v-model="formSpxx.v1" name="num">
+                  <el-input class="spgl-form--num__input" v-model.number="formSpxx.v1" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V2</span>
                 <el-form-item prop="v2" :rules="rules.vInput">
-                  <el-input class="spgl-form--num__input" v-model="formSpxx.v2" name="num">
+                  <el-input class="spgl-form--num__input" v-model.number="formSpxx.v2" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V3</span>
                 <el-form-item prop="v3" :rules="rules.vInput">
-                  <el-input class="spgl-form--num__input" v-model="formSpxx.v3" name="num">
+                  <el-input class="spgl-form--num__input" v-model.number="formSpxx.v3" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V4</span>
                 <el-form-item prop="v4" :rules="rules.vInput">
-                  <el-input class="spgl-form--num__input" v-model="formSpxx.v4" name="num">
+                  <el-input class="spgl-form--num__input" v-model.number="formSpxx.v4" name="num">
                   </el-input>
                 </el-form-item>
               </div>
               <div class="spgl-form--num">
                 <span>V5</span>
                 <el-form-item prop="v5" :rules="rules.vInput">
-                  <el-input class="spgl-form--num__input" v-model="formSpxx.v5" name="num">
+                  <el-input class="spgl-form--num__input" v-model.number="formSpxx.v5" name="num">
                   </el-input>
                 </el-form-item>
               </div>
@@ -311,7 +311,6 @@ export default {
       }
     }
     let validateV = (rule, value, callback) => {
-      console.log(value)
       if (value > 100) {
         callback(new Error('范围1-100'))
       } else {
@@ -398,7 +397,12 @@ export default {
         this.formSpxx.v5 = data.rebate['5']
         this.formSpxx.date = data.date || new Date()
         this.formSpxx.origin = data.origin
-        this.formSpxx.description = data.description.split(',')
+        this.formSpxx.description = data.description.split(',').map(item => {
+          return {
+            name: item,
+            isSelect: true
+          }
+        })
         this.formXssz.goodStauts = data.state
         this.formXssz.activeLabel = +data.label_id
         this.formXssz.formatAdd = parseInt(data.weight)
@@ -526,8 +530,10 @@ export default {
       try {
         let vList = [+this.formSpxx.v1, +this.formSpxx.v2, +this.formSpxx.v3, +this.formSpxx.v4, +this.formSpxx.v5]
         let jsonVList = JSON.stringify(vList)
-        let sortvList = vList.sort()
-        let jsonSortVList = JSON.stringify(sortvList)
+        let vListSort = vList.sort((a, b) => {
+          return a-b
+        })
+        let jsonSortVList = JSON.stringify(vListSort)
         if (jsonVList !== jsonSortVList) {
             return this.$message.error('返利比例请按照 v5>v4>v3>v2>v1 填写')
         }
@@ -602,7 +608,7 @@ export default {
             this.$emit('toggle-component', { action: 'cancel' })
           })
           .catch(e => {
-            this.$alert('添加错误！')
+            this.$message.error('添加错误！')
           })
       } catch (error) {
         console.log(error)
