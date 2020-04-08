@@ -193,7 +193,7 @@ import { postGoodsEvaluationList } from 'API/Shgl'
     },
     watch: {
         data (n) {
-            console.log('pic----------')
+            // console.log('pic----------')
         }
     },
     methods: {
@@ -223,7 +223,6 @@ import { postGoodsEvaluationList } from 'API/Shgl'
             this.$emit('search', data)
         },
         handleSelectionChange (n) {
-            console.log(n, '===goods===select===')
             this.$emit('deleteitem', n)
         },
         selectChange () {},
@@ -232,7 +231,7 @@ import { postGoodsEvaluationList } from 'API/Shgl'
         },
         refundHandle () {},
         textareaChange () {
-            console.log(this.reply)
+            // console.log(this.reply)
         }
     },
     mounted () {

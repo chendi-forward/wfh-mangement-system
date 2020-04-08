@@ -258,7 +258,6 @@ export default {
       if (res) return this.$message.error('请输入大于等于零的数字')
     },
     cancelCommon () {
-      console.log(this.commonForm)
       this.editCommonShow = false
     },
     editAgency () {

@@ -21,8 +21,6 @@ export default {
             })
         },
         submitUser() {
-            console.log(111111111111);
-            
             let { account, password } = this.userForm
             if (!account) {
                 this.$message.error('请先正确填写用户名')

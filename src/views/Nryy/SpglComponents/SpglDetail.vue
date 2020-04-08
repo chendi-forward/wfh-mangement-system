@@ -501,7 +501,7 @@ export default {
       }
     },
     exhibitUploadError(res) {
-      console.log('TCL: exhibitUploadError -> res', res)
+      // console.log('TCL: exhibitUploadError -> res', res)
     },
     deleteExhibitImg(i) {
       this.imgListExhibit.splice(i, 1)
@@ -513,7 +513,7 @@ export default {
       }
     },
     detailUploadError() {
-      console.log('TCL: exhibitUploadError -> res', res)
+      // console.log('TCL: exhibitUploadError -> res', res)
     },
     deleteDetailImg(i) {
       this.imgListDetail.splice(i, 1)

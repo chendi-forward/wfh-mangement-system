@@ -123,8 +123,6 @@ export default {
           type: 'error'
         })
       } else {
-        console.log(this.multipleSelection);
-        
         let ids = this.multipleSelection.map(item => item.active_id)
         let names = this.multipleSelection.map(item => item.active_name)
         this.handleDelete(ids, names)

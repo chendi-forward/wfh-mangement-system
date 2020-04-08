@@ -95,7 +95,6 @@ export default {
                 password: this.form.password,
                 role: this.form.role.join(',')
             }).then((res) => {
-                console.log(res, 'dwadawdaw')
                 if (res.ok) {
                     this.$message.success('添加用户成功')
                     this.getAllUser()
