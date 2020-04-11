@@ -158,6 +158,7 @@
             ref="multipleTable"
             :data="tableItems"
             tooltip-effect="dark"
+            row-key="user_id"
             stripe
             @expand-change="expandChange"
             style="width: 100%">
@@ -198,7 +199,7 @@
               width="150"
               align='center'>
               <template slot-scope="scope">
-                <my-expand :data='scope.expand'></my-expand>
+                <my-expand :data='scope.row.expand'></my-expand>
               </template>
             </el-table-column>
           </el-table>

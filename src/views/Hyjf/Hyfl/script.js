@@ -218,7 +218,12 @@ export default {
         current_page: this.page
       }).then(res => {
         if (res.data) {
-          this.tableItems = res.data.content
+          this.tableItems = res.data.content.map(item => {
+            return {
+              ...item,
+              expand: []
+            }
+          })
           this.total = res.data.count
         } else {
           this.$message.error('数据获取异常')
@@ -233,7 +238,7 @@ export default {
         if (res.data) {
           cb(res.data.content)
         } else {
-          this.$message.error('数据获取异常')
+          this.$message.error(res.message)
         }
       })
     },
@@ -281,10 +286,10 @@ export default {
       this.superUserList()
     },
     expandChange (row, v) {
-      if (this.expendList.indexOf(row.user_id) >= 0) return
-      this.expendList.push(row.user_id)
+      // if (this.expendList.indexOf(row.user_id) >= 0) return
+      // this.expendList.push(row.user_id)
       this.superUserChildren(row.user_id, data => {
-        row.expend = data
+        row.expand = data
       })
     }
   }
