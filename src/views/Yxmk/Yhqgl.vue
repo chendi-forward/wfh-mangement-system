@@ -186,7 +186,7 @@ export default {
     },
     changeClose(val, row) {
       this.$post('/marketing/close_coupon', { coupon_id: '' + row.coupon_id, is_close: '' + val }).then(res => {
-        console.log(res)
+        // console.log(res)
       })
     },
     deleteData(ids) {

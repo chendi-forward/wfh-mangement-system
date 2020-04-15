@@ -52,18 +52,14 @@ export default {
     methods: {
         deleteitem(n) {
             if (this.currentTab == '0') {
-                console.log(n, '=dw=d=wa=dwa')
                 this.goodsParams = n
             } else {
                 this.order_Params = n
-                console.log(n, '=dw=d=dwadawda----------------wa=dwa')
             }
         },
         deletePingjia() {
-            console.log(this.currentTab, '=====')
             if (this.currentTab == '0') {
                 // this.getData()
-                console.log(this.goodsParams, '=====')
                 let arr = []
                 this.goodsParams.forEach((item) => {
                     arr.push(item.id)
@@ -71,9 +67,7 @@ export default {
                 let data = {
                     id_list: arr
                 }
-                console.log(data, '===id_list===')
                 delGoodsEvaluation(data).then(res => {
-                    console.log(res)
                     this.getData()
                 })
             } else {
@@ -85,7 +79,6 @@ export default {
                     order_id: arr
                 }
                 delOrderEvaluation(data).then(res => {
-                    console.log(res)
                     this.getOrderData()
                 })
             }
@@ -103,7 +96,6 @@ export default {
         },
         getSearchData(data) {
             this.params = data
-            console.log(this.params, '====')
             this.getData()
         },
         getData() {
@@ -117,7 +109,6 @@ export default {
             }
             goodsEvaluationList(data).then(data => {
                 this.tableData = data.data.data_list
-                console.log(this.tableData)
                 this.tableData.forEach((item) => {
                     item.evaluation_score = item.evaluation_score == 1 ? 'icon-chaping' : item.evaluation_score == 2 ? 'icon-zhongping' : 'icon-haoping';
                 })

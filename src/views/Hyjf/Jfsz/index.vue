@@ -116,7 +116,6 @@
                 <el-checkbox v-model="item.checked"></el-checkbox>
               </li>
               <li class="name">{{item.nickname}}</li>
-              <li></li>
             </ul>
           </div>
         </div>

@@ -52,7 +52,7 @@ export default {
       this.$emit('handle-selection-change', val)
     },
     handleEdit(row) {
-      console.log(row)
+      // console.log(row)
     },
     handleDelete(row) {
       this.$emit('handle-delete', [row.invoice_id])

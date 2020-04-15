@@ -60,7 +60,7 @@ export default {
     this.getIntegralAdvance()
   },
   mounted() {
-    let wrapH = $('.spgl-wrap1').height() - 63 - 70 - 70 - 62 - 3 - 62 - 50 - 100 -73
+    let wrapH = $('.spgl-wrap1').height() - 63 - 62 - 73 - 62 - 50 - 100 -73
     $('.overflow-wrap').height(wrapH)
     this.getUserList()
     this.getLableData()

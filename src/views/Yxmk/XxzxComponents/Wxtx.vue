@@ -106,7 +106,6 @@ export default {
       }
       this.$get('/marketing/module_detail', params).then(res => {
         this.radio = Number(!res.data.is_close)
-        console.log('============>: getData -> !res.data.is_close', !res.data.is_close)
         this.message = res.data.module_content
       })
     }

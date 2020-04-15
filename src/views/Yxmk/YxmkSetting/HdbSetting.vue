@@ -144,7 +144,7 @@
               </el-table-column>
               <el-table-column align='center' label="商品图片" width="100">
                 <template slot-scope="scope">
-                  <img class="goodsImage" :src=" base_url + scope.row.pic_link" alt="">
+                  <img class="dialog-img" :src=" base_url + scope.row.pic_link" alt="">
                 </template>
               </el-table-column>
               <el-table-column align='center' label="商品编号" width="130">
@@ -344,7 +344,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 70 - 70 - 62 - 3
+      let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 40 - 70 - 62 - 3
       $('.content__search--options').height(wrapH)
     })
     if (this.action === 'add') {
@@ -530,7 +530,7 @@ export default {
     },
     saveActivity() {
       if (!this.goodsData.length) {
-        return this.$alert('活动商品不能为空！')
+        return this.$message.error('活动商品不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -734,7 +734,7 @@ export default {
     .content__item--tag {
       width: 110px;
     }
-    .content-content__item {
+    .content-content__item:last-of-type {
       margin-bottom: unset;
     }
     .el-select {
@@ -749,7 +749,7 @@ export default {
   }
   .yhsz-search {
     background-color: #fff;
-    padding-bottom: 60px;
+    padding-bottom: 30px;
     .content__item--tag {
       width: 110px;
     }
@@ -866,6 +866,9 @@ export default {
     }
     .search-button {
       padding-left: 20px;
+    }
+    .dialog-img {
+      width: 100px;
     }
   }
 }

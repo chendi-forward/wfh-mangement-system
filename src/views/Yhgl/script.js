@@ -202,7 +202,6 @@ export default {
                 if (res && res.length) {
                     res.unshift({ label: '全部用户', value: '' })
                     this.options = res
-                    console.log(this.options, '=====')
                 } else {
                     this.$message({
                         type: 'info',
@@ -274,7 +273,7 @@ export default {
         cancleSave(flag) {
             this.dialogFlag = flag
             if (this.editOrSet === 'edit') {
-                console.log('编辑')
+                // console.log('编辑')
             } else {
                 this.newlabel = null
             }

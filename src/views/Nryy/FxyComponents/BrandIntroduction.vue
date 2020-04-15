@@ -129,7 +129,7 @@ export default {
       this.imageUrl_cover = ''
     },
     save() {
-      if (!this.imageUrl_long) return this.$alert('请上传图片！')
+      if (!this.imageUrl_long) return this.$message.error('请上传图片！')
       let params = {
         source: 'brand',
         // cover_pic: this.imageUrl_cover,

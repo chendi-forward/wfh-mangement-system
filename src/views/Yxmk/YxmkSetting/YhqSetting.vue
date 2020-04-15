@@ -345,10 +345,8 @@ export default {
     }
   },
   async mounted() {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
+    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 63 - 40 - 72
     $('.content__search--options').height(wrapH)
-    let wrapW = $('.item__sale--wrap').width() - 130
-    $('.item__sale--wrap .el-form-item__content').width(wrapW)
      if (this.action === 'add') {
       let a = this.getLabelData()
       await a
@@ -419,7 +417,7 @@ export default {
 
     handleSave() {
       if (!this.activeGoods.length) {
-        return this.$alert('活动商品不能为空！')
+        return this.$message.error('活动商品不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -572,7 +570,7 @@ export default {
       return this.$get('/marketing/user_list', { ...params }).then(res => {
         this.checkLists = [...this.checkLists, ...res.data.data_list]
         this.checkLists = _.uniqBy(this.checkLists, 'user_id').reverse()
-        if (res.data.data_list.length <= 10) {
+        if (res.data.data_list.length < 10) {
           this.userPageOver = true
         } else {
           this.userPage++
@@ -679,7 +677,7 @@ export default {
     .content__item--tag {
       width: 110px;
     }
-    .content-content__item {
+    .content-content__item:last-of-type {
       margin-bottom: unset;
     }
     .el-select {
@@ -694,7 +692,7 @@ export default {
   }
   .yhsz-search {
     background-color: #fff;
-    height: calc(100% - 154px);
+    padding-bottom: 30px;
     .content__item--tag {
       width: 110px;
     }
