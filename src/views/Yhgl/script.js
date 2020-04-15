@@ -46,8 +46,8 @@ export default {
                 update: '',
                 pushmoney: '10',
                 is_black: '1',
-                level_protect: '1',
-                advance: '1',
+                level_protect: '0',
+                advance: '0',
                 level: '1',
                 remark: ''
             },
@@ -125,7 +125,7 @@ export default {
                     level_protect: result.level_protect + '',
                     advance: result.astrict_advance + '',
                     level: result.level + '',
-                    remark: result.remark + ''
+                    remark: result.remark === null ? '' : result.remark + ''
                 }
                 this.dialogFlag = true
             })
@@ -271,7 +271,7 @@ export default {
         cancleSave(flag) {
             this.dialogFlag = flag
             if (this.editOrSet === 'edit') {
-                console.log('编辑')
+                // console.log('编辑')
             } else {
                 this.newlabel = null
             }

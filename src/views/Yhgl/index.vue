@@ -214,18 +214,18 @@
           <div class="companyDis">
             <el-form-item label="会员保级">
               <el-col :span='7'>
-                <el-radio v-model="formLabelAlign.level_protect" label="0">开启</el-radio>
+                <el-radio v-model="formLabelAlign.level_protect" label="1">开启</el-radio>
               </el-col>
               <el-col :span='7'>
-                <el-radio v-model="formLabelAlign.level_protect" label="1">关闭</el-radio>
+                <el-radio v-model="formLabelAlign.level_protect" label="0">关闭</el-radio>
               </el-col>
             </el-form-item>
             <el-form-item label="限制提现">
               <el-col :span='7'>
-                <el-radio v-model="formLabelAlign.advance" label="0">开启</el-radio>
+                <el-radio v-model="formLabelAlign.advance" label="1">开启</el-radio>
               </el-col>
               <el-col :span='7'>
-                <el-radio v-model="formLabelAlign.advance" label="1">关闭</el-radio>
+                <el-radio v-model="formLabelAlign.advance" label="0">关闭</el-radio>
               </el-col>
             </el-form-item>
             <button class="constraint-btn" @click="confirmWithDraw">强制提现</button>

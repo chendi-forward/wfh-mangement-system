@@ -133,7 +133,7 @@
             class="spgl-form--input data-input"
             v-model="definitData"
             type="datetime"
-            picker-options="pickerOptions"
+            :picker-options="pickerOptions"
             placeholder="选择发布时间"
           >
           </el-date-picker>
@@ -197,7 +197,7 @@ export default {
       labelList: [],
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() <= Date.now()
+          return time.getTime() <= Date.now() - 24 * 60 * 60 * 1000
         }
       },
 
@@ -209,7 +209,6 @@ export default {
   async created() {
     await this.getLabel()
     if (this.detail.active_id) {
-      console.log('TCL: created -> this.detail', this.detail)
       this.formContentSetting.title = this.detail.title
       this.$nextTick(() => {
         this.formContentSetting.label = +this.detail.label_id
@@ -239,7 +238,7 @@ export default {
     },
     save() {
       if (!this.imageUrl_cover || !this.imageUrl_long)
-        return this.$alert('请上传图片！')
+        return this.$message.error('请上传图片！')
       this.$refs.formContentSetting.validate(valid => {
         let params = {
           title: this.formContentSetting.title,
@@ -255,7 +254,6 @@ export default {
             'YYYY-MM-DD HH:mm:ss'
           )
         }
-        console.log(params)
         if (this.detail.active_id) {
           this.handleEdit(params)
         } else {
@@ -267,7 +265,6 @@ export default {
       params.active_id = this.detail.active_id
       this.$post('/content/active/update_goods', params)
       .then(res => {
-        console.log('TCL: handleAdd -> res', res)
         this.$emit('hide-setting', {action: 'add'})
       })
       .catch(err => {
@@ -281,7 +278,6 @@ export default {
     handleAdd(params) {
       this.$post('/content/active/add_goods', params)
       .then(res => {
-        console.log('TCL: handleAdd -> res', res)
         this.$emit('hide-setting', {action: 'add'})
       })
       .catch(err => {
@@ -295,8 +291,6 @@ export default {
       this.$emit('hide-setting', {action: 'cancel'})
     },
     coverUploadSuccess(res) {
-      console.log('111111111111');
-      
       this.imageUrl_cover = res.path
     },
     coverUploadError() {

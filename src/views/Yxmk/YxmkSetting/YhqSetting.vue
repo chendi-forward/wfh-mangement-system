@@ -100,8 +100,13 @@
       <div class="cjyhq-title">优惠用户设置</div>
       <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
         <el-form-item label="标签筛选：" class="content-content__item" :show-message='false'>
-          <el-select v-model="formYhsz.user_label_id" clearable multiple collapse-tags placeholder="请选择...">
+          <el-select @change="labelChange" v-model="formYhsz.user_label_id" clearable multiple collapse-tags placeholder="请选择...">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户筛选" class="content-content__item" :show-message='false'>
+          <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
+            <el-option v-for="item in userTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -112,7 +117,7 @@
             <el-button size="small" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-form>
-        <div class="content__search--options" v-loadmore_1="loadData">
+        <div class="content__search--options" v-infinite-scroll="loadData" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
           <el-checkbox-group v-model="checkList" v-if='checkLists.length'>
             <el-checkbox v-for="item in checkLists" :key="item.user_id" :label="item.user_id">{{item.nickname}}</el-checkbox>
           </el-checkbox-group>
@@ -283,6 +288,16 @@ export default {
       }
     }
     return {
+      userTypeOptions: [
+        { label: '所有用户', value: 'all' },
+        { label: '1级用户', value: '1级用户' },
+        { label: '2级用户', value: '2级用户' },
+        { label: '3级用户', value: '3级用户' },
+        { label: '4级用户', value: '4级用户' },
+        { label: '5级用户', value: '5级用户' },
+        { label: '普通用户', value: '普通用户' },
+        { label: '企业用户', value: '企业用户' }
+      ],
       base_url: BASE_URL,
       formXxsz: {
         // coupon_no: '',
@@ -301,7 +316,9 @@ export default {
       effectiveDate_s: '',
       effectiveDate_e: '',
       options: [],
-      formYhsz: {},
+      formYhsz: {
+        yhsx: ''
+      },
       rules: {
         number: [{ type: 'number', required: true, message: '必须是数字' }],
         required: [{ validator: required, message: '该项不能不空', trigger: 'blur' }],
@@ -314,6 +331,7 @@ export default {
       },
       userPage: 1,
       userPageOver: false, // 无限加载完毕
+      busy: false,
       goodsPage: 1,
       goodsPageOver: false,
       userKey: '',
@@ -326,39 +344,9 @@ export default {
       multipleSelection: []
     }
   },
-  directives: {
-    loadmore: {
-      // 指令的定义
-      bind(el, binding, vnode) {
-        const selectWrap = el.querySelector('.el-table__body-wrapper')
-        selectWrap.addEventListener('scroll', function() {
-          const sign = 10
-          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
-          if (scrollDistance <= sign) {
-            binding.value()
-          }
-        })
-      }
-    },
-    loadmore_1: {
-      // 指令的定义
-      bind(el, binding, vnode) {
-        const selectWrap = el
-        selectWrap.addEventListener('scroll', function() {
-          const sign = 10
-          const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
-          if (scrollDistance <= sign) {
-            binding.value()
-          }
-        })
-      }
-    }
-  },
   async mounted() {
-    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 63 - 70 - 70 - 62 - 3
+    let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 63 - 40 - 72
     $('.content__search--options').height(wrapH)
-    let wrapW = $('.item__sale--wrap').width() - 130
-    $('.item__sale--wrap .el-form-item__content').width(wrapW)
      if (this.action === 'add') {
       let a = this.getLabelData()
       await a
@@ -366,9 +354,12 @@ export default {
       await this.getLabelData()
       await this.getDetail(this.coupon_id)
     }
-    this.getUserList()
   },
   methods: {
+    labelChange () {
+      this.userPage = 1
+      this.getUserList()
+    },
     inputChange(e) {
       this.$forceUpdate()
     },
@@ -426,7 +417,7 @@ export default {
 
     handleSave() {
       if (!this.activeGoods.length) {
-        return this.$alert('活动商品不能为空！')
+        return this.$message.error('活动商品不能为空！')
       }
       this.$refs.formXxsz.validate(valid => {
         if (valid) {
@@ -444,6 +435,7 @@ export default {
             coupon_num: this.formXxsz.coupon_limit === '不限' ? 9999 : +this.formXxsz.coupon_num,
             goods_list: (this.activeGoods || []).map(item => item.goods_id),
             label_id: this.formYhsz.user_label_id || [],
+            user_type: this.formYhsz.yhsx || [],
             user_list: this.checkList
           }
           if (this.action === 'add') {
@@ -519,7 +511,7 @@ export default {
           }
           this.formXxsz.start_time = new Date(res.data.start_time)
           this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
-          this.formYhsz.user_label_id = res.data.user_label_id
+          // this.formYhsz.user_label_id = res.data.user_label_id
           return { goods_list: res.data.goods_list, user_list: res.data.user_list }
         })
         .then(({ goods_list, user_list }) => {
@@ -567,20 +559,24 @@ export default {
       this.showTag()
     },
     getUserList() {
+      this.busy = true
       let params = {
         search: this.userKey,
         page_count: 10,
         current_page: this.userPage,
-        label_id: this.formYhsz.user_label_id
+        label_id: this.formYhsz.user_label_id.join(',') || '',
+        user_type: this.formYhsz.yhsx.join(',') || ''
       }
       return this.$get('/marketing/user_list', { ...params }).then(res => {
         this.checkLists = [...this.checkLists, ...res.data.data_list]
+        this.checkLists = _.uniqBy(this.checkLists, 'user_id').reverse()
         if (res.data.data_list.length < 10) {
           this.userPageOver = true
         } else {
           this.userPage++
           this.userPageOver = false
         }
+        this.busy = false
         return res.data.data_list
       })
     }
@@ -681,7 +677,7 @@ export default {
     .content__item--tag {
       width: 110px;
     }
-    .content-content__item {
+    .content-content__item:last-of-type {
       margin-bottom: unset;
     }
     .el-select {
@@ -696,7 +692,7 @@ export default {
   }
   .yhsz-search {
     background-color: #fff;
-    height: calc(100% - 154px);
+    padding-bottom: 30px;
     .content__item--tag {
       width: 110px;
     }
