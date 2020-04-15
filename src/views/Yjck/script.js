@@ -115,7 +115,9 @@ export default {
 			],
 
 			newPeople: [
-				{ name: '新增人数', number: 3000 }
+				{ name: '自然增长', number: 3000 },
+				{ name: '普通用户邀请', number: 3000 },
+				{ name: '代理用户邀请', number: 3000 },
 			],
 			activePeople: [
 				{ name: '活跃人数', number: 3000 }
@@ -303,6 +305,8 @@ export default {
 						this.vipClass[4].number = res.data.level_4
 					} else if (val === 'new') {
 						this.newPeople[0].number = res.data.user_count
+						this.newPeople[1].number = res.data.general_invite
+						this.newPeople[2].number = res.data.super_invite
 					} else {
 						this.activePeople[0].number = res.data.user_count
 					}
