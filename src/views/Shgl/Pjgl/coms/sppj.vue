@@ -73,8 +73,13 @@
             width="150">
                 <template slot-scope="scope">
                     <div class="img-list">
-                        <img :src="scope.row.images" v-if="scope.row.images">
-                        <span v-else>无</span>
+                        <el-image 
+                            style="width: 100px; height: 100px"
+                            :src="scope.row.images.split(',')[0]" 
+                            :preview-src-list="scope.row.images.split(',')">
+                        </el-image>
+                        <!-- <img :src="scope.row.images" v-if="scope.row.images" @mouseover="imgMouseover($event,scope.row.images)" @mouseout="imgMouseout"> -->
+                        <!-- <span v-else>无</span> -->
                         <!-- <img :src="homeIcon"> -->
                     </div>
                 </template>
@@ -258,11 +263,18 @@ import { postGoodsEvaluationList } from 'API/Shgl'
             margin-left: 10px;
         }
     }
+    .cell {
+        overflow: auto;
+    }
     .img-list {
         img {
             height: 38px;
             width: 38px;
             margin: 5px;
+            // transition: 0.2s all;
+            // &:hover {
+            //     transform: scale(5);
+            // }
         }
     }
     .pingjia-icon {

@@ -169,11 +169,11 @@ export default {
         user_id: str.join(','),
         integral: this.integral
       }
-      if (this.selectType === 'tab') {
-        obj.label_id = this.formYhsz.bqsx || []
-      } else {
-        obj.user_type = this.formYhsz.bqsx || []
-      }
+      // if (this.selectType === 'tab') {
+      //   obj.label_id = this.formYhsz.bqsx.join(',') || ''
+      // } else {
+      //   obj.user_type = this.formYhsz.bqsx.join(',') || ''
+      // }
       this.$get('/integral/given_integral', obj).then(res => {
         if (res.data) {
           this.$message.success('积分赠送成功')

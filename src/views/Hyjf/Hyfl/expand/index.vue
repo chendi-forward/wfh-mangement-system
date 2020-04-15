@@ -40,7 +40,7 @@
         label="备注"
         align='center'
         width="150">
-        <template><span class='text-overflow'>/</span></template>
+        <template slot-scope="scope"><span class='text-overflow'>{{scope.row.remark || '/'}}</span></template>
       </el-table-column>
     </el-table>
   </div>
