@@ -33,13 +33,13 @@
                 <input-or-text :text-data="scope.row.integral_num" :input-data="scope.row.integral_num" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.integral_num = v}"></input-or-text>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               align='center'
               label="顶格分值">
               <template slot-scope="scope">
                 <input-or-text :text-data="scope.row.max_integral" :input-data="scope.row.max_integral" holder="输入分值" :show-input='editTaskShow' @change="(v)=>{scope.row.max_integral = v}"></input-or-text>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <div class="edit" v-show='!editTaskShow'>
             <el-button size="mini" class="success-btn" @click="editTaskFn">编辑</el-button>
