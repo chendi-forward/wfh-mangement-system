@@ -155,10 +155,16 @@ export default {
       this.action = 'edit'
       this.isShowSetting = true
       this.active_id = row.active_id
+    },
+    getCount() {
+      this.$get('/marketing/discounts_info').then(res => {
+        this.info = res.data
+      })
     }
   },
   created() {
     this.getActiveData()
+    this.getCount()
   }
 }
 </script>

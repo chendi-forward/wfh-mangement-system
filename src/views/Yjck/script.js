@@ -4,11 +4,9 @@ import TotalNumber from './BasicComponents/TotalNumber'
 import PieChart from './BasicComponents/PieChart'
 import ActivePeople from './BasicComponents/ActivePeople'
 import echarts from 'echarts'
-import { get } from 'http'
 import moment from 'moment'
 import MapLegend from './BasicComponents/MapLegend'
 import methods from './methods'
-import { Submenu } from 'element-ui'
 
 export default {
 	name: 'yjck',
@@ -47,8 +45,8 @@ export default {
 			}
 			],
 			options: [{
-				value: 'zuotian',
-				label: '昨天'
+				value: 'jintian',
+				label: '今天'
 			}, {
 				value: 'shangzhou',
 				label: '最近一周'
@@ -97,7 +95,7 @@ export default {
 			effectiveDate: [moment().subtract(7, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")],
 			effectiveDate_e: moment().format("YYYY-MM-DD"),
 			effectiveDate_s: moment().subtract(7, "days").format("YYYY-MM-DD"),
-			activeName1: 'yhdt',
+			activeName1: 'xsdt',
 			activeName2: 'all',
 			userInfo: [
 				{ name: '已实名用户', number: 2000 },
@@ -145,8 +143,8 @@ export default {
 		},
 		selectDay(val) {
 			switch (val) {
-				case 'zuotian':
-					this.effectiveDate = [moment().subtract(1, "d").format("YYYY-MM-DD"), moment().subtract(1, "d").format("YYYY-MM-DD")]
+				case 'jintian':
+					this.effectiveDate = [moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
 					break;
 				case 'shangzhou':
 					this.effectiveDate = [moment().subtract(7, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]
@@ -193,10 +191,16 @@ export default {
 			this.getRebateRatio()
 			this.getUserMap()
 			this.getUserInfo()
+			this.getNumberNameInfo()
+			this.$refs.goodsList.getSaleData()
 		},
 		// 获取订单的数量信息
 		getNumberNameInfo() {
-			this.$get('/home/order_num').then(res => {
+			let params = {
+				start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+				end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
+			}
+			this.$get('/home/order_num', params).then(res => {
 				this.all_count = res.data.all_count
 				this.all_money = res.data.all_money
 			})
@@ -227,17 +231,23 @@ export default {
 		},
 		// 获取折线图数据
 		getLineData() {
-			this.start_time = moment(this.effectiveDate_s).format('YYYY-MM-DD')
-			this.end_time = moment(this.effectiveDate_e).format('YYYY-MM-DD')
-			this.$get('/home/sell_trend?start_time=' + this.start_time + '&end_time=' + this.end_time).then(res => {
+			let params = {
+				start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+				end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
+			}
+			this.$get('/home/sell_trend', params).then(res => {
 				this.chartLine(res.data.time_list, res.data.data_list)
 			})
 		},
 		// 获取各个返利占比
 		getRebateRatio() {
+			let params = {
+				start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+				end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
+			}
 			this.start_time = moment(this.effectiveDate_s).format('YYYY-MM-DD')
 			this.end_time = moment(this.effectiveDate_e).format('YYYY-MM-DD')
-			this.$get('/home/rebate_ratio?start_time=' + this.start_time + '&end_time=' + this.end_time)
+			this.$get('/home/rebate_ratio', params)
 				.then(res => {
 					this.pieChartList = this.pieChartList.map(item => {
 						return {
@@ -265,9 +275,13 @@ export default {
 					let result = res.data
 					this.dataTotal = 0
 					this.chinaData.forEach(item => {
+						item.value = 0
 						result.forEach(sub_item => {
 							if (item.name === sub_item.province) {
 								item.value = sub_item.count
+								if (params.type === 'sell') {
+									item.value = sub_item.pay_money
+								}
 							}
 						})
 						this.dataTotal += item.value
@@ -276,11 +290,13 @@ export default {
 						return b.value - a.value
 					})
 					this.sortChinaData = this.chinaData.slice(0, 8)
-					if (this.activeName1 === 'yhdt') {
-						this.chartMap('yhdtMap')
-					} else {
-						this.chartMap('xsdtMap')
-					}
+					this.$nextTick(() => {
+						if (this.activeName1 === 'yhdt') {
+							this.chartMap('yhdtMap')
+						} else {
+							this.chartMap('xsdtMap')
+						}
+					})
 				})
 		},
 		// 获取用户数据

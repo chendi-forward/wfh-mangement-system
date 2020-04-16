@@ -178,7 +178,7 @@ export default {
           max: 7,
           inverse: true,
           inRange: {
-            color: ['#f2f5f2', "#f6d6d3", "#ecd4d1", "#e3d2d0", "#ddd0cf", "#d3cecd"]
+            color: ['#FFE4E1', "#FA8072", "#FF0000", "#A52A2A", "#B22222", "#8B0000"]
           },
           textStyle: {
             color: "#000"

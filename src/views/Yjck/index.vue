@@ -32,7 +32,7 @@
       </div>
       <div class="body-right">
         <div class="body-rightTop">
-          <goods-list></goods-list>
+          <goods-list ref="goodsList" :effective-date_e='effectiveDate_e' :effective-date_s='effectiveDate_s'></goods-list>
         </div>
         <div class="body-rightBottom">
           <div class="body-rightBottom__left body-rightBottom--item">
