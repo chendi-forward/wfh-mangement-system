@@ -3,7 +3,7 @@
     <div class="footer__top--item" v-for="(item, index) in chinaData" :key="index">
       <span class="footer__top--item__inner footer__top--item--index">{{index + 1}}</span>
       <span class="footer__top--item__inner footer__top--item--province">{{item.name}}</span>
-      <span class="footer__top--item__inner footer__top--item--percent">{{(item.value / dataTotal * 100).toFixed(1)}}%</span>
+      <span class="footer__top--item__inner footer__top--item--percent">{{dataTotal ? (item.value / dataTotal * 100).toFixed(1) : 0}}%</span>
       <div class="footer__top--item__inner footer__top--item--bar">
         <div class="footer__top--item--bar__inner" :style="{ width: (item.value / dataTotal * 100).toFixed(1) + '%' }"></div>
       </div>

@@ -222,9 +222,11 @@ export default {
                         item.gender = item.gender === '1' ? '男' : '女'
                         item.deal_money = item.deal_money || '0'
                         this.options.forEach((i) => {
-                            if (i.value === item.label_id) {}
-                            item.label = i.label || '--'
+                            if (i.value === item.label_id) {
+                                item.label = i.label || '--'
+                            }
                         })
+                        item.label = item.label || '--'
                     })
                     this.tableData = res.content
                     this.total = res.count

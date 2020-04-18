@@ -12,9 +12,12 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'goods-list',
-  data () {
+  props: ['effectiveDate_e', 'effectiveDate_s'],
+  data() {
     return {
       goodsList: [
         {
@@ -45,7 +48,7 @@ export default {
     }
   },
   filters: {
-    thousand_tranf: function (value) {
+    thousand_tranf: function(value) {
       value = String(value)
       if (value.length > 3) {
         let reg = /(?=(?!\b)(\d{3})+$)/g
@@ -55,61 +58,65 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.getSaleData()
   },
   methods: {
     //  获取销售列表
     getSaleData() {
-        this.$get('/home/order_list_show').then(res => {
-            this.goodsList = res.data
-        })
-    },
+      let params = {
+        start_time: moment(this.effectiveDate_s).format('YYYY-MM-DD'),
+        end_time: moment(this.effectiveDate_e).format('YYYY-MM-DD')
+      }
+      this.$get('/home/order_list_show', params).then(res => {
+        this.goodsList = res.data
+      })
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .goods--list {
-    height: 225px;
-    overflow-y: auto;
-    .goods--item {
+.goods--list {
+  height: 225px;
+  overflow-y: auto;
+  .goods--item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    &:first-of-type {
+      padding-top: unset;
+    }
+    &:last-of-type {
+      padding-bottom: unset;
+    }
+    .goods--item__img {
+      display: inline-block;
+      width: 55px;
+      height: 47px;
+      margin-right: 35px;
+      background-color: #f7f8f9;
+    }
+    .goods--item__info {
+      flex: 1;
       display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      &:first-of-type {
-        padding-top: unset;
+      background-color: #f7f8f9;
+      padding: 0 20px;
+      .goods--item__inner {
+        overflow-wrap: break-word;
+        padding: 5px;
       }
-      &:last-of-type {
-        padding-bottom: unset;
-      } 
-      .goods--item__img {
-        display: inline-block;
-        width: 55px;
-        height: 47px;
-        margin-right: 35px;
-        background-color: #f7f8f9;
+      .goods--item__id {
+        width: 25%;
       }
-      .goods--item__info {
+      .goods--item__number {
+        width: 45%;
+      }
+      .goods--item__number {
         flex: 1;
-        display: flex;
-        background-color: #f7f8f9;
-        padding: 0 20px;
-        .goods--item__inner {
-          overflow-wrap: break-word;
-          padding: 5px;
-        }
-        .goods--item__id {
-          width: 25%;
-        }
-        .goods--item__number {
-          width: 45%;
-        }
-        .goods--item__number {
-          flex: 1;
-          text-align: end;
-        }
+        text-align: end;
       }
     }
   }
+}
 </style>

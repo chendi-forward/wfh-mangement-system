@@ -201,11 +201,11 @@
         <div class="spgl-item--title">退款管理</div>
         <div class="spgl-item--content flex-item-center">
           <div class="manage-info">
-            <span class="value">2&nbsp;</span>
+            <span class="value">{{refundNum}}&nbsp;</span>
             <span class="name new-point">退款中</span>
           </div>
           <div class="handle">
-            <i class="icon iconfont icon-list_icon" @click="toList('shgl-tkgl')"></i>
+            <i class="icon iconfont icon-list_icon" v-show='refundNum' @click="toList('shgl-tkgl')"></i>
           </div>
         </div>
       </div>
@@ -213,11 +213,11 @@
         <div class="spgl-item--title">评价管理</div>
         <div class="spgl-item--content flex-item-center">
           <div class="manage-info">
-            <span class="value">10&nbsp;</span>
+            <span class="value">{{evaluationNum}}&nbsp;</span>
             <span class="name new-point">新评价</span>
           </div>
           <div class="handle">
-            <i class="icon iconfont icon-list_icon" @click="toList('shgl-pjgl')"></i>
+            <i class="icon iconfont icon-list_icon" v-show='evaluationNum' @click="toList('shgl-pjgl')"></i>
           </div>
         </div>
       </div>
