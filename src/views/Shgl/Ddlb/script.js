@@ -82,11 +82,15 @@ export default {
           sale_state: '', // 订单状态
           remark: '' // 备注
         }, showBtn: true, handle: this.tuikuanHandle}
-      ]
+      ],
+      refundNum: '',
+      evaluationNum: ''
     }
   },
   created () {
     this.initData()
+    this.getRefundNum()
+    this.getEvaluation()
   },
   watch: {
     time () {
@@ -231,6 +235,19 @@ export default {
         name: "订单列表.xlsx",
         data: this.tableData,
         map
+      })
+    },
+    // 获取退款管理和评价管理数量
+    getRefundNum() {
+      this.$get('/after_sale/new_refund')
+      .then(res => {
+        this.refundNum = res.data.count
+      })
+    },
+    getEvaluation() {
+      this.$get('/after_sale/new_evaluation')
+      .then(res => {
+        this.evaluationNum = res.data.count
       })
     }
   }
