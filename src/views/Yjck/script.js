@@ -190,7 +190,7 @@ export default {
 			this.getLineData()
 			this.getRebateRatio()
 			this.getUserMap()
-			this.getUserInfo()
+			this.getUserInfo(this.activeName2)
 			this.getNumberNameInfo()
 			this.$refs.goodsList.getSaleData()
 		},

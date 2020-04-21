@@ -15,7 +15,7 @@
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
         <el-button size="small" @click="exportFn">导出</el-button>
-        <el-button size="small" type="danger" @click="deleteMany">批量删除</el-button>
+        <!-- <el-button size="small" type="danger" @click="deleteMany">批量删除</el-button> -->
       </div>
       <div class="page-wrap">
         <my-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :total="total">
