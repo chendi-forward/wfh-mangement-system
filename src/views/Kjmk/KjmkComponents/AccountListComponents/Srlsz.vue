@@ -92,7 +92,7 @@ export default {
         current_page: 1
       }).then(res => {
         tableToExcel({
-          name: '收入流水账.xlsx',
+          name: '收入流水账.xls',
           data: res.data.data_list,
           map
         })

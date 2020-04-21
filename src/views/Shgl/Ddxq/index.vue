@@ -97,6 +97,21 @@
             label="实付总额">
           </el-table-column>
           <el-table-column
+            prop='rebate'
+            align='center'
+            label="返利">
+          </el-table-column>
+          <el-table-column
+            prop='coupon_rebate'
+            align='center'
+            label="优惠券返利">
+          </el-table-column>
+          <el-table-column
+            prop='active_rebate'
+            align='center'
+            label="活动返利">
+          </el-table-column>
+          <el-table-column
             prop='rebate_money'
             align='center'
             label="返利总额">

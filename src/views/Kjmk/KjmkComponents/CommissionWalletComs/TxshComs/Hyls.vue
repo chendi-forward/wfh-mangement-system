@@ -13,11 +13,11 @@
           width="150">
           <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           align='center'
-          label="积分兑换返利">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.jfdhfl }}</span></template>
-        </el-table-column> -->
+          label="获得返利">
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row['rebate'] }}</span></template>
+        </el-table-column>
         <el-table-column
           align='center'
           label="分享">
@@ -57,6 +57,11 @@
           label="月销售排名积分将"
           align='center'>
           <template slot-scope="scope"><span class='text-overflow'>{{ scope.row['08'] }}</span></template>
+        </el-table-column>
+        <el-table-column
+          label="积分总和"
+          align='center'>
+          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row['all'] }}</span></template>
         </el-table-column>
       </el-table>
     </div>

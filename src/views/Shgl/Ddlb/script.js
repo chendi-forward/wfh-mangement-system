@@ -232,7 +232,7 @@ export default {
         {name: 'express_number', value: '物流单号'},
       ]
       tableToExcel({
-        name: "订单列表.xlsx",
+        name: "订单列表.xls",
         data: this.tableData,
         map
       })

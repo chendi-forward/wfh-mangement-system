@@ -119,7 +119,7 @@
           {name: 'type', value: '支出类别'}
         ]
         tableToExcel({
-          name: "返利提取流水.xlsx",
+          name: "返利提取流水.xls",
           data,
           map
         })

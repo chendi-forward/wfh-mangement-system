@@ -81,7 +81,10 @@ export default {
           goods_title: '',
           original_price: res.data.goods_detail.all_money,
           rebate_money: '',
-          taste: ''
+          taste: '',
+          rebate: '',
+          coupon_rebate:  '',
+          active_rebate: ''
         }
         res.data.goods_detail.goods_list.unshift(obj)
         this.tableData2 = res.data.goods_detail.goods_list
