@@ -205,7 +205,7 @@
           {name: 'state', value: '状态'}
         ]
         tableToExcel({
-          name: "提现审核列表.xlsx",
+          name: "提现审核列表.xls",
           data,
           map
         })

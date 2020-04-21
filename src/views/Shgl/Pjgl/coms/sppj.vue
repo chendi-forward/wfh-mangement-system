@@ -73,13 +73,14 @@
             width="150">
                 <template slot-scope="scope">
                     <div class="img-list">
-                        <el-image 
+                        <el-image
+                            v-if="scope.row.images.split(',')[0]"
                             style="width: 100px; height: 100px"
                             :src="scope.row.images.split(',')[0]" 
                             :preview-src-list="scope.row.images.split(',')">
                         </el-image>
                         <!-- <img :src="scope.row.images" v-if="scope.row.images" @mouseover="imgMouseover($event,scope.row.images)" @mouseout="imgMouseout"> -->
-                        <!-- <span v-else>无</span> -->
+                        <span v-else>/</span>
                         <!-- <img :src="homeIcon"> -->
                     </div>
                 </template>

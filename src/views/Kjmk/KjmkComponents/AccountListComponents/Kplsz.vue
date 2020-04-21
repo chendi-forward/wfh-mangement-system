@@ -178,7 +178,7 @@ export default {
           }
         })
         tableToExcel({
-          name: '开票流水账.xlsx',
+          name: '开票流水账.xls',
           data: tableData,
           map
         })
