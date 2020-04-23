@@ -2,12 +2,12 @@ import Pagination from 'COMPONENTS/Pagination'
 import boxIcon from 'ASSETS/image/box_icon.png'
 import carIcon from 'ASSETS/image/car_icon.png'
 import homeIcon from 'ASSETS/image/home_icon.png'
-import {saleHead, orderList, orderGoods, applyRefund, deliverGoods} from 'API/Shgl'
+import { saleHead, orderList, orderGoods, applyRefund, deliverGoods, orderDetail } from 'API/Shgl'
 import moment from 'moment'
 import createCom from '../coms/create'
 import DialogCom from 'COMPONENTS/DialogCom'
 import EditLogistics from '../coms/editLogistics'
-import {tableToExcel} from 'COMMONS/util.js'
+import { tableToExcel } from 'COMMONS/util.js'
 
 export default {
   name: 'shgl-ddlb',
@@ -17,7 +17,7 @@ export default {
     'create-com': createCom,
     'editLogistics-dialog': EditLogistics
   },
-  data () {
+  data() {
     return {
       boxIcon,
       carIcon,
@@ -48,8 +48,8 @@ export default {
         wechat_id: null
       }],
       tabs: [
-        {label: '全部订单', name: '-1'}, {label: '未付款', name: '0'}, {label: '已付款', name: '1'}, {label: '已发货', name: '2'},
-        {label: '已成交', name: '3'}, {label: '退款中', name: '5'}, {label: '已关闭', name: '6'}
+        { label: '全部订单', name: '-1' }, { label: '未付款', name: '0' }, { label: '已付款', name: '1' }, { label: '已发货', name: '2' },
+        { label: '已成交', name: '3' }, { label: '退款中', name: '5' }, { label: '已关闭', name: '6' }
       ],
       currentTab: '-1',
       orderParams: {
@@ -62,18 +62,10 @@ export default {
         e_time: ''
       },
       total: 40,
-      currentCom: {name: '新建退款', com: 'create-com', data: {
-        refund_money: 0,
-        after_sale_type: '退货退款',
-        goods: [],
-        refund_goods: [],
-        order_id: '',
-        sale_state: '', // 订单状态
-        remark: '' // 备注
-      }, showBtn: true, handle: this.tuikuanHandle},
-      coms: [
-        {name: '发货', com: 'editLogistics-dialog', data: { name: '', express_number: '', order_id: '' }, showBtn: true, handle: this.fahuoHandle},
-        {name: '新建退款', com: 'create-com', data: {
+      currentCom: {
+        name: '新建退款',
+        com: 'create-com',
+        data: {
           refund_money: 0,
           after_sale_type: '退货退款',
           goods: [],
@@ -81,19 +73,40 @@ export default {
           order_id: '',
           sale_state: '', // 订单状态
           remark: '' // 备注
-        }, showBtn: true, handle: this.tuikuanHandle}
+        },
+        showBtn: true,
+        handle: this.tuikuanHandle
+      },
+      coms: [
+        { name: '发货', com: 'editLogistics-dialog', data: { name: '', express_number: '', order_id: '' }, showBtn: true, handle: this.fahuoHandle },
+        {
+          name: '新建退款', com: 'create-com', data: {
+            refund_money: 0,
+            after_sale_type: '退货退款',
+            goods: [],
+            refund_goods: [],
+            order_id: '',
+            sale_state: '', // 订单状态
+            remark: '' // 备注
+          }, showBtn: true, handle: this.tuikuanHandle
+        }
       ],
       refundNum: '',
-      evaluationNum: ''
+      evaluationNum: '',
+
+      gridData: [{
+        goods_title: '',
+        count: 1,
+      }]
     }
   },
-  created () {
+  created() {
     this.initData()
     this.getRefundNum()
     this.getEvaluation()
   },
   watch: {
-    time () {
+    time() {
       if (this.time) {
         this.orderParams.s_time = moment(this.time[0]).format('YYYY-MM-DD')
         this.orderParams.e_time = moment(this.time[1]).format('YYYY-MM-DD')
@@ -104,13 +117,13 @@ export default {
     }
   },
   methods: {
-    initData () {
+    initData() {
       saleHead().then(res => {
         this.saleHead = res.data
       })
       this.getOrderList()
     },
-    getOrderList (data={}) { // 获取订单列表
+    getOrderList(data = {}) { // 获取订单列表
       // > number  -- 订单id
       // > user    -- 用户信息(用户id 或昵称)
       // > s_time   -- 开始时间
@@ -123,48 +136,48 @@ export default {
         this.tableData = res.data.data_list
       })
     },
-    search () {
+    search() {
       this.getOrderList()
     },
-    lunbo (prop, type) {
+    lunbo(prop, type) {
       if (type == 'up') {
-        this.saleHeadIndex[prop] ++
+        this.saleHeadIndex[prop]++
         if (this.saleHeadIndex[prop] >= this.saleHead[prop].length) {
           this.saleHeadIndex[prop] = 0
         }
       } else {
-        this.saleHeadIndex[prop] --
+        this.saleHeadIndex[prop]--
         if (this.saleHeadIndex[prop] <= 0) {
           this.saleHeadIndex[prop] = this.saleHead[prop].length - 1
         }
       }
     },
-    tabChage () {
+    tabChage() {
       this.orderParams.current_page = 1
       this.orderParams.status = this.currentTab == '-1' ? '' : this.currentTab - 0
       this.getOrderList()
     },
-    handleSelectionChange () {},
-    lineItem (row) {
+    handleSelectionChange() { },
+    lineItem(row) {
       this.$router.push({
         name: 'shgl-ddxq',
         query: row
       })
     },
-    toList (name) {
+    toList(name) {
       this.$router.push({
         name
       })
     },
-    xiazai () {
+    xiazai() {
       this.tableToExcel()
     },
-    fahuo (row) {
+    fahuo(row) {
       this.currentCom = this.coms[0]
       this.currentCom.data.order_id = row.order_id
       this.dialogFlag = true
     },
-    tuikuan (row) {
+    tuikuan(row) {
       this.currentCom = this.coms[1]
       this.dialogFlag = true
       orderGoods({
@@ -175,16 +188,16 @@ export default {
         this.$set(this.currentCom.data, 'goods', res.data)
       })
     },
-    deleteOrder () {},
-    handleSizeChange (value) { // 每页显示数量变化
+    deleteOrder() { },
+    handleSizeChange(value) { // 每页显示数量变化
       this.orderParams.page_count = value
       this.getOrderList()
     },
-    handleCurrentChange (value) { // 当前页改变
+    handleCurrentChange(value) { // 当前页改变
       this.orderParams.current_page = value
       this.getOrderList()
     },
-    fahuoHandle () {
+    fahuoHandle() {
       deliverGoods(this.currentCom.data).then(res => {
         if (res.data) {
           this.$message.success('发货成功！')
@@ -193,9 +206,9 @@ export default {
         } else {
           this.$message.error('发货失败！')
         }
-      }) 
+      })
     },
-    tuikuanHandle () {
+    tuikuanHandle() {
       if (this.currentCom.data.refund_goods.lenght <= 0) {
         return this.$message.error('请选择退款商品')
       }
@@ -215,21 +228,21 @@ export default {
       })
       this.dialogFlag = false
     },
-    cancleSave () {
+    cancleSave() {
       this.dialogFlag = false
     },
-    tableToExcel(){
+    tableToExcel() {
       let map = [
-        {name: 'nickname', value: '昵称'},
-        {name: 'order_id', value: '订单号'},
-        {name: 'order_state', value: '订单状态'},
-        {name: 'pay_money', value: '实付金额'},
-        {name: 'rebate_money', value: '返利金额'},
-        {name: 'update_time', value: '更新时间'},
-        {name: 'user_id', value: '用户ID'},
-        {name: 'wechat_id', value: '微信交易号'},
-        {name: 'address', value: '收货地址'},
-        {name: 'express_number', value: '物流单号'},
+        { name: 'nickname', value: '昵称' },
+        { name: 'order_id', value: '订单号' },
+        { name: 'order_state', value: '订单状态' },
+        { name: 'pay_money', value: '实付金额' },
+        { name: 'rebate_money', value: '返利金额' },
+        { name: 'update_time', value: '更新时间' },
+        { name: 'user_id', value: '用户ID' },
+        { name: 'wechat_id', value: '微信交易号' },
+        { name: 'address', value: '收货地址' },
+        { name: 'express_number', value: '物流单号' },
       ]
       tableToExcel({
         name: "订单列表.xls",
@@ -240,14 +253,22 @@ export default {
     // 获取退款管理和评价管理数量
     getRefundNum() {
       this.$get('/after_sale/new_refund')
-      .then(res => {
-        this.refundNum = res.data.count
-      })
+        .then(res => {
+          this.refundNum = res.data.count
+        })
     },
     getEvaluation() {
       this.$get('/after_sale/new_evaluation')
+        .then(res => {
+          this.evaluationNum = res.data.count
+        })
+    },
+    showGoodsName(order_id) {
+      if (this.hoverOrderId === order_id) return
+      this.hoverOrderId = order_id
+      orderDetail({order_id: order_id})
       .then(res => {
-        this.evaluationNum = res.data.count
+        this.gridData = res.data.goods_detail.goods_list
       })
     }
   }
