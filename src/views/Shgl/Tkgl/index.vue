@@ -18,7 +18,7 @@
         </el-table-column>
         <el-table-column prop='nickname' label="昵称" align='center' min-width="100">
         </el-table-column>
-        <el-table-column v-if="currentTab=== '3'" prop='wechat_id' align='center' label="微信交易号" width="100">
+        <el-table-column v-if="currentTab=== '3'" prop='wechat_id' align='center' show-overflow-tooltip label="微信交易号" width="100">
         </el-table-column>
         <el-table-column align='center' label="商品名称" width="120">
           <template slot-scope="scope">
