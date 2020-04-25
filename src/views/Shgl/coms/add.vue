@@ -84,6 +84,10 @@ import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
       }
     },
     methods: {
+        open () {
+          this.data.status && this.cancelOrderLogistics()
+          this.getLogisticsData()
+        },
         sureSave (){
           if (!this.selectKey || !this.tydh) {
             this.$message({
@@ -118,8 +122,8 @@ import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
               this.tydh = this.logistics.nu
               this.selectKey = this.logistics.name
             } else {
-              this.tydh = "无单号信息"
-              this.selectKey = "无快递信息"
+              this.tydh = res.data.nu || '无快递单号'
+              this.selectKey = res.data.name || "无快递信息"
               this.logistics.data = [{context: '暂无物流信息', time: ''}]
             }
             this.logistics.data[0].type = 'danger'
@@ -129,8 +133,6 @@ import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
         selectChange () {}
     },
     mounted () {
-      this.data.status && this.cancelOrderLogistics()
-      this.getLogisticsData()
     }
   }
 </script>
