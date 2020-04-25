@@ -108,7 +108,8 @@ export default {
                     { required: true, message: '该项为必填项', trigger: 'blur' },
                     { max: 10, message: '长度范围为10个字符', trigger: 'blur' }
                 ]
-            }
+            },
+            order: ''
         }
     },
     methods: {
@@ -210,9 +211,34 @@ export default {
                 }
             })
         },
+        // sortChange
+        sortChange (column) {
+            console.log(column)
+            if (column.prop === 'level') {
+                if (column.order === 'ascending') {
+                    this.order = 'level_up'
+                } else {
+                    this.order = 'level_down'
+                }
+                
+            } else if (column.prop === 'balance') {
+                if (column.order === 'ascending') {
+                    this.order = 'balance_up'
+                } else {
+                    this.order = 'balance_down'
+                }
+            } else {
+                if (column.order === 'ascending') {
+                    this.order = 'order_up'
+                } else {
+                    this.order = 'order_down'
+                }
+            }
+            this.getUserData()
+        },
         // 获取用户信息
-        getUserData () {
-            let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}&user_label=${this.userLabel}`
+        getUserData () { 
+            let url = `/user/show_user?user_type=${this.activeName}&label_id=${this.selectKey}&search=${this.idNameNum}&page_count=${this.pageSize}&current_page=${this.currentPage4}&user_label=${this.userLabel}&order=${this.order}`
             this.$get(url).then(res => {
                 if (res.content && res.content.length) {
                     res.content.forEach((item) => {

@@ -49,6 +49,7 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
+        @sort-change='sortChange'
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -103,13 +104,13 @@
           prop='level'
           align='center'
           label="等级"
-          sortable
+          sortable='custom'
           width="80">
         </el-table-column>
         <el-table-column
           prop='balance'
           label="账户金额"
-          sortable
+          sortable='custom'
           align='center'
           width="100">
         </el-table-column>
@@ -123,7 +124,7 @@
         <el-table-column
           prop='order'
           label="订单数"
-          sortable
+          sortable='custom'
           align='center'
           width="100">
         </el-table-column>
