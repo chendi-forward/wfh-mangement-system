@@ -124,7 +124,7 @@ import { logisticsManage, cancelOrderLogistics } from 'API/Shgl'
             } else {
               this.tydh = res.data.nu || '无快递单号'
               this.selectKey = res.data.name || "无快递信息"
-              this.logistics.data = [{context: '暂无物流信息', time: ''}]
+              this.logistics.data = [{context: res.data.message, time: ''}]
             }
             this.logistics.data[0].type = 'danger'
             this.logistics.data[0].size = 'large'
