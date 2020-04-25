@@ -92,7 +92,7 @@
         </el-table-column>
         <el-table-column prop='nickname' label="昵称" align='center' min-width="100">
         </el-table-column>
-        <el-table-column prop='wechat_id' align='center' label="微信交易号" width="100">
+        <el-table-column prop='wechat_id' align='center' label="微信交易号" show-overflow-tooltip width="100">
         </el-table-column>
         <el-table-column align='center' label="商品名称" width="120">
           <template slot-scope="scope">
@@ -109,7 +109,7 @@
         </el-table-column>
         <el-table-column prop='order_state' align='center' label="状态">
         </el-table-column>
-        <el-table-column prop='update_time' align='center' label="最新操作时间" width="150">
+        <el-table-column prop='update_time' align='center' label="最新操作时间" width="160">
         </el-table-column>
         <el-table-column prop='pay_money' label="实付总额" align='center' width="100">
         </el-table-column>
