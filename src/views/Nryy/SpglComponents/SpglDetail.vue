@@ -155,7 +155,7 @@
                   </el-input>
                 </el-form-item>
               </div>
-              <input class="el-input__inner" style="font-size: 14px;" type='text' placeholder="输入口味并回车..." v-model="taste" @keyup.enter="addTaste" />
+              <input class="el-input__inner" style="font-size: 14px;" type='text' placeholder="输入口味并回车..." v-model="taste" @keyup.enter="addTaste" @blur="addTaste" />
             </div>
           </div>
         </el-form>
@@ -531,11 +531,11 @@ export default {
         let vList = [+this.formSpxx.v1, +this.formSpxx.v2, +this.formSpxx.v3, +this.formSpxx.v4, +this.formSpxx.v5]
         let jsonVList = JSON.stringify(vList)
         let vListSort = vList.sort((a, b) => {
-          return a-b
+          return a - b
         })
         let jsonSortVList = JSON.stringify(vListSort)
         if (jsonVList !== jsonSortVList) {
-            return this.$message.error('返利比例请按照 v5>v4>v3>v2>v1 填写')
+          return this.$message.error('返利比例请按照 v5>v4>v3>v2>v1 填写')
         }
         let valides = []
         this.$refs.spxxForm.validate(valid => {
@@ -601,14 +601,18 @@ export default {
         }
         this.$post(url, params)
           .then(res => {
-            this.$message({
-              type: 'success',
-              message: message
-            })
-            this.$emit('toggle-component', { action: 'cancel' })
+            if (!!res.data) {
+              this.$message({
+                type: 'success',
+                message: message
+              })
+              this.$emit('toggle-component', { action: 'cancel' })
+            } else {
+              this.$message.error(res.message )
+            }
           })
           .catch(e => {
-            this.$message.error('添加错误！')
+            this.$message.error(e)
           })
       } catch (error) {
         console.log(error)

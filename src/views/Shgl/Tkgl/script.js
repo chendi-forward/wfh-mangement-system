@@ -3,7 +3,7 @@ import DialogCom from 'COMPONENTS/DialogCom'
 import addRefund from '../coms/add'
 import Refund from '../coms/refund'
 import Receiving from '../coms/receiving'
-import { refundList, refundDeliver, cancelRefund } from 'API/Shgl'
+import { refundList, refundDeliver, cancelRefund, orderDetail } from 'API/Shgl'
 
 export default {
 	name: 'shgl-tkgl',
@@ -62,7 +62,8 @@ export default {
 				{ name: '物流信息', com: 'add-dialog', data: null },
 				{ name: '确认收货', com: 'receiving-dialog', data: null },
 				{ name: '确认退款', com: 'refund-dialog', data: null }
-			]
+			],
+			gridData: []
 		}
 	},
 	methods: {
@@ -209,7 +210,10 @@ export default {
 		},
 		cancleSave() {
 			this.dialogFlag = false
-		}
+		},
+		showGoodsName(row) {
+			this.gridData = row.refund_detail
+    }
 	},
 	created() {
 		this.getData()
