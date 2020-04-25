@@ -12,9 +12,9 @@
       <el-table ref="multipleTable" stripe align='center' :data="tableData" tooltip-effect="dark" style="width: 100%" @expand-change="expandChange" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop="order_id" align='center' label="订单编号" width="100">
+        <el-table-column prop="order_id" align='center' label="订单编号" show-overflow-tooltip width="150">
         </el-table-column>
-        <el-table-column prop="user_id" label="用户ID" align='center' width="100">
+        <el-table-column prop="user_id" label="用户ID" align='center' width="150">
         </el-table-column>
         <el-table-column prop='nickname' label="昵称" align='center' min-width="100">
         </el-table-column>
@@ -39,8 +39,6 @@
         <el-table-column prop='end_time' align='center' label="最后操作时间" width="160">
         </el-table-column>
         <el-table-column prop='express_number' align='center' label="退运单号" width="150">
-        </el-table-column>
-        <el-table-column prop='goods_names' label="商品名称" align='center' width="100">
         </el-table-column>
         <el-table-column prop='goods_count' label="数量" align='center' width="100">
         </el-table-column>

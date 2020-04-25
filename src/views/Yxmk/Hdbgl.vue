@@ -12,7 +12,7 @@
         <el-table class="ssxd-table" ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column label="活动编号" align='center' prop="active_no" width="120">
+          <el-table-column label="活动编号" align='center' prop="active_no" show-overflow-tooltip width="150">
           </el-table-column>
           <el-table-column align='center' min-width="150" prop="active_name" label="活动名称">
           </el-table-column>

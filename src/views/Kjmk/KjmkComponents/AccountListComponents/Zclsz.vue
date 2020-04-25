@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column label="下单时间" align='center' prop="order_time" width="150">
         </el-table-column>
-        <el-table-column align='center' min-width="120" prop="turnover_id" label="支出流水号">
+        <el-table-column align='center' min-width="120" prop="turnover_id" show-overflow-tooltip label="支出流水号">
         </el-table-column>
         <el-table-column align='center' min-width="100" prop="user_id" label="用户ID">
         </el-table-column>

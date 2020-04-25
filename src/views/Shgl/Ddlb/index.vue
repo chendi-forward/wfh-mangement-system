@@ -86,9 +86,9 @@
       <el-table ref="multipleTable" stripe align='center' :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop="order_id" align='center' label="订单编号" width="100">
+        <el-table-column prop="order_id" align='center' label="订单编号" show-overflow-tooltip width="150">
         </el-table-column>
-        <el-table-column prop="user_id" label="用户ID" align='center' width="100">
+        <el-table-column prop="user_id" label="用户ID" align='center' width="150">
         </el-table-column>
         <el-table-column prop='nickname' label="昵称" align='center' min-width="100">
         </el-table-column>

@@ -22,6 +22,7 @@
         </el-table-column>
         <el-table-column
           align='center'
+          show-overflow-tooltip
           label="提现流水号">
           <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.turnover_id }}</span></template>
         </el-table-column>

@@ -14,9 +14,9 @@
         </el-table-column>
         <el-table-column label="下单时间" align='center' width="150" prop="order_time">
         </el-table-column>
-        <el-table-column align='center' min-width="120" label="收入流水号" prop="turnover_id">
+        <el-table-column align='center' min-width="120" label="收入流水号" show-overflow-tooltip prop="turnover_id">
         </el-table-column>
-        <el-table-column align='center' min-width="120" label="订单编号" prop="order_id">
+        <el-table-column align='center' min-width="120" label="订单编号" show-overflow-tooltip prop="order_id">
         </el-table-column>
         <el-table-column align='center' min-width="100" label="用户ID" prop="user_id">
         </el-table-column>
