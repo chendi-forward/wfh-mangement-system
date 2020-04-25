@@ -116,6 +116,28 @@
           </div>
         </div>
       </div>
+      <div class="hydj gzsm-box">
+        <div class="title">邀请分享图</div>
+        <div class="content">
+          <img-upload
+            size='5'
+            class="upload-img"
+            key-name="goods"
+            :imgurl='imageUrl_yqfxt'
+            @delete-img='imgDelete("yqfxt")'
+            @upload-success='(res) => uploadSuccess(res, "yqfxt")'
+            @upload-error='uploadError("yqfxt")'
+          />
+          <div class="content-tool">
+            <p class="upload-img__info">*支持jpg/png格式，不超过5M</p>
+            <el-button
+              class="upload-img__btn--cancel"
+              size="small"
+              @click="preview('yqfxt')"
+            >预览</el-button>
+          </div>
+        </div>
+      </div>
     </main>
     <el-dialog
       title="图片预览"
@@ -148,6 +170,7 @@ export default {
       imageUrl_flsm_fm: '',
       imageUrl_hydj: '',
       imageUrl_wdyqm: '',
+      imageUrl_yqfxt: '0',
       isShowImgPreview: false,
       image_preview: ''
     }
@@ -158,6 +181,7 @@ export default {
     this.getData('hyzsm')
     this.getData('hydj')
     this.getData('wdyqm')
+    this.getData('yqfxt')
   },
   methods: {
     imgDelete(name) {
@@ -197,6 +221,12 @@ export default {
             content_pic: this['imageUrl_' + name]
           }
           break
+        case 'yqfxt':
+          option = {
+            source: 'share',
+            content_pic: this['imageUrl_' + name]
+          }
+          break
         default:
           break
       }
@@ -206,6 +236,8 @@ export default {
             type: 'success',
             message: '上传成功！'
           })
+        } else {
+          this.$message.error('上传失败，' + res.message)
         }
       })
     },
@@ -253,6 +285,16 @@ export default {
         case 'wdyqm':
           option = {
             type: 'invite'
+          }
+          this.$get('/discover/active_other_info', {...option}).then(res => {
+            if (res.data && res.message === 'ok') {
+              this['imageUrl_' + name] = res.data[0].content_pic
+            }
+          })
+          break
+        case 'yqfxt':
+          option = {
+            type: 'share'
           }
           this.$get('/discover/active_other_info', {...option}).then(res => {
             if (res.data && res.message === 'ok') {
