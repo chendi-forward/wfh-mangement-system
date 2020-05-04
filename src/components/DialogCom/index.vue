@@ -31,6 +31,8 @@
 			return {
 			}
 		},
+		mounted () {
+		},
 		computed: {
 			isShowTag: {
 				get () {

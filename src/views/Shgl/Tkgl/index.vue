@@ -104,7 +104,7 @@
       </div>
     </div>
     <dialog-Com :isShowFooter='false' v-model='dialogFlag' :title='currentCom.name'>
-      <component :data='suredata' :is="currentCom.com" :goodsid='goodsid' @sure-save='sureSave' @cancle-save='cancleSave'></component>
+      <component :data='suredata' :is="currentCom.com" :goodsid='goodsid' @sure-save='sureSave' @cancle-save='cancleSave' ref="dialog"></component>
     </dialog-Com>
   </div>
 </template>

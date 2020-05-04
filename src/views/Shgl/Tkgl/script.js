@@ -67,6 +67,9 @@ export default {
 		}
 	},
 	methods: {
+		open () {
+			this.$refs.dialog.open && this.$refs.dialog.open()
+		},
 		cancleTuik() {
 			if (this.idArrtoStr) {
 				let data = {
@@ -151,6 +154,9 @@ export default {
 			this.suredata = data
 			this.dialogFlag = true
 			this.currentCom = this.coms[index]
+			this.$nextTick(() => {
+				this.open()
+			})
 		},
 		receivingHandle() {
 			this.dialogFlag = true
