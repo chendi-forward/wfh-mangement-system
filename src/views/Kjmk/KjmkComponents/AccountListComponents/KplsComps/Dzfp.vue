@@ -13,9 +13,18 @@
     </el-table-column>
     <el-table-column align='center' min-width="120" label="昵称" prop="nickname">
     </el-table-column>
-    <el-table-column align='center' min-width="150" label="商品名称" prop="goods_title">
-    </el-table-column>
-    <el-table-column align='center' label="数量" min-width="60" prop="goods_count">
+    <el-table-column align='center' label="商品名称" width="120">
+      <template slot-scope="scope">
+        <el-popover placement="right" width="280" trigger="hover" @show="showGoodsName(scope.row.invoice_id)">
+          <el-table :data="gridData">
+            <el-table-column property="goods_title" label="商品名称"></el-table-column>
+            <el-table-column width="90" property="count" label="数量"></el-table-column>
+          </el-table>
+          <el-button type="small" slot="reference">
+            商品信息
+          </el-button>
+        </el-popover>
+      </template>
     </el-table-column>
     <el-table-column align='center' label="发票抬头" min-width="100" prop="invoice_title">
     </el-table-column>
@@ -37,6 +46,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'kpls-dzfp',
   props: {
@@ -44,6 +54,10 @@ export default {
   },
   data() {
     return {
+      gridData: [{
+        goods_title: '',
+        count: 1,
+      }]
     }
   },
   methods: {
@@ -55,16 +69,26 @@ export default {
     },
     handleDelete(row) {
       this.$emit('handle-delete', [row.invoice_id])
+    },
+    showGoodsName(invoice_id) {
+      if (this.hoverOrderId === invoice_id) return
+      this.hoverOrderId = invoice_id
+      const params = {
+        invoice_id: invoice_id
+      }
+      this.$get('/accountant/invoice_detail', params).then(res => {
+        this.gridData = res.data.order_detail
+      })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .bold {
-    padding: 5px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 14px;
-  }
+.bold {
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 14px;
+}
 </style>

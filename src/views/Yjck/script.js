@@ -95,7 +95,7 @@ export default {
 			effectiveDate: [moment().subtract(7, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")],
 			effectiveDate_e: moment().format("YYYY-MM-DD"),
 			effectiveDate_s: moment().subtract(7, "days").format("YYYY-MM-DD"),
-			activeName1: 'xsdt',
+			activeName1: 'yhdt',
 			activeName2: 'all',
 			userInfo: [
 				{ name: '已实名用户', number: 2000 },

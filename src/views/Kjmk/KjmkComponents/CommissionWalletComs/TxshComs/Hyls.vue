@@ -1,12 +1,12 @@
 <template>
   <div class="ssxd-body">
     <el-table class="ssxd-table" ref="multipleTable" :data="data" tooltip-effect="dark" max-height="300" stripe style="width: 100%">
-      <el-table-column label="积分结算日期" align='center' width="150">
+      <!-- <el-table-column label="积分结算日期" align='center' width="150">
         <template slot-scope="scope">{{ scope.row.date }}</template>
       </el-table-column>
       <el-table-column align='center' label="获得返利">
         <template slot-scope="scope"><span class='text-overflow'>{{ scope.row['rebate'] }}</span></template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align='center' label="分享">
         <template slot-scope="scope"><span class='text-overflow'>{{ scope.row['01'] }}</span></template>
       </el-table-column>
