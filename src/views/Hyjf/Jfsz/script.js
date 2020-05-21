@@ -166,15 +166,12 @@ export default {
         }
       })
       let obj = {
-        user_id: str.join(','),
+        label_id: this.formYhsz.bqsx,
+        user_list: str,
+        user_type: this.formYhsz.yhsx,
         integral: this.integral
       }
-      // if (this.selectType === 'tab') {
-      //   obj.label_id = this.formYhsz.bqsx.join(',') || ''
-      // } else {
-      //   obj.user_type = this.formYhsz.bqsx.join(',') || ''
-      // }
-      this.$get('/integral/given_integral', obj).then(res => {
+      this.$post('/integral/given_integral', obj).then(res => {
         if (res.data) {
           this.$message.success('积分赠送成功')
         } else {
