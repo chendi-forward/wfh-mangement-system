@@ -137,7 +137,7 @@
           <el-input type="text" v-model="activeSearch" placeholder="输入商品编号/商品名称..."></el-input>
         </div>
         <div class="search-button">
-          <el-button size="small">搜索</el-button>
+          <el-button size="small" @click="serchGoods">搜索</el-button>
         </div>
       </div>
       <div class="dialog-list">
@@ -347,7 +347,7 @@ export default {
   async mounted() {
     let wrapH = $('.cjyhq-xxsz').height() + $('.cjyhq-spsz').height() - 123 - 63 - 40 - 72
     $('.content__search--options').height(wrapH)
-     if (this.action === 'add') {
+    if (this.action === 'add') {
       let a = this.getLabelData()
       await a
     } else {
@@ -356,7 +356,7 @@ export default {
     }
   },
   methods: {
-    labelChange () {
+    labelChange() {
       this.userPage = 1
       this.getUserList()
     },
@@ -525,6 +525,25 @@ export default {
             this.checkList = res.map(item => item.user_id)
           })
         })
+    },
+
+    serchGoods() {
+      let params = {
+        search: this.activeSearch,
+        page_count: 100,
+        current_page: 1
+      }
+      return this.getGoodsList(params).then(res => {
+        this.goodsPending = false
+        if (res.length < 10) {
+          this.goodsPageOver = true
+        } else {
+          this.goodsPage++
+          this.goodsPageOver = false
+        }
+        this.goodList = [...res]
+        return res
+      })
     },
     // 获取标签数据
     getLabelData() {
