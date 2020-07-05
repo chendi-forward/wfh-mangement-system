@@ -4,10 +4,6 @@
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">活动信息设置</div>
         <el-form :model="formXxsz" class="cjyhq-content" ref="formXxsz" name="formXxsz" label-width="130px" label-position="left">
-          <!-- <el-form-item class="content-content__item" label="活动编号：" prop="active_no" :rules='rules.length10'>
-            <el-input v-model="formXxsz.active_no" placeholder="输入活动编号..." ></el-input>
-            <div class="content__item--rule">*10个字符以内</div>
-          </el-form-item> -->
           <el-form-item class="content-content__item" label="活动名称：" prop="active_name" :rules='rules.length10'>
             <el-input v-model="formXxsz.active_name" placeholder="输入活动名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
@@ -87,17 +83,10 @@
     <div class="cjyhq-box__setting">
       <div class="cjyhq-title">优惠用户设置</div>
       <el-form name="formYhsz" class="yhsz-content" label-width="90px" label-position="left">
-        <!-- <el-form-item label="筛选类型：">
-          <el-select v-model="selectType" @change="selectTypeChange" placeholder="请选择...">
-            <el-option label="按标签筛选" value="tab"></el-option>
-            <el-option label="按用户筛选" value="user"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item :label="selectTypeName" class="content-content__item" :show-message='false'>
           <el-select @change="labelChange" v-model="formYhsz.bqsx" multiple collapse-tags clearable placeholder="请选择...">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <!-- <el-button class="updateBtn" size="small">添加</el-button> -->
         </el-form-item>
         <el-form-item label="用户筛选" class="content-content__item" :show-message='false'>
           <el-select @change="labelChange" v-model="formYhsz.yhsx" multiple collapse-tags clearable placeholder="请选择...">
@@ -469,17 +458,17 @@ export default {
         }
         getActiveDetail(obj).then(res => {
           let result = res.data
-          // console.log(result, '======')
           this.checkList = result.user_list
-          // this.formXxsz.active_no = result.active_no;
           this.formXxsz.active_name = result.active_name
           this.formXxsz.order_show_name = result.order_show_name
           this.formXxsz.trolley_show_name = result.trolley_show_name
           this.formXxsz.jxsse = result.max_money
           this.formXxsz.zkType = result.discount_type
-          result.discount_type === '折扣' ? (this.formXxsz.ddMoney = result.threshold_num) : (this.formXxsz.ddNumber = result.threshold_num)
+          this.formYhsz.bqsx = result.label_id
+          this.formYhsz.yhsx = result.user_type
+          result.discount_type === '折扣' ? (this.formXxsz.zkNumber = result.discount_num) : (this.formXxsz.zkMoney = result.discount_num)
           this.formXxsz.ddType = result.threshold_type
-          result.threshold_type === '罐' ? (this.formXxsz.zkMoney = result.discount_num) : (this.formXxsz.zkNumber = result.discount_num)
+          result.threshold_type === '罐' ? (this.formXxsz.ddNumber = result.threshold_num) : (this.formXxsz.ddMoney = result.threshold_num)
           this.effectiveDate_s = result.start_time
           this.effectiveDate_e = result.end_time
           let str = result.goods_list.join(',')

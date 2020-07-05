@@ -4,18 +4,6 @@
       <div class="cjyhq-xxsz">
         <div class="cjyhq-title">优惠券信息设置</div>
         <el-form class="cjyhq-content" name="formXxsz" label-width="130px" label-position="left" :model="formXxsz" ref="formXxsz">
-          <!-- <el-form-item
-            class="content-content__item"
-            label="优惠券编号："
-            prop="coupon_no"
-            :rules='rules.length10'
-          >
-            <el-input
-              v-model="formXxsz.coupon_no"
-              placeholder="输入优惠券编号..."
-            ></el-input>
-            <div class="content__item--rule">*10个字符以内</div>
-          </el-form-item> -->
           <el-form-item class="content-content__item" label="优惠券名称：" prop="coupon_name" :rules='rules.length10'>
             <el-input v-model="formXxsz.coupon_name" placeholder="输入优惠券名称..."></el-input>
             <div class="content__item--rule">*10个字符以内</div>
@@ -511,7 +499,8 @@ export default {
           }
           this.formXxsz.start_time = new Date(res.data.start_time)
           this.formXxsz.dateRange = [new Date(res.data.start_time), new Date(res.data.end_time)]
-          // this.formYhsz.user_label_id = res.data.user_label_id
+          this.formYhsz.user_label_id = res.data.label_id
+          this.formYhsz.yhsx = res.data.user_type
           return { goods_list: res.data.goods_list, user_list: res.data.user_list }
         })
         .then(({ goods_list, user_list }) => {

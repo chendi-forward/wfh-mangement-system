@@ -277,7 +277,7 @@ import ImgUpload from '../BasicComponents/ImgUpload'
 import SelectInput from '../BasicComponents/SelectInput'
 import DialogCom from 'COMPONENTS/DialogCom'
 import * as commonsConfig from 'COMMONS/commonsConfig.js'
-import moment from 'moment'
+import moment, { now } from 'moment'
 let base_url = commonsConfig.BASE_URL
 
 export default {
@@ -409,7 +409,7 @@ export default {
         this.formXssz.taste = data.specification
         this.imgListExhibit = data.show_pic // 展示图片
         this.imgListDetail = data.detail_pic // 展示图片
-        this.isDefinitTime = !!data.publish_time
+        this.isDefinitTime = moment(data.publish_time) > new Date()
         if (data.publish_time) {
           this.definitData = new Date(data.publish_time)
         }

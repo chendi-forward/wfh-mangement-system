@@ -78,6 +78,12 @@
               <el-input type="number" v-show="isEdit" v-model.number="scope.row.days"></el-input>
             </template>
           </el-table-column>
+          <el-table-column align='center' label="最大金额限制（元）" min-width="120">
+            <template slot-scope="scope">
+              <span v-show="!isEdit">{{ scope.row.max_money }}</span>
+              <el-input type="number" v-show="isEdit" v-model.number="scope.row.max_money"></el-input>
+            </template>
+          </el-table-column>
           <el-table-column align='center' width="120px" label="关联商品" type="expand" min-width="120">
             <template slot-scope="scope">
               <el-table class="ssxd-table" ref="multipleTable" :data="tableDataNew" tooltip-effect="dark" style="width: 100%" stripe>
@@ -301,6 +307,7 @@ export default {
         discount_type: '折扣',
         discount_num: this.newerSetting[0].discount_percent,
         coupon_num: this.newerSetting[0].coupon_num,
+        max_money: this.newerSetting[0].max_money,
         threshold_type: '元',
         threshold_num: 0,
         start_time: moment().format('YYYY-MM-DD 00:00:00'),
@@ -380,6 +387,7 @@ export default {
         order_show_name: '新手优惠券',
         trolley_show_name: '新手优惠券',
         discount_type: '折扣',
+        max_money: this.newerSetting[0].max_money,
         discount_num: this.newerSetting[0].discount_percent,
         coupon_num: this.newerSetting[0].coupon_num,
         threshold_type: '元',
