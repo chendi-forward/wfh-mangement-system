@@ -342,6 +342,7 @@ export default {
         current_page: this.goodsPage
       }
       this.goodsPending = true
+      this.multipleSelectionNew = this.tableDataNew
       return this.getGoodsList(params).then(res => {
         this.goodsPending = false
         if (res.length < 10) {
@@ -379,6 +380,13 @@ export default {
     },
     // 编辑新用户
     handleSaveNew() {
+      console.log(this.newerSetting[0].days)
+      console.log(
+        moment()
+          .add(60, 'days')
+          .format('YYYY-MM-DD 00:00:00')
+      )
+
       this.isEdit = false
       let params = {
         coupon_id: this.newerSetting[0].coupon_id,
@@ -430,11 +438,12 @@ export default {
               let days = moment(item.end_time) - moment(item.start_time)
               return {
                 ...item,
-                days: moment.duration(days).days(),
+                days: moment.duration(days).asDays(),
                 discount_percent: item.discount_type === '折扣' ? item.discount_num : '',
                 discount_money: item.discount_type === '折扣' ? '' : item.discount_num
               }
             })
+            console.log('============>: getData -> this.newerSetting', this.newerSetting)
             this.getGoodsListNew()
           } else {
             this.tableData = res.data.data_list.map(item => {
