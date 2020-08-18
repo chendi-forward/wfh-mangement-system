@@ -3,32 +3,21 @@
     <div class="headerSearch">
       <div class="header-search">
         <span class="header-text">用户搜索:</span>
-        <el-input
-          placeholder="请输入用户ID/昵称/用户手机号..."
-          prefix-icon="el-icon-search"
-          v-model="idNameNum">
+        <el-input placeholder="请输入用户ID/昵称/用户手机号..." prefix-icon="el-icon-search" v-model="idNameNum">
         </el-input>
         <el-button type="danger" @click='inputChange'>确认</el-button>
       </div>
       <div class="header-select">
         <span class="header-text">用户选择:</span>
         <el-select v-model="userLabel" @change='selectChangeUser' placeholder="请选择">
-          <el-option
-            v-for="(item, index) in formOptions"
-            :key="index"
-            :label="item.label"
-            :value="item.value">
+          <el-option v-for="(item, index) in formOptions" :key="index" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </div>
       <div class="header-select">
         <span class="header-text">标签选择:</span>
         <el-select v-model="selectKey" @change='selectChange' placeholder="请选择">
-          <el-option
-            v-for="(item, index) in options"
-            :key="index"
-            :label="item.label"
-            :value="item.value">
+          <el-option v-for="(item, index) in options" :key="index" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
         <el-button type="danger" @click='setTags'>设置标签</el-button>
@@ -42,77 +31,33 @@
       </el-tabs>
     </div>
     <div class="table-content">
-      <el-table
-        ref="multipleTable"
-        stripe
-        align='center'
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @sort-change='sortChange'
-        @selection-change="handleSelectionChange">
-        <el-table-column
-          type="selection"
-          width="55">
+      <el-table ref="multipleTable" stripe align='center' :data="tableData" tooltip-effect="dark" style="width: 100%" @sort-change='sortChange' @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column
-          label="头像"
-          align='center'
-          min-width='60'>
+        <el-table-column label="头像" align='center' min-width='60'>
           <template slot-scope="scope">
             <div class="con-box">
               <div class="con-img">
                 <img :src="scope.row.avatar" alt="">
               </div>
             </div>
-        </template>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="user_id"
-          align='center'
-          :show-overflow-tooltip='true'
-          min-width="130"
-          label="用户ID">
+        <el-table-column prop="user_id" align='center' :show-overflow-tooltip='true' min-width="130" label="用户ID">
         </el-table-column>
-        <el-table-column
-          prop="nickname"
-          label="昵称"
-          :show-overflow-tooltip='true'
-          align='center'
-          min-width="130">
+        <el-table-column prop="nickname" label="昵称" :show-overflow-tooltip='true' align='center' min-width="130">
         </el-table-column>
-        <el-table-column
-          prop='add_time'
-          label="注册时间"
-          :show-overflow-tooltip='true'
-          align='center'
-          width="160">
+        <el-table-column prop="phone" label="联系电话" :show-overflow-tooltip='true' align='center' min-width="130">
         </el-table-column>
-        <el-table-column
-          prop='gender'
-          align='center'
-          width="90"
-          label="性别">
+        <el-table-column prop='add_time' label="注册时间" :show-overflow-tooltip='true' align='center' width="160">
         </el-table-column>
-        <el-table-column
-          prop='province'
-          align='center'
-          width="100"
-          label="地区">
+        <el-table-column prop='gender' align='center' width="90" label="性别">
         </el-table-column>
-        <el-table-column
-          prop='level'
-          align='center'
-          label="等级"
-          sortable='custom'
-          width="80">
+        <el-table-column prop='province' align='center' width="100" label="地区">
         </el-table-column>
-        <el-table-column
-          prop='balance'
-          label="账户金额"
-          sortable='custom'
-          align='center'
-          width="100">
+        <el-table-column prop='level' align='center' label="等级" sortable='custom' width="80">
+        </el-table-column>
+        <el-table-column prop='balance' label="账户金额" sortable='custom' align='center' width="100">
         </el-table-column>
         <!-- <el-table-column
           prop='invite_code'
@@ -121,18 +66,9 @@
           align='center'
           min-width="130">
         </el-table-column> -->
-        <el-table-column
-          prop='order'
-          label="订单数"
-          sortable='custom'
-          align='center'
-          width="100">
+        <el-table-column prop='order' label="订单数" sortable='custom' align='center' width="100">
         </el-table-column>
-        <el-table-column
-          prop='deal_money'
-          label="累计成交额"
-          align='center'
-          width="100">
+        <el-table-column prop='deal_money' label="累计成交额" align='center' width="100">
         </el-table-column>
         <!-- <el-table-column
           prop='is_black'
@@ -148,25 +84,11 @@
             </div>
         </template>
         </el-table-column> -->
-        <el-table-column
-          prop='label'
-          label="标签"
-          align='center'
-          width="100">
+        <el-table-column prop='label' label="标签" align='center' width="100">
         </el-table-column>
-        <el-table-column
-          prop='remark'
-          label="备注"
-          :show-overflow-tooltip='true'
-          align='center'
-          width="100">
+        <el-table-column prop='remark' label="备注" :show-overflow-tooltip='true' align='center' width="100">
         </el-table-column>
-        <el-table-column
-          prop='summeroy'
-          label="用户类型"
-          align='center'
-          width="100"
-          v-if="activeName == 'black'">
+        <el-table-column prop='summeroy' label="用户类型" align='center' width="100" v-if="activeName == 'black'">
         </el-table-column>
         <el-table-column align='center' label="操作" width="86">
           <template slot-scope="scope">
@@ -180,11 +102,7 @@
       <el-button class="black-meun" v-if="activeName == 'ordinary'" :disabled="btnFlag" @click='changeUserBach("3")'>加入企业用户</el-button>
       <el-button class="black-meun" v-if="activeName == 'super'" :disabled="btnFlag" @click='changeUserBach("2")'>加入普通用户</el-button>
       <el-select class="move-select" v-if="activeName == 'black'" :class="{'dis-move-select': btnFlag}" v-model="moveKey" placeholder="移动到" :disabled="btnFlag" @change='moveUser'>
-        <el-option
-          v-for="item in moveOptions3"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+        <el-option v-for="item in moveOptions3" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
       <my-pagination @size-change='handleSizeChange' @current-change='handleCurrentChange' :total="total"></my-pagination>
@@ -195,14 +113,10 @@
       <div class="form-box" v-if="editOrSet == 'edit'">
         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
           <el-form-item label="添加标签:">
-          <el-select class="labelAddSelect" v-model="formLabelAlign.option" clearable placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+            <el-select class="labelAddSelect" v-model="formLabelAlign.option" clearable placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="修改状态:">
             <el-col :span='7'>
@@ -237,11 +151,7 @@
             </el-form-item>
             <el-form-item label="用户等级">
               <el-select v-model="formLabelAlign.level" placeholder="请选择">
-                <el-option
-                  v-for="item in levelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                <el-option v-for="item in levelOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -277,27 +187,10 @@
         </div>
         <div class="add-tag">
           <p class="header-title">添加标签</p>
-          <el-form
-            :model='formTag'
-            ref='formTag'
-            class="add-tag--content"
-          >
-            <el-form-item
-              prop="newTag"
-              :rules="rules.length10"
-            >
-              <el-input
-                type="text"
-                size="small"
-                placeholder="输入标签..."
-                v-model="formTag.newTag"
-                @change="addLabel"
-              ></el-input>
-              <el-button
-                size="small"
-                type="success"
-                @click="addLabel"
-              >确定</el-button>
+          <el-form :model='formTag' ref='formTag' class="add-tag--content">
+            <el-form-item prop="newTag" :rules="rules.length10">
+              <el-input type="text" size="small" placeholder="输入标签..." v-model="formTag.newTag" @change="addLabel"></el-input>
+              <el-button size="small" type="success" @click="addLabel">确定</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -310,13 +203,13 @@
 </style>
 <style lang="less">
 .add-tag {
-    .add-tag--content {
-      .el-form-item {
-        width: 100%;
-      }
-      .el-input {
-        width: calc(100% - 60px);
-      }
+  .add-tag--content {
+    .el-form-item {
+      width: 100%;
+    }
+    .el-input {
+      width: calc(100% - 60px);
     }
   }
+}
 </style>
