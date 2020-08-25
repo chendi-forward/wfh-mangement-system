@@ -5,14 +5,20 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "m-dev": "nodemon node-proxy.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.1",
     "core-js": "^2.6.5",
-    "element-ui": "^2.10.0",
+    "echarts": "^4.4.0",
+    "element-ui": "^2.13.0",
+    "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "save": "^2.4.0",
+    "svg-sprite-loader": "^4.1.6",
     "vue": "^2.6.10",
+    "vue-infinite-loading": "^2.4.4",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },
@@ -26,6 +32,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "lodash": "^4.17.15",
     "vue-template-compiler": "^2.5.21"
   }
 }

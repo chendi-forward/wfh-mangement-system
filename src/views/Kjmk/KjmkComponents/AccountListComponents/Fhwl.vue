@@ -93,7 +93,7 @@
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
         <el-button size="mini" class="success-btn" @click="exportFn">导出</el-button>
-        <el-button size="mini" @click="deleteMany">批量删除</el-button>
+        <!-- <el-button size="mini" @click="deleteMany">批量删除</el-button> -->
       </div>
       <div class="page-wrap">
         <el-pagination

@@ -1,5 +1,5 @@
 <template>
-  <div>草稿箱</div>
+  <div>草稿箱1111</div>
 </template>
 
 <script>

@@ -1,21 +1,24 @@
 <template>
   <el-upload
     class="avatar-uploader"
-    action=" "
-    :show-file-list="false"
+    :action="action_url"
+    :name="keyName"
     accept="image/jpeg, image/png"
-    :http-request="uploadImgAction"
+    :show-file-list="false"
+    :on-success='uploadSuccess'
+    :on-error='uploadError'
     :before-upload="beforeAvatarUpload">
     <span class="avater-tip" v-if="tip">{{tip}}</span>
-    <span class="avater-delete" @click.stop="deleteImg" v-show="!!imageUrl">
+    <span class="avater-delete" @click.stop="deleteImg" v-if="isShowImg" v-show="!!imageUrl">
       ×
     </span>
-    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-    <i v-if="!imageUrl" class="el-icon-plus avatar-uploader-icon"></i>
+    <img v-if="imageUrl && isShowImg" :src="base_url + imageUrl" class="avatar">
+    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
 
 <script>
+  import { BASE_URL, updateImgUrl } from 'COMMONS/commonsConfig.js'
   export default {
     name: 'img-upload-component',
     props: {
@@ -23,26 +26,32 @@
         type: String,
         default: '5'
       },
-      tip: String
+      tip: String,
+      isShowImg: {
+        type: Boolean,
+        default: true
+      },
+      keyName: {
+        type: String
+      },
+      imgurl: String
     },
     data () {
       return {
-        imageUrl: ''
+        base_url: BASE_URL,
+        imageUrl: '',
+        action_url: updateImgUrl + '/pic/push_goods_pic'
+      }
+    },
+    watch: {
+      imgurl (v) {
+        this.imageUrl = v
       }
     },
     methods: {
       deleteImg () {
         this.imageUrl = ''
-        this.$emit('input', '')
-      },
-      uploadImgAction (request) {
-        let file = request.file
-        let reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-          this.imageUrl = reader.result
-          this.$emit('input', reader.result)
-        }
+        this.$emit('delete-img')
       },
       beforeAvatarUpload (file) {
         const isJPG_PNG = (file.type === 'image/jpeg' || file.type === 'image/png')
@@ -54,6 +63,12 @@
           this.$message.error(`上传头像图片大小不能超过 ${this.size}MB!`)
         }
         return isJPG_PNG && size
+      },
+      uploadSuccess (res) {
+        this.$emit('upload-success', res)
+      },
+      uploadError (res) {
+        this.$emit('upload-error', res)
       }
     }
   }

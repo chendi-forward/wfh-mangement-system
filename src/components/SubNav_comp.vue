@@ -21,7 +21,10 @@
     methods: {
       selectItem (item, index) {
         this.selectedItem = index
-        this.$emit('input', item.component)
+        if (typeof item.component == 'object') {
+          item.component.selectedItem = index
+        }
+        this.$emit('input', item.component, index)
       }
     }
   }

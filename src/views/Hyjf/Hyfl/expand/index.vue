@@ -3,7 +3,7 @@
     <el-table
       class="ssxd-table"
       ref="multipleTable"
-      :data="tableItems"
+      :data="data"
       tooltip-effect="dark"
       stripe
       style="width: 100%"
@@ -16,31 +16,31 @@
         label="子用户昵称"
         align='center'
         width="150">
-        <template slot-scope="scope">{{ scope.row.userid }}</template>
+        <template slot-scope="scope">{{ scope.row.nickname }}</template>
       </el-table-column>
       <el-table-column
         align='center'
         label="代理用户历史贡献（元）">
-        <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.nickname }}</span></template>
+        <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.deal_money }}</span></template>
       </el-table-column>
       <el-table-column
         align='center'
         label="代理用户注册日期">
-        <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.date }}</span></template>
+        <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.time }}</span></template>
       </el-table-column>
       <el-table-column
         align='center'
         label="天数">
         <template slot-scope="scope">
-          <span class='text-overflow'><el-input type="text" :id="scope.row.userid" v-model="scope.row.withdrawDeposit" class="focus-border"/></span>&nbsp;&nbsp;
-          <label :for="scope.row.userid"><span class="icon-btn theme-color"><i class="el-icon-edit"></i></span></label>
+          <span class='text-overflow'><el-input type="text" :id="scope.row.user_id" v-model="scope.row.days" @blur="changeDate" class="focus-border"/></span>&nbsp;&nbsp;
+          <label :for="scope.row.user_id"><span class="icon-btn theme-color"><i class="el-icon-edit"></i></span></label>
           </template>
       </el-table-column>
       <el-table-column
         label="备注"
         align='center'
         width="150">
-        <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.dlflje }}</span></template>
+        <template slot-scope="scope"><span class='text-overflow'>{{scope.row.remark || '/'}}</span></template>
       </el-table-column>
     </el-table>
   </div>

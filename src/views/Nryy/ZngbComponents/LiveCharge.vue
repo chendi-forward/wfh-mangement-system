@@ -7,17 +7,18 @@
             <span>触发状态</span>
             <span>：</span>
           </label>
-          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.touchStauts">
+          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.touchStatus" :disabled='!canEdit'>
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
           <label class="ssxd-form--label">
-            <span>触发等级</span>
+            <span>触发金额（元）</span>
             <span>：</span>
           </label>
           <el-input
+            :disabled='!canEdit'
             class="ssxd-form--input"
-            v-model="formSsxd.touchLevel"
+            v-model="formSsxd.touchPrice"
             placeholder='输入内容...'>
           </el-input>
         </div>
@@ -26,7 +27,7 @@
             <span>脚本运行</span>
             <span>：</span>
           </label>
-          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.scriptStauts">
+          <el-radio-group class="ssxd-form--radio" v-model="formSsxd.scriptStatus" :disabled='!canEdit'>
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
@@ -35,13 +36,14 @@
             <span>：</span>
           </label>
           <el-input
+            :disabled='!canEdit'
             class="ssxd-form--input"
-            v-model="formSsxd.touchLevel"
+            v-model="formSsxd.count"
             placeholder='输入内容...'>
           </el-input>
           <div class="ssxd-form--btn">
-            <el-button size="mini" class="success-btn" @click="edit">编辑</el-button>
-            <el-button size="mini" class="cancel-btn" @click="cancel">取消</el-button>
+            <el-button size="small" type="success" @click="edit" v-show="!canEdit">编辑</el-button>
+            <el-button size="small" type="success" @click="submit" v-show="canEdit">确定</el-button>
           </div>
         </div>
       </form>
@@ -61,99 +63,193 @@
         <el-table-column
           label="发布时间"
           align='center'
-          width="150">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+          prop="add_time"
+          width="170">
         </el-table-column>
         <el-table-column
           align='center'
-          width="250"
+          width="200"
+          prop="nickname"
           label="昵称">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.nickname }}</span></template>
         </el-table-column>
         <el-table-column
           align='center'
+          prop="content_1"
+          mini-width="250"
           label="商品名称">
-          <template slot-scope="scope"><span class='text-overflow'>{{ scope.row.name }}</span></template>
         </el-table-column>
         <el-table-column
-          prop="number"
+          prop="content_2"
           align='center'
           label="数量"
           width="120">
-        </el-table-column>
-        <el-table-column
-          align='center'
-          label="状态"
-          width="200">
-          <template slot-scope="scope">
-            <el-radio-group v-model="scope.row.status">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
-            </el-radio-group>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          align='center'
-          width="160">
-          <template slot-scope="scope">
-            <el-button type="primary" class="definition-btn" icon="el-icon-edit" @click='editHandle(scope.row)'></el-button>
-            <el-button type="primary" class="definition-btn" icon="el-icon-delete" @click='deleteHandle(scope.row)'></el-button>
-          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="ssxd-footer">
       <div class="selectAll-wrap">
-        <el-button size="mini" class="success-btn" @click="createFn">新建</el-button>
+        <el-button size="small" type="danger" @click="deleteClickMulti">删除</el-button>
       </div>
       <div class="page-wrap">
-        <el-pagination
+        <my-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="5"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
-        </el-pagination>
-        <el-button size="mini" class="success-btn" @click="submit">确定</el-button>
+          :total="total">
+        </my-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from 'COMPONENTS/Pagination'
+
 export default {
   name: 'ssxd',
+  components: {
+    'my-pagination': Pagination
+  },
   data () {
     return {
+      canEdit: false,
       formSsxd: {
-        touchStauts: 1,
-        scriptStauts: 1,
-        touchLevel: 'v2'
+        touchStatus: 1,
+        scriptStatus: 1,
+        touchPrice: 20,
+        count: 10
       },
-      tableData: [
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1},
-        {date: '2019-03-22 09:20', nickname: 'WFH0...', name: 'XX系列奶茶蛋白粉XX系列奶茶蛋白粉XX系列奶茶蛋白粉', number: '20', status: 1}
-      ],
-      isAllSelect: false
+      tableData: [],
+      isAllSelect: false,
+      page_count: 10,
+      current_page: 1,
+      total: 0,
+      multipleSelection: []
     }
   },
+  created() {
+    this.getSettings()
+    this.getData()
+  },
   methods: {
-    edit () {},
-    cancel () {},
-    handleSelectionChange () {},
-    editHandle () {},
-    deleteHandle () {},
-    createFn () {},
-    handleSizeChange () {},
-    handleCurrentChange () {},
-    currentPage () {},
-    submit () {}
+    edit () {
+      this.canEdit = true
+    },
+    submit () {
+      let scriptParams = {
+        method: 'script',
+        count: +this.formSsxd.count,
+        state: this.formSsxd.scriptStatus
+      }
+      let triggerParams = {
+        method: 'trigger',
+        count: +this.formSsxd.touchPrice,
+        state: this.formSsxd.touchStatus
+      }
+      this.editSettings(scriptParams)
+      this.editSettings(triggerParams)
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    deleteClickMulti() {
+      if (!this.multipleSelection.length) return
+      let ids = this.multipleSelection.map(item => item.id)
+      this.deleteHandle(ids)
+    },
+    deleteHandle (_ids) {
+      let ids = _ids.join(',')
+      this.$confirm(`确定要删除吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.deleteData(ids)
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      })
+    },
+    handleSizeChange (v) {
+      this.page_count = v
+      this.current_page = 1
+      this.getData()
+    },
+    handleCurrentChange (v) {
+      this.current_page = v
+      this.getData()
+    },
+    deleteData(ids) {
+      let params = {
+        id: ids
+      }
+      this.$get('/broadcast/delete_content', params)
+      .then(res => {
+        this.getData()
+      })
+      .catch(err => {
+        this.$message({
+          type: 'warning',
+          message: '请求出错!'
+        })
+      })
+    },
+    // 修改设置信息 
+    editSettings(data) {
+      let params = {
+        type: 'order',
+        method: data.method,
+        count: data.count,
+        state: data.state
+      }
+      this.$get('/broadcast/update_setting', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.$message({
+            type: 'success',
+            message: '设置成功'
+          })
+          this.canEdit = false
+        } else {
+          this.$message({
+            type: 'warning',
+            message: res.message
+          })
+        }
+      })
+    },
+    // 获取数据
+    getData () {
+      let params = {
+        type: 'order',
+        page_count: this.page_count,
+        current_page: this.current_page
+      }
+      this.$get('/broadcast/get_content', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.total = res.data.count
+          let result = res.data.data_list
+          this.tableData = result
+        }
+      })
+    },
+    // 获取设置信息
+    getSettings() {
+      let params = {
+        type: 'order'
+      }
+      this.$get('/broadcast/get_setting', params)
+      .then(res => {
+        if (res.message === 'ok') {
+          this.formSsxd.touchStatus = res.data.trigger.state
+          this.formSsxd.touchPrice = res.data.trigger.count
+          this.formSsxd.scriptStatus = res.data.script.state
+          this.formSsxd.count = res.data.script.count
+        }
+      })
+    }
   }
 }
 </script>

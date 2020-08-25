@@ -2,9 +2,11 @@
   <div>
     <div class="upload-img__btn">
       <el-upload
-        action=" "
+        :action="action_url"
         accept="image/jpeg, image/png"
-        :http-request="uploadImgAction"
+        :name="key"
+        :on-success='uploadSuccess'
+        :on-error='uploadError'
         :show-file-list=false>
         <el-button class="upload-img__btn--select" size="small">选择文件</el-button>
       </el-upload>
@@ -15,11 +17,16 @@
 </template>
 
 <script>
+  import { updateImgUrl } from 'COMMONS/commonsConfig.js'
+
   export default {
     name: 'img-upload-component',
+    props: {
+      key: String
+    },
     data () {
       return {
-        uploadAddress: ''
+        action_url: updateImgUrl + '/pic/push_goods_pic'
       }
     },
     watch: {
@@ -28,6 +35,12 @@
       }
     },
     methods: {
+      uploadSuccess (res) {
+        this.$emit('upload-success', res)
+      },
+      uploadError (res) {
+        this.$emit('upload-error', res)
+      },
       uploadImgAction (request) {
         let file = request.file
         let reader = new FileReader()

@@ -64,6 +64,11 @@ export default [{
       component: () => import(/* webpackChunkName: "shgl-ddxq" */ './views/Shgl/Ddxq')
     },
     {
+      path: '/shgl-pjgl',
+      name: 'shgl-pjgl',
+      component: () => import(/* webpackChunkName: "shgl-ddxq" */ './views/Shgl/Pjgl')
+    },
+    {
       path: '/hyjf-sjsz',
       name: 'hyjf-sjsz',
       component: () => import(/* webpackChunkName: "hyjf-sjsz" */ './views/Hyjf/Sjsz')
@@ -79,9 +84,19 @@ export default [{
       component: () => import(/* webpackChunkName: "hyjf-jfsz" */ './views/Hyjf/Jfsz')
     },
     {
-      path: '/yxmk',
-      name: 'yxmk',
-      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk')
+      path: '/yxmk-yhqgl',
+      name: 'yxmk-yhqgl',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Yhqgl')
+    },
+    {
+      path: '/yxmk-hdbgl',
+      name: 'yxmk-hdbgl',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Hdbgl')
+    },
+    {
+      path: '/yxmk-xxzx',
+      name: 'yxmk-xxzx',
+      component: () => import(/* webpackChunkName: "yxmk" */ './views/Yxmk/Xxzx')
     },
     {
       path: '/sjk',

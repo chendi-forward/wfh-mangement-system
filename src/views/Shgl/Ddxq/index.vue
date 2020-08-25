@@ -11,54 +11,54 @@
         tooltip-effect="dark"
         style="width: 100%">
           <el-table-column
-            prop="user_id"
+            prop="order_id"
             align='center'
             label="订单编号"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="nickname"
+            prop="user_id"
             label="用户ID"
             align='center'
             width="100">
           </el-table-column>
           <el-table-column
-            prop='add_time'
+            prop='nickname'
             label="昵称"
             align='center'
             min-width="80">
           </el-table-column>
           <el-table-column
-            prop='gender'
+            prop='wechat_id'
             align='center'
             label="微信交易号"
             width="100">
           </el-table-column>
           <el-table-column
-            prop='province'
+            prop='order_state'
             align='center'
             label="状态">
           </el-table-column>
           <el-table-column
-            prop='level'
+            prop='order_time'
             align='center'
             label="订单生成时间"
             width="150">
           </el-table-column>
           <el-table-column
-            prop='balance'
+            prop='pay_time'
             label="付款时间"
             align='center'
             width="100">
           </el-table-column>
           <el-table-column
-            prop='invite_code'
+            prop='deliver_time'
             label="发货时间"
             align='center'
             width="100">
           </el-table-column>
           <el-table-column
-            prop='order'
+            prop='confirm_time'
             label="确认收货时间"
             align='center'
             width="120">
@@ -77,32 +77,42 @@
         tooltip-effect="dark"
         style="width: 100%">
           <el-table-column
-            prop="user_id"
+            prop="goods_title"
             align='center'
             label="商品名称">
           </el-table-column>
           <el-table-column
-            prop="nickname"
+            prop="taste"
             label="口味/规格"
             align='center'>
           </el-table-column>
           <el-table-column
-            prop='add_time'
+            prop='count'
             label="数量"
             align='center'>
           </el-table-column>
           <el-table-column
-            prop='gender'
+            prop='original_price'
             align='center'
             label="实付总额">
           </el-table-column>
           <el-table-column
-            prop='province'
+            prop='rebate'
             align='center'
-            label="返利类目">
+            label="返利">
           </el-table-column>
           <el-table-column
-            prop='level'
+            prop='coupon_rebate'
+            align='center'
+            label="优惠券返利">
+          </el-table-column>
+          <el-table-column
+            prop='active_rebate'
+            align='center'
+            label="活动返利">
+          </el-table-column>
+          <el-table-column
+            prop='rebate_money'
             align='center'
             label="返利总额">
           </el-table-column>
@@ -113,42 +123,42 @@
       <div class="spgl-item">
         <div class="spgl-item--title">收货详情</div>
         <div class="spgl-item--content">
-          <p><span class="name">收件人</span><span class="value">李大辉</span></p>
-          <p><span class="name">联系电话</span><span class="value">18855862290</span></p>
-          <p><span class="name">收货地址</span><span class="value">浙江省杭州市西湖区***街道*****路九横278号龙华大厦A座901</span></p>
+          <p><span class="name">收件人</span><span class="value">{{addressee_info.recipient}}</span></p>
+          <p><span class="name">联系电话</span><span class="value">{{addressee_info.recipient_tel}}</span></p>
+          <p><span class="name">收货地址</span><span class="value">{{addressee_info.address}}</span></p>
         </div>
       </div>
       <div class="spgl-item">
         <div class="spgl-item--title">开票详情</div>
         <div class="spgl-item--content">
-          <p><span class="name">发票类型</span><span class="value">电子发票</span></p>
-          <p><span class="name">发票抬头</span><span class="value">杭州动力科技有限公司 （9M********************）</span></p>
-          <p><span class="name">邮箱/邮寄地址</span><span class="value">浙江省杭州市西湖区***街道*****路九横278号龙华大厦A座901</span></p>
-          <p><span class="name">联系电话</span><span class="value">18855862290</span></p>
+          <p><span class="name">发票类型</span><span class="value">{{invoice_info.is_e_invoice?'电子发表':'公司发票'}}</span></p>
+          <p><span class="name">发票抬头</span><span class="value">{{invoice_info.invoice_title}} <span v-if="invoice_info.tin_number">（{{invoice_info.tin_number}}）</span> </span></p>
+          <p><span class="name">邮箱/邮寄地址</span><span class="value">{{invoice_info.recipient_address}}</span></p>
+          <p><span class="name">联系电话</span><span class="value">{{invoice_info.recipient_tel}}</span></p>
         </div>
       </div>
       <!-- TODO 根据订单状态判断是否显示物流信息 -->
       <div class="spgl-item">
         <div class="spgl-item--title">物流信息</div>
         <div class="spgl-item--content">
-          <p><span class="name">物流公司</span><span class="value">圆通快递</span></p>
-          <p><span class="name">物流单号</span><span class="value">18855862290 &nbsp;&nbsp;&nbsp;
+          <p><span class="name">物流公司</span><span class="value">{{express_info.express_name}}</span></p>
+          <p><span class="name">物流单号</span><span class="value">{{express_info.express_number}} &nbsp;&nbsp;&nbsp;
             <el-button type="danger" size="mini" plain @click="trace">追踪</el-button></span>
           </p>
-          <p><span class="name">运费</span><span class="value">12元</span></p>
-          <p><span class="name">备注</span><span class="value">已修改收货地址：浙江省杭州市浙江大学紫金校区南门</span></p>
+          <p><span class="name">运费</span><span class="value">{{express_info.postage}}</span></p>
+          <p><span class="name">备注</span><span class="value">{{express_info.remark}}</span></p>
         </div>
       </div>
     </div>
     <div class="commom-card flex-item-center handle">
       <el-button size="small" @click="goBack">返回列表</el-button>
       <div>
-        <el-button type="danger" size="small" @click="editHandle">编辑</el-button>
-        <el-button size="small" @click='cancleItem'>取消订单</el-button>
+        <el-button type="danger" size="small" @click="editHandle" v-if="tableData1[0].order_state==='已付款'">发货</el-button>
+        <el-button size="small" @click='cancleItem' v-if="tableData1[0].order_state==='未付款'">取消订单</el-button>
       </div>
     </div>
-    <dialog-Com :dialogFlag='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave'>
-      <component :is="currentCom.com"></component>
+    <dialog-Com v-model='dialogFlag' :title='currentCom.name' @sure-save='sureSave' @cancle-save='cancleSave' :isShowFooter="currentCom.showBtn">
+      <component :is="currentCom.com" :data="currentCom.data" :dialogFlag="dialogFlag"></component>
     </dialog-Com>
   </div>
 </template>

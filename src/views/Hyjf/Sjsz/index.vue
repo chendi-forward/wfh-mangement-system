@@ -4,18 +4,10 @@
       <div class="spgl-item--title">时间设置</div>
       <div class="spgl-item--content content1">
         <div class="set-time" v-show='!editTimeShow'>
-          <p class="row"><span class="row-name">确认收货周期：</span>{{time.qrsh}}天</p>
-          <p class="row"><span class="row-name">未付款周期：</span>{{time.wfk}}天</p>
-          <p class="row"><span class="row-name">会员周期：</span>{{time.hy}}天</p>
-          <p class="row"><span class="row-name">积分清空周期：</span>{{time.jfqk}}天</p>
-          <p class="row"><span class="row-name">邀请码更新周期：</span>{{time.yqm}}天</p>
+          <p class="row" v-for="(item, i) in time" :key="i"><span class="row-name">{{item.notes}}：</span>{{item.time_days}}天</p>
         </div>
         <div class="set-time" v-show='editTimeShow'>
-          <p class="row"><span class="row-name">确认收货周期：</span><el-input v-model="editTime.qrsh" placeholder="请输入数字"></el-input>（单位：天）</p>
-          <p class="row"><span class="row-name">未付款周期：</span><el-input v-model="editTime.wfk" placeholder="请输入数字"></el-input>（单位：天）</p>
-          <p class="row"><span class="row-name">会员周期：</span><el-input v-model="editTime.hy" placeholder="请输入数字"></el-input>（单位：天）</p>
-          <p class="row"><span class="row-name">积分清空周期：</span><el-input v-model="editTime.jfqk" placeholder="请输入数字"></el-input>（单位：天）</p>
-          <p class="row"><span class="row-name">邀请码更新周期：</span><el-input v-model="editTime.yqm" placeholder="请输入数字"></el-input>（单位：天）</p>
+          <p class="row" v-for="(item, i) in editTime" :key="i"><span class="row-name">{{item.notes}}：</span><el-input type="number" min=0 v-model="item.time_days" placeholder="请输入数字"></el-input>（单位：天）</p>
         </div>
         <div class="edit" v-show='!editTimeShow'>
           <el-button size="mini" class="success-btn" @click="editTimeFn">编辑</el-button>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="250px">
+      <el-aside width="220px">
         <el-header class="logo-header">WFH</el-header>
         <div class="nav-menu">
           <el-menu
@@ -36,17 +36,17 @@
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item v-for="(item, i) in breadcrumbs" :key="i">{{item.name}}</el-breadcrumb-item>
           </el-breadcrumb>
-          <el-input
+          <!-- <el-input
             class="main-header__search"
             placeholder="搜索..."
             size="medium"
             v-model="searchVal">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
+          </el-input> -->
           <div class="main-header__user">
             <div class="user-box__name">
               <span>{{timeStr[currentTime]}}，</span>
-              <span>admin</span>
+              <span>{{user}}</span>
             </div>
             <div class="user-box__logout">
               <span>退出</span>&nbsp;&nbsp;
@@ -66,115 +66,137 @@
 
 <script>
   import moment from 'moment'
-  let menus = [
-    {
-      name: '主页',
-      children: [
-        {
-          name: '业绩查看',
-          path: 'yjck',
-          icon: 'el-icon-setting'
-        },
-        {
-          name: '内容运营',
-          path: 'nryy',
-          icon: 'el-icon-location',
-          children: [
-            {
-              name: '商品管理',
-              path: 'nryy-spgl'
-            },
-            {
-              name: '站内广播',
-              path: 'nryy-zngb'
-            },
-            {
-              name: '发现页',
-              path: 'nryy-fxy'
-            },
-            {
-              name: '规则说明',
-              path: 'nryy-gzsm'
-            }
-          ]
-        },
-        {
-          name: '用户管理',
-          path: 'yhgl',
-          icon: 'el-icon-menu'
-        },
-        {
-          name: '权限管理',
-          path: 'qxgl',
-          icon: 'el-icon-menu'
-        },
-        {
-          name: '售后管理',
-          path: 'shgl',
-          icon: 'el-icon-menu',
-          children: [
-            {
-              name: '订单列表',
-              path: 'shgl-ddlb'
-            },
-            {
-              name: '退款管理',
-              path: 'shgl-tkgl'
-            }
-          ],
-          childrenNoMenu: [ //无菜单路由
-            {
-              name: '订单详情',
-              path: 'shgl-ddxq'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: '设置',
-      children: [
-        {
-          name: '会员积分',
-          path: 'hyjf',
-          icon: 'el-icon-setting',
-          children: [
-            {
-              name: '时间设置',
-              path: 'hyjf-sjsz'
-            },
-            {
-              name: '会员返利',
-              path: 'hyjf-hyfl'
-            },
-            {
-              name: '积分设置',
-              path: 'hyjf-jfsz'
-            }
-          ]
-        },
-        {
-          name: '营销模块',
-          path: 'yxmk',
-          icon: 'el-icon-menu'
-        },
-        {
-          name: '数据库',
-          path: 'sjk',
-          icon: 'el-icon-menu'
-        },
-        {
-          name: '会计模块',
-          path: 'kjmk',
-          icon: 'el-icon-menu'
-        }
-      ]
-    }
-  ]
   export default {
     name: 'App',
     data () {
-    return {
+      let menus = [
+        {
+          name: '主页',
+          children: [
+            {
+              id: '1',
+              name: '业绩查看',
+              path: 'yjck',
+              icon: 'el-icon-setting'
+            },
+            {
+              id: '2',
+              name: '内容运营',
+              path: 'nryy',
+              icon: 'el-icon-location',
+              children: [
+                {
+                  name: '商品管理',
+                  path: 'nryy-spgl'
+                },
+                {
+                  name: '站内广播',
+                  path: 'nryy-zngb'
+                },
+                {
+                  name: '发现页',
+                  path: 'nryy-fxy'
+                },
+                {
+                  name: '规则说明',
+                  path: 'nryy-gzsm'
+                }
+              ]
+            },
+            {
+              id: '3',
+              name: '用户管理',
+              path: 'yhgl',
+              icon: 'el-icon-user-solid'
+            },
+            {
+              id: '4',
+              name: '权限管理',
+              path: 'qxgl',
+              icon: 'el-icon-s-custom'
+            },
+            {
+              id: '5',
+              name: '售后管理',
+              path: 'shgl',
+              icon: 'el-icon-sold-out',
+              children: [
+                {
+                  name: '订单列表',
+                  path: 'shgl-ddlb'
+                },
+                {
+                  name: '退款管理',
+                  path: 'shgl-tkgl'
+                },
+                {
+                  name: '评价管理',
+                  path: 'shgl-pjgl'
+                }
+              ],
+              childrenNoMenu: [ //无菜单路由
+                {
+                  name: '订单详情',
+                  path: 'shgl-ddxq'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: '设置',
+          children: [
+            {
+              id: '6',
+              name: '会员积分',
+              path: 'hyjf',
+              icon: 'el-icon-present',
+              children: [
+                {
+                  name: '时间设置',
+                  path: 'hyjf-sjsz'
+                },
+                {
+                  name: '会员返利',
+                  path: 'hyjf-hyfl'
+                },
+                {
+                  name: '积分设置',
+                  path: 'hyjf-jfsz'
+                }
+              ]
+            },
+            {
+              id: '7',
+              name: '营销模块',
+              path: 'yxmk',
+              icon: 'el-icon-shopping-cart-full',
+              children: [
+                {
+                  name: '活动表管理',
+                  path: 'yxmk-hdbgl'
+                },
+                {
+                  name: '优惠券管理',
+                  path: 'yxmk-yhqgl'
+                },
+                {
+                  name: '消息中心',
+                  path: 'yxmk-xxzx'
+                }
+              ]
+            },
+            {
+              id: '8',
+              name: '会计模块',
+              path: 'kjmk',
+              icon: 'el-icon-notebook-2'
+            }
+          ]
+        }
+      ]
+      return {
+        user: sessionStorage.getItem('user'),
         searchVal: '',
         timeStr: {
           am: '上午好',
@@ -189,6 +211,10 @@
     watch: {
       '$route' () {
         this.initBreadcrumbs()
+        this.menuChange()
+      },
+      user () {
+        this.menuChange()
       }
     },
     methods: {
@@ -219,13 +245,46 @@
         })
       },
       logout () {
-        localStorage.clear()
-        sessionStorage.clear()
-        this.$router.push({path: '/login'})
+         this.$confirm('确定退出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          localStorage.clear()
+          sessionStorage.clear()
+          this.$router.push({path: '/login'})
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });          
+        });
+      },
+      // 菜单
+      menuChange () {
+        let role = sessionStorage.getItem('role')
+        var roleArr = role.split('')
+        if (sessionStorage.getItem('id') == 1) {
+          roleArr.push("3")
+          roleArr.push("4")
+        }
+        this.menus.forEach((item) => {
+          item.children = item.children.filter((data) => {
+            return roleArr.includes(data.id)
+          })
+        })
       }
     },
     created () {
       this.initBreadcrumbs()
+      setTimeout(() => {
+        this.menuChange()
+      })
+    },
+    mounted () {
+      setTimeout(() => {
+        this.menuChange()
+      })
     }
   }
 </script>
@@ -407,9 +466,34 @@
   }
 }
 
+.tag-dialog {
+  padding: 30px;
+  .el-dialog__header,
+  .el-dialog__body {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .tag--title {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .save-tag {
+    display: flex;
+    justify-content: center;
+  }
+  .add-tag {
+    margin-bottom: 15px;
+    .add-tag--content {
+      display: flex;
+      .el-input__inner {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
 #app {
   height: 100%;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

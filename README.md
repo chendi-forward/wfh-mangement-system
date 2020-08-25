@@ -15,10 +15,10 @@ npm run dev
 npm run build
 ```
 
-### Lints and fixes files
+### Lints and fixes files.
 ```
 npm run lint
 ```
-> 开发阶段权限系统
+开发阶段权限系统
    账号： admin
    密码： 123456

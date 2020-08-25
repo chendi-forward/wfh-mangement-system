@@ -10,27 +10,29 @@
 </template>
 
 <script>
-  import LiveCharge from './ZngbComponents/LiveCharge'
-  import VipPromote from './ZngbComponents/VipPromote'
-  import NewerLogon from './ZngbComponents/NewerLogon'
-  export default {
-    name: 'zngb',
-    data () {
-      return {
-        activeName: 'live-charge',
-        components: {
-          'live-charge': LiveCharge,
-          'vip-promote': VipPromote,
-          'newer-logon': NewerLogon
-        }
-      }
-    },
-    computed: {
-      activeComponent () {
-        return this.components[this.activeName]
+
+import LiveCharge from './ZngbComponents/LiveCharge'
+import VipPromote from './ZngbComponents/VipPromote'
+import NewerLogon from './ZngbComponents/NewerLogon'
+
+export default {
+  name: 'zngb',
+  data () {
+    return {
+      activeName: 'live-charge',
+      components: {
+        'live-charge': LiveCharge,
+        'vip-promote': VipPromote,
+        'newer-logon': NewerLogon
       }
     }
+  },
+  computed: {
+    activeComponent () {
+      return this.components[this.activeName]
+    }
   }
+}
 </script>
 
 <style lang='less' scoped>
